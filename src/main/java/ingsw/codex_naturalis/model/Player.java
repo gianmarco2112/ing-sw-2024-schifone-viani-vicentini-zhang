@@ -30,6 +30,10 @@ public class Player {
 
     private int points;
 
+    private List<Message> messages;
+
+    private List<Player> players;
+
 
     public Player(String nickname, Color color) {
         this.nickname = nickname;
@@ -95,5 +99,9 @@ public class Player {
     public void draw(HandCard card) {
         centerOfTable.remove(card);
         hand.add(card);
+    }
+
+    public void writeMessage(String content, List<Player> receivers){
+        messages.add(new Message(content, receivers));
     }
 }

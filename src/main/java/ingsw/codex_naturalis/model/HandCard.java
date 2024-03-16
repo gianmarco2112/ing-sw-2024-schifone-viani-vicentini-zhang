@@ -1,4 +1,4 @@
-package Model;
+package ingsw.codex_naturalis.model;
 
 public abstract class HandCard {
     private PlayerAreaCard front;

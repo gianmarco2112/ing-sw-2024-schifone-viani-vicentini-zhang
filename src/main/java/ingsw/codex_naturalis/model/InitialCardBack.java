@@ -1,20 +1,20 @@
-package Model;
+package ingsw.codex_naturalis.model;
 
 import java.util.*;
 
-public class GoldCardBack extends PlayerAreaCard{
+public class InitialCardBack extends PlayerAreaCard{
 
-    private Symbol resource;
+    private List<Symbol> resources;
 
 
-    public GoldCardBack(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, Symbol resource){
+    public InitialCardBack(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, List<Symbol> resources){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, points);
-        this.resource = resource;
+        this.resources = new ArrayList<>(resources);
     }
 
 
-    public Symbol getResource(){
-        return resource;
+    public List<Symbol> getResources(){
+        return resources;
     }
 
     @Override
@@ -32,7 +32,9 @@ public class GoldCardBack extends PlayerAreaCard{
         if(getBottomRightCorner().getSymbol() != Symbol.EMPTY){
             symbolsToAdd.add(getBottomRightCorner().getSymbol());
         }
-        symbolsToAdd.add(getResource());
+        for(Symbol sb : resources){
+            symbolsToAdd.add(sb);
+        }
         return symbolsToAdd;
     }
 }

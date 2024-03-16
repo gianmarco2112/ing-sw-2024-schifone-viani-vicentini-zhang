@@ -1,4 +1,4 @@
-package Model;
+package ingsw.codex_naturalis.model;
 
 public class Corner {
     private final Symbol symbol;

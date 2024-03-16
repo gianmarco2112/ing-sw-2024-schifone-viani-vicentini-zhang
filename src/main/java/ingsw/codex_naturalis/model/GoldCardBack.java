@@ -1,13 +1,13 @@
-package Model;
+package ingsw.codex_naturalis.model;
 
 import java.util.*;
 
-public class ResourceCardBack extends PlayerAreaCard{
+public class GoldCardBack extends PlayerAreaCard{
 
     private Symbol resource;
 
 
-    public ResourceCardBack(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, Symbol resource){
+    public GoldCardBack(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, Symbol resource){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, points);
         this.resource = resource;
     }

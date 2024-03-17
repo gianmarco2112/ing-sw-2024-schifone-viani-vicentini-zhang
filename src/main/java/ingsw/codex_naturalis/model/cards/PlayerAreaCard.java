@@ -41,7 +41,7 @@ public abstract class PlayerAreaCard {
 
     public Corner getBottomRightCorner() { return bottomRightCorner; }
 
-    public int getPoints(HashMap<int[], PlayerAreaCard> area, int x, int y, HashMap<Symbol, Integer> numOfSymbols){
+    public int calcPoints(HashMap<int[], PlayerAreaCard> area, int x, int y, HashMap<Symbol, Integer> numOfSymbols){
         return points;
     }
 

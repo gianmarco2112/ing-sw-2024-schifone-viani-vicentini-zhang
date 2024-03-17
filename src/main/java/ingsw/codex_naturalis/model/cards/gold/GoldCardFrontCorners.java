@@ -14,7 +14,7 @@ public class GoldCardFrontCorners extends GoldCardFront {
 
 
     @Override
-    public int getPoints(HashMap<int[], PlayerAreaCard> area, int x, int y, HashMap<Symbol, Integer> numOfSymbols){
+    public int calcPoints(HashMap<int[], PlayerAreaCard> area, int x, int y, HashMap<Symbol, Integer> numOfSymbols){
 
         int[] topLeft = {x-1, y+1};
         int[] topRight = {x+1, y+1};

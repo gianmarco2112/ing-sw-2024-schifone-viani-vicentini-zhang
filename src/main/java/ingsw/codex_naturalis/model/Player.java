@@ -94,7 +94,7 @@ public class Player {
                 numOfSymbols.replace(sb, numsb);
             }
 
-            int p = sideCard.getPoints(area, x, y, numOfSymbols);
+            int p = sideCard.calcPoints(area, x, y, numOfSymbols);
             points += p;
 
             hand.remove(card);

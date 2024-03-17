@@ -18,7 +18,7 @@ public class GoldCardFrontObject extends GoldCardFront {
 
 
     @Override
-    public int getPoints(HashMap<int[], PlayerAreaCard> area, int x, int y, HashMap<Symbol, Integer> numOfSymbols){
+    public int calcPoints(HashMap<int[], PlayerAreaCard> area, int x, int y, HashMap<Symbol, Integer> numOfSymbols){
         return getPoints() * numOfSymbols.get(object);
     }
 }

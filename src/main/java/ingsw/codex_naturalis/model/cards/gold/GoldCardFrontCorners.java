@@ -1,8 +1,12 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.cards.gold;
+
+import ingsw.codex_naturalis.model.Corner;
+import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.*;
 
-public class GoldCardFrontCorners extends GoldCardFront{
+public class GoldCardFrontCorners extends GoldCardFront {
 
     public GoldCardFrontCorners(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, HashMap<Symbol, Integer> requirements){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, points, requirements);
@@ -43,6 +47,6 @@ public class GoldCardFrontCorners extends GoldCardFront{
                 cornersCovered++;
             }
         }
-        return points * cornersCovered;
+        return getPoints() * cornersCovered;
     }
 }

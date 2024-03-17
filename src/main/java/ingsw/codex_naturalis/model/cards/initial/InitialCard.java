@@ -1,4 +1,6 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.cards.initial;
+
+import ingsw.codex_naturalis.model.cards.HandCard;
 
 public class InitialCard extends HandCard {
 

@@ -1,4 +1,7 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.cards;
+
+import ingsw.codex_naturalis.model.Corner;
+import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.*;
 
@@ -14,8 +17,11 @@ public abstract class PlayerAreaCard {
 
     private Corner bottomRightCorner;
 
-    int points;
+    private final int points;
 
+    public int getPoints() {
+        return points;
+    }
 
     public PlayerAreaCard(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points){
         this.kingdom = kingdom;

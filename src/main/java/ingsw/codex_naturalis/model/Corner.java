@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model;
 
+import ingsw.codex_naturalis.model.enumerations.Symbol;
+
 public class Corner {
     private final Symbol symbol;
     private Boolean covered;

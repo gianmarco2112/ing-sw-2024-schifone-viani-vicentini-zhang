@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.enumerations;
 
 public enum Color {
     RED,

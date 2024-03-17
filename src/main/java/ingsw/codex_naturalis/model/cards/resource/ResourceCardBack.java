@@ -1,20 +1,24 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.cards.resource;
+
+import ingsw.codex_naturalis.model.Corner;
+import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.*;
 
-public class InitialCardBack extends PlayerAreaCard{
+public class ResourceCardBack extends PlayerAreaCard {
 
-    private List<Symbol> resources;
+    private Symbol resource;
 
 
-    public InitialCardBack(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, List<Symbol> resources){
+    public ResourceCardBack(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, Symbol resource){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, points);
-        this.resources = new ArrayList<>(resources);
+        this.resource = resource;
     }
 
 
-    public List<Symbol> getResources(){
-        return resources;
+    public Symbol getResource(){
+        return resource;
     }
 
     @Override
@@ -32,9 +36,7 @@ public class InitialCardBack extends PlayerAreaCard{
         if(getBottomRightCorner().getSymbol() != Symbol.EMPTY){
             symbolsToAdd.add(getBottomRightCorner().getSymbol());
         }
-        for(Symbol sb : resources){
-            symbolsToAdd.add(sb);
-        }
+        symbolsToAdd.add(getResource());
         return symbolsToAdd;
     }
 }

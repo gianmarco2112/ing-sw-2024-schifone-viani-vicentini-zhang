@@ -1,5 +1,10 @@
 package ingsw.codex_naturalis.model;
 
+import ingsw.codex_naturalis.model.cards.HandCard;
+import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.enumerations.Color;
+import ingsw.codex_naturalis.model.enumerations.Symbol;
+
 import java.util.*;
 
 /**

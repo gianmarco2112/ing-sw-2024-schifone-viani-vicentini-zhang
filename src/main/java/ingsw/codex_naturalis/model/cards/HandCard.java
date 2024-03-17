@@ -1,4 +1,6 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.cards;
+
+import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
 
 public abstract class HandCard {
     private PlayerAreaCard front;

@@ -1,8 +1,12 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.cards.gold;
+
+import ingsw.codex_naturalis.model.Corner;
+import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.*;
 
-public class GoldCardBack extends PlayerAreaCard{
+public class GoldCardBack extends PlayerAreaCard {
 
     private Symbol resource;
 

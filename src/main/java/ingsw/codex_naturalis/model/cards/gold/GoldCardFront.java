@@ -1,8 +1,12 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.cards.gold;
+
+import ingsw.codex_naturalis.model.Corner;
+import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.*;
 
-public class GoldCardFront extends PlayerAreaCard{
+public class GoldCardFront extends PlayerAreaCard {
 
     private HashMap<Symbol, Integer> requirements;
 

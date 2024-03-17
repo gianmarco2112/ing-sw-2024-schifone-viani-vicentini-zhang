@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model;
 
+import ingsw.codex_naturalis.model.cards.HandCard;
+
 import java.util.*;
 
 public class CenterOfTable {

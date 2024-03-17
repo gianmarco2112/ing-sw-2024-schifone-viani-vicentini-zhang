@@ -1,4 +1,6 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.cards.resource;
+
+import ingsw.codex_naturalis.model.cards.HandCard;
 
 public class ResourceCard extends HandCard {
 

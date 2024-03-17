@@ -1,8 +1,12 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.cards.gold;
+
+import ingsw.codex_naturalis.model.Corner;
+import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.*;
 
-public class GoldCardFrontObject extends GoldCardFront{
+public class GoldCardFrontObject extends GoldCardFront {
 
     private Symbol object;
 
@@ -15,6 +19,6 @@ public class GoldCardFrontObject extends GoldCardFront{
 
     @Override
     public int getPoints(HashMap<int[], PlayerAreaCard> area, int x, int y, HashMap<Symbol, Integer> numOfSymbols){
-        return points * numOfSymbols.get(object);
+        return getPoints() * numOfSymbols.get(object);
     }
 }

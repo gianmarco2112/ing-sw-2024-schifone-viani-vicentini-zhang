@@ -24,62 +24,82 @@ public class LPatternStrategy implements PatternStrategy{
         for (int[] position : keyset){
             alreadyCountedPositions.put(position,false);
         }
-        boolean stop=false;
+        boolean stop;
         PlayerAreaCard c;
 
         if(card.getCentralSymbol()== Symbol.PLANT){
+
             for (int[] position : area.keySet()){
+                stop=false;
                 c = area.get(position);
                 if(c.getKingdom()!=Symbol.PLANT||alreadyCountedPositions.get(position)){
                     stop=true;
                 }
-                if(!stop){
-                    int [] bottomLeft = {position[0]-1, position[1]-1};
+
+                //scendo in fondo all'ultima carta utile che ho per contare il pattern
+
+                int x = position[0];
+                int y = position[1];
+                while(!stop){
+                    y = y-1;
+                    int [] under = {x, y};
+                    if (area.containsKey(under)){
+                        c = area.get(under);
+                        if(c.getKingdom()!=Symbol.PLANT||alreadyCountedPositions.get(position)){
+                            stop=true;
+                        }
+                    }
+                }
+
+                stop = false;
+                while(!stop){
+                    int [] center = {x, y};
+                    if (area.containsKey(center)){
+                        c = area.get(center);
+                        if(c.getKingdom()!=Symbol.INSECT||alreadyCountedPositions.get(position)){
+                            stop=true;
+                        }
+                    }
+
+                    int [] bottomLeft = {x-1, y};
                     if (area.containsKey(bottomLeft)){
                         c = area.get(bottomLeft);
                         if(c.getKingdom()!=Symbol.INSECT||alreadyCountedPositions.get(position)){
                             stop=true;
                         }
                     }
-                }
-                if(!stop){
-                    int [] above = {position[0], position[1]+1};
-                    if (area.containsKey(above)){
-                        c = area.get(above);
+                    y = y+1;
+                    int [] up = {x,y};
+                    if (area.containsKey(up)){
+                        c = area.get(up);
                         if(c.getKingdom()!=Symbol.PLANT||alreadyCountedPositions.get(position)){
                             stop=true;
                         }
                     }
-                }
-                if(!stop){
-                    totalExtraPoints=totalExtraPoints+ card.getPoints();
-                    int[]center = {position[0],position[1]};
-                    alreadyCountedPositions.put(center,true);
-                    int[]bottomRight = {position[0]+1, position[1]-1};
-                    alreadyCountedPositions.put(bottomRight,true);
-                    int[]topLeft = {position[0]+1, position[1]-1};
-                    alreadyCountedPositions.put(topLeft,true);
+                    y = y+1;
+                    if(!stop){
+                        totalExtraPoints= totalExtraPoints + card.getPoints();
+                    }
                 }
             }
         }
 
-        if(card.getCentralSymbol()==Symbol.ANIMAL){
+        if(card.getCentralSymbol()== Symbol.ANIMAL){
+
             for (int[] position : area.keySet()){
+                stop=false;
                 c = area.get(position);
                 if(c.getKingdom()!=Symbol.ANIMAL||alreadyCountedPositions.get(position)){
                     stop=true;
                 }
-                if(!stop){
-                    int [] topRight = {position[0]+1, position[1]+1};
-                    if (area.containsKey(topRight)){
-                        c = area.get(topRight);
-                        if(c.getKingdom()!=Symbol.FUNGI||alreadyCountedPositions.get(position)){
-                            stop=true;
-                        }
-                    }
-                }
-                if(!stop){
-                    int [] under = {position[0], position[1]-1};
+
+                //scendo in fondo all'ultima carta utile che ho per contare il pattern
+
+                int x = position[0];
+                int y = position[1];
+                while(!stop){
+                    y = y-1;
+                    int [] under = {x, y};
                     if (area.containsKey(under)){
                         c = area.get(under);
                         if(c.getKingdom()!=Symbol.ANIMAL||alreadyCountedPositions.get(position)){
@@ -87,35 +107,58 @@ public class LPatternStrategy implements PatternStrategy{
                         }
                     }
                 }
-                if(!stop){
-                    totalExtraPoints=totalExtraPoints+ card.getPoints();
-                    int[]center = {position[0],position[1]};
-                    alreadyCountedPositions.put(center,true);
-                    int[]bottomRight = {position[0]+1, position[1]-1};
-                    alreadyCountedPositions.put(bottomRight,true);
-                    int[]topLeft = {position[0]+1, position[1]-1};
-                    alreadyCountedPositions.put(topLeft,true);
-                }
-            }
-        }
 
-        if(card.getCentralSymbol()==Symbol.INSECT){
-            for (int[] position : area.keySet()){
-                c = area.get(position);
-                if(c.getKingdom()!=Symbol.INSECT||alreadyCountedPositions.get(position)){
-                    stop=true;
-                }
-                if(!stop){
-                    int [] topLeft = {position[0]-1, position[1]+1};
-                    if (area.containsKey(topLeft)){
-                        c = area.get(topLeft);
+                stop = false;
+                while(!stop){
+                    int [] center = {x, y};
+                    if (area.containsKey(center)){
+                        c = area.get(center);
                         if(c.getKingdom()!=Symbol.ANIMAL||alreadyCountedPositions.get(position)){
                             stop=true;
                         }
                     }
+
+                    y=y+1;
+                    int [] up = {x,y};
+                    if (area.containsKey(up)){
+                        c = area.get(up);
+                        if(c.getKingdom()!=Symbol.ANIMAL||alreadyCountedPositions.get(position)){
+                            stop=true;
+                        }
+                    }
+
+                    int [] topRight = {x+1, y};
+                    if (area.containsKey(topRight)){
+                        c = area.get(topRight);
+                        if(c.getKingdom()!=Symbol.FUNGI||alreadyCountedPositions.get(position)){
+                            stop=true;
+                        }
+                    }
+                    y = y+1;
+
+                    if(!stop){
+                        totalExtraPoints= totalExtraPoints + card.getPoints();
+                    }
                 }
-                if(!stop){
-                    int [] under = {position[0], position[1]-1};
+            }
+        }
+
+        if(card.getCentralSymbol()== Symbol.INSECT){
+
+            for (int[] position : area.keySet()){
+                stop=false;
+                c = area.get(position);
+                if(c.getKingdom()!=Symbol.INSECT||alreadyCountedPositions.get(position)){
+                    stop=true;
+                }
+
+                //scendo in fondo all'ultima carta utile che ho per contare il pattern
+
+                int x = position[0];
+                int y = position[1];
+                while(!stop){
+                    y = y-1;
+                    int [] under = {x, y};
                     if (area.containsKey(under)){
                         c = area.get(under);
                         if(c.getKingdom()!=Symbol.INSECT||alreadyCountedPositions.get(position)){
@@ -123,50 +166,96 @@ public class LPatternStrategy implements PatternStrategy{
                         }
                     }
                 }
-                if(!stop){
-                    totalExtraPoints=totalExtraPoints+ card.getPoints();
-                    int[]center = {position[0],position[1]};
-                    alreadyCountedPositions.put(center,true);
-                    int[]bottomRight = {position[0]+1, position[1]-1};
-                    alreadyCountedPositions.put(bottomRight,true);
-                    int[]topLeft = {position[0]+1, position[1]-1};
-                    alreadyCountedPositions.put(topLeft,true);
+
+                stop = false;
+                while(!stop){
+                    int [] center = {x, y};
+                    if (area.containsKey(center)){
+                        c = area.get(center);
+                        if(c.getKingdom()!=Symbol.INSECT||alreadyCountedPositions.get(position)){
+                            stop=true;
+                        }
+                    }
+
+                    y=y+1;
+                    int [] up = {x,y};
+                    if (area.containsKey(up)){
+                        c = area.get(up);
+                        if(c.getKingdom()!=Symbol.INSECT||alreadyCountedPositions.get(position)){
+                            stop=true;
+                        }
+                    }
+
+                    int [] topLeft = {x-1, y};
+                    if (area.containsKey(topLeft)){
+                        c = area.get(topLeft);
+                        if(c.getKingdom()!=Symbol.ANIMAL||alreadyCountedPositions.get(position)){
+                            stop=true;
+                        }
+                    }
+                    y = y+1;
+
+                    if(!stop){
+                        totalExtraPoints= totalExtraPoints + card.getPoints();
+                    }
                 }
             }
         }
 
-        if(card.getCentralSymbol()==Symbol.FUNGI){
+        if(card.getCentralSymbol()== Symbol.FUNGI){
+
             for (int[] position : area.keySet()){
+                stop=false;
                 c = area.get(position);
                 if(c.getKingdom()!=Symbol.FUNGI||alreadyCountedPositions.get(position)){
                     stop=true;
                 }
-                if(!stop){
-                    int [] bottomRight = {position[0]+1, position[1]-1};
+
+                //scendo in fondo all'ultima carta utile che ho per contare il pattern
+
+                int x = position[0];
+                int y = position[1];
+                while(!stop){
+                    y = y-1;
+                    int [] under = {x, y};
+                    if (area.containsKey(under)){
+                        c = area.get(under);
+                        if(c.getKingdom()!=Symbol.FUNGI||alreadyCountedPositions.get(position)){
+                            stop=true;
+                        }
+                    }
+                }
+
+                stop = false;
+                while(!stop){
+                    int [] center = {x, y};
+                    if (area.containsKey(center)){
+                        c = area.get(center);
+                        if(c.getKingdom()!=Symbol.FUNGI||alreadyCountedPositions.get(position)){
+                            stop=true;
+                        }
+                    }
+
+                    int [] bottomRight = {x+1, y};
                     if (area.containsKey(bottomRight)){
                         c = area.get(bottomRight);
                         if(c.getKingdom()!=Symbol.PLANT||alreadyCountedPositions.get(position)){
                             stop=true;
                         }
                     }
-                }
-                if(!stop){
-                    int [] above = {position[0], position[1]+1};
-                    if (area.containsKey(above)){
-                        c = area.get(above);
+                    y = y+1;
+                    int [] up = {x,y};
+                    if (area.containsKey(up)){
+                        c = area.get(up);
                         if(c.getKingdom()!=Symbol.FUNGI||alreadyCountedPositions.get(position)){
                             stop=true;
                         }
                     }
-                }
-                if(!stop){
-                    totalExtraPoints=totalExtraPoints+ card.getPoints();
-                    int[]center = {position[0],position[1]};
-                    alreadyCountedPositions.put(center,true);
-                    int[]bottomRight = {position[0]+1, position[1]-1};
-                    alreadyCountedPositions.put(bottomRight,true);
-                    int[]topLeft = {position[0]+1, position[1]-1};
-                    alreadyCountedPositions.put(topLeft,true);
+                    y = y+1;
+
+                    if(!stop){
+                        totalExtraPoints= totalExtraPoints + card.getPoints();
+                    }
                 }
             }
         }

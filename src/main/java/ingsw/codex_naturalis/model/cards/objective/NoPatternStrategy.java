@@ -27,7 +27,7 @@ public class NoPatternStrategy implements PatternStrategy{
 
             numOfSymbolOnArea = numOfSymbols.get(symbolRequired);
 
-            totalExtraPoints = (numOfSymbolOnArea/numOfSymbolRequired)*2;
+            totalExtraPoints = (numOfSymbolOnArea/numOfSymbolRequired) * card.getPoints();
         }else{
             int min=Integer.MAX_VALUE;
 
@@ -38,7 +38,7 @@ public class NoPatternStrategy implements PatternStrategy{
                     }
                 }
             }
-            totalExtraPoints=min;
+            totalExtraPoints=min * card.getPoints();
         }
         return totalExtraPoints;
     }

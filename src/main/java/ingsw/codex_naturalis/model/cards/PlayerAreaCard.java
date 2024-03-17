@@ -187,4 +187,8 @@ public abstract class PlayerAreaCard {
         }
         return symbolsToAdd;
     }
+
+    public Symbol getKingdom() {
+        return kingdom;
+    }
 }

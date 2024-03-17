@@ -4,59 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00c10909-a17f-4240-9add-23469b1839d9" name="Changes" comment="First Commit">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/initial/InitialCardFront.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/objective/DiagonalPatternStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/objective/LPatternStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/objective/NoPatternStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/objective/ObjectiveCard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/objective/PatternStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/resource/ResourceCardFront.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/CenterOfTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/CenterOfTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/enumerations/Color.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Corner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Corner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/GoldCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/GoldCardBack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardBack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/GoldCardFront.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardFront.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/GoldCardFrontCorners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardFrontCorners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/GoldCardFrontObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardFrontObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/HandCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/HandCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/InitialCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/initial/InitialCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/InitialCardBack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/initial/InitialCardBack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/InitialCardFront.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/ObjectiveCard.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/PlayerAreaCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/PlayerAreaCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/ResourceCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/resource/ResourceCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/ResourceCardBack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/resource/ResourceCardBack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/ResourceCardFront.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Symbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/enumerations/Symbol.java" afterDir="false" />
-    </list>
+    <list default="true" id="00c10909-a17f-4240-9add-23469b1839d9" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
     </option>
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 1
-}</component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
   <component name="ProjectId" id="2dagquGh8UpazM8H1cVwX38akEN" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -67,33 +30,15 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/andreazhang/Desktop/Progetto Ingegneria del Software/Prova finale IDS/ing-sw-2024-schifone-viani-vicentini-zhang/src/main/java/ingsw/codex_naturalis/model/cards/ObjectiveCard",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
-  },
-  "keyToStringList": {
-    "ChangesTree.GroupingKeys": [
-      "module"
-    ]
+    "kotlin-language-version-configured": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/ObjectiveCard" />
-    </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="model" />
-      <recent name="Model" />
-    </key>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-78a6f59c" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -103,48 +48,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1710251800740</updated>
-      <workItem from="1710253077958" duration="44000" />
-      <workItem from="1710417517383" duration="102000" />
-      <workItem from="1710523291780" duration="283000" />
-      <workItem from="1710611492975" duration="733000" />
-      <workItem from="1710612237531" duration="956000" />
-      <workItem from="1710628014074" duration="5857000" />
     </task>
-    <task id="LOCAL-00001" summary="First Commit">
-      <option name="closed" value="true" />
-      <created>1710252368242</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1710252368242</updated>
-    </task>
-    <task id="LOCAL-00002" summary="First Commit">
-      <option name="closed" value="true" />
-      <created>1710613032425</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1710613032425</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="First Commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="First Commit" />
   </component>
 </project>

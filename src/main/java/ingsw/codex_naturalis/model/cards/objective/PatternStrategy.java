@@ -11,10 +11,7 @@ import java.util.HashMap;
 public interface PatternStrategy {
     /**
      * This method calculates the total extra points won by the player
-     * @param area PlayerArea
-     * @param card in order to obtain the information of the card
-     * @param numOfSymbols helps us to count the number of Symbol on the area
      * @return total extra points
      */
-    int run(HashMap<int[], PlayerAreaCard> area, ObjectiveCard card, HashMap<Symbol, Integer> numOfSymbols);
+    int run();
 }

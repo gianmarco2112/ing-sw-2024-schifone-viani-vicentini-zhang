@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.model.cards.gold;
 
 import ingsw.codex_naturalis.model.cards.HandCard;
+
 /**
  * GoldCard's class
  * This kind of card is, together with the ResourceCard, the main kind of PlayableCard in the game
@@ -20,6 +21,4 @@ public class GoldCard extends HandCard {
     public GoldCard(GoldCardFront front, GoldCardBack back){
         super(front, back);
     }
-
-
 }

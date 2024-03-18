@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.model;
 
 import ingsw.codex_naturalis.model.cards.HandCard;
+import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 
 import java.util.*;
 

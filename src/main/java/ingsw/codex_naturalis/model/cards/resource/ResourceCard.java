@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.model.cards.resource;
 
 import ingsw.codex_naturalis.model.cards.HandCard;
+
 /**
  * ResourceCard's class
  * This kind of card is, together with the GoldCard, the main kind of PlayableCard in the game

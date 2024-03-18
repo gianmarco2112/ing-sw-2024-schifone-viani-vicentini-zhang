@@ -4,16 +4,48 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00c10909-a17f-4240-9add-23469b1839d9" name="Changes" comment="Comments for the enumerations &quot;Color&quot;, &quot;Symbol&quot; and for the abstract class &quot;PlayerAreaCard&quot; added">
+    <list default="true" id="00c10909-a17f-4240-9add-23469b1839d9" name="Changes" comment="Updated README.md&#10;Added Model Package&#10;Created Deck.java">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/PlayerAreaCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/PlayerAreaCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/enumerations/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/enumerations/Color.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/enumerations/Symbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/enumerations/Symbol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/HandCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/HandCard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/initial/InitialCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/initial/InitialCard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;leonardovicentini&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="d8e999b3-7d1f-4ed3-9756-68d58c8a772e" />
+        <option name="url" value="https://github.com/leonardovicentini/ing-sw-2024-schifone-viani-vicentini-zhang.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/pom.xml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/HelloApplication.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/HelloController.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/resources/ingsw/codex_naturalis/hello-view.fxml" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -31,6 +63,11 @@
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "node.js.selected.package.tslint": "(autodetect)"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "module"
+    ]
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -49,10 +86,37 @@
       <option name="presentableId" value="Default" />
       <updated>1710251800740</updated>
     </task>
+    <task id="LOCAL-00001" summary="First Commit">
+      <option name="closed" value="true" />
+      <created>1710252368242</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1710252368242</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added README.md">
+      <option name="closed" value="true" />
+      <created>1710252820605</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1710252820605</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Updated README.md&#10;Added Model Package&#10;Created Deck.java">
+      <option name="closed" value="true" />
+      <created>1710606847875</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1710606847875</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Comments for the enumerations &quot;Color&quot;, &quot;Symbol&quot; and for the abstract class &quot;PlayerAreaCard&quot; added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Comments for the enumerations &quot;Color&quot;, &quot;Symbol&quot; and for the abstract class &quot;PlayerAreaCard&quot; added" />
+    <MESSAGE value="First Commit" />
+    <MESSAGE value="Added README.md" />
+    <MESSAGE value="Updated README.md&#10;Added Model Package&#10;Created Deck.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated README.md&#10;Added Model Package&#10;Created Deck.java" />
   </component>
 </project>

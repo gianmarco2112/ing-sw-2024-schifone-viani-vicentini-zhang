@@ -3,8 +3,6 @@ package ingsw.codex_naturalis.model.cards.objective;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
-import java.util.HashMap;
-
 public class NoPatternConcreteStrategy implements PatternStrategy{
     private SymbolObjectiveCard symbolObjectiveCard;
     private PlayerArea area;

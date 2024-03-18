@@ -1,10 +1,5 @@
 package ingsw.codex_naturalis.model.cards.objective;
 
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
-import ingsw.codex_naturalis.model.enumerations.Symbol;
-
-import java.util.HashMap;
-
 /**
  * This interface is implemented by the three concrete algorithms: LPatternStrategy, NoPatterStrategu and DiagonalPatternStrategy
  */

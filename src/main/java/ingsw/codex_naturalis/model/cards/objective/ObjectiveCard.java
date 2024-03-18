@@ -1,12 +1,5 @@
 package ingsw.codex_naturalis.model.cards.objective;
 
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
-import ingsw.codex_naturalis.model.enumerations.Symbol;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 /**
  * ObjectiveCard's class
  * An objective card gives points for each objective achieved

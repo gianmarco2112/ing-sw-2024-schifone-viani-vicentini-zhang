@@ -1,7 +1,6 @@
 package ingsw.codex_naturalis.model.cards.objective;
 
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.HashMap;

@@ -25,15 +25,7 @@ public class Player {
      */
     private List<HandCard> hand;
 
-    /**
-     * This HashMap represents the player area with all the cards he has placed.
-     * The key represents the coordinates, the value the side of the card played.
-     */
-    private HashMap<int[], PlayerAreaCard> area;
-
-    private HashMap<Symbol, Integer> numOfSymbols;
-
-    private int points;
+    private PlayerArea playerArea;
 
     private List<Message> messages;
 
@@ -56,7 +48,6 @@ public class Player {
             card.showBack();
         } else {
             card.showFront();
-            ;
         }
     }
 
@@ -64,8 +55,8 @@ public class Player {
      * This method is called when the player wants to play a card from his hand.
      * Operates on the front or back of the card, based on what side the card is currently showing.
      * Checks that the card is actually playable in that spot.
-     * Covers the corners and eventually decrease the number of symbols of the player.
-     * Increases the number of symbols and the points (can be 0) of the player
+     * Covers the corners and eventually decreases the number of symbols of the player.
+     * Increases the number of symbols and the points, if necessary, of the player
      * @param card
      * @param x
      * @param y
@@ -77,26 +68,12 @@ public class Player {
         } else {
             sideCard = card.getBack();
         }
-        if (sideCard.isPlayable(area, x, y, numOfSymbols)) {
-            area.put(new int[]{x, y}, sideCard);
-
-            List<Symbol> symbolsToRemove = sideCard.coverCorners(area, x, y);
-            for (Symbol sb : symbolsToRemove) {
-                Integer numsb = numOfSymbols.get(sb);
-                numsb--;
-                numOfSymbols.replace(sb, numsb);
-            }
-
-            List<Symbol> symbolsToAdd = sideCard.getSymbols();
-            for (Symbol sb : symbolsToAdd) {
-                Integer numsb = numOfSymbols.get(sb);
-                numsb++;
-                numOfSymbols.replace(sb, numsb);
-            }
-
-            int p = sideCard.calcPoints(area, x, y, numOfSymbols);
-            points += p;
-
+        if (sideCard.isPlayable(x,y)) {
+            playerArea.setCardOnCoordinates(sideCard, x, y);
+            sideCard.played(playerArea, x, y);
+            sideCard.coverCorners(x,y);
+            sideCard.getSymbols();
+            sideCard.calcPoints();
             hand.remove(card);
         }
     }
@@ -104,6 +81,7 @@ public class Player {
     public void draw(HandCard card) {
         centerOfTable.remove(card);
         hand.add(card);
+        card.drawn(playerArea);
     }
 
     public void writeMessage(String content, List<Player> receivers){

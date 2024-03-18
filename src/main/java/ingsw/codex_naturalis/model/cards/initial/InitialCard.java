@@ -10,7 +10,11 @@ import ingsw.codex_naturalis.model.cards.HandCard;
  * and GoldCards. After the first turn, the player can't take anymore the InitialCards.
  */
 public class InitialCard extends HandCard {
-
+    /**
+     * Constructor
+     * @param front represents the front side of the card
+     * @param back represents the back side of the card
+     */
     public InitialCard(InitialCardFront front, InitialCardBack back){
         super(front, back);
     }

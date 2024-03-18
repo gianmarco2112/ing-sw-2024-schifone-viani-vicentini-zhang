@@ -6,7 +6,8 @@ import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
  * HandCard's class
  * This class represents one single card that a player could have in his hand at any game's turn.
  * A card have a front and a back and player can see both in order to choose which side to play.
- * Once the player has chosen a side and plays it, it can't change it anymore.
+ * ( Once the player has chosen a side and plays it, it can't change it anymore.)
+ * -> DA VERIFICARE COME IMPLEMENTARE QUESTA PARTE TRA PARENTESI
  */
 public abstract class HandCard {
     private PlayerAreaCard front;

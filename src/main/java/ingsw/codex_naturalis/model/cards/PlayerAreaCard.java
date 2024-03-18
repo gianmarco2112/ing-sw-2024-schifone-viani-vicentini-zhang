@@ -31,9 +31,23 @@ public abstract class PlayerAreaCard {
 
     private final int points;
 
+    /**
+     * This method returns the points given to the Player by of the card when placed into the PlayerArea
+     */
+
     public int getPoints() {
         return points;
     }
+
+    /**
+     * Constructor
+     * @param kingdom represents the color of the card
+     * @param topLeftCorner of the card
+     * @param topRightCorner of the card
+     * @param bottomRightCorner of the card
+     * @param bottomLeftCorner of the card
+     * @param points given by the card to the Player when placed into the PlayerArea
+     */
 
     public PlayerAreaCard(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points){
         this.kingdom = kingdom;
@@ -44,15 +58,40 @@ public abstract class PlayerAreaCard {
         this.points = points;
     }
 
+    /**
+     * This method returns the TopLeftCorner of the card
+     */
 
     public Corner getTopLeftCorner(){ return topLeftCorner; }
 
+    /**
+     * This method returns the TopRightCorner
+     */
+
     public Corner getTopRightCorner() { return topRightCorner; }
+
+    /**
+     * This method returns the BottomLeftCorner of the card
+     */
 
     public Corner getBottomLeftCorner() { return bottomLeftCorner; }
 
+    /**
+     * This method returns the BottomRightCorner of the card
+     */
+
     public Corner getBottomRightCorner() { return bottomRightCorner; }
 
+    /**
+     * This method calculate the number of points given by the card,
+     * depending on where it is placed into the PlayerArea
+     * @param area  (the PlayerAreaCard where to place the card)
+     * @param x (cartesian coordinate x of the position where the player wants to place the card)
+     * @param y (cartesian coordinate y of the position where the player wants to place the card)
+     * @param numOfSymbols (HashMap that contains the total number of Resources and Objects that
+     *                     the Player has into his PlayerArea)
+     * @return points given by the card
+     * */
     public int calcPoints(HashMap<int[], PlayerAreaCard> area, int x, int y, HashMap<Symbol, Integer> numOfSymbols){
         return points;
     }
@@ -63,9 +102,9 @@ public abstract class PlayerAreaCard {
      * It checks that there isn't a card already placed in those coordinates and that there's at least
      * one card on which the pointed card will be placed.
      * It also checks that every corner the PlayableAreaCard is going to cover, is a visible corner.
-     * @param area
-     * @param x
-     * @param y
+     * @param area (the PlayerAreaCard where to place the card)
+     * @param x (cartesian coordinate x of the position where the player wants to place the card)
+     * @param y (cartesian coordinate y of the position where the player wants to place the card)
      * @return true (if the card is playable in that position),
      * false (if the card isn't playable in that position)
      */
@@ -129,9 +168,9 @@ public abstract class PlayerAreaCard {
      * This method is called when a player wants to play a card into his PlayerArea.
      * It changes the attributes of the corners of the card is going to cover in order to
      * make them actually covered and to remove the symbols from the symbol count of the player.
-     * @param area
-     * @param x
-     * @param y
+     * @param area (the PlayerAreaCard where to place the card)
+     * @param x (cartesian coordinate x of the position where the player wants to place the card)
+     * @param y (cartesian coordinate y of the position where the player wants to place the card)
      */
     public List<Symbol> coverCorners(HashMap<int[], PlayerAreaCard> area, int x, int y){
 

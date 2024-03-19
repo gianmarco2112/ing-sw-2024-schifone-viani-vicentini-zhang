@@ -4,9 +4,20 @@ import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 public class NoPatternConcreteStrategy implements PatternStrategy{
+    /**
+     * Attribute SymbolObjectiveCard contains the reference to the specific ObjectiveCard that count symbols for extra points
+     */
     private SymbolObjectiveCard symbolObjectiveCard;
+    /**
+     * Attribute PlayerArea: the algorithm access the Player's area and count Symbols required for extra points
+     */
     private PlayerArea area;
 
+    /**
+     * Constructor
+     * @param c SymbolObjectCard
+     * @param a PlayerArea
+     */
     public NoPatternConcreteStrategy(SymbolObjectiveCard c, PlayerArea a){
         symbolObjectiveCard=c;
         area=a;

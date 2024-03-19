@@ -1,0 +1,20 @@
+[
+  {
+    "front": {
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points": 0
+    },
+    "back": {
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "ANIMAL"
+    }
+  }
+]

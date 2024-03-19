@@ -1,5 +1,8 @@
 package ingsw.codex_naturalis.model.cards.resource;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
@@ -30,7 +33,14 @@ public class ResourceCardFront extends PlayerAreaCard {
      * @param bottomRightCorner (could contain Resources or Objects)
      * @param points (given by the card when placed in the PlayerArea)
      */
-    public ResourceCardFront(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points){
+    @JsonCreator
+    public ResourceCardFront(
+            @JsonProperty("kingdom") Symbol kingdom,
+            @JsonProperty("topLeftCorner") Corner topLeftCorner,
+            @JsonProperty("topRightCorner") Corner topRightCorner,
+            @JsonProperty("bottomLeftCorner") Corner bottomLeftCorner,
+            @JsonProperty("bottomRightCorner") Corner bottomRightCorner,
+            @JsonProperty("points") int points){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
         this.points = points;
     }

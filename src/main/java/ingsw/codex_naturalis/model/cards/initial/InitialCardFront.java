@@ -10,18 +10,20 @@ import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable.Simpl
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 /**
- * The front side of the initial card
+ * Front side of the InitialCard
+ * Each card contains all the 4 Resources (one per corner)
+ * There isn't any central resource
  */
 public class InitialCardFront extends PlayerAreaCard {
 
     /**
      * Constructor
-     * @param kingdom Kingdom empty
-     * @param topLeftCorner Top left corner
-     * @param topRightCorner Top right corner
-     * @param bottomLeftCorner Bottom left corner
-     * @param bottomRightCorner Bottom right corner
-     */
+     * @param kingdom (this attribute is inherited from PlayerAreaCard but not used)
+     * @param topLeftCorner (could contain Resources or Objects)
+     * @param topRightCorner (could contain Resources or Objects)
+     * @param bottomLeftCorner (could contain Resources or Objects)
+     * @param bottomRightCorner (could contain Resources or Objects)
+     * */
     public InitialCardFront(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
     }

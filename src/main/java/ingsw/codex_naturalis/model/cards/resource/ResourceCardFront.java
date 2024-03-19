@@ -10,23 +10,25 @@ import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable.Simpl
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 /**
- * The front side of the resource card
+ * Front side of the ResourceCard
+ * Each card could contain Resources or Objects in the Corners
+ * There isn't any central resource
  */
 public class ResourceCardFront extends PlayerAreaCard {
 
     /**
-     * The points
+     * The points given to the Player by the card when placed into the PlayerArea
      */
     private final int points;
 
     /**
      * Constructor
-     * @param kingdom Kingdom
-     * @param topLeftCorner Top left corner
-     * @param topRightCorner Top right corner
-     * @param bottomLeftCorner Bottom left corner
-     * @param bottomRightCorner Bottom right corner
-     * @param points Points
+     * @param kingdom (represents the color of the card)
+     * @param topLeftCorner (could contain Resources or Objects)
+     * @param topRightCorner (could contain Resources or Objects)
+     * @param bottomLeftCorner (could contain Resources or Objects)
+     * @param bottomRightCorner (could contain Resources or Objects)
+     * @param points (given by the card when placed in the PlayerArea)
      */
     public ResourceCardFront(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);

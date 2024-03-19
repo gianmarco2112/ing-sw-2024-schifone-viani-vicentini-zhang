@@ -11,33 +11,35 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 /**
  * The back side of the gold card
+ * Each card contains 1 Resource in the center and has all the 4 corners empty
  */
 public class GoldCardBack extends PlayerAreaCard {
 
     /**
-     * Permanent resource
+     * Permanent resource (in the centre of the card)
      */
     private Symbol resource;
 
 
     /**
      * Constructor
-     * @param kingdom Kingdom
-     * @param topLeftCorner Top left corner
-     * @param topRightCorner Top right corner
-     * @param bottomLeftCorner Bottom left corner
-     * @param bottomRightCorner Bottom right corner
-     * @param resource Permanet resource
+     * @param kingdom (represents the color of the card)
+     * @param topLeftCorner (it would be empty)
+     * @param topRightCorner (it would be empty)
+     * @param bottomLeftCorner (it would be empty)
+     * @param bottomRightCorner (it would be empty)
+     * @param resource (central resource of the card)
      */
     public GoldCardBack(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, Symbol resource){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
         this.resource = resource;
     }
 
-
     /**
      * Permanent resource getter
-     * @return
+     * This method returns the central Resource of the card, which is the only Resource
+     * present in the card (all the corners are empty)
+     * @return resource
      */
     public Symbol getResource(){
         return resource;

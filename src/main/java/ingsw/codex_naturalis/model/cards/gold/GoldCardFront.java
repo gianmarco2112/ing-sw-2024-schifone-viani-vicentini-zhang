@@ -12,7 +12,11 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
 import java.util.*;
 
 /**
- * The simple front side of the gold card
+ * Front side of the GoldCard
+ * Each card could contain Resources or Objects in the Corners
+ * There isn't any central resource
+ * Each GoldCard has a list of Symbols that the Player has to
+ * have into his PlayerArea in order to be able to place the card
  */
 public class GoldCardFront extends PlayerAreaCard {
 
@@ -27,13 +31,16 @@ public class GoldCardFront extends PlayerAreaCard {
 
     /**
      * Constructor
-     * @param kingdom Kingdom
-     * @param topLeftCorner Top left corner
-     * @param topRightCorner Top right corner
-     * @param bottomLeftCorner Bottom left corner
-     * @param bottomRightCorner Bottom right corner
-     * @param points Points
-     * @param requirements Requirements
+     * @param kingdom (represents the color of the card)
+     * @param topLeftCorner (could contain Resources or Objects)
+     * @param topRightCorner (could contain Resources or Objects)
+     * @param bottomLeftCorner (could contain Resources or Objects)
+     * @param bottomRightCorner (could contain Resources or Objects)
+     * @param points (given by the card when placed in the PlayerArea)
+     * @param requirements (HashMap that contains all the Resources that
+     *                     the Player needs to already have into its PlayerArea
+     *                     in order to be able to place the GoldCard into the
+     *                     PlayerArea)
      */
     public GoldCardFront(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, HashMap<Symbol, Integer> requirements){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);

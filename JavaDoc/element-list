@@ -1,0 +1,13 @@
+module:ingsw.codex_naturalis
+ingsw.codex_naturalis
+ingsw.codex_naturalis.model
+ingsw.codex_naturalis.model.cards
+ingsw.codex_naturalis.model.cards.gold
+ingsw.codex_naturalis.model.cards.initial
+ingsw.codex_naturalis.model.cards.objective
+ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints
+ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners
+ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols
+ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable
+ingsw.codex_naturalis.model.cards.resource
+ingsw.codex_naturalis.model.enumerations

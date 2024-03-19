@@ -23,11 +23,26 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
  */
 public abstract class PlayerAreaCard {
 
+    /**
+     * Kingdom
+     */
     private Symbol kingdom;
 
+    /**
+     * Top left corner
+     */
     private Corner topLeftCorner;
+    /**
+     * Top right corenr
+     */
     private Corner topRightCorner;
+    /**
+     * Bottom left corner
+     */
     private Corner bottomLeftCorner;
+    /**
+     * Bottom right corner
+     */
     private Corner bottomRightCorner;
 
 
@@ -54,6 +69,10 @@ public abstract class PlayerAreaCard {
     }
 
 
+    /**
+     *
+     * @return
+     */
     public Symbol getKingdom() { return kingdom; }
     public Corner getTopLeftCorner(){ return topLeftCorner; }
     public Corner getTopRightCorner() { return topRightCorner; }

@@ -18,6 +18,11 @@ import ingsw.codex_naturalis.model.cards.HandCard;
  */
 public class GoldCard extends HandCard {
 
+    /**
+     * Constructor
+     * @param front Front side of the card
+     * @param back Back side of the card
+     */
     public GoldCard(GoldCardFront front, GoldCardBack back){
         super(front, back);
     }

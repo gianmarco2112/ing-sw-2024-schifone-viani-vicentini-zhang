@@ -4,39 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00c10909-a17f-4240-9add-23469b1839d9" name="Changes" comment="Comments for the class &quot;InitialCard&quot; and &quot;HandCard&quot; added">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/PlayerArea.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/CalcPointsStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/CornerCalcPointsStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/CornerResourcesGetSymbolsStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/CoverCornersStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/GetSymbolsStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/IsPlayableStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/NoCalcPointsStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/ObjectCalcPointsStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/PermanentResourceGetSymbolsStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/PermanentResourcesGetSymbolsStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/RequirementsIsPlayableStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/SimpleCalcPointsStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/SimpleCoverCornersStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/playerareacardstrategy/SimpleIsPlayableStrategy.java" afterDir="false" />
+    <list default="true" id="00c10909-a17f-4240-9add-23469b1839d9" name="Changes" comment="Strategy pattern for cards&#10;PlayerArea added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/CenterOfTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/CenterOfTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Corner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Corner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/HandCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/HandCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/PlayerAreaCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/PlayerAreaCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardBack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardBack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardFront.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardFront.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardFrontCorners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardFrontCorners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardFrontObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/gold/GoldCardFrontObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/initial/InitialCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/initial/InitialCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/initial/InitialCardBack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/initial/InitialCardBack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/initial/InitialCardFront.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/initial/InitialCardFront.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/resource/ResourceCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/resource/ResourceCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/resource/ResourceCardBack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/resource/ResourceCardBack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/resource/ResourceCardFront.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ingsw/codex_naturalis/model/cards/resource/ResourceCardFront.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,20 +57,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;ChangesTree.GroupingKeys&quot;: [
-      &quot;module&quot;
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "module"
     ]
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -117,6 +90,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1710251800740</updated>
+      <workItem from="1710848708198" duration="484000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <option name="closed" value="true" />
@@ -150,8 +124,19 @@
       <option name="project" value="LOCAL" />
       <updated>1710776178161</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Strategy pattern for cards&#10;PlayerArea added">
+      <option name="closed" value="true" />
+      <created>1710794160098</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1710794160098</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -169,6 +154,7 @@
     <MESSAGE value="Added README.md" />
     <MESSAGE value="Updated README.md&#10;Added Model Package&#10;Created Deck.java" />
     <MESSAGE value="Comments for the class &quot;InitialCard&quot; and &quot;HandCard&quot; added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Comments for the class &quot;InitialCard&quot; and &quot;HandCard&quot; added" />
+    <MESSAGE value="Strategy pattern for cards&#10;PlayerArea added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Strategy pattern for cards&#10;PlayerArea added" />
   </component>
 </project>

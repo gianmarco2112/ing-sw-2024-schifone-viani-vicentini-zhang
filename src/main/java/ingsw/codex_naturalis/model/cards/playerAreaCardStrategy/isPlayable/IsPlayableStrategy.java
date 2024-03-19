@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.model.cards.playerareacardstrategy;
+package ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable;
 
 public interface IsPlayableStrategy {
     public Boolean run(int x, int y);

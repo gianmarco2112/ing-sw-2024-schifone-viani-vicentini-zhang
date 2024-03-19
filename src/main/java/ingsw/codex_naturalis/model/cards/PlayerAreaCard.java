@@ -1,15 +1,13 @@
 package ingsw.codex_naturalis.model.cards;
 
 import ingsw.codex_naturalis.model.Corner;
-import ingsw.codex_naturalis.model.Player;
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.CalcPointsStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.CoverCornersStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.GetSymbolsStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.IsPlayableStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.CalcPointsStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners.CoverCornersStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols.GetSymbolsStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable.IsPlayableStrategy;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
-import java.util.*;
 /**
  * PlayerAreaCard's class
  * This is an abstract class that represents the common methods and attributes of the cards

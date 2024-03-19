@@ -3,10 +3,10 @@ package ingsw.codex_naturalis.model.cards.gold;
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.CornerResourcesGetSymbolsStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.RequirementsIsPlayableStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.SimpleCalcPointsStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.SimpleCoverCornersStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols.CornerResourcesGetSymbolsStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable.RequirementsIsPlayableStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.SimpleCalcPointsStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners.SimpleCoverCornersStrategy;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.*;

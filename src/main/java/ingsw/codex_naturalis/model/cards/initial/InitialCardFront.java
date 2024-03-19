@@ -3,10 +3,10 @@ package ingsw.codex_naturalis.model.cards.initial;
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.CornerResourcesGetSymbolsStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.NoCalcPointsStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.SimpleCoverCornersStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.SimpleIsPlayableStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols.CornerResourcesGetSymbolsStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.NoCalcPointsStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners.SimpleCoverCornersStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable.SimpleIsPlayableStrategy;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 public class InitialCardFront extends PlayerAreaCard {

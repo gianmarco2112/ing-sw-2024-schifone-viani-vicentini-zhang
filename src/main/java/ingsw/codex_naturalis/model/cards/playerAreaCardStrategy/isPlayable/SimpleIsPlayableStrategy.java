@@ -1,8 +1,5 @@
-package ingsw.codex_naturalis.model.cards.playerareacardstrategy;
+package ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable;
 
-import java.util.*;
-
-import ingsw.codex_naturalis.model.Player;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.*;
 

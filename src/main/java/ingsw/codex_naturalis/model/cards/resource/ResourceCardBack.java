@@ -1,16 +1,13 @@
 package ingsw.codex_naturalis.model.cards.resource;
 
 import ingsw.codex_naturalis.model.Corner;
-import ingsw.codex_naturalis.model.Player;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.NoCalcPointsStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.PermanentResourceGetSymbolsStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.SimpleCoverCornersStrategy;
-import ingsw.codex_naturalis.model.cards.playerareacardstrategy.SimpleIsPlayableStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.NoCalcPointsStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols.PermanentResourceGetSymbolsStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners.SimpleCoverCornersStrategy;
+import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable.SimpleIsPlayableStrategy;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
-
-import java.util.*;
 
 public class ResourceCardBack extends PlayerAreaCard {
 

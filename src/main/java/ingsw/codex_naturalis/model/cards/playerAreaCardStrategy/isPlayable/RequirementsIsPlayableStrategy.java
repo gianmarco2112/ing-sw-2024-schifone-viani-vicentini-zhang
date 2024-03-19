@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.model.cards.playerareacardstrategy;
+package ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable;
 
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.*;

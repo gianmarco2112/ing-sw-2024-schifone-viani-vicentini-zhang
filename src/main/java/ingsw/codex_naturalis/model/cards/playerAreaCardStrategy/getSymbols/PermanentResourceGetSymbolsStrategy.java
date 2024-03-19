@@ -1,10 +1,7 @@
-package ingsw.codex_naturalis.model.cards.playerareacardstrategy;
+package ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols;
 
-import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
-
-import java.util.HashMap;
 
 public class PermanentResourceGetSymbolsStrategy implements GetSymbolsStrategy{
 

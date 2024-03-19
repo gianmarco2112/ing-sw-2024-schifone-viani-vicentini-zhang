@@ -12,7 +12,9 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
 import java.util.*;
 
 /**
- * The back side of the initial card
+ * Back side of the InitialCard
+ * Each card could contain (or not) Resources in the corners
+ * In the center there is a list of Permanent Resources
  */
 public class InitialCardBack extends PlayerAreaCard {
 
@@ -21,16 +23,16 @@ public class InitialCardBack extends PlayerAreaCard {
      */
     private List<Symbol> resources;
 
-
     /**
      * Constructor
-     * @param kingdom Kingdom empty
-     * @param topLeftCorner Top left corner
-     * @param topRightCorner Top right corner
-     * @param bottomLeftCorner Bottom left corner
-     * @param bottomRightCorner Bottom right corner
-     * @param resources Permanents resources
-     */
+     * @param kingdom (in this case is unused)
+     * @param topLeftCorner (could contain 1 Resource or be empty)
+     * @param topRightCorner (could contain 1 Resource or be empty)
+     * @param bottomLeftCorner (could contain 1 Resource or be empty)
+     * @param bottomRightCorner (could contain 1 Resource or be empty)
+     * @param resources (the list of the central Resources of the card)
+     * */
+
     public InitialCardBack(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, List<Symbol> resources){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
         this.resources = resources;
@@ -39,7 +41,8 @@ public class InitialCardBack extends PlayerAreaCard {
 
     /**
      * Permanent resources getter
-     * @return
+     * This method would return the list of the central Resources of the card
+     * @return resources
      */
     public List<Symbol> getResources(){
         return resources;

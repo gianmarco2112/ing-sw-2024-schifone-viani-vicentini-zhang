@@ -1,3 +1,43 @@
 [
-
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
+      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
+      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
+      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
+      "points":  2,
+      "requirements":{"PLANT": 2, "FUNGI": 2}
+    },
+    "back": {
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
+      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
+      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
+      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
+      "resource": "FUNGI"
+    }
+  },
+  {
+    "front": {
+      "type": "object",
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
+      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
+      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
+      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
+      "points":  2,
+      "requirements":{"PLANT": 2, "INSECT": 2},
+      "object": "MANUSCRIPT"
+    },
+    "back": {
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
+      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
+      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
+      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
+      "resource": "INSECT"
+    }
+  }
 ]

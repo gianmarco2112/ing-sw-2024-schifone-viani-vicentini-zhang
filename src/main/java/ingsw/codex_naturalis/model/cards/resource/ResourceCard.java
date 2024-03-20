@@ -2,6 +2,7 @@ package ingsw.codex_naturalis.model.cards.resource;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import ingsw.codex_naturalis.model.cards.HandCard;
 
 /**

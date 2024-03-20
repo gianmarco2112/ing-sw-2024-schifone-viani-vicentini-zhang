@@ -1,5 +1,8 @@
 package ingsw.codex_naturalis.model.cards.gold;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import ingsw.codex_naturalis.model.cards.HandCard;
 
 /**
@@ -23,7 +26,10 @@ public class GoldCard extends HandCard {
      * @param front Front side of the card
      * @param back Back side of the card
      */
-    public GoldCard(GoldCardFront front, GoldCardBack back){
+    @JsonCreator
+    public GoldCard(
+            @JsonProperty("front") GoldCardFront front,
+            @JsonProperty("back") GoldCardBack back){
         super(front, back);
     }
 }

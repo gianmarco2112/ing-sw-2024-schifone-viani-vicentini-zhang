@@ -24,7 +24,7 @@ public class Game {
     public static final String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
     public static final String objectiveCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/objectiveCards.json";
     private final List<ResourceCard> resourceCardsDeck;
-    //private final List<GoldCard> goldCardsDeck;
+    private final List<GoldCard> goldCardsDeck;
     private final List<InitialCard> initialCardsDeck;
     //private final List<ObjectiveCard> objectiveCardsDeck;
 
@@ -33,14 +33,16 @@ public class Game {
     // A fini di test terra terra
     public static void main(String[] args) throws IOException {
         Game gioco_test = new Game();
-        System.out.println(gioco_test.resourceCardsDeck.getFirst().getFront().getKingdom());
-        System.out.println(gioco_test.initialCardsDeck.getFirst().getFront().getKingdom());
+        //System.out.println(gioco_test.resourceCardsDeck.getFirst().getFront().getKingdom());
+        //System.out.println(gioco_test.initialCardsDeck.getFirst().getFront().getKingdom());
+        System.out.println(gioco_test.goldCardsDeck.getFirst().getFront().getClass());
+        System.out.println(gioco_test.goldCardsDeck.get(1).getFront().getClass());
     }
 
     public Game() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         this.resourceCardsDeck = objectMapper.readValue(new File(this.resourceCardsJsonFilePath), new TypeReference<List<ResourceCard>>() {});
-        //this.goldCardsDeck = objectMapper.readValue(new File(this.goldCardsJsonFilePath), new TypeReference<List<GoldCard>>() {});
+        this.goldCardsDeck = objectMapper.readValue(new File(this.goldCardsJsonFilePath), new TypeReference<List<GoldCard>>() {});
         this.initialCardsDeck = objectMapper.readValue(new File(this.initialCardsJsonFilePath), new TypeReference<List<InitialCard>>() {});
         //this.objectiveCardsDeck = objectMapper.readValue(new File(this.objectiveCardsJsonFilePath), new TypeReference<List<ObjectiveCard>>() {});
     }

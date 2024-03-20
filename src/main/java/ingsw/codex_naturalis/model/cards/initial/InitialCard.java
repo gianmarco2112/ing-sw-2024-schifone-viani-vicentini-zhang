@@ -1,5 +1,8 @@
 package ingsw.codex_naturalis.model.cards.initial;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import ingsw.codex_naturalis.model.cards.HandCard;
 
 /**
@@ -17,7 +20,10 @@ public class InitialCard extends HandCard {
      * @param front represents the front side of the card
      * @param back represents the back side of the card
      */
-    public InitialCard(InitialCardFront front, InitialCardBack back){
+    @JsonCreator
+    public InitialCard(
+            @JsonProperty("front") InitialCardFront front,
+            @JsonProperty("back") InitialCardBack back){
         super(front, back);
     }
 

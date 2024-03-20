@@ -1,5 +1,14 @@
 package ingsw.codex_naturalis.model.cards.gold;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+
+import  ingsw.codex_naturalis.model.cards.gold.GoldCardFrontCorners;
+import  ingsw.codex_naturalis.model.cards.gold.GoldCardFrontObject;
+
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
@@ -18,6 +27,14 @@ import java.util.*;
  * Each GoldCard has a list of Symbols that the Player has to
  * have into his PlayerArea in order to be able to place the card
  */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @Type(value = GoldCardFrontCorners.class, name = "corners"),
+        @Type(value = GoldCardFrontObject.class, name = "object")
+})
 public class GoldCardFront extends PlayerAreaCard {
 
     /**
@@ -42,7 +59,15 @@ public class GoldCardFront extends PlayerAreaCard {
      *                     in order to be able to place the GoldCard into the
      *                     PlayerArea)
      */
-    public GoldCardFront(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, HashMap<Symbol, Integer> requirements){
+    @JsonCreator
+    public GoldCardFront(
+            @JsonProperty("kingdom") Symbol kingdom,
+            @JsonProperty("topLeftCorner") Corner topLeftCorner,
+            @JsonProperty("topRightCorner") Corner topRightCorner,
+            @JsonProperty("bottomLeftCorner") Corner bottomLeftCorner,
+            @JsonProperty("bottomRightCorner") Corner bottomRightCorner,
+            @JsonProperty("points") int points,
+            @JsonProperty("requirements") HashMap<Symbol, Integer> requirements){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
         this.requirements = requirements;
         this.points = points;

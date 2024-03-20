@@ -1,5 +1,8 @@
 package ingsw.codex_naturalis.model.cards.gold;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
@@ -30,7 +33,14 @@ public class GoldCardBack extends PlayerAreaCard {
      * @param bottomRightCorner (it would be empty)
      * @param resource (central resource of the card)
      */
-    public GoldCardBack(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, Symbol resource){
+    @JsonCreator
+    public GoldCardBack(
+            @JsonProperty("kingdom") Symbol kingdom,
+            @JsonProperty("topLeftCorner") Corner topLeftCorner,
+            @JsonProperty("topRightCorner") Corner topRightCorner,
+            @JsonProperty("bottomLeftCorner") Corner bottomLeftCorner,
+            @JsonProperty("bottomRightCorner") Corner bottomRightCorner,
+            @JsonProperty("resource") Symbol resource){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
         this.resource = resource;
     }

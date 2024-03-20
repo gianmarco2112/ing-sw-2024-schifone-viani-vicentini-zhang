@@ -1,0 +1,19 @@
+[
+  {
+    "front": {
+      "kingdom": "EMPTY",
+      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
+      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
+      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
+      "bottomRightCorner": {"symbol": "PLANT", "covered": false}
+    },
+    "back": {
+      "kingdom": "EMPTY",
+      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
+      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
+      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
+      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
+      "resources":["FUNGI", "ANIMAL"]
+    }
+  }
+]

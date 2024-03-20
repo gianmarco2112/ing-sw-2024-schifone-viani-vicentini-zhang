@@ -1,5 +1,8 @@
 package ingsw.codex_naturalis.model.cards.resource;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import ingsw.codex_naturalis.model.cards.HandCard;
 
 /**
@@ -14,7 +17,10 @@ import ingsw.codex_naturalis.model.cards.HandCard;
  */
 public class ResourceCard extends HandCard {
 
-    public ResourceCard(ResourceCardFront front, ResourceCardBack back){
+    @JsonCreator
+    public ResourceCard(
+            @JsonProperty("front") ResourceCardFront front,
+            @JsonProperty("back") ResourceCardBack back){
         super(front, back);
     }
 

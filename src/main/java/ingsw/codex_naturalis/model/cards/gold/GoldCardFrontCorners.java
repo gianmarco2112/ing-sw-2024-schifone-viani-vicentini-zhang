@@ -1,5 +1,8 @@
 package ingsw.codex_naturalis.model.cards.gold;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.CornerCalcPointsStrategy;
@@ -25,7 +28,15 @@ public class GoldCardFrontCorners extends GoldCardFront {
      * @param points Points
      * @param requirements Requirements
      */
-    public GoldCardFrontCorners(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, HashMap<Symbol, Integer> requirements){
+    @JsonCreator
+    public GoldCardFrontCorners(
+            @JsonProperty("kingdom") Symbol kingdom,
+            @JsonProperty("topLeftCorner") Corner topLeftCorner,
+            @JsonProperty("topRightCorner") Corner topRightCorner,
+            @JsonProperty("bottomLeftCorner") Corner bottomLeftCorner,
+            @JsonProperty("bottomRightCorner") Corner bottomRightCorner,
+            @JsonProperty("points") int points,
+            @JsonProperty("requirements") HashMap<Symbol, Integer> requirements){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, points, requirements);
     }
 

@@ -3,7 +3,9 @@ package ingsw.codex_naturalis.model.cards.initial;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.HandCard;
+import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
 
 /**
  * InitialCard's class
@@ -15,6 +17,10 @@ import ingsw.codex_naturalis.model.cards.HandCard;
  */
 public class InitialCard extends HandCard {
 
+    private InitialCardFront front;
+    private InitialCardBack back;
+
+
     /**
      * Constructor
      * @param front represents the front side of the card
@@ -24,7 +30,32 @@ public class InitialCard extends HandCard {
     public InitialCard(
             @JsonProperty("front") InitialCardFront front,
             @JsonProperty("back") InitialCardBack back){
-        super(front, back);
+        this.front = front;
+        this.back = back;
     }
 
+
+    public InitialCardFront getFront() {
+        return front;
+    }
+
+    public InitialCardBack getBack() {
+        return back;
+    }
+
+    @Override
+    public PlayerAreaCard getPlayerAreaCardFront() {
+        return front;
+    }
+
+    @Override
+    public PlayerAreaCard getPlayerAreaCardBack() {
+        return back;
+    }
+
+    @Override
+    public void drawn(PlayerArea playerArea) {
+        front.drawn(playerArea);
+        back.drawn(playerArea);
+    }
 }

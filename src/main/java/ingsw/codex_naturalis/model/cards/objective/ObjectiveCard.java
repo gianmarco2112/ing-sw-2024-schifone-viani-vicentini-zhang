@@ -10,6 +10,7 @@ package ingsw.codex_naturalis.model.cards.objective;
  * Finally, ObjectiveCard has an interface that call the right algorithms at runtime.
  */
 public abstract class ObjectiveCard {
+
     /**
      * attribute points represents the points that objective card gives for each objective achieved
      */
@@ -17,24 +18,26 @@ public abstract class ObjectiveCard {
     /**
      * attribute patternstrategy is used to call at runtime the right strategy to count extra points
      */
-    private final PatternStrategy patternStrategy;
+    private CalcExtraPointsStrategy calcExtraPointsStrategy;
+
 
     /**
      * Constructor
      * @param points points of ObjectiveCard
-     * @param patternStrategy the patter
+     * @param calcExtraPointsStrategy the patter
      */
-    public ObjectiveCard(int points, PatternStrategy patternStrategy){
-        this.points=points;
-        this.patternStrategy=patternStrategy;
+    public ObjectiveCard(int points, CalcExtraPointsStrategy calcExtraPointsStrategy){
+        this.points = points;
+        this.calcExtraPointsStrategy = calcExtraPointsStrategy;
     }
+
 
     /**
      * Invoke at runtime the right algorithm depending on the type of card the player has.
      * @return number of extraPoints
      */
-    public int execute(){
-        return patternStrategy.run();
+    public void execute(){
+        calcExtraPointsStrategy.run();
     }
 
     /**

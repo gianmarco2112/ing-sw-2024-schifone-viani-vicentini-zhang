@@ -64,9 +64,9 @@ public class Player {
     public void playCard(HandCard card, int x, int y) {
         PlayerAreaCard sideCard;
         if (card.isShowingFront()) {
-            sideCard = card.getFront();
+            sideCard = card.getPlayerAreaCardFront();
         } else {
-            sideCard = card.getBack();
+            sideCard = card.getPlayerAreaCardBack();
         }
         if (sideCard.isPlayable(x,y)) {
             playerArea.setCardOnCoordinates(sideCard, x, y);

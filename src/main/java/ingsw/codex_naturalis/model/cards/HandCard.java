@@ -13,19 +13,13 @@ import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
  */
 public abstract class HandCard {
 
-    private PlayerAreaCard front;
-    private PlayerAreaCard back;
     private Boolean showingFront;
 
 
     /**
      * Constructor of a HandCard
-     * @param front Gold or Resource or InitialCardFront
-     * @param back Gold or Resource or InitialCardBack
      */
-    public HandCard(PlayerAreaCard front, PlayerAreaCard back){
-        this.front = front;
-        this.back = back;
+    public HandCard(){
         this.showingFront = true;
     }
 
@@ -53,24 +47,17 @@ public abstract class HandCard {
      * Front getter
      * @return
      */
-    public PlayerAreaCard getFront(){
-        return front;
-    }
+    public abstract PlayerAreaCard getPlayerAreaCardFront();
 
     /**
      * Back getter
      * @return
      */
-    public PlayerAreaCard getBack(){
-        return back;
-    }
+    public abstract PlayerAreaCard getPlayerAreaCardBack();
 
     /**
      * The card has been drawn
      * @param playerArea The player that has drawn the card
      */
-    public void drawn(PlayerArea playerArea){
-        front.drawn(playerArea);
-        back.drawn(playerArea);
-    }
+    public abstract void drawn(PlayerArea playerArea);
 }

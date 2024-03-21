@@ -3,7 +3,9 @@ package ingsw.codex_naturalis.model.cards.gold;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.HandCard;
+import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
 
 /**
  * GoldCard's class
@@ -21,6 +23,9 @@ import ingsw.codex_naturalis.model.cards.HandCard;
  */
 public class GoldCard extends HandCard {
 
+    private GoldCardFront front;
+    private GoldCardBack back;
+
     /**
      * Constructor
      * @param front Front side of the card
@@ -30,6 +35,32 @@ public class GoldCard extends HandCard {
     public GoldCard(
             @JsonProperty("front") GoldCardFront front,
             @JsonProperty("back") GoldCardBack back){
-        super(front, back);
+        this.front = front;
+        this.back = back;
+    }
+
+
+    public GoldCardFront getFront() {
+        return front;
+    }
+
+    public GoldCardBack getBack() {
+        return back;
+    }
+
+    @Override
+    public PlayerAreaCard getPlayerAreaCardFront() {
+        return front;
+    }
+
+    @Override
+    public PlayerAreaCard getPlayerAreaCardBack() {
+        return back;
+    }
+
+    @Override
+    public void drawn(PlayerArea playerArea) {
+        front.drawn(playerArea);
+        back.drawn(playerArea);
     }
 }

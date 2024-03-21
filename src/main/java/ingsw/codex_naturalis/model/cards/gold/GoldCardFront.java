@@ -94,7 +94,6 @@ public class GoldCardFront extends PlayerAreaCard {
      * The gold card has been drawn
      * @param playerArea The player area that will eventually have the gold card
      */
-    @Override
     public void drawn(PlayerArea playerArea){
         setIsPlayableStrategy(new RequirementsIsPlayableStrategy(playerArea, requirements));
     }

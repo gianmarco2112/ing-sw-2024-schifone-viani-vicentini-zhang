@@ -61,7 +61,6 @@ public class InitialCardBack extends PlayerAreaCard {
      * The initial card has been drawn
      * @param playerArea The player area that will have the initial card
      */
-    @Override
     public void drawn(PlayerArea playerArea){
         setIsPlayableStrategy(new SimpleIsPlayableStrategy(playerArea));
     }

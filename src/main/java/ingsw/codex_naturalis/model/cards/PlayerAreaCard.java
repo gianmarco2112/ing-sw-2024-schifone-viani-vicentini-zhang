@@ -127,7 +127,5 @@ public abstract class PlayerAreaCard {
         calcPointsStrategy.run();
     }
 
-    public abstract void drawn(PlayerArea playerArea);
-
     public abstract void played(PlayerArea playerArea, int x, int y);
 }

@@ -36,7 +36,7 @@ public class Game {
     public static void main(String[] args) throws IOException {
         Game gioco_test = new Game();
         InitialCard carta = gioco_test.drawInitialCardsDeck();
-        System.out.println(carta.getBack().getClass());
+        //System.out.println(carta.getBack().getClass());
         //List<Symbol> risorse = carta.getBack().getResources();
         //risorse.removeFirst();
         //System.out.println(gioco_test.resourceCardsDeck.getFirst().getFront().getKingdom());

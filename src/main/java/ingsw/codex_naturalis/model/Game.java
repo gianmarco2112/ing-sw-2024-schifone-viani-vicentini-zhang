@@ -25,10 +25,7 @@ public class Game {
     public static final String goldCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/goldCards.json";
     public static final String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
     public static final String objectiveCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/objectiveCards.json";
-    private final List<ResourceCard> resourceCardsDeck;
-    private final List<GoldCard> goldCardsDeck;
     private final List<InitialCard> initialCardsDeck;
-    //private final List<ObjectiveCard> objectiveCardsDeck;
 
     private CenterOfTable centerOfTable;
 

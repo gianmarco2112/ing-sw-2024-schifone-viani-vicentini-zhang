@@ -1,19 +1,22 @@
 package ingsw.codex_naturalis.model;
 
 import ingsw.codex_naturalis.model.cards.HandCard;
+import ingsw.codex_naturalis.model.cards.gold.GoldCard;
+import ingsw.codex_naturalis.model.cards.gold.GoldCardBack;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
+import ingsw.codex_naturalis.model.cards.resource.ResourceCard;
 
 import java.util.*;
 
 public class CenterOfTable {
 
-    private List<HandCard> revealedResourceCards;
+    private Deque<ResourceCard> resourceCardsDeck;
 
-    private List<HandCard> revealedGoldCards;
+    private Deque<GoldCard> goldCardsDeck;
 
-    private Deque<HandCard> resourceCardsDeck;
+    private List<ResourceCard> revealedResourceCards;
 
-    private Deque<HandCard> goldCardsDeck;
+    private List<GoldCard> revealedGoldCards;
 
     private List<ObjectiveCard> objectiveCardsDeck;
 
@@ -23,28 +26,35 @@ public class CenterOfTable {
     public CenterOfTable(){}
 
 
-    public List<HandCard> getRevealedResourceCards(){
-        return revealedResourceCards;
-    }
-
-    public List<HandCard> getRevealedGoldCards() {
-        return revealedGoldCards;
-    }
-
-    public HandCard getResourceCardFromDeck() {
-        return resourceCardsDeck.getLast();
-    }
-
-    public HandCard getGoldCardFromDeck() {
-        return goldCardsDeck.getLast();
-    }
-
     public List<ObjectiveCard> getCommonObjectiveCards() {
         return commonObjectiveCards;
     }
 
-    //Visitor pattern?
-    public void remove(HandCard card){
+    public ResourceCard removeFromResourceCardsDeck(){
+        return resourceCardsDeck.removeLast();
+    }
+    public GoldCard removeFromGoldCardsDeck(){
+        return goldCardsDeck.removeLast();
+    }
 
+    public ResourceCard removeFirstFromRevealedResourceCards(){
+        ResourceCard resourceCard = revealedResourceCards.removeFirst();
+        revealedResourceCards.add(resourceCardsDeck.removeLast());
+        return resourceCard;
+    }
+    public ResourceCard removeLastFromRevealedResourceCards(){
+        ResourceCard resourceCard = revealedResourceCards.removeLast();
+        revealedResourceCards.add(resourceCardsDeck.removeLast());
+        return resourceCard;
+    }
+    public GoldCard removeFirstFromRevealedGoldCards(){
+        GoldCard goldCard = revealedGoldCards.removeFirst();
+        revealedGoldCards.add(goldCardsDeck.removeLast());
+        return goldCard;
+    }
+    public GoldCard removeLastFromRevealedGoldCards(){
+        GoldCard goldCard = revealedGoldCards.removeLast();
+        revealedGoldCards.add(goldCardsDeck.removeLast());
+        return goldCard;
     }
 }

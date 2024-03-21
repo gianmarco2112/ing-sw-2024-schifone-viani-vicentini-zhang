@@ -78,10 +78,38 @@ public class Player {
         }
     }
 
-    public void draw(HandCard card) {
-        centerOfTable.remove(card);
-        hand.add(card);
+    public void drawFromResourceCardsDeck() {
+        HandCard card = centerOfTable.removeFromResourceCardsDeck();
+        addCardToHand(card);
         card.drawn(playerArea);
+    }
+    public void drawFromGoldCardsDeck() {
+        HandCard card = centerOfTable.removeFromGoldCardsDeck();
+        addCardToHand(card);
+        card.drawn(playerArea);
+    }
+    public void drawFirstFromRevealedResourceCards() {
+        HandCard card = centerOfTable.removeFirstFromRevealedResourceCards();
+        addCardToHand(card);
+        card.drawn(playerArea);
+    }
+    public void drawLastFromRevealedResourceCards() {
+        HandCard card = centerOfTable.removeLastFromRevealedResourceCards();
+        addCardToHand(card);
+        card.drawn(playerArea);
+    }
+    public void drawFirstFromRevealedGoldCards() {
+        HandCard card = centerOfTable.removeFirstFromRevealedGoldCards();
+        addCardToHand(card);
+        card.drawn(playerArea);
+    }
+    public void drawLastFromRevealedGoldCards() {
+        HandCard card = centerOfTable.removeLastFromRevealedGoldCards();
+        addCardToHand(card);
+        card.drawn(playerArea);
+    }
+    private void addCardToHand(HandCard card){
+        hand.add(card);
     }
 
     public void writeMessage(String content, List<Player> receivers){

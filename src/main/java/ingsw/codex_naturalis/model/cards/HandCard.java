@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.model.cards;
 
+import ingsw.codex_naturalis.model.CenterOfTable;
 import ingsw.codex_naturalis.model.Player;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;

@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.model.cards.resource;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ingsw.codex_naturalis.model.CenterOfTable;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.HandCard;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;

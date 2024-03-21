@@ -58,14 +58,6 @@ public class InitialCardBack extends PlayerAreaCard {
     }
 
     /**
-     * The initial card has been drawn
-     * @param playerArea The player area that will have the initial card
-     */
-    public void drawn(PlayerArea playerArea){
-        setIsPlayableStrategy(new SimpleIsPlayableStrategy(playerArea));
-    }
-
-    /**
      * The back side of the initial card has been played
      * @param playerArea The player area that now has the initial card
      * @param x Coordinate x on the area
@@ -73,8 +65,6 @@ public class InitialCardBack extends PlayerAreaCard {
      */
     @Override
     public void played(PlayerArea playerArea, int x, int y){
-        setCoverCornersStrategy(new SimpleCoverCornersStrategy(playerArea));
         setGetSymbolsStrategy(new PermanentResourcesGetSymbolsStrategy(playerArea, resources));
-        setCalcPointsStrategy(new NoCalcPointsStrategy());
     }
 }

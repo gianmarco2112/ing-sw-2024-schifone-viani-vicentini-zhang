@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.model;
 
 import ingsw.codex_naturalis.model.cards.HandCard;
+import ingsw.codex_naturalis.model.cards.PlayableCard;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.cards.initial.InitialCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
@@ -16,11 +18,13 @@ public class Player {
 
     private Color color;
 
+    private InitialCard initialCard;
+
     private CenterOfTable centerOfTable;
 
     /**
      * This list contains the card/cards the player currently has in his hands.
-     * It will contain an initial card at the start, then two resource cards and a gold card.
+     * It will contain two resource cards and a gold card at the start.
      * During the game, it will contain from two to three resource/golden cards.
      */
     private List<HandCard> hand;
@@ -40,15 +44,30 @@ public class Player {
 
     /**
      * This method is called when the player wants to see the other side of the card.
-     *
-     * @param card
+     * @param card Card to flip
      */
-    public void flip(HandCard card) {
+    public void flip(PlayableCard card) {
         if (card.isShowingFront()) {
             card.showBack();
         } else {
             card.showFront();
         }
+    }
+
+    /**
+     * Method to play the initial card
+     */
+    public void playInitialCard(){
+        PlayerAreaCard sideCard;
+        if (initialCard.isShowingFront()) {
+            sideCard = initialCard.getPlayerAreaCardFront();
+        } else {
+            sideCard = initialCard.getPlayerAreaCardBack();
+        }
+        playerArea.setCardOnCoordinates(sideCard, 0, 0);
+        sideCard.played(playerArea, 0, 0);
+        sideCard.getSymbols();
+        initialCard = null;
     }
 
     /**

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.HandCard;
+import ingsw.codex_naturalis.model.cards.PlayableCard;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
 
 /**
@@ -15,7 +16,7 @@ import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
  * player could start to link at the corners of the InitialCard the ResourceCards
  * and GoldCards. After the first turn, the player can't take anymore the InitialCards.
  */
-public class InitialCard extends HandCard {
+public class InitialCard extends PlayableCard {
 
     private InitialCardFront front;
     private InitialCardBack back;
@@ -51,11 +52,5 @@ public class InitialCard extends HandCard {
     @Override
     public PlayerAreaCard getPlayerAreaCardBack() {
         return back;
-    }
-
-    @Override
-    public void drawn(PlayerArea playerArea) {
-        front.drawn(playerArea);
-        back.drawn(playerArea);
     }
 }

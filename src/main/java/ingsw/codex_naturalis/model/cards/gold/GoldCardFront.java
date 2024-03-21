@@ -32,6 +32,7 @@ import java.util.*;
         include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 @JsonSubTypes({
+        @Type(value = GoldCardFront.class, name = "empty"),
         @Type(value = GoldCardFrontCorners.class, name = "corners"),
         @Type(value = GoldCardFrontObject.class, name = "object")
 })

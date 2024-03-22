@@ -32,13 +32,13 @@ public class Game {
     // A fini di test terra terra
     public static void main(String[] args) throws IOException {
         Game gioco_test = new Game();
-        InitialCard carta = gioco_test.drawInitialCardsDeck();
+        //InitialCard carta = gioco_test.drawInitialCardsDeck();
         //System.out.println(carta.getBack().getClass());
         //List<Symbol> risorse = carta.getBack().getResources();
         //risorse.removeFirst();
         //System.out.println(gioco_test.resourceCardsDeck.getFirst().getFront().getKingdom());
         //System.out.println(gioco_test.initialCardsDeck.getFirst().getBack().getResources().getFirst());
-        //System.out.println(gioco_test.goldCardsDeck.getFirst().getFront().getClass());
+        System.out.println(gioco_test.goldCardsDeck.get(3).getFront().getClass());
         //System.out.println(gioco_test.goldCardsDeck.get(1).getFront().getClass());
     }
 

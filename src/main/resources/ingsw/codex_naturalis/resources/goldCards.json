@@ -1,42 +1,813 @@
 [
   {
     "front": {
-      "type": "corners",
+      "type": "object",
       "kingdom": "FUNGI",
-      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
-      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
-      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
-      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
-      "points":  2,
-      "requirements":{"PLANT": 2, "FUNGI": 2}
+      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "QUILL", "covered": false},
+      "points":  1,
+      "requirements":{"FUNGI": 2, "ANIMAL": 1},
+      "object": "QUILL"
     },
     "back": {
       "kingdom": "FUNGI",
-      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
-      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
-      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
-      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "resource": "FUNGI"
     }
   },
   {
     "front": {
       "type": "object",
-      "kingdom": "INSECT",
-      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
-      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
-      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
-      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "INKWELL", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  1,
+      "requirements":{"FUNGI": 2, "PLANT": 1},
+      "object": "INKWELL"
+    },
+    "back": {
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "FUNGI"
+    }
+  },
+  {
+    "front": {
+      "type": "object",
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  1,
+      "requirements":{"FUNGI": 2, "INSECT": 1},
+      "object": "MANUSCRIPT"
+    },
+    "back": {
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "FUNGI"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  2,
-      "requirements":{"PLANT": 2, "INSECT": 2},
+      "requirements":{"FUNGI": 3, "ANIMAL": 1}
+    },
+    "back": {
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "FUNGI"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  2,
+      "requirements":{"FUNGI": 3, "PLANT": 1}
+    },
+    "back": {
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "FUNGI"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  2,
+      "requirements":{"FUNGI": 3, "INSECT": 1}
+    },
+    "back": {
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "FUNGI"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "INKWELL", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  3,
+      "requirements":{"FUNGI": 3}
+    },
+    "back": {
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "FUNGI"
+    }
+  },
+  {
+   "front": {
+     "type": "empty",
+     "kingdom": "FUNGI",
+     "topLeftCorner": {"symbol": "QUILL", "covered": false},
+     "topRightCorner": {"symbol": "EMPTY", "covered": false},
+     "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+     "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+     "points":  3,
+     "requirements":{"FUNGI": 3}
+   },
+   "back": {
+     "kingdom": "FUNGI",
+     "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+     "topRightCorner": {"symbol": "EMPTY", "covered": false},
+     "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+     "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+     "resource": "FUNGI"
+   }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "MANUSCRIPT", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  3,
+      "requirements":{"FUNGI": 3}
+    },
+    "back": {
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "FUNGI"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  5,
+      "requirements":{"FUNGI": 5}
+    },
+    "back": {
+      "kingdom": "FUNGI",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "FUNGI"
+    }
+  },
+  {
+    "front": {
+      "type": "object",
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "QUILL", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  1,
+      "requirements":{"PLANT": 2, "INSECT": 1},
+      "object": "QUILL"
+    },
+    "back": {
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "PLANT"
+    }
+  },
+  {
+    "front": {
+      "type": "object",
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "MANUSCRIPT", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  1,
+      "requirements":{"PLANT": 2, "FUNGI": 1},
+      "object": "MANUSCRIPT"
+    },
+    "back": {
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "PLANT"
+    }
+  },
+  {
+    "front": {
+      "type": "object",
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "INKWELL", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  1,
+      "requirements":{"PLANT": 2, "ANIMAL": 1},
+      "object": "INKWELL"
+    },
+    "back": {
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "PLANT"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  2,
+      "requirements":{"PLANT": 3, "INSECT": 1}
+    },
+    "back": {
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "PLANT"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  2,
+      "requirements":{"PLANT": 2, "ANIMAL": 1}
+    },
+    "back": {
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "PLANT"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  2,
+      "requirements":{"PLANT": 3, "FUNGI": 1}
+    },
+    "back": {
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "PLANT"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "QUILL", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  3,
+      "requirements":{"PLANT": 3}
+    },
+    "back": {
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "PLANT"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  3,
+      "requirements":{"PLANT": 3}
+    },
+    "back": {
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "PLANT"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "INKWELL", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  3,
+      "requirements":{"PLANT": 3}
+    },
+    "back": {
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "PLANT"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  5,
+      "requirements":{"PLANT": 5}
+    },
+    "back": {
+      "kingdom": "PLANT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "PLANT"
+    }
+  },
+  {
+    "front": {
+      "type": "object",
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "INKWELL", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  1,
+      "requirements":{"ANIMAL": 2, "INSECT": 1},
+      "object": "INKWELL"
+    },
+    "back": {
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "ANIMAL"
+    }
+  },
+  {
+    "front": {
+      "type": "object",
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "MANUSCRIPT", "covered": false},
+      "points":  1,
+      "requirements":{"ANIMAL": 2, "PLANT": 1},
+      "object": "MANUSCRIPT"
+    },
+    "back": {
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "ANIMAL"
+    }
+  },
+  {
+    "front": {
+      "type": "object",
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "QUILL", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  1,
+      "requirements":{"ANIMAL": 2, "FUNGI": 1},
+      "object": "QUILL"
+    },
+    "back": {
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "ANIMAL"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  2,
+      "requirements":{"ANIMAL": 3, "INSECT": 1}
+    },
+    "back": {
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "ANIMAL"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  2,
+      "requirements":{"ANIMAL": 3, "FUNGI": 1}
+    },
+    "back": {
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "ANIMAL"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  2,
+      "requirements":{"ANIMAL": 3, "PLANT": 1}
+    },
+    "back": {
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "ANIMAL"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  3,
+      "requirements":{"ANIMAL": 3}
+    },
+    "back": {
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "ANIMAL"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "INKWELL", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  3,
+      "requirements":{"ANIMAL": 3}
+    },
+    "back": {
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "ANIMAL"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "QUILL", "covered": false},
+      "points":  3,
+      "requirements":{"ANIMAL": 3}
+    },
+    "back": {
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "ANIMAL"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  5,
+      "requirements":{"ANIMAL": 5}
+    },
+    "back": {
+      "kingdom": "ANIMAL",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "ANIMAL"
+    }
+  },
+  {
+    "front": {
+      "type": "object",
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "QUILL", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  1,
+      "requirements":{"INSECT": 2, "PLANT": 1},
+      "object": "QUILL"
+    },
+    "back": {
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "INSECT"
+    }
+  },
+  {
+    "front": {
+      "type": "object",
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  1,
+      "requirements":{"INSECT": 2, "ANIMAL": 1},
       "object": "MANUSCRIPT"
     },
     "back": {
       "kingdom": "INSECT",
-      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
-      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
-      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
-      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "INSECT"
+    }
+  },
+  {
+    "front": {
+      "type": "object",
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "INKWELL", "covered": false},
+      "points":  1,
+      "requirements":{"INSECT": 2, "FUNGI": 1},
+      "object": "INKWELL"
+    },
+    "back": {
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "INSECT"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  2,
+      "requirements":{"INSECT": 3, "ANIMAL": 1}
+    },
+    "back": {
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "INSECT"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  2,
+      "requirements":{"INSECT": 3, "PLANT": 1}
+    },
+    "back": {
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "INSECT"
+    }
+  },
+  {
+    "front": {
+      "type": "corners",
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  2,
+      "requirements":{"INSECT": 3, "FUNGI": 1}
+    },
+    "back": {
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "INSECT"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "INKWELL", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  3,
+      "requirements":{"INSECT": 3}
+    },
+    "back": {
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "INSECT"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "MANUSCRIPT", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  3,
+      "requirements":{"INSECT": 3}
+    },
+    "back": {
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "INSECT"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "QUILL", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "points":  3,
+      "requirements":{"INSECT": 3}
+    },
+    "back": {
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "resource": "INSECT"
+    }
+  },
+  {
+    "front": {
+      "type": "empty",
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  5,
+      "requirements":{"INSECT": 5}
+    },
+    "back": {
+      "kingdom": "INSECT",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "resource": "INSECT"
     }
   }

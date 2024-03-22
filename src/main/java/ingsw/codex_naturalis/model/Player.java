@@ -60,9 +60,9 @@ public class Player {
     public void playInitialCard(){
         PlayableSide sideCard;
         if (initialCard.isShowingFront()) {
-            sideCard = initialCard.getPlayerAreaCardFront();
+            sideCard = initialCard.getPlayableFront();
         } else {
-            sideCard = initialCard.getPlayerAreaCardBack();
+            sideCard = initialCard.getPlayableBack();
         }
         playerArea.setCardOnCoordinates(sideCard, 0, 0);
         sideCard.played(playerArea);
@@ -83,9 +83,9 @@ public class Player {
     public void playCard(HandPlayableCard card, int x, int y) {
         HandPlayableSide sideCard;
         if (card.isShowingFront()) {
-            sideCard = card.getHandCardPlayerAreaCardFront();
+            sideCard = card.getHandPlayableFront();
         } else {
-            sideCard = card.getHandCardPlayerAreaCardBack();
+            sideCard = card.getHandPlayableBack();
         }
         if (sideCard.isPlayable(x,y)) {
             playerArea.setCardOnCoordinates(sideCard, x, y);

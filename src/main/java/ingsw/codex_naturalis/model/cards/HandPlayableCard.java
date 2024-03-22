@@ -19,11 +19,11 @@ public abstract class HandPlayableCard extends PlayableCard{
      * Front getter
      * @return
      */
-    public abstract HandPlayableSide getHandCardPlayerAreaCardFront();
+    public abstract HandPlayableSide getHandPlayableFront();
 
     /**
      * Back getter
      * @return
      */
-    public abstract HandPlayableSide getHandCardPlayerAreaCardBack();
+    public abstract HandPlayableSide getHandPlayableBack();
 }

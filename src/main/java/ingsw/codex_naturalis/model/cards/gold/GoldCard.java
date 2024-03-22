@@ -49,12 +49,12 @@ public class GoldCard extends HandPlayableCard {
     }
 
     @Override
-    public HandPlayableSide getHandCardPlayerAreaCardFront() {
+    public HandPlayableSide getHandPlayableFront() {
         return front;
     }
 
     @Override
-    public HandPlayableSide getHandCardPlayerAreaCardBack() {
+    public HandPlayableSide getHandPlayableBack() {
         return back;
     }
 

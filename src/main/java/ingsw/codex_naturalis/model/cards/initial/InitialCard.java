@@ -42,11 +42,11 @@ public class InitialCard extends PlayableCard {
         return back;
     }
 
-    public PlayableSide getPlayerAreaCardFront() {
+    public PlayableSide getPlayableFront() {
         return front;
     }
 
-    public PlayableSide getPlayerAreaCardBack() {
+    public PlayableSide getPlayableBack() {
         return back;
     }
 }

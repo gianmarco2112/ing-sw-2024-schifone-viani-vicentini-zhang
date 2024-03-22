@@ -1,6 +1,6 @@
 package ingsw.codex_naturalis.model;
 
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.cards.PlayableSide;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
@@ -15,7 +15,7 @@ public class PlayerArea {
      * This HashMap represents the player area with all the cards he has placed.
      * The key represents the coordinates, the value the side of the card played.
      */
-    private HashMap<List<Integer>, PlayerAreaCard> area;
+    private HashMap<List<Integer>, PlayableSide> area;
     /**
      * area max row
      */
@@ -175,7 +175,7 @@ public class PlayerArea {
      * @param y Coordinate y
      * @return the card
      */
-    public PlayerAreaCard getCardOnCoordinates(int x, int y){
+    public PlayableSide getCardOnCoordinates(int x, int y){
         return area.get(new ArrayList<>(List.of(x,y)));
     }
 
@@ -210,12 +210,12 @@ public class PlayerArea {
      * @param x coordinate x
      * @param y coordinate y
      */
-    public void setCardOnCoordinates(PlayerAreaCard card, int x, int y){
+    public void setCardOnCoordinates(PlayableSide card, int x, int y){
         area.put(new ArrayList<>(List.of(x,y)), card);
     }
 
-    public List<Integer> getCoordinatesOfCard(PlayerAreaCard card){
-        for (Map.Entry<List<Integer>, PlayerAreaCard> entry : area.entrySet()) {
+    public List<Integer> getCoordinatesOfCard(PlayableSide card){
+        for (Map.Entry<List<Integer>, PlayableSide> entry : area.entrySet()) {
             if (entry.getValue() == card) {
                 return entry.getKey();
             }

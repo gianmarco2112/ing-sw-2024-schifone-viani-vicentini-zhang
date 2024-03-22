@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.cards.HandPlayableSide;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.NoCalcPointsStrategy;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols.PermanentResourceGetSymbolsStrategy;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners.SimpleCoverCornersStrategy;
@@ -19,7 +18,7 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
  * Back side of the ResourceCard
  * Each card contains 1 Resource in the center and has all the 4 corners empty
  */
-public class ResourceCardBack extends HandCardPlayerAreaCard {
+public class ResourceCardBack extends HandPlayableSide {
 
     /**
      * The permanent resource

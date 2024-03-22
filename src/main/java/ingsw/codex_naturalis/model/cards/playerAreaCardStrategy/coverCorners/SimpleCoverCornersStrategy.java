@@ -2,7 +2,7 @@ package ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners;
 
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.cards.PlayableSide;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 public class SimpleCoverCornersStrategy implements CoverCornersStrategy{
@@ -18,7 +18,7 @@ public class SimpleCoverCornersStrategy implements CoverCornersStrategy{
     public void run(int x, int y){
 
         if (playerArea.containsCardOnCoordinates(x-1, y+1)){
-            PlayerAreaCard topLeftCard = playerArea.getCardOnCoordinates(x-1,y+1);
+            PlayableSide topLeftCard = playerArea.getCardOnCoordinates(x-1,y+1);
             Corner bottomRightCorner = topLeftCard.getBottomRightCorner();
             bottomRightCorner.cover();
             if (bottomRightCorner.getSymbol() != Symbol.EMPTY){
@@ -26,7 +26,7 @@ public class SimpleCoverCornersStrategy implements CoverCornersStrategy{
             }
         }
         if (playerArea.containsCardOnCoordinates(x+1, y+1)){
-            PlayerAreaCard topRightCard = playerArea.getCardOnCoordinates(x+1,y+1);
+            PlayableSide topRightCard = playerArea.getCardOnCoordinates(x+1,y+1);
             Corner bottomLeftCorner = topRightCard.getBottomLeftCorner();
             bottomLeftCorner.cover();
             if (bottomLeftCorner.getSymbol() != Symbol.EMPTY){
@@ -34,7 +34,7 @@ public class SimpleCoverCornersStrategy implements CoverCornersStrategy{
             }
         }
         if (playerArea.containsCardOnCoordinates(x-1, y-1)){
-            PlayerAreaCard bottomLeftCard = playerArea.getCardOnCoordinates(x-1,y-1);
+            PlayableSide bottomLeftCard = playerArea.getCardOnCoordinates(x-1,y-1);
             Corner topRightCorner = bottomLeftCard.getTopRightCorner();
             topRightCorner.cover();
             if (topRightCorner.getSymbol() != Symbol.EMPTY){
@@ -42,7 +42,7 @@ public class SimpleCoverCornersStrategy implements CoverCornersStrategy{
             }
         }
         if (playerArea.containsCardOnCoordinates(x+1, y-1)){
-            PlayerAreaCard bottomRightCard = playerArea.getCardOnCoordinates(x+1,y-1);
+            PlayableSide bottomRightCard = playerArea.getCardOnCoordinates(x+1,y-1);
             Corner topLeftCorner = bottomRightCard.getTopLeftCorner();
             topLeftCorner.cover();
             if (topLeftCorner.getSymbol() != Symbol.EMPTY){

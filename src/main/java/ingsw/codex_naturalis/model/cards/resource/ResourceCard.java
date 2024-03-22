@@ -3,11 +3,9 @@ package ingsw.codex_naturalis.model.cards.resource;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ingsw.codex_naturalis.model.CenterOfTable;
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.HandCard;
-import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.cards.HandPlayableCard;
+import ingsw.codex_naturalis.model.cards.HandPlayableSide;
 
 /**
  * ResourceCard's class
@@ -19,7 +17,7 @@ import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
  * could contain Resources or Objects into his corners
  *
  */
-public class ResourceCard extends HandCard {
+public class ResourceCard extends HandPlayableCard {
 
     private ResourceCardFront front;
     private ResourceCardBack back;
@@ -41,12 +39,12 @@ public class ResourceCard extends HandCard {
     }
 
     @Override
-    public HandCardPlayerAreaCard getHandCardPlayerAreaCardFront() {
+    public HandPlayableSide getHandCardPlayerAreaCardFront() {
         return front;
     }
 
     @Override
-    public HandCardPlayerAreaCard getHandCardPlayerAreaCardBack() {
+    public HandPlayableSide getHandCardPlayerAreaCardBack() {
         return back;
     }
 

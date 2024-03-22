@@ -35,7 +35,7 @@ public class RequirementsIsPlayableStrategy implements IsPlayableStrategy{
         int atLeastACard = 4;
 
         if (playerArea.containsCardOnCoordinates(x-1,y+1)){
-            PlayerAreaCard topLeftCard = playerArea.getCardOnCoordinates(x-1,y+1);
+            PlayableSide topLeftCard = playerArea.getCardOnCoordinates(x-1,y+1);
             if (topLeftCard.getBottomRightCorner().isCovered()){
                 return false;
             }
@@ -44,7 +44,7 @@ public class RequirementsIsPlayableStrategy implements IsPlayableStrategy{
             atLeastACard--;
         }
         if (playerArea.containsCardOnCoordinates(x+1,y+1)){
-            PlayerAreaCard topRightCard = playerArea.getCardOnCoordinates(x+1,y+1);
+            PlayableSide topRightCard = playerArea.getCardOnCoordinates(x+1,y+1);
             if (topRightCard.getBottomLeftCorner().isCovered()){
                 return false;
             }
@@ -53,7 +53,7 @@ public class RequirementsIsPlayableStrategy implements IsPlayableStrategy{
             atLeastACard--;
         }
         if (playerArea.containsCardOnCoordinates(x-1,y-1)){
-            PlayerAreaCard bottomLeftCard = playerArea.getCardOnCoordinates(x-1,y-1);
+            PlayableSide bottomLeftCard = playerArea.getCardOnCoordinates(x-1,y-1);
             if (bottomLeftCard.getTopRightCorner().isCovered()){
                 return false;
             }
@@ -62,7 +62,7 @@ public class RequirementsIsPlayableStrategy implements IsPlayableStrategy{
             atLeastACard--;
         }
         if (playerArea.containsCardOnCoordinates(x+1,y-1)){
-            PlayerAreaCard bottomRightCard = playerArea.getCardOnCoordinates(x+1,y-1);
+            PlayableSide bottomRightCard = playerArea.getCardOnCoordinates(x+1,y-1);
             if (bottomRightCard.getTopLeftCorner().isCovered()){
                 return false;
             }

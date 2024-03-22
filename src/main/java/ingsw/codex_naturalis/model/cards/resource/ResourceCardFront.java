@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.cards.HandPlayableSide;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.SimpleCalcPointsStrategy;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners.SimpleCoverCornersStrategy;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols.CornerResourcesGetSymbolsStrategy;
@@ -18,7 +17,7 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
  * Each card could contain Resources or Objects in the Corners
  * There isn't any central resource
  */
-public class ResourceCardFront extends HandCardPlayerAreaCard {
+public class ResourceCardFront extends HandPlayableSide {
 
     /**
      * The points given to the Player by the card when placed into the PlayerArea

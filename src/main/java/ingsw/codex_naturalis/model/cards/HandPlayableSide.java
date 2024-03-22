@@ -7,14 +7,14 @@ import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners.Cov
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable.IsPlayableStrategy;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
-public abstract class HandCardPlayerAreaCard extends PlayerAreaCard{
+public abstract class HandPlayableSide extends PlayableSide {
 
     private IsPlayableStrategy isPlayableStrategy;
     private CoverCornersStrategy coverCornersStrategy;
     private CalcPointsStrategy calcPointsStrategy;
 
 
-    public HandCardPlayerAreaCard(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner){
+    public HandPlayableSide(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner){
         super(kingdom, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
     }
 
@@ -26,7 +26,7 @@ public abstract class HandCardPlayerAreaCard extends PlayerAreaCard{
 
     /**
      * This method is called when a player wants to play a card in a certain position into his PlayerArea.
-     * It verifies if the pointed PlayerAreaCard is placeable in the area on coordinates x and y.
+     * It verifies if the pointed PlayableSide is placeable in the area on coordinates x and y.
      * It checks that there isn't a card already placed in those coordinates and that there's at least
      * one card on which the pointed card will be placed.
      * It also checks that every corner the PlayableAreaCard is going to cover, is a visible corner.

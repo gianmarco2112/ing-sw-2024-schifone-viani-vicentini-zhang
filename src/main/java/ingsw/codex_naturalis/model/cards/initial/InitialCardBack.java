@@ -5,11 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
-import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.NoCalcPointsStrategy;
-import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners.SimpleCoverCornersStrategy;
+import ingsw.codex_naturalis.model.cards.PlayableSide;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols.PermanentResourcesGetSymbolsStrategy;
-import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable.SimpleIsPlayableStrategy;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.*;
@@ -19,7 +16,7 @@ import java.util.*;
  * Each card could contain (or not) Resources in the corners
  * In the center there is a list of Permanent Resources
  */
-public class InitialCardBack extends PlayerAreaCard {
+public class InitialCardBack extends PlayableSide {
 
     /**
      * The permanents resources

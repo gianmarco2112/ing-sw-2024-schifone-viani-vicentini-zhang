@@ -5,7 +5,7 @@ package ingsw.codex_naturalis.model.cards.objective;
  * An objective card gives points for each objective achieved
  * The objective can be: to have a certain number of symbols on player's area or to compose a certain pattern with cards
  * The patterns can be two type: an L or a diagonal.
- * It is not necessary to have an attribute to represent the color of the PlayerAreaCard, because we can know it from
+ * It is not necessary to have an attribute to represent the color of the PlayableSide, because we can know it from
  * the kingdom in which it belongs to.
  * Finally, ObjectiveCard has an interface that call the right algorithms at runtime.
  */

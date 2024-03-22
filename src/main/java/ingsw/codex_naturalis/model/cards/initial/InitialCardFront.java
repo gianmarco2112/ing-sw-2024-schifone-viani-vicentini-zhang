@@ -5,11 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.cards.PlayableSide;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols.CornerResourcesGetSymbolsStrategy;
-import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.NoCalcPointsStrategy;
-import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners.SimpleCoverCornersStrategy;
-import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable.SimpleIsPlayableStrategy;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 /**
@@ -17,11 +14,11 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
  * Each card contains all the 4 Resources (one per corner)
  * There isn't any central resource
  */
-public class InitialCardFront extends PlayerAreaCard {
+public class InitialCardFront extends PlayableSide {
 
     /**
      * Constructor
-     * @param kingdom (this attribute is inherited from PlayerAreaCard but not used)
+     * @param kingdom (this attribute is inherited from PlayableSide but not used)
      * @param topLeftCorner (could contain Resources or Objects)
      * @param topRightCorner (could contain Resources or Objects)
      * @param bottomLeftCorner (could contain Resources or Objects)

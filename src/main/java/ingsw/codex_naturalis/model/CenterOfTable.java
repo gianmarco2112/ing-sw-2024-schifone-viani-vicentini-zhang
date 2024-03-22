@@ -1,8 +1,6 @@
 package ingsw.codex_naturalis.model;
 
-import ingsw.codex_naturalis.model.cards.HandCard;
 import ingsw.codex_naturalis.model.cards.gold.GoldCard;
-import ingsw.codex_naturalis.model.cards.gold.GoldCardBack;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.resource.ResourceCard;
 

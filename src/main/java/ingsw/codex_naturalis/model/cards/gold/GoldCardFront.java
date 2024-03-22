@@ -6,13 +6,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
-import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
-import  ingsw.codex_naturalis.model.cards.gold.GoldCardFrontCorners;
-import  ingsw.codex_naturalis.model.cards.gold.GoldCardFrontObject;
+import ingsw.codex_naturalis.model.cards.HandPlayableSide;
 
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols.CornerResourcesGetSymbolsStrategy;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable.RequirementsIsPlayableStrategy;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.SimpleCalcPointsStrategy;
@@ -37,7 +34,7 @@ import java.util.*;
         @Type(value = GoldCardFrontCorners.class, name = "corners"),
         @Type(value = GoldCardFrontObject.class, name = "object")
 })
-public class GoldCardFront extends HandCardPlayerAreaCard {
+public class GoldCardFront extends HandPlayableSide {
 
     /**
      * The resource requirements

@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.HandCard;
-import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.cards.HandPlayableCard;
+import ingsw.codex_naturalis.model.cards.HandPlayableSide;
 
 /**
  * GoldCard's class
@@ -22,7 +21,7 @@ import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
  * PlayerArea when the GOldCard is placed)
  *
  */
-public class GoldCard extends HandCard {
+public class GoldCard extends HandPlayableCard {
 
     private GoldCardFront front;
     private GoldCardBack back;
@@ -50,12 +49,12 @@ public class GoldCard extends HandCard {
     }
 
     @Override
-    public HandCardPlayerAreaCard getHandCardPlayerAreaCardFront() {
+    public HandPlayableSide getHandCardPlayerAreaCardFront() {
         return front;
     }
 
     @Override
-    public HandCardPlayerAreaCard getHandCardPlayerAreaCardBack() {
+    public HandPlayableSide getHandCardPlayerAreaCardBack() {
         return back;
     }
 

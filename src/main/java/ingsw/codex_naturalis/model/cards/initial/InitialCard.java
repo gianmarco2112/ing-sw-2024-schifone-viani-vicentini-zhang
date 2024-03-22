@@ -3,10 +3,8 @@ package ingsw.codex_naturalis.model.cards.initial;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.HandCard;
 import ingsw.codex_naturalis.model.cards.PlayableCard;
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.cards.PlayableSide;
 
 /**
  * InitialCard's class
@@ -44,11 +42,11 @@ public class InitialCard extends PlayableCard {
         return back;
     }
 
-    public PlayerAreaCard getPlayerAreaCardFront() {
+    public PlayableSide getPlayerAreaCardFront() {
         return front;
     }
 
-    public PlayerAreaCard getPlayerAreaCardBack() {
+    public PlayableSide getPlayerAreaCardBack() {
         return back;
     }
 }

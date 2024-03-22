@@ -1,12 +1,11 @@
 package ingsw.codex_naturalis.model;
 
-import ingsw.codex_naturalis.model.cards.HandCard;
-import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
+import ingsw.codex_naturalis.model.cards.HandPlayableCard;
+import ingsw.codex_naturalis.model.cards.HandPlayableSide;
 import ingsw.codex_naturalis.model.cards.PlayableCard;
-import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+import ingsw.codex_naturalis.model.cards.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
-import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.*;
 
@@ -28,7 +27,7 @@ public class Player {
      * It will contain two resource cards and a gold card at the start.
      * During the game, it will contain from two to three resource/golden cards.
      */
-    private List<HandCard> hand;
+    private List<HandPlayableCard> hand;
 
     private PlayerArea playerArea;
 
@@ -59,7 +58,7 @@ public class Player {
      * Method to play the initial card
      */
     public void playInitialCard(){
-        PlayerAreaCard sideCard;
+        PlayableSide sideCard;
         if (initialCard.isShowingFront()) {
             sideCard = initialCard.getPlayerAreaCardFront();
         } else {
@@ -81,8 +80,8 @@ public class Player {
      * @param x
      * @param y
      */
-    public void playCard(HandCard card, int x, int y) {
-        HandCardPlayerAreaCard sideCard;
+    public void playCard(HandPlayableCard card, int x, int y) {
+        HandPlayableSide sideCard;
         if (card.isShowingFront()) {
             sideCard = card.getHandCardPlayerAreaCardFront();
         } else {
@@ -99,36 +98,36 @@ public class Player {
     }
 
     public void drawFromResourceCardsDeck() {
-        HandCard card = centerOfTable.removeFromResourceCardsDeck();
+        HandPlayableCard card = centerOfTable.removeFromResourceCardsDeck();
         addCardToHand(card);
         card.drawn(playerArea);
     }
     public void drawFromGoldCardsDeck() {
-        HandCard card = centerOfTable.removeFromGoldCardsDeck();
+        HandPlayableCard card = centerOfTable.removeFromGoldCardsDeck();
         addCardToHand(card);
         card.drawn(playerArea);
     }
     public void drawFirstFromRevealedResourceCards() {
-        HandCard card = centerOfTable.removeFirstFromRevealedResourceCards();
+        HandPlayableCard card = centerOfTable.removeFirstFromRevealedResourceCards();
         addCardToHand(card);
         card.drawn(playerArea);
     }
     public void drawLastFromRevealedResourceCards() {
-        HandCard card = centerOfTable.removeLastFromRevealedResourceCards();
+        HandPlayableCard card = centerOfTable.removeLastFromRevealedResourceCards();
         addCardToHand(card);
         card.drawn(playerArea);
     }
     public void drawFirstFromRevealedGoldCards() {
-        HandCard card = centerOfTable.removeFirstFromRevealedGoldCards();
+        HandPlayableCard card = centerOfTable.removeFirstFromRevealedGoldCards();
         addCardToHand(card);
         card.drawn(playerArea);
     }
     public void drawLastFromRevealedGoldCards() {
-        HandCard card = centerOfTable.removeLastFromRevealedGoldCards();
+        HandPlayableCard card = centerOfTable.removeLastFromRevealedGoldCards();
         addCardToHand(card);
         card.drawn(playerArea);
     }
-    private void addCardToHand(HandCard card){
+    private void addCardToHand(HandPlayableCard card){
         hand.add(card);
     }
 

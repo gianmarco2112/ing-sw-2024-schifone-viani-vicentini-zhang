@@ -2,14 +2,11 @@ package ingsw.codex_naturalis.model.cards;
 
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.CalcPointsStrategy;
-import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners.CoverCornersStrategy;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols.GetSymbolsStrategy;
-import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable.IsPlayableStrategy;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 /**
- * PlayerAreaCard's class
+ * PlayableSide's class
  * This is an abstract class that represents the common methods and attributes of the cards
  * that a player could use in his PlayerArea (each player would have in it 1 initialCard
  * and an undefined number of resourceCards and goldCards) or have in his hand (in this
@@ -21,7 +18,7 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
  * when it is used.
  *
  */
-public abstract class PlayerAreaCard {
+public abstract class PlayableSide {
 
     /**
      * Kingdom
@@ -57,7 +54,7 @@ public abstract class PlayerAreaCard {
      * @param bottomRightCorner of the card
      * @param bottomLeftCorner of the card
      */
-    public PlayerAreaCard(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner){
+    public PlayableSide(Symbol kingdom, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner){
         this.kingdom = kingdom;
         this.topLeftCorner = topLeftCorner;
         this.topRightCorner = topRightCorner;

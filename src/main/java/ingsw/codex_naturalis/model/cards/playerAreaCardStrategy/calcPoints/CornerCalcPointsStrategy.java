@@ -1,21 +1,22 @@
 package ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints;
 
 import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
+
+import java.util.List;
 
 public class CornerCalcPointsStrategy implements CalcPointsStrategy{
 
     private PlayerArea playerArea;
-    private int x;
-    private int y;
+    private HandCardPlayerAreaCard handCardPlayerAreaCard;
 
     private final int points;
 
 
-    public CornerCalcPointsStrategy(PlayerArea playerArea, int x, int y, int points){
+    public CornerCalcPointsStrategy(PlayerArea playerArea, HandCardPlayerAreaCard handCardPlayerAreaCard, int points){
         this.playerArea = playerArea;
-        this.x = x;
-        this.y = y;
+        this.handCardPlayerAreaCard = handCardPlayerAreaCard;
         this.points = points;
     }
 
@@ -23,6 +24,9 @@ public class CornerCalcPointsStrategy implements CalcPointsStrategy{
     @Override
     public void run(){
 
+        List<Integer> coordinates = playerArea.getCoordinatesOfCard(handCardPlayerAreaCard);
+        int x = coordinates.getFirst();
+        int y = coordinates.getLast();
         int cornersCovered = 0;
 
         if (playerArea.containsCardOnCoordinates(x-1,y+1)){

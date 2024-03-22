@@ -46,10 +46,7 @@ public abstract class PlayerAreaCard {
     private Corner bottomRightCorner;
 
 
-    private IsPlayableStrategy isPlayableStrategy;
-    private CoverCornersStrategy coverCornersStrategy;
     private GetSymbolsStrategy getSymbolsStrategy;
-    private CalcPointsStrategy calcPointsStrategy;
 
 
     /**
@@ -79,37 +76,7 @@ public abstract class PlayerAreaCard {
     public Corner getBottomLeftCorner() { return bottomLeftCorner; }
     public Corner getBottomRightCorner() { return bottomRightCorner; }
 
-    public void setIsPlayableStrategy(IsPlayableStrategy isPlayableStrategy) { this.isPlayableStrategy = isPlayableStrategy; }
-    public void setCoverCornersStrategy(CoverCornersStrategy coverCornersStrategy) { this.coverCornersStrategy = coverCornersStrategy; }
     public void setGetSymbolsStrategy(GetSymbolsStrategy getSymbolsStrategy) { this.getSymbolsStrategy = getSymbolsStrategy; }
-    public void setCalcPointsStrategy(CalcPointsStrategy calcPointsStrategy) { this.calcPointsStrategy = calcPointsStrategy; }
-
-
-    /**
-     * This method is called when a player wants to play a card in a certain position into his PlayerArea.
-     * It verifies if the pointed PlayerAreaCard is placeable in the area on coordinates x and y.
-     * It checks that there isn't a card already placed in those coordinates and that there's at least
-     * one card on which the pointed card will be placed.
-     * It also checks that every corner the PlayableAreaCard is going to cover, is a visible corner.
-     * @param x (cartesian coordinate x of the position where the player wants to place the card)
-     * @param y (cartesian coordinate y of the position where the player wants to place the card)
-     * @return true (if the card is playable in that position),
-     * false (if the card isn't playable in that position)
-     */
-    public Boolean isPlayable(int x, int y){
-        return isPlayableStrategy.run(x,y);
-    }
-
-    /**
-     * This method is called when a player wants to play a card into his PlayerArea.
-     * It changes the attributes of the corners of the card is going to cover in order to
-     * make them actually covered and to remove the symbols from the symbol count of the player.
-     * @param x (cartesian coordinate x of the position where the player wants to place the card)
-     * @param y (cartesian coordinate y of the position where the player wants to place the card)
-     */
-    public void coverCorners(int x, int y){
-        coverCornersStrategy.run(x,y);
-    }
 
     /**
      * This method is called when a player successfully plays a card into his PlayerArea.
@@ -120,12 +87,5 @@ public abstract class PlayerAreaCard {
         getSymbolsStrategy.run();
     }
 
-    /**
-     * This method calculates the number of points given by the card
-     * */
-    public void calcPoints(){
-        calcPointsStrategy.run();
-    }
-
-    public abstract void played(PlayerArea playerArea, int x, int y);
+    public abstract void played(PlayerArea playerArea);
 }

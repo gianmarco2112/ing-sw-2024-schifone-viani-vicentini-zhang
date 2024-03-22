@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.CenterOfTable;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.HandCard;
+import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
 
 /**
@@ -40,12 +41,12 @@ public class ResourceCard extends HandCard {
     }
 
     @Override
-    public PlayerAreaCard getPlayerAreaCardFront() {
+    public HandCardPlayerAreaCard getHandCardPlayerAreaCardFront() {
         return front;
     }
 
     @Override
-    public PlayerAreaCard getPlayerAreaCardBack() {
+    public HandCardPlayerAreaCard getHandCardPlayerAreaCardBack() {
         return back;
     }
 

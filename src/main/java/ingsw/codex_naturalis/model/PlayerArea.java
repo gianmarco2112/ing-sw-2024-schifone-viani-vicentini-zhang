@@ -213,4 +213,13 @@ public class PlayerArea {
     public void setCardOnCoordinates(PlayerAreaCard card, int x, int y){
         area.put(new ArrayList<>(List.of(x,y)), card);
     }
+
+    public List<Integer> getCoordinatesOfCard(PlayerAreaCard card){
+        for (Map.Entry<List<Integer>, PlayerAreaCard> entry : area.entrySet()) {
+            if (entry.getValue() == card) {
+                return entry.getKey();
+            }
+        }
+        return new ArrayList<>();
+    }
 }

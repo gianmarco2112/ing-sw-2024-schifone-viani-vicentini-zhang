@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.model;
 
 import ingsw.codex_naturalis.model.cards.HandCard;
+import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
 import ingsw.codex_naturalis.model.cards.PlayableCard;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
@@ -65,7 +66,7 @@ public class Player {
             sideCard = initialCard.getPlayerAreaCardBack();
         }
         playerArea.setCardOnCoordinates(sideCard, 0, 0);
-        sideCard.played(playerArea, 0, 0);
+        sideCard.played(playerArea);
         sideCard.getSymbols();
         initialCard = null;
     }
@@ -81,15 +82,15 @@ public class Player {
      * @param y
      */
     public void playCard(HandCard card, int x, int y) {
-        PlayerAreaCard sideCard;
+        HandCardPlayerAreaCard sideCard;
         if (card.isShowingFront()) {
-            sideCard = card.getPlayerAreaCardFront();
+            sideCard = card.getHandCardPlayerAreaCardFront();
         } else {
-            sideCard = card.getPlayerAreaCardBack();
+            sideCard = card.getHandCardPlayerAreaCardBack();
         }
         if (sideCard.isPlayable(x,y)) {
             playerArea.setCardOnCoordinates(sideCard, x, y);
-            sideCard.played(playerArea, x, y);
+            sideCard.played(playerArea);
             sideCard.coverCorners(x,y);
             sideCard.getSymbols();
             sideCard.calcPoints();

@@ -30,16 +30,4 @@ public abstract class PlayableCard {
     public void showBack(){
         showingFront = false;
     }
-
-    /**
-     * Front getter
-     * @return
-     */
-    public abstract PlayerAreaCard getPlayerAreaCardFront();
-
-    /**
-     * Back getter
-     * @return
-     */
-    public abstract PlayerAreaCard getPlayerAreaCardBack();
 }

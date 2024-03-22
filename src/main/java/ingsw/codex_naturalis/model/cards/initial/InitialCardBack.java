@@ -60,11 +60,9 @@ public class InitialCardBack extends PlayerAreaCard {
     /**
      * The back side of the initial card has been played
      * @param playerArea The player area that now has the initial card
-     * @param x Coordinate x on the area
-     * @param y Coordinate y on the area
      */
     @Override
-    public void played(PlayerArea playerArea, int x, int y){
+    public void played(PlayerArea playerArea){
         setGetSymbolsStrategy(new PermanentResourcesGetSymbolsStrategy(playerArea, resources));
     }
 }

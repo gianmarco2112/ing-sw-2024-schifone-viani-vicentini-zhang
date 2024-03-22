@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.SimpleCalcPointsStrategy;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners.SimpleCoverCornersStrategy;
@@ -17,7 +18,7 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
  * Each card could contain Resources or Objects in the Corners
  * There isn't any central resource
  */
-public class ResourceCardFront extends PlayerAreaCard {
+public class ResourceCardFront extends HandCardPlayerAreaCard {
 
     /**
      * The points given to the Player by the card when placed into the PlayerArea
@@ -65,11 +66,9 @@ public class ResourceCardFront extends PlayerAreaCard {
     /**
      * The front side of the resource card has been played
      * @param playerArea The player area that now has the resource card
-     * @param x Coordinate x on the area
-     * @param y Coordinate y on the area
      */
     @Override
-    public void played(PlayerArea playerArea, int x, int y){
+    public void played(PlayerArea playerArea){
         setCoverCornersStrategy(new SimpleCoverCornersStrategy(playerArea));
         setGetSymbolsStrategy(new CornerResourcesGetSymbolsStrategy(playerArea, getTopLeftCorner(), getTopRightCorner(), getBottomLeftCorner(), getBottomRightCorner()));
         setCalcPointsStrategy(new SimpleCalcPointsStrategy(playerArea, points));

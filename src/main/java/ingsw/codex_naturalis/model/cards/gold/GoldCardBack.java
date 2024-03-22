@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
 import ingsw.codex_naturalis.model.cards.PlayerAreaCard;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints.NoCalcPointsStrategy;
 import ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols.PermanentResourceGetSymbolsStrategy;
@@ -16,7 +17,7 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
  * The back side of the gold card
  * Each card contains 1 Resource in the center and has all the 4 corners empty
  */
-public class GoldCardBack extends PlayerAreaCard {
+public class GoldCardBack extends HandCardPlayerAreaCard {
 
     /**
      * Permanent resource (in the centre of the card)
@@ -66,11 +67,9 @@ public class GoldCardBack extends PlayerAreaCard {
     /**
      * The back side of the gold card has been played
      * @param playerArea The player area that now has the gold card
-     * @param x Coordinate x on the area
-     * @param y Coordinate y on the area
      */
     @Override
-    public void played(PlayerArea playerArea, int x, int y){
+    public void played(PlayerArea playerArea){
         setCoverCornersStrategy(new SimpleCoverCornersStrategy(playerArea));
         setGetSymbolsStrategy(new PermanentResourceGetSymbolsStrategy(playerArea, resource));
         setCalcPointsStrategy(new NoCalcPointsStrategy());

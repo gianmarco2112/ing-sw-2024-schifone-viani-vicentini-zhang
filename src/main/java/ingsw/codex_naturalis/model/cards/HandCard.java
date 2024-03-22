@@ -17,4 +17,16 @@ public abstract class HandCard extends PlayableCard{
      * @param playerArea The player that has drawn the card
      */
     public abstract void drawn(PlayerArea playerArea);
+
+    /**
+     * Front getter
+     * @return
+     */
+    public abstract HandCardPlayerAreaCard getHandCardPlayerAreaCardFront();
+
+    /**
+     * Back getter
+     * @return
+     */
+    public abstract HandCardPlayerAreaCard getHandCardPlayerAreaCardBack();
 }

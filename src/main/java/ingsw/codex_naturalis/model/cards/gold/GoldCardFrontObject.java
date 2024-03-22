@@ -69,11 +69,9 @@ public class GoldCardFrontObject extends GoldCardFront {
     /**
      * The front side of the gold card has been played
      * @param playerArea The player area that now has the gold card
-     * @param x Coordinate x on the area
-     * @param y Coordinate y on the area
      */
     @Override
-    public void played(PlayerArea playerArea, int x, int y){
+    public void played(PlayerArea playerArea){
         setCoverCornersStrategy(new SimpleCoverCornersStrategy(playerArea));
         setGetSymbolsStrategy(new CornerResourcesGetSymbolsStrategy(playerArea, getTopLeftCorner(), getTopRightCorner(), getBottomLeftCorner(), getBottomRightCorner()));
         setCalcPointsStrategy(new ObjectCalcPointsStrategy(playerArea, object, getPoints()));

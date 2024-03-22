@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
+import ingsw.codex_naturalis.model.cards.HandCardPlayerAreaCard;
 import  ingsw.codex_naturalis.model.cards.gold.GoldCardFrontCorners;
 import  ingsw.codex_naturalis.model.cards.gold.GoldCardFrontObject;
 
@@ -36,7 +37,7 @@ import java.util.*;
         @Type(value = GoldCardFrontCorners.class, name = "corners"),
         @Type(value = GoldCardFrontObject.class, name = "object")
 })
-public class GoldCardFront extends PlayerAreaCard {
+public class GoldCardFront extends HandCardPlayerAreaCard {
 
     /**
      * The resource requirements
@@ -102,11 +103,9 @@ public class GoldCardFront extends PlayerAreaCard {
     /**
      * The front side of the gold card has been played
      * @param playerArea The player area that now has the gold card
-     * @param x Coordinate x on the area
-     * @param y Coordinate y on the area
      */
     @Override
-    public void played(PlayerArea playerArea, int x, int y){
+    public void played(PlayerArea playerArea){
         setCoverCornersStrategy(new SimpleCoverCornersStrategy(playerArea));
         setGetSymbolsStrategy(new CornerResourcesGetSymbolsStrategy(playerArea, getTopLeftCorner(), getTopRightCorner(), getBottomLeftCorner(), getBottomRightCorner()));
         setCalcPointsStrategy(new SimpleCalcPointsStrategy(playerArea, points));

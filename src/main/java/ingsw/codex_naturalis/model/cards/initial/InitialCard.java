@@ -44,12 +44,10 @@ public class InitialCard extends PlayableCard {
         return back;
     }
 
-    @Override
     public PlayerAreaCard getPlayerAreaCardFront() {
         return front;
     }
 
-    @Override
     public PlayerAreaCard getPlayerAreaCardBack() {
         return back;
     }

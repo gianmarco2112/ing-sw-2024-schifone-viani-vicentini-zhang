@@ -31,7 +31,7 @@ public class Player {
 
     private PlayerArea playerArea;
 
-    private List<Message> messages;
+    private List<Message> sentMessages;
 
     private List<Player> players;
 
@@ -39,6 +39,8 @@ public class Player {
     public Player(String nickname, Color color) {
         this.nickname = nickname;
         this.color = color;
+        this.initialCard = null;
+        this.sentMessages = new ArrayList<>();
     }
 
 
@@ -132,6 +134,6 @@ public class Player {
     }
 
     public void writeMessage(String content, List<Player> receivers){
-        messages.add(new Message(content, receivers));
+        sentMessages.add(new Message(content, receivers));
     }
 }

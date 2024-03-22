@@ -38,13 +38,12 @@ public class PatternObjectiveCard extends ObjectiveCard{
     /**
      * constructor
      * @param points points that
-     * @param calcExtraPointsStrategy invokes the right algorithms at runtime
      * @param pattern reference to the HashMap that contains the pattern
      * @param maxRow max row of the pattern
      * @param maxColumn max column of the pattern
      */
-    public PatternObjectiveCard(int points, CalcExtraPointsStrategy calcExtraPointsStrategy, HashMap<List<Integer>,Symbol> pattern, int maxRow, int maxColumn, int minRow, int minColumn){
-        super(points, calcExtraPointsStrategy);
+    public PatternObjectiveCard(int points, HashMap<List<Integer>,Symbol> pattern, int maxRow, int maxColumn, int minRow, int minColumn){
+        super(points);
         this.pattern = pattern;
         this.maxRow = maxRow;
         this.maxColumn = maxColumn;

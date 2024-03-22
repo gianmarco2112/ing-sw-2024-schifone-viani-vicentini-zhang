@@ -15,17 +15,17 @@ public class SymbolsCalcExtraPointsStrategy implements CalcExtraPointsStrategy {
     /**
      * Attribute PlayerArea: the algorithm access the Player's area and count Symbols required for extra points
      */
-    private PlayerArea playerArea;
+    private List<PlayerArea> playerAreas;
 
 
     /**
      * Constructor
      * @param symbolsObjectiveCard SymbolObjectCard
-     * @param playerArea PlayerArea
+     * @param playerAreas PlayerArea
      */
-    public SymbolsCalcExtraPointsStrategy(SymbolsObjectiveCard symbolsObjectiveCard, PlayerArea playerArea){
+    public SymbolsCalcExtraPointsStrategy(SymbolsObjectiveCard symbolsObjectiveCard, List<PlayerArea> playerAreas){
         this.symbolsObjectiveCard = symbolsObjectiveCard;
-        this.playerArea = playerArea;
+        this.playerAreas = playerAreas;
     }
 
 
@@ -34,13 +34,15 @@ public class SymbolsCalcExtraPointsStrategy implements CalcExtraPointsStrategy {
      */
     @Override
     public void run() {
-        List<Integer> count = new ArrayList<>();
-        Set<Symbol> symbols = symbolsObjectiveCard.getKeySet();
-        for (Symbol sb : symbols){
-            if (symbolsObjectiveCard.getNumOfSymbol(sb) <= playerArea.getNumOfSymbol(sb)){
-                count.add(playerArea.getNumOfSymbol(sb) / symbolsObjectiveCard.getNumOfSymbol(sb));
+        for (int i=0; i<playerAreas.size(); i++){
+            List<Integer> count = new ArrayList<>();
+            Set<Symbol> symbols = symbolsObjectiveCard.getKeySet();
+            for (Symbol sb : symbols){
+                if (symbolsObjectiveCard.getNumOfSymbol(sb) <= playerAreas.get(i).getNumOfSymbol(sb)){
+                    count.add(playerAreas.get(i).getNumOfSymbol(sb) / symbolsObjectiveCard.getNumOfSymbol(sb));
+                }
             }
+            playerAreas.get(i).setExtraPoints(playerAreas.get(i).getExtraPoints() + symbolsObjectiveCard.getPoints() * Collections.min(count));
         }
-        playerArea.setExtraPoints(playerArea.getExtraPoints() + symbolsObjectiveCard.getPoints() * Collections.min(count));
     }
 }

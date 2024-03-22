@@ -24,7 +24,7 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
      * @param calcExtraPointsStrategy invokes the right algorithms at runtime
      */
     public SymbolsObjectiveCard(HashMap<Symbol,Integer> symbolsForPoints, int points, CalcExtraPointsStrategy calcExtraPointsStrategy){
-        super(points, calcExtraPointsStrategy);
+        super(points);
         this.symbolsForPoints = symbolsForPoints;
     }
 

@@ -15,6 +15,7 @@ public abstract class ObjectiveCard {
      * attribute points represents the points that objective card gives for each objective achieved
      */
     private final int points;
+
     /**
      * attribute patternstrategy is used to call at runtime the right strategy to count extra points
      */
@@ -24,13 +25,15 @@ public abstract class ObjectiveCard {
     /**
      * Constructor
      * @param points points of ObjectiveCard
-     * @param calcExtraPointsStrategy the patter
      */
-    public ObjectiveCard(int points, CalcExtraPointsStrategy calcExtraPointsStrategy){
+    public ObjectiveCard(int points){
         this.points = points;
-        this.calcExtraPointsStrategy = calcExtraPointsStrategy;
     }
 
+
+    public void setCalcExtraPointsStrategy(CalcExtraPointsStrategy calcExtraPointsStrategy) {
+        this.calcExtraPointsStrategy = calcExtraPointsStrategy;
+    }
 
     /**
      * Invoke at runtime the right algorithm depending on the type of card the player has.

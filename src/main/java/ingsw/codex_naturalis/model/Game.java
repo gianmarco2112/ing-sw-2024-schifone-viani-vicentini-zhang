@@ -1,14 +1,9 @@
 package ingsw.codex_naturalis.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import ingsw.codex_naturalis.model.cards.gold.GoldCard;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
-import ingsw.codex_naturalis.model.cards.initial.InitialCardBack;
-import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
-import ingsw.codex_naturalis.model.cards.resource.ResourceCard;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,11 +15,7 @@ public class Game {
 
     private Player currentPlayer;
 
-
-    public static final String resourceCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/resourceCards.json";
-    public static final String goldCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/goldCards.json";
     public static final String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
-    public static final String objectiveCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/objectiveCards.json";
     private List<InitialCard> initialCardsDeck;
 
     private CenterOfTable centerOfTable;
@@ -49,7 +40,6 @@ public class Game {
         } catch (IOException e){
             System.out.println("ERROR while opening json file");
         }
-
     }
 
     public void shuffleInitialCardDeck(){

@@ -19,22 +19,22 @@ public class PlayerArea {
     /**
      * area max row
      */
-    private int maxRow;
+    private int maxX;
 
     /**
      * area max column
      */
-    private int maxColumn;
+    private int maxY;
 
     /**
      * area min row
      */
-    private int minRow;
+    private int minX;
 
     /**
      * area max column
      */
-    private int minColumn;
+    private int minY;
 
     /**
      * The count of the symbols of the player
@@ -60,14 +60,10 @@ public class PlayerArea {
     /**
      * Constructor
      */
-    public PlayerArea(int maxRow, int maxColumn, int minRow, int minColumn){
+    public PlayerArea(){
         this.area = new HashMap<>();
         this.numOfSymbols = new HashMap<>();
         this.points = 0;
-        this.maxRow = maxRow;
-        this.maxColumn = maxColumn;
-        this.minRow = minRow;
-        this.minColumn = minColumn;
     }
 
 
@@ -75,45 +71,45 @@ public class PlayerArea {
      * Max row getter
      * @return Max row
      */
-    public int getMaxRow() { return maxRow; }
+    public int getMaxX() { return maxX; }
     /**
      * Max column getter
      * @return
      */
-    public int getMaxColumn() { return maxColumn; }
+    public int getMaxY() { return maxY; }
     /**
      * Min row getter
      * @return
      */
-    public int getMinRow() { return minRow; }
+    public int getMinX() { return minX; }
     /**
      * Min column getter
      * @return
      */
-    public int getMinColumn() { return minColumn; }
+    public int getMinY() { return minY; }
 
     /**
      * Max row setter
-     * @param maxRow Max row
+     * @param maxX Max row
      */
-    public void setMaxRow(int maxRow) { this.maxRow = maxRow; }
+    public void setMaxX(int maxX) { this.maxX = maxX; }
     /**
      * Max column setter
-     * @param maxColumn Max column
+     * @param maxY Max column
      */
-    public void setMaxColumn(int maxColumn) { this.maxColumn = maxColumn; }
+    public void setMaxY(int maxY) { this.maxY = maxY; }
 
     /**
      * Min row setter
-     * @param minRow Min row
+     * @param minX Min row
      */
-    public void setMinRow(int minRow) { this.minRow = minRow; }
+    public void setMinX(int minX) { this.minX = minX; }
 
     /**
      * Min column setter
-     * @param minColumn Min column
+     * @param minY Min column
      */
-    public void setMinColumn(int minColumn) { this.minColumn = minColumn; }
+    public void setMinY(int minY) { this.minY = minY; }
 
     /**
      * Points getter
@@ -221,5 +217,13 @@ public class PlayerArea {
             }
         }
         return new ArrayList<>();
+    }
+
+    public HashMap<List<Integer>,Boolean> getAreaToMark(){
+        HashMap<List<Integer>, Boolean> areaToMark = new HashMap<>();
+        for (List<Integer> key : area.keySet()) {
+            areaToMark.put(key, false);
+        }
+        return areaToMark;
     }
 }

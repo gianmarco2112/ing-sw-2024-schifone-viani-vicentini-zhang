@@ -2,6 +2,7 @@ package ingsw.codex_naturalis.model.cards.objective;
 
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,37 +19,37 @@ public class PatternObjectiveCard extends ObjectiveCard{
     /**
      * pattern max row
      */
-    private final int maxRow;
+    private final int maxX;
 
     /**
      * pattern max column
      */
-    private final int maxColumn;
+    private final int maxY;
 
     /**
      * pattern min row
      */
-    private final int minRow;
+    private final int minX;
 
     /**
      * pattern max column
      */
-    private final int minColumn;
+    private final int minY;
 
     /**
      * constructor
      * @param points points that
      * @param pattern reference to the HashMap that contains the pattern
-     * @param maxRow max row of the pattern
-     * @param maxColumn max column of the pattern
+     * @param maxX max row of the pattern
+     * @param maxY max column of the pattern
      */
-    public PatternObjectiveCard(int points, HashMap<List<Integer>,Symbol> pattern, int maxRow, int maxColumn, int minRow, int minColumn){
+    public PatternObjectiveCard(int points, HashMap<List<Integer>,Symbol> pattern, int maxX, int maxY, int minX, int minY){
         super(points);
         this.pattern = pattern;
-        this.maxRow = maxRow;
-        this.maxColumn = maxColumn;
-        this.minRow = minRow;
-        this.minColumn = minColumn;
+        this.maxX = maxX;
+        this.maxY = maxY;
+        this.minX = minX;
+        this.minY = minY;
     }
 
 
@@ -56,40 +57,35 @@ public class PatternObjectiveCard extends ObjectiveCard{
      * Max row getter
      * @return Max row
      */
-    public int getMaxRow() {
-        return maxRow;
+    public int getMaxX() {
+        return maxX;
     }
 
     /**
      * Max column getter
      * @return
      */
-    public int getMaxColumn() {
-        return maxColumn;
+    public int getMaxY() {
+        return maxY;
     }
 
     /**
      * Min row getter
      * @return
      */
-    public int getMinRow() {
-        return minRow;
+    public int getMinX() {
+        return minX;
     }
 
     /**
      * Min column getter
      * @return
      */
-    public int getMinColumn() {
-        return minColumn;
+    public int getMinY() {
+        return minY;
     }
 
-    /**
-     * getter
-     * @param coordinates from which I get the symbol from the pattern
-     * @return the symbol in the coordinates in the HashMap
-     */
-    public Symbol getSymbolAt(List<Integer> coordinates){
-        return pattern.get(coordinates);
+    public Symbol getSymbolAt(int x, int y){
+        return pattern.get(new ArrayList<>(List.of(x,y)));
     }
 }

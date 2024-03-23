@@ -19,8 +19,8 @@ import ingsw.codex_naturalis.model.cards.HandPlayableSide;
  */
 public class ResourceCard extends HandPlayableCard {
 
-    private ResourceCardFront front;
-    private ResourceCardBack back;
+    private final ResourceCardFront front;
+    private final ResourceCardBack back;
 
     @JsonCreator
     public ResourceCard(

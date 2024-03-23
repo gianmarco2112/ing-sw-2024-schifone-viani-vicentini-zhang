@@ -4,7 +4,7 @@ import ingsw.codex_naturalis.model.PlayerArea;
 
 public class SimpleCalcPointsStrategy implements CalcPointsStrategy{
 
-    private PlayerArea playerArea;
+    private final PlayerArea playerArea;
 
     private final int points;
 

@@ -7,7 +7,7 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 public class SimpleCoverCornersStrategy implements CoverCornersStrategy{
 
-    private PlayerArea playerArea;
+    private final PlayerArea playerArea;
 
 
     public SimpleCoverCornersStrategy(PlayerArea playerArea){

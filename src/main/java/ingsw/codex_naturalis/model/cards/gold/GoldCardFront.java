@@ -39,7 +39,7 @@ public class GoldCardFront extends HandPlayableSide {
     /**
      * The resource requirements
      */
-    private HashMap<Symbol, Integer> requirements;
+    private final HashMap<Symbol, Integer> requirements;
     /**
      * The points
      */
@@ -94,7 +94,7 @@ public class GoldCardFront extends HandPlayableSide {
      * @param playerArea The player area that will eventually have the gold card
      */
     public void drawn(PlayerArea playerArea){
-        setIsPlayableStrategy(new RequirementsIsPlayableStrategy(playerArea, requirements));
+        setIsPlayableStrategy(new RequirementsIsPlayableStrategy(playerArea, new HashMap<>(requirements)));
     }
 
     /**

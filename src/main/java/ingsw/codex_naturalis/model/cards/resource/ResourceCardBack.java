@@ -58,11 +58,11 @@ public class ResourceCardBack extends HandPlayableSide {
         return resource;
     }
 
-    @Override
     /**
      * The resource card has been drawn
      * @param playerArea The player area that will have the resource card
      */
+    @Override
     public void drawn(PlayerArea playerArea){
         setIsPlayableStrategy(new SimpleIsPlayableStrategy(playerArea));
     }

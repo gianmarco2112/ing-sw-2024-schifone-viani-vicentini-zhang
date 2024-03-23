@@ -23,8 +23,8 @@ import ingsw.codex_naturalis.model.cards.HandPlayableSide;
  */
 public class GoldCard extends HandPlayableCard {
 
-    private GoldCardFront front;
-    private GoldCardBack back;
+    private final GoldCardFront front;
+    private final GoldCardBack back;
 
     /**
      * Constructor

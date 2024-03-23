@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model.cards.objective;
 
+import ingsw.codex_naturalis.model.PlayerArea;
+
 /**
  * ObjectiveCard's class
  * An objective card gives points for each objective achieved
@@ -19,7 +21,7 @@ public abstract class ObjectiveCard {
     /**
      * attribute patternstrategy is used to call at runtime the right strategy to count extra points
      */
-    private CalcExtraPointsStrategy calcExtraPointsStrategy;
+    protected CalcExtraPointsStrategy calcExtraPointsStrategy;
 
 
     /**
@@ -31,13 +33,10 @@ public abstract class ObjectiveCard {
     }
 
 
-    public void setCalcExtraPointsStrategy(CalcExtraPointsStrategy calcExtraPointsStrategy) {
-        this.calcExtraPointsStrategy = calcExtraPointsStrategy;
-    }
+    public abstract void setCalcExtraPointsStrategy(PlayerArea playerArea);
 
     /**
      * Invoke at runtime the right algorithm depending on the type of card the player has.
-     * @return number of extraPoints
      */
     public void execute(){
         calcExtraPointsStrategy.run();

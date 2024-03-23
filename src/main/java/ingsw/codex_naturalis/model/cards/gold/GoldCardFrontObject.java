@@ -21,7 +21,7 @@ public class GoldCardFrontObject extends GoldCardFront {
     /**
      * The object for the points
      */
-    private Symbol object;
+    private final Symbol object;
 
 
     /**

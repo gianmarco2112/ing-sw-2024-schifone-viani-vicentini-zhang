@@ -8,8 +8,8 @@ import java.util.List;
 
 public class CornerCalcPointsStrategy implements CalcPointsStrategy{
 
-    private PlayerArea playerArea;
-    private HandPlayableSide handPlayableSide;
+    private final PlayerArea playerArea;
+    private final HandPlayableSide handPlayableSide;
 
     private final int points;
 

@@ -23,24 +23,24 @@ public abstract class PlayableSide {
     /**
      * Kingdom
      */
-    private Symbol kingdom;
+    private final Symbol kingdom;
 
     /**
      * Top left corner
      */
-    private Corner topLeftCorner;
+    private final Corner topLeftCorner;
     /**
-     * Top right corenr
+     * Top right corner
      */
-    private Corner topRightCorner;
+    private final Corner topRightCorner;
     /**
      * Bottom left corner
      */
-    private Corner bottomLeftCorner;
+    private final Corner bottomLeftCorner;
     /**
      * Bottom right corner
      */
-    private Corner bottomRightCorner;
+    private final Corner bottomRightCorner;
 
 
     private GetSymbolsStrategy getSymbolsStrategy;
@@ -63,10 +63,7 @@ public abstract class PlayableSide {
     }
 
 
-    /**
-     *
-     * @return
-     */
+
     public Symbol getKingdom() { return kingdom; }
     public Corner getTopLeftCorner(){ return topLeftCorner; }
     public Corner getTopRightCorner() { return topRightCorner; }

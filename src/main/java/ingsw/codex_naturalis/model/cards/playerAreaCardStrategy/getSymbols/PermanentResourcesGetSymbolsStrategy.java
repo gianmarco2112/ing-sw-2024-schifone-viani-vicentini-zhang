@@ -7,8 +7,8 @@ import java.util.*;
 
 public class PermanentResourcesGetSymbolsStrategy implements GetSymbolsStrategy{
 
-    private PlayerArea playerArea;
-    private List<Symbol> resources;
+    private final PlayerArea playerArea;
+    private final List<Symbol> resources;
 
 
     public PermanentResourcesGetSymbolsStrategy(PlayerArea playerArea, List<Symbol> resources){

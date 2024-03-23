@@ -5,6 +5,7 @@ import ingsw.codex_naturalis.model.cards.HandPlayableSide;
 import ingsw.codex_naturalis.model.cards.PlayableCard;
 import ingsw.codex_naturalis.model.cards.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
+import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 
 import java.util.*;
@@ -14,9 +15,9 @@ import java.util.*;
  */
 public class Player {
 
-    private String nickname;
+    private final String nickname;
 
-    private Color color;
+    private final Color color;
 
     private InitialCard initialCard;
 

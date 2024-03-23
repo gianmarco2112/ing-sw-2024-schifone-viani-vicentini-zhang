@@ -5,9 +5,9 @@ import java.util.*;
 
 public class Message {
 
-    private String content;
-    private LocalTime sentTime;
-    private List<Player> receivers;
+    private final String content;
+    private final LocalTime sentTime;
+    private final List<Player> receivers;
 
 
     public Message(String content, List<Player> receivers){

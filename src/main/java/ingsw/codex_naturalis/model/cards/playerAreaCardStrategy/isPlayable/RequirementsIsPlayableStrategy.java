@@ -8,9 +8,9 @@ import java.util.*;
 
 public class RequirementsIsPlayableStrategy implements IsPlayableStrategy{
 
-    private PlayerArea playerArea;
+    private final PlayerArea playerArea;
 
-    private HashMap<Symbol, Integer> requirements;
+    private final HashMap<Symbol, Integer> requirements;
 
 
     public RequirementsIsPlayableStrategy(PlayerArea playerArea, HashMap<Symbol,Integer> requirements){

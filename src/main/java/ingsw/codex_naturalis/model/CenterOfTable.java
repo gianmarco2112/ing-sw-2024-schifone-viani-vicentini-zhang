@@ -73,15 +73,9 @@ public class CenterOfTable {
         return goldCard;
     }
 
-    public void shuffleResourceCardsDeck(){
+    public void shuffleAll(){
         Collections.shuffle(resourceCardsDeck);
-    }
-
-    public void shuffleGoldCardsDeck(){
         Collections.shuffle(goldCardsDeck);
-    }
-
-    public void shuffleObjectiveCardsDeck(){
         Collections.shuffle(objectiveCardsDeck);
     }
 }

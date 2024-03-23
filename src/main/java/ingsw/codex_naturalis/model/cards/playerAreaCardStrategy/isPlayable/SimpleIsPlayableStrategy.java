@@ -5,7 +5,7 @@ import ingsw.codex_naturalis.model.cards.*;
 
 public class SimpleIsPlayableStrategy implements IsPlayableStrategy{
 
-    private PlayerArea playerArea;
+    private final PlayerArea playerArea;
 
 
     public SimpleIsPlayableStrategy(PlayerArea playerArea){

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 public class Corner {
-    private Symbol symbol;
+    private final Symbol symbol;
     private Boolean covered;
 
     @JsonCreator

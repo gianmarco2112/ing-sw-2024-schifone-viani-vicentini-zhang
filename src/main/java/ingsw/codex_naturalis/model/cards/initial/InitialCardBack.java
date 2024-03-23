@@ -21,7 +21,7 @@ public class InitialCardBack extends PlayableSide {
     /**
      * The permanents resources
      */
-    private List<Symbol> resources;
+    private final List<Symbol> resources;
 
     /**
      * Constructor
@@ -60,6 +60,6 @@ public class InitialCardBack extends PlayableSide {
      */
     @Override
     public void played(PlayerArea playerArea){
-        setGetSymbolsStrategy(new PermanentResourcesGetSymbolsStrategy(playerArea, resources));
+        setGetSymbolsStrategy(new PermanentResourcesGetSymbolsStrategy(playerArea, new ArrayList<>(resources)));
     }
 }

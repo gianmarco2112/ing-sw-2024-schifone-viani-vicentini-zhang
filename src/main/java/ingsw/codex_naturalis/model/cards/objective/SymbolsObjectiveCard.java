@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.model.cards.objective;
 
+import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +16,7 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
     /**
      * contains the List of Symbol
      */
-    private HashMap<Symbol,Integer> symbolsForPoints;
+    private final HashMap<Symbol,Integer> symbolsForPoints;
 
 
     /**
@@ -44,5 +46,10 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
      */
     public Set<Symbol> getKeySet() {
         return symbolsForPoints.keySet();
+    }
+
+    @Override
+    public void setCalcExtraPointsStrategy(PlayerArea playerArea) {
+        calcExtraPointsStrategy = new SymbolsCalcExtraPointsStrategy(this, new ArrayList<>(List.of(playerArea)));
     }
 }

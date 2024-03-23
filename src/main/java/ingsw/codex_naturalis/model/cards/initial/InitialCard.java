@@ -16,8 +16,8 @@ import ingsw.codex_naturalis.model.cards.PlayableSide;
  */
 public class InitialCard extends PlayableCard {
 
-    private InitialCardFront front;
-    private InitialCardBack back;
+    private final InitialCardFront front;
+    private final InitialCardBack back;
 
 
     /**

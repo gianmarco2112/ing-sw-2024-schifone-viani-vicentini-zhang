@@ -17,13 +17,13 @@ public abstract class HandPlayableCard extends PlayableCard{
 
     /**
      * Front getter
-     * @return
+     * @return HandPlayableSide
      */
     public abstract HandPlayableSide getHandPlayableFront();
 
     /**
      * Back getter
-     * @return
+     * @return HandPlayableSide
      */
     public abstract HandPlayableSide getHandPlayableBack();
 }

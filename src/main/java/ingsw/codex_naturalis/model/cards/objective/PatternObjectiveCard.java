@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.model.cards.objective;
 
+import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class PatternObjectiveCard extends ObjectiveCard{
 
     /**
      * Max column getter
-     * @return
+     * @return max y
      */
     public int getMaxY() {
         return maxY;
@@ -71,7 +72,7 @@ public class PatternObjectiveCard extends ObjectiveCard{
 
     /**
      * Min row getter
-     * @return
+     * @return min x
      */
     public int getMinX() {
         return minX;
@@ -79,7 +80,7 @@ public class PatternObjectiveCard extends ObjectiveCard{
 
     /**
      * Min column getter
-     * @return
+     * @return min y
      */
     public int getMinY() {
         return minY;
@@ -87,5 +88,10 @@ public class PatternObjectiveCard extends ObjectiveCard{
 
     public Symbol getSymbolAt(int x, int y){
         return pattern.get(new ArrayList<>(List.of(x,y)));
+    }
+
+    @Override
+    public void setCalcExtraPointsStrategy(PlayerArea playerArea) {
+        calcExtraPointsStrategy = new PatternCalcExtraPointsStrategy(this, new ArrayList<>(List.of(playerArea)));
     }
 }

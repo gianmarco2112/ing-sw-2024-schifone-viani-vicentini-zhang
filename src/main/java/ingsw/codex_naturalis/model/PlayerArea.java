@@ -69,22 +69,22 @@ public class PlayerArea {
 
     /**
      * Max row getter
-     * @return Max row
+     * @return max x
      */
     public int getMaxX() { return maxX; }
     /**
      * Max column getter
-     * @return
+     * @return max y
      */
     public int getMaxY() { return maxY; }
     /**
      * Min row getter
-     * @return
+     * @return min x
      */
     public int getMinX() { return minX; }
     /**
      * Min column getter
-     * @return
+     * @return min y
      */
     public int getMinY() { return minY; }
 
@@ -137,6 +137,7 @@ public class PlayerArea {
      */
     public void setObjectiveCard(ObjectiveCard objectiveCard) {
         this.objectiveCard = objectiveCard;
+        objectiveCard.setCalcExtraPointsStrategy(this);
     }
 
     /**
@@ -186,7 +187,7 @@ public class PlayerArea {
 
     /**
      * Decreases by one the count of the given symbol
-     * @param symbol
+     * @param symbol Symbol
      */
     public void decrNumOfSymbol(Symbol symbol){
         numOfSymbols.replace(symbol, getNumOfSymbol(symbol)-1);
@@ -194,7 +195,7 @@ public class PlayerArea {
 
     /**
      * Increases by one the count of the given symbol
-     * @param symbol
+     * @param symbol Symbol
      */
     public void incrNumOfSymbol(Symbol symbol){
         numOfSymbols.replace(symbol, getNumOfSymbol(symbol)+1);

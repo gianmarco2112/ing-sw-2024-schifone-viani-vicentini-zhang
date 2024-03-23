@@ -7,12 +7,12 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 public class CornerResourcesGetSymbolsStrategy implements GetSymbolsStrategy{
 
-    private PlayerArea playerArea;
+    private final PlayerArea playerArea;
 
-    private Corner topLeftCorner;
-    private Corner topRightCorner;
-    private Corner bottomLeftCorner;
-    private Corner bottomRightCorner;
+    private final Corner topLeftCorner;
+    private final Corner topRightCorner;
+    private final Corner bottomLeftCorner;
+    private final Corner bottomRightCorner;
 
 
     public CornerResourcesGetSymbolsStrategy(PlayerArea playerArea, Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner){

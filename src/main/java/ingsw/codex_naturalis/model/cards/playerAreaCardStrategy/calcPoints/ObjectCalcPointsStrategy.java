@@ -5,7 +5,7 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 public class ObjectCalcPointsStrategy implements CalcPointsStrategy{
 
-    private PlayerArea playerArea;
+    private final PlayerArea playerArea;
 
     private final Symbol object;
     private final int points;

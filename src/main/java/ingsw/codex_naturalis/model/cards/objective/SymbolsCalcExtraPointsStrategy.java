@@ -10,12 +10,12 @@ public class SymbolsCalcExtraPointsStrategy implements CalcExtraPointsStrategy {
     /**
      * Attribute SymbolObjectiveCard contains the reference to the specific ObjectiveCard that count symbols for extra points
      */
-    private SymbolsObjectiveCard symbolsObjectiveCard;
+    private final SymbolsObjectiveCard symbolsObjectiveCard;
 
     /**
      * Attribute PlayerArea: the algorithm access the Player's area and count Symbols required for extra points
      */
-    private List<PlayerArea> playerAreas;
+    private final List<PlayerArea> playerAreas;
 
 
     /**
@@ -34,15 +34,15 @@ public class SymbolsCalcExtraPointsStrategy implements CalcExtraPointsStrategy {
      */
     @Override
     public void run() {
-        for (int i=0; i<playerAreas.size(); i++){
+        for (PlayerArea playerArea : playerAreas) {
             List<Integer> count = new ArrayList<>();
             Set<Symbol> symbols = symbolsObjectiveCard.getKeySet();
-            for (Symbol sb : symbols){
-                if (symbolsObjectiveCard.getNumOfSymbol(sb) <= playerAreas.get(i).getNumOfSymbol(sb)){
-                    count.add(playerAreas.get(i).getNumOfSymbol(sb) / symbolsObjectiveCard.getNumOfSymbol(sb));
+            for (Symbol sb : symbols) {
+                if (symbolsObjectiveCard.getNumOfSymbol(sb) <= playerArea.getNumOfSymbol(sb)) {
+                    count.add(playerArea.getNumOfSymbol(sb) / symbolsObjectiveCard.getNumOfSymbol(sb));
                 }
             }
-            playerAreas.get(i).setExtraPoints(playerAreas.get(i).getExtraPoints() + symbolsObjectiveCard.getPoints() * Collections.min(count));
+            playerArea.setExtraPoints(playerArea.getExtraPoints() + symbolsObjectiveCard.getPoints() * Collections.min(count));
         }
     }
 }

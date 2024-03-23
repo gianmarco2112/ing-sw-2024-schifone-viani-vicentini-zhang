@@ -19,7 +19,7 @@ public class Game {
     public static final String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
     private List<InitialCard> initialCardsDeck;
 
-    private CenterOfTable centerOfTable;
+    private CenterOfTable centerOfTable; //ogni Game ha un solo centro del tavolo
 
     public Game() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -34,4 +34,9 @@ public class Game {
     public void shuffleInitialCardsDeck(){
         Collections.shuffle(this.initialCardsDeck);
     }
+
+    //Da valutare, bisogna capire come gestire il centro del tavolo che è comune a tutti i Player e a Game TODO
+    //public CenterOfTable getCenterOfTable(){
+        //return centerOfTable;
+    //}
 }

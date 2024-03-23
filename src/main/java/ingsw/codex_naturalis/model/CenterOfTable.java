@@ -43,6 +43,7 @@ public class CenterOfTable {
         return commonObjectiveCards;
     }
 
+//prima di rimuovere dobbiamo controllare che il deck non sia vuoto oppure lanciamo un'eccezione da fare gestire al Player
     public ResourceCard removeFromResourceCardsDeck(){
         return resourceCardsDeck.removeLast();
     }

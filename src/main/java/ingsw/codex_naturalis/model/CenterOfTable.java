@@ -47,6 +47,7 @@ public class CenterOfTable {
     public ResourceCard removeFromResourceCardsDeck(){
         return resourceCardsDeck.removeLast();
     }
+
     public GoldCard removeFromGoldCardsDeck(){
         return goldCardsDeck.removeLast();
     }

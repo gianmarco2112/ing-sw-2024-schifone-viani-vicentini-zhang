@@ -2,6 +2,7 @@ package ingsw.codex_naturalis.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
+import ingsw.codex_naturalis.model.CenterOfTable;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -40,15 +41,10 @@ public class Game {
         } catch (IOException e){
             System.out.println("ERROR while opening json file");
         }
+        this.centerOfTable = new CenterOfTable();
     }
 
-    public void shuffleInitialCardDeck(){
+    public void shuffleInitialCardsDeck(){
         Collections.shuffle(this.initialCardsDeck);
-    }
-
-    public InitialCard drawInitialCardsDeck(){
-        InitialCard initialCard = this.initialCardsDeck.getFirst();
-        this.initialCardsDeck.removeFirst();
-        return initialCard;
     }
 }

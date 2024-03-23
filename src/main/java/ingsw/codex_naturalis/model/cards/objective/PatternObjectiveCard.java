@@ -91,7 +91,7 @@ public class PatternObjectiveCard extends ObjectiveCard{
     }
 
     @Override
-    public void setCalcExtraPointsStrategy(PlayerArea playerArea) {
-        calcExtraPointsStrategy = new PatternCalcExtraPointsStrategy(this, new ArrayList<>(List.of(playerArea)));
+    public void chosen(PlayerArea playerArea) {
+        setCalcExtraPointsStrategy(new PatternCalcExtraPointsStrategy(this, new ArrayList<>(List.of(playerArea))));
     }
 }

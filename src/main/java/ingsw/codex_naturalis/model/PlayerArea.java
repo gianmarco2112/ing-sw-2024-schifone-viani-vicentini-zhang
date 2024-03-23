@@ -137,7 +137,7 @@ public class PlayerArea {
      */
     public void setObjectiveCard(ObjectiveCard objectiveCard) {
         this.objectiveCard = objectiveCard;
-        objectiveCard.setCalcExtraPointsStrategy(this);
+        objectiveCard.chosen(this);
     }
 
     /**

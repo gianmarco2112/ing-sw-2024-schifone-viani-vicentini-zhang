@@ -33,7 +33,9 @@ public abstract class ObjectiveCard {
     }
 
 
-    public abstract void setCalcExtraPointsStrategy(PlayerArea playerArea);
+    public void setCalcExtraPointsStrategy(CalcExtraPointsStrategy calcExtraPointsStrategy){
+        this.calcExtraPointsStrategy = calcExtraPointsStrategy;
+    }
 
     /**
      * Invoke at runtime the right algorithm depending on the type of card the player has.
@@ -49,4 +51,6 @@ public abstract class ObjectiveCard {
     public int getPoints() {
         return points;
     }
+
+    public abstract void chosen(PlayerArea playerArea);
 }

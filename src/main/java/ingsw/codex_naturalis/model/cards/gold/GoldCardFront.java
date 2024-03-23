@@ -78,7 +78,7 @@ public class GoldCardFront extends HandPlayableSide {
      * @return Requirements
      */
     public HashMap<Symbol, Integer> getRequirements() {
-        return requirements;
+        return new HashMap<>(requirements);
     }
 
     /**

@@ -1,7 +1,5 @@
 package ingsw.codex_naturalis.model.cards;
 
-import ingsw.codex_naturalis.model.PlayerArea;
-
 public abstract class PlayableCard {
 
     private Boolean showingFront;

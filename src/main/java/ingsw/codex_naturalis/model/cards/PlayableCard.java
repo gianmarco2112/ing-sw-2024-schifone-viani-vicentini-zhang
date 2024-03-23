@@ -8,8 +8,8 @@ public abstract class PlayableCard {
 
 
     public PlayableCard(){
-        this.showingFront = true;
-    }
+        this.showingFront = false;
+    } //le carte inizialmente nei mazzi mostrano il retro
 
 
     /**

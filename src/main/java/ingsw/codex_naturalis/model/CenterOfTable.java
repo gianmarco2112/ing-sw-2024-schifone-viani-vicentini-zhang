@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ingsw.codex_naturalis.model.cards.gold.GoldCard;
-import ingsw.codex_naturalis.model.cards.initial.InitialCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.resource.ResourceCard;
 
@@ -18,8 +17,8 @@ public class CenterOfTable {
     public static final String goldCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/goldCards.json";
     public static final String objectiveCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/objectiveCards.json";
 
-    private Deque<ResourceCard> resourceCardsDeck;
-    private Deque<GoldCard> goldCardsDeck;
+    private List<ResourceCard> resourceCardsDeck;
+    private List<GoldCard> goldCardsDeck;
     private List<ObjectiveCard> objectiveCardsDeck;
 
     private List<ResourceCard> revealedResourceCards;
@@ -30,8 +29,8 @@ public class CenterOfTable {
     public CenterOfTable(){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            this.resourceCardsDeck = objectMapper.readValue(new File(this.resourceCardsJsonFilePath), new TypeReference<Deque<ResourceCard>>() {});
-            this.goldCardsDeck = objectMapper.readValue(new File(this.goldCardsJsonFilePath), new TypeReference<Deque<GoldCard>>() {});
+            this.resourceCardsDeck = objectMapper.readValue(new File(this.resourceCardsJsonFilePath), new TypeReference<List<ResourceCard>>() {});
+            this.goldCardsDeck = objectMapper.readValue(new File(this.goldCardsJsonFilePath), new TypeReference<List<GoldCard>>() {});
             // file objectiveCards.json TODO
             // this.objectiveCardsDeck = objectMapper.readValue(new File(this.objectiveCardsJsonFilePath), new TypeReference<List<ObjectiveCard>>() {});
         } catch (IOException e){
@@ -74,15 +73,11 @@ public class CenterOfTable {
     }
 
     public void shuffleResourceCardsDeck(){
-        List<ResourceCard> deckAsList = new ArrayList<>(resourceCardsDeck);
-        Collections.shuffle(deckAsList);
-        this.resourceCardsDeck = new ArrayDeque<ResourceCard>(deckAsList);
+        Collections.shuffle(resourceCardsDeck);
     }
 
     public void shuffleGoldCardsDeck(){
-        List<GoldCard> deckAsList = new ArrayList<>(goldCardsDeck);
-        Collections.shuffle(deckAsList);
-        this.goldCardsDeck = new ArrayDeque<GoldCard>(deckAsList);
+        Collections.shuffle(goldCardsDeck);
     }
 
     public void shuffleObjectiveCardsDeck(){

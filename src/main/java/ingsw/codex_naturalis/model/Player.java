@@ -19,6 +19,9 @@ public class Player {
      * Nickname of the player
      */
     private final String nickname;
+    private int playerID;
+    private Boolean connected;
+    private Boolean readyToStart;
 
     /**
      * Color of the player

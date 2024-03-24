@@ -86,5 +86,8 @@ public class Game {
     public Player getFirstPlayer(){
         return playerOrder.getFirst();
     }
+    public void shufflePlayerList(){
+        Collections.shuffle(this.playerOrder);
+    }
 
 }

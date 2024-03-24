@@ -82,4 +82,9 @@ public class Game {
             player.setInitialCard(initialCardsDeck.removeFirst());
         }
     }
+
+    public Player getFirstPlayer(){
+        return playerOrder.getFirst();
+    }
+
 }

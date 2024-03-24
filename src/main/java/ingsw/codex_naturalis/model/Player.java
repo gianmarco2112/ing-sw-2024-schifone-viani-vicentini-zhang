@@ -217,4 +217,18 @@ public class Player {
     public void writeMessage(String content, List<Player> receivers){
         sentMessages.add(new Message(content, receivers));
     }
+    public void setConnected(){
+        connected=true;
+    }
+    public void setReadyToStart(){
+        readyToStart=true;
+    }
+
+    public Boolean isPlayerConnected() {
+        return connected;
+    }
+
+    public Boolean isPlayerReadyToStart() {
+        return readyToStart;
+    }
 }

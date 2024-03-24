@@ -69,12 +69,14 @@ public class CenterOfTable {
             this.goldCardsDeck = objectMapper.readValue(new File(this.goldCardsJsonFilePath), new TypeReference<List<GoldCard>>() {});
             // file objectiveCards.json TODO
             // this.objectiveCardsDeck = objectMapper.readValue(new File(this.objectiveCardsJsonFilePath), new TypeReference<List<ObjectiveCard>>() {});
+
+            // le liste delle carte rivelate le inizializziamo qui? TODO
         } catch (IOException e){
             System.out.println("ERROR while opening json files");
         }
     }
 
-
+// ritorniamo una copia delle liste TODO
     /**
      * Common objective cards getter
      * @return Common objective cards

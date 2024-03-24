@@ -89,5 +89,19 @@ public class Game {
     public void shufflePlayerList(){
         Collections.shuffle(this.playerOrder);
     }
+    private Player getNextElement(List<Player> playerList, Player player){
+        int index = playerList.indexOf(player);
+        if(index < playerList.size() -1 ){
+            return playerList.get(index+1);
+        }else{
+            return playerList.getFirst();
+        }
+    }
+    public Player getNextPlayer(){
+        return getNextElement(playerOrder,getCurrentPlayer());
+    }
+    public Player getCurrentPlayer(){
+        return currentPlayer;
+    }
 
 }

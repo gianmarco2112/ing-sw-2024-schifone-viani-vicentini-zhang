@@ -104,4 +104,7 @@ public class Game {
         return currentPlayer;
     }
 
+    public int getGameID() {
+        return gameID;
+    }
 }

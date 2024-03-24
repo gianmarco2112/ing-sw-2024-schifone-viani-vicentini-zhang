@@ -38,6 +38,10 @@ public class Game {
      * Center of table
      */
     private final CenterOfTable centerOfTable;
+    /**
+     * Game ID is necessary in order to have multiple game
+     */
+    private int gameID;
 
 
     /**

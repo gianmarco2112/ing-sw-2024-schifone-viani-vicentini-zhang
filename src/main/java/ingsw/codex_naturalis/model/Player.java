@@ -15,12 +15,24 @@ import java.util.*;
  */
 public class Player {
 
+    /**
+     * Nickname of the player
+     */
     private final String nickname;
 
+    /**
+     * Color of the player
+     */
     private final Color color;
 
+    /**
+     * Initial card (null after playing it)
+     */
     private InitialCard initialCard;
 
+    /**
+     * Center of the table
+     */
     private CenterOfTable centerOfTable;
 
     /**
@@ -30,20 +42,52 @@ public class Player {
      */
     private List<HandPlayableCard> hand;
 
+    /**
+     * Player area
+     */
     private PlayerArea playerArea;
 
+    /**
+     * Sent messages
+     */
     private List<Message> sentMessages;
 
+    /**
+     * Players the current player can write to
+     */
     private List<Player> players;
 
 
+    /**
+     * Constructor
+     * @param nickname Nickname
+     * @param color Color
+     */
     public Player(String nickname, Color color) {
         this.nickname = nickname;
         this.color = color;
         this.initialCard = null;
         this.sentMessages = new ArrayList<>();
+        this.hand = new ArrayList<>();
+        this.playerArea = new PlayerArea();
     }
 
+
+    /**
+     * Center of table setter (called at the start)
+     * @param centerOfTable Center of table
+     */
+    public void setCenterOfTable(CenterOfTable centerOfTable) {
+        this.centerOfTable = centerOfTable;
+    }
+
+    /**
+     * Initial card setter (called at the start)
+     * @param initialCard Initial card
+     */
+    public void setInitialCard(InitialCard initialCard) {
+        this.initialCard = initialCard;
+    }
 
     /**
      * This method is called when the player wants to see the other side of the card.
@@ -77,7 +121,7 @@ public class Player {
      * This method is called when the player wants to play a card from his hand.
      * Operates on the front or back of the card, based on what side the card is currently showing.
      * Checks that the card is actually playable in that spot.
-     * Covers the corners and eventually decreases the number of symbols of the player.
+     * Covers the corners and if needed decreases the number of symbols of the player.
      * Increases the number of symbols and the points, if necessary, of the player
      * @param card
      * @param x
@@ -100,40 +144,73 @@ public class Player {
         }
     }
 
+    /**
+     * Draws from the resource cards deck
+     */
     public void drawFromResourceCardsDeck() {
         HandPlayableCard card = centerOfTable.removeFromResourceCardsDeck();
         addCardToHand(card);
         card.drawn(playerArea);
     }
+
+    /**
+     * Draws from the gold cards deck
+     */
     public void drawFromGoldCardsDeck() {
         HandPlayableCard card = centerOfTable.removeFromGoldCardsDeck();
         addCardToHand(card);
         card.drawn(playerArea);
     }
+
+    /**
+     * Draws the first revealed resource card on the table
+     */
     public void drawFirstFromRevealedResourceCards() {
         HandPlayableCard card = centerOfTable.removeFirstFromRevealedResourceCards();
         addCardToHand(card);
         card.drawn(playerArea);
     }
+
+    /**
+     * Draws the second revealed resource card on the table
+     */
     public void drawLastFromRevealedResourceCards() {
         HandPlayableCard card = centerOfTable.removeLastFromRevealedResourceCards();
         addCardToHand(card);
         card.drawn(playerArea);
     }
+
+    /**
+     * Draws the first revealed gold card on the table
+     */
     public void drawFirstFromRevealedGoldCards() {
         HandPlayableCard card = centerOfTable.removeFirstFromRevealedGoldCards();
         addCardToHand(card);
         card.drawn(playerArea);
     }
+
+    /**
+     * Draws the second revealed gold card on the table
+     */
     public void drawLastFromRevealedGoldCards() {
         HandPlayableCard card = centerOfTable.removeLastFromRevealedGoldCards();
         addCardToHand(card);
         card.drawn(playerArea);
     }
+
+    /**
+     * Adds the drawn card to the hand
+     * @param card Card to add
+     */
     private void addCardToHand(HandPlayableCard card){
         hand.add(card);
     }
 
+    /**
+     * Method to write a message
+     * @param content Content of the message
+     * @param receivers Receivers
+     */
     public void writeMessage(String content, List<Player> receivers){
         sentMessages.add(new Message(content, receivers));
     }

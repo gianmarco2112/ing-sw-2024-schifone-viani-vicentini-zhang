@@ -202,15 +202,28 @@ public class PlayerArea {
     }
 
     /**
-     * Places the given card on the given coordinates
+     * Places the given card on the given coordinates and adjusts the max coordinates
      * @param card the card to play
      * @param x coordinate x
      * @param y coordinate y
      */
     public void setCardOnCoordinates(PlayableSide card, int x, int y){
         area.put(new ArrayList<>(List.of(x,y)), card);
+        if(x > maxX)
+            maxX = x;
+        if(x < minX)
+            minX = x;
+        if(y > maxY)
+            maxY = y;
+        if(y < minY)
+            minY = y;
     }
 
+    /**
+     * Method to get the coordinates of a card
+     * @param card Card
+     * @return The coordinates
+     */
     public List<Integer> getCoordinatesOfCard(PlayableSide card){
         for (Map.Entry<List<Integer>, PlayableSide> entry : area.entrySet()) {
             if (entry.getValue() == card) {
@@ -220,6 +233,11 @@ public class PlayerArea {
         return new ArrayList<>();
     }
 
+    /**
+     * Method to get the player area with a boolean instead of the card, it is necessary for the pattern
+     * objective card strategy
+     * @return The area to mark
+     */
     public HashMap<List<Integer>,Boolean> getAreaToMark(){
         HashMap<List<Integer>, Boolean> areaToMark = new HashMap<>();
         for (List<Integer> key : area.keySet()) {

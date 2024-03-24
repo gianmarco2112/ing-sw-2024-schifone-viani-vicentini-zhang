@@ -10,17 +10,39 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Game class
+ */
 public class Game {
 
+    /**
+     * Contains all the players of the game, ordered by the turn they play
+     */
     private List<Player> playerOrder;
 
+    /**
+     * Current player
+     */
     private Player currentPlayer;
 
+    /**
+     * JSON (Initial cards)
+     */
     public static final String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
+    /**
+     * Initial cards deck
+     */
     private List<InitialCard> initialCardsDeck;
 
-    private final CenterOfTable centerOfTable; //ogni Game ha un solo centro del tavolo
+    /**
+     * Center of table
+     */
+    private final CenterOfTable centerOfTable;
 
+
+    /**
+     * Constructor
+     */
     public Game() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -29,15 +51,31 @@ public class Game {
             System.out.println("ERROR while opening json file");
         }
         this.centerOfTable = new CenterOfTable();
+        this.playerOrder = new ArrayList<>();
     }
 
+    /**
+     * Shuffles all the decks
+     */
     public void shuffleAll(){
         Collections.shuffle(this.initialCardsDeck);
         centerOfTable.shuffleAll();
     }
 
-    //Da valutare, bisogna capire come gestire il centro del tavolo che è comune a tutti i Player e a Game TODO
-    //public CenterOfTable getCenterOfTable(){
-        //return centerOfTable;
-    //}
+    /**
+     * Adds a player to the game
+     * @param player Player
+     */
+    public void addPlayer(Player player){
+        playerOrder.add(player);
+    }
+
+    /**
+     * Deals an initial card to each player
+     */
+    public void dealInitialCard(){
+        for (Player player : playerOrder){
+            player.setInitialCard(initialCardsDeck.removeFirst());
+        }
+    }
 }

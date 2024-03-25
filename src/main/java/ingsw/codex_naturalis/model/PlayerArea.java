@@ -64,6 +64,13 @@ public class PlayerArea {
         this.area = new HashMap<>();
         this.numOfSymbols = new HashMap<>();
         this.points = 0;
+
+        //aggiunto per il test obiettivo
+        numOfSymbols.put(Symbol.INSECT,0);
+        this.setMaxX(10);
+        this.setMaxY(10);
+        this.setMinX(-10);
+        this.setMinY(-10);
     }
 
 

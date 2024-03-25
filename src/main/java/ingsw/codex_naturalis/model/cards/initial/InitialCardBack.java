@@ -44,7 +44,7 @@ public class InitialCardBack extends PlayableSide {
         this.resources = resources;
     }
 
-
+//ritornare copia della lista TODO
     /**
      * Permanent resources getter
      * This method would return the list of the central Resources of the card

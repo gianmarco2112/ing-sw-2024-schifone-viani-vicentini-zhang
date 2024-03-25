@@ -19,7 +19,7 @@ public class Player {
      * Nickname of the player
      */
     private final String nickname;
-    private int playerID;
+    private int playerID; //l'idea è che ID debba essere univoco tra tutte le partite e il nickname unico in ogni partita
 
     /**
      * Color of the player
@@ -214,5 +214,10 @@ public class Player {
      */
     public void writeMessage(String content, List<Player> receivers){
         sentMessages.add(new Message(content, receivers));
+    }
+
+    //metodo aggiunto momentaneamente per fare il test degli obiettivi
+    public PlayerArea getPlayerArea(){
+        return playerArea;
     }
 }

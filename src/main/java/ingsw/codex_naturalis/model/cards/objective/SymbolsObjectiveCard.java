@@ -1,5 +1,8 @@
 package ingsw.codex_naturalis.model.cards.objective;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
@@ -24,7 +27,10 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
      * @param symbolsForPoints List of the Symbol for extra Points
      * @param points extra points giver by the card
      */
-    public SymbolsObjectiveCard(HashMap<Symbol,Integer> symbolsForPoints, int points){
+    @JsonCreator
+    public SymbolsObjectiveCard(
+            @JsonProperty("symbolsForPoints") HashMap<Symbol,Integer> symbolsForPoints,
+            @JsonProperty("points") int points){
         super(points);
         this.symbolsForPoints = symbolsForPoints;
     }

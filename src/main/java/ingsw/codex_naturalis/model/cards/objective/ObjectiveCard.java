@@ -1,6 +1,14 @@
 package ingsw.codex_naturalis.model.cards.objective;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+
 import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.cards.objective.PatternObjectiveCard;
+import ingsw.codex_naturalis.model.cards.objective.SymbolsObjectiveCard;
 
 /**
  * ObjectiveCard's class
@@ -11,6 +19,14 @@ import ingsw.codex_naturalis.model.PlayerArea;
  * the kingdom in which it belongs to.
  * Finally, ObjectiveCard has an interface that call the right algorithms at runtime.
  */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = PatternObjectiveCard.class, name = "pattern"),
+        @JsonSubTypes.Type(value = SymbolsObjectiveCard.class, name = "symbols")
+})
 public abstract class ObjectiveCard {
 
     /**
@@ -28,7 +44,8 @@ public abstract class ObjectiveCard {
      * Constructor
      * @param points points of ObjectiveCard
      */
-    public ObjectiveCard(int points){
+    @JsonCreator
+    public ObjectiveCard(@JsonProperty("points") int points){
         this.points = points;
     }
 

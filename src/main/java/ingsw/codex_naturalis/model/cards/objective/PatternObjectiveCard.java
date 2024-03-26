@@ -1,5 +1,8 @@
 package ingsw.codex_naturalis.model.cards.objective;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
@@ -40,11 +43,20 @@ public class PatternObjectiveCard extends ObjectiveCard{
     /**
      * constructor
      * @param points points that
-     * @param pattern reference to the HashMap that contains the pattern
+     * @param positions
+     * @param kingdoms
      * @param maxX max row of the pattern
      * @param maxY max column of the pattern
      */
-    public PatternObjectiveCard(int points, List<List<Integer>> positions, List<Symbol> values, int maxX, int maxY, int minX, int minY){
+    @JsonCreator
+    public PatternObjectiveCard(
+            @JsonProperty("points") int points,
+            @JsonProperty("positions") List<List<Integer>> positions,
+            @JsonProperty("kingdoms") List<Symbol> kingdoms,
+            @JsonProperty("maxX") int maxX,
+            @JsonProperty("maxY") int maxY,
+            @JsonProperty("minX") int minX,
+            @JsonProperty("minY") int minY){
         super(points);
         this.pattern =  new HashMap<>();
         for(int i = minX; i < maxX; i++){
@@ -52,8 +64,8 @@ public class PatternObjectiveCard extends ObjectiveCard{
                 pattern.put(List.of(i,j),Symbol.EMPTY);
             }
         }
-        for(int i= 0; i< values.size();i++){
-            this.pattern.put(positions.get(i),values.get(i));
+        for(int i= 0; i< kingdoms.size();i++){
+            this.pattern.put(positions.get(i),kingdoms.get(i));
         }
         this.maxX = maxX;
         this.maxY = maxY;

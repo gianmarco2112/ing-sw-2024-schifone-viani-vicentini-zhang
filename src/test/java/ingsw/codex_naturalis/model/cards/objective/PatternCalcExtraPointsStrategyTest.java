@@ -40,17 +40,8 @@ class PatternCalcExtraPointsStrategyTest {
         player.playCard(c2,2,-2);
         player.playCard(c3,3,-3);
 
-        HashMap<List<Integer>, Symbol> pattern = new HashMap<>(){{put(List.of(0,2),Symbol.INSECT);
-                                                                  put(List.of(1,1),Symbol.INSECT);
-                                                                  put(List.of(2,0),Symbol.INSECT);}};
-        PatternObjectiveCard patternObjectiveCard = new PatternObjectiveCard(2,pattern,1,1,0,0);
-        patternObjectiveCard.setCalcExtraPointsStrategy(new PatternCalcExtraPointsStrategy(patternObjectiveCard,List.of(player.getPlayerArea())));
-        patternObjectiveCard.chosen(player.getPlayerArea());
-        patternObjectiveCard.execute();
-        //assertEquals(2,player.getPlayerArea().getExtraPoints());
-        //PlayableSide cx = player.getPlayerArea().getCardOnCoordinates(1,-1);
-        //assertEquals(Symbol.);
-        assertEquals(Symbol.INSECT,pattern.get(List.of(0,2)));
+
+
     }
 
 

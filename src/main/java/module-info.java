@@ -21,6 +21,8 @@ module ingsw.codex_naturalis {
     exports ingsw.codex_naturalis.model.cards.gold to com.fasterxml.jackson.databind;
     opens ingsw.codex_naturalis.model.cards.gold to com.fasterxml.jackson.databind;
 
+    opens ingsw.codex_naturalis.model.cards.objective to com.fasterxml.jackson.databind;
+
     exports ingsw.codex_naturalis;
 
     exports ingsw.codex_naturalis.model.cards;

@@ -44,9 +44,17 @@ public class PatternObjectiveCard extends ObjectiveCard{
      * @param maxX max row of the pattern
      * @param maxY max column of the pattern
      */
-    public PatternObjectiveCard(int points, HashMap<List<Integer>,Symbol> pattern, int maxX, int maxY, int minX, int minY){
+    public PatternObjectiveCard(int points, List<List<Integer>> positions, List<Symbol> values, int maxX, int maxY, int minX, int minY){
         super(points);
-        this.pattern = pattern;
+        this.pattern =  new HashMap<>();
+        for(int i = minX; i < maxX; i++){
+            for(int j = minY; j < maxY; j++){
+                pattern.put(List.of(i,j),Symbol.EMPTY);
+            }
+        }
+        for(int i= 0; i< values.size();i++){
+            this.pattern.put(positions.get(i),values.get(i));
+        }
         this.maxX = maxX;
         this.maxY = maxY;
         this.minX = minX;

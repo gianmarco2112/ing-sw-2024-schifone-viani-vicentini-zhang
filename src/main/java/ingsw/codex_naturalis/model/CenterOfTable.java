@@ -68,12 +68,19 @@ public class CenterOfTable {
             this.resourceCardsDeck = objectMapper.readValue(new File(this.resourceCardsJsonFilePath), new TypeReference<List<ResourceCard>>() {});
             this.goldCardsDeck = objectMapper.readValue(new File(this.goldCardsJsonFilePath), new TypeReference<List<GoldCard>>() {});
             this.objectiveCardsDeck = objectMapper.readValue(new File(this.objectiveCardsJsonFilePath), new TypeReference<List<ObjectiveCard>>() {});
-
-            // le liste delle carte rivelate le inizializziamo qui? TODO
         } catch (IOException e){
             System.out.println("ERROR while opening json files");
-            System.out.println(e.toString());
         }
+        // le liste delle carte rivelate le inizializziamo qui? TODO
+        shuffleAll();
+        this.revealedResourceCards = new ArrayList<>();
+        this.revealedResourceCards.add(removeFromResourceCardsDeck());
+
+        this.revealedGoldCards = new ArrayList<>();
+        this.revealedGoldCards.add(removeFromGoldCardsDeck());
+
+        this.commonObjectiveCards = new ArrayList<>();
+        this.commonObjectiveCards.add(removeFromObjectiveCardsDeck());
     }
 
 // ritorniamo una copia delle liste TODO
@@ -82,7 +89,7 @@ public class CenterOfTable {
      * @return Common objective cards
      */
     public List<ObjectiveCard> getCommonObjectiveCards() {
-        return commonObjectiveCards;
+        return new ArrayList<>(commonObjectiveCards);
     }
 
 //prima di rimuovere dobbiamo controllare che il deck non sia vuoto oppure lanciamo un'eccezione da fare gestire al Player
@@ -155,8 +162,9 @@ public class CenterOfTable {
         Collections.shuffle(objectiveCardsDeck);
     }
 
-    //creato solo per il test
+    //creato solo per il test, ma forse è necessario pescare le carte obiettivo in comune,
+    // dato che solo centerOfTable può usare il deck delle carte obiettivo
     public ObjectiveCard removeFromObjectiveCardsDeck(){
-        return objectiveCardsDeck.removeFirst();
+        return objectiveCardsDeck.removeLast();
     }
 }

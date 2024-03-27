@@ -5,7 +5,6 @@ import ingsw.codex_naturalis.model.cards.HandPlayableSide;
 import ingsw.codex_naturalis.model.cards.PlayableCard;
 import ingsw.codex_naturalis.model.cards.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
-import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 
 import java.util.*;
@@ -19,7 +18,7 @@ public class Player {
      * Nickname of the player
      */
     private final String nickname;
-    private int playerID; //l'idea è che ID debba essere univoco tra tutte le partite e il nickname unico in ogni partita
+    private final int playerID; //l'idea è che ID debba essere univoco tra tutte le partite e il nickname unico in ogni partita
 
     /**
      * Color of the player
@@ -41,22 +40,22 @@ public class Player {
      * It will contain two resource cards and a gold card at the start.
      * During the game, it will contain from two to three resource/golden cards.
      */
-    private List<HandPlayableCard> hand;
+    private final List<HandPlayableCard> hand;
 
     /**
      * Player area
      */
-    private PlayerArea playerArea;
+    private final PlayerArea playerArea;
 
     /**
      * Sent messages
      */
-    private List<Message> sentMessages;
+    private final List<Message> sentMessages;
 
     /**
      * Players the current player can write to
      */
-    private List<Player> players;
+    private final List<Player> players;
 
 
     /**
@@ -64,13 +63,15 @@ public class Player {
      * @param nickname Nickname
      * @param color Color
      */
-    public Player(String nickname, Color color) {
+    public Player(String nickname, Color color,int playerID) {
         this.nickname = nickname;
         this.color = color;
         this.initialCard = null;
         this.sentMessages = new ArrayList<>();
         this.hand = new ArrayList<>();
         this.playerArea = new PlayerArea();
+        this.playerID=playerID;
+        this.players=new ArrayList<>();
     }
 
 
@@ -124,9 +125,9 @@ public class Player {
      * Checks that the card is actually playable in that spot.
      * Covers the corners and if needed decreases the number of symbols of the player.
      * Increases the number of symbols and the points, if necessary, of the player
-     * @param card
-     * @param x
-     * @param y
+     * @param card card that player wants to play
+     * @param x coordinate x
+     * @param y coordinate y
      */
     public void playCard(HandPlayableCard card, int x, int y) {
         HandPlayableSide sideCard;
@@ -219,5 +220,32 @@ public class Player {
     //metodo aggiunto momentaneamente per fare il test degli obiettivi
     public PlayerArea getPlayerArea(){
         return playerArea;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public int getPlayerID() {
+        return playerID;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public List<HandPlayableCard> getHand() {
+        return new ArrayList<>(hand);
+    }
+
+    public List<Message> getSentMessages() {
+        return new ArrayList<>(sentMessages);
+    }
+
+    public void setPossibleMessageReceivers(Player player){
+        players.add(player);
+    }
+    public List<Player> getPossibleMessageReceiver() {
+        return new ArrayList<>(players);
     }
 }

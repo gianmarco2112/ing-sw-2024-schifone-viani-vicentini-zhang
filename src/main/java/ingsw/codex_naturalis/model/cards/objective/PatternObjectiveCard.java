@@ -32,7 +32,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
     /**
      * HashMap contains the pattern for the Objective
      */
-    private HashMap<List<Integer>, Symbol> pattern = new HashMap<>();
+    private final HashMap<List<Integer>, Symbol> pattern;
     /**
      * constructor
      * @param points points that

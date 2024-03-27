@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ingsw.codex_naturalis.model.enumerations.Color;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,7 +72,25 @@ public class Game {
      * @param player Player
      */
     public void addPlayer(Player player){
-        playerOrder.add(player);
+        List<String> nicknames = new ArrayList<>();
+        List<Color> colors = new ArrayList<>();
+        for(Player p : playerOrder){
+            nicknames.add(p.getNickname());
+            colors.add(p.getColor());
+        }
+        if(nicknames.contains(player.getNickname())||colors.contains(player.getColor())){
+            if(nicknames.contains(player.getNickname())){
+                System.out.println("This nickname already exists, please choose another nickname");
+            }
+            if(colors.contains(player.getColor())){
+                System.out.println("This color has already been chosen by another player, please choose another one");
+            }
+        }else{
+            playerOrder.add(player);
+            for(Player p : playerOrder){
+                p.setPossibleMessageReceivers(player);
+            }
+        }
     }
 
     /**

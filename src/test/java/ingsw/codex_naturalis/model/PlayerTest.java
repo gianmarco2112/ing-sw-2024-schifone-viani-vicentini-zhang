@@ -17,10 +17,11 @@ class PlayerTest {
 
     @Test
     void drawFromResourceCardsDeck() {
-        Player player = new Player("Bob", Color.RED);
+        Player player = new Player("Bob", Color.RED,1);
+
         CenterOfTable centerOfTable = new CenterOfTable();
         player.setCenterOfTable(centerOfTable);
-        Game game = new Game();
+        Game game = new Game(1);
         game.addPlayer(player);
         game.dealInitialCard();
         /*List<HandPlayableCard> hand = player.getList();

@@ -2,7 +2,6 @@ package ingsw.codex_naturalis.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
-import ingsw.codex_naturalis.model.CenterOfTable;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,7 +17,7 @@ public class Game {
     /**
      * Contains all the players of the game, ordered by the turn they play
      */
-    private List<Player> playerOrder;
+    private final List<Player> playerOrder;
 
     /**
      * Current player
@@ -41,13 +40,13 @@ public class Game {
     /**
      * Game ID is necessary in order to have multiple game
      */
-    private int gameID;
+    private final int gameID;
 
 
     /**
      * Constructor
      */
-    public Game() {
+    public Game(int gameID) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             this.initialCardsDeck = objectMapper.readValue(new File(this.initialCardsJsonFilePath), new TypeReference<List<InitialCard>>() {});
@@ -56,6 +55,7 @@ public class Game {
         }
         this.centerOfTable = new CenterOfTable();
         this.playerOrder = new ArrayList<>();
+        this.gameID=gameID;
     }
 
     /**
@@ -106,5 +106,8 @@ public class Game {
 
     public int getGameID() {
         return gameID;
+    }
+    public void setCurrentPlayer(){
+        currentPlayer = playerOrder.getFirst();
     }
 }

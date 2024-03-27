@@ -27,7 +27,7 @@ import java.util.*;
  */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
+        //include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 @JsonSubTypes({
         @Type(value = GoldCardFront.class, name = "empty"),

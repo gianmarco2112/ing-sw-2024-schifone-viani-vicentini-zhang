@@ -39,7 +39,7 @@ public class PlayerArea {
     /**
      * The count of the symbols of the player
      */
-    private HashMap<Symbol, Integer> numOfSymbols;
+    private final HashMap<Symbol, Integer> numOfSymbols;
 
     /**
      * The player's objective card

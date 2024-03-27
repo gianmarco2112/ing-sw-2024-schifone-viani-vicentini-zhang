@@ -21,7 +21,7 @@ public class GoldCardBack extends HandPlayableSide {
     /**
      * Permanent resource (in the centre of the card)
      */
-    private Symbol resource;
+    private final Symbol resource;
 
 
     /**

@@ -6,7 +6,6 @@ package ingsw.codex_naturalis.model.cards.objective;
 public interface CalcExtraPointsStrategy {
     /**
      * This method calculates the total extra points won by the player
-     * @return total extra points
      */
-    public void run();
+    void run();
 }

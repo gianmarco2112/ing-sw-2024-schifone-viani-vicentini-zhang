@@ -46,17 +46,17 @@ public class CenterOfTable {
     /**
      * The two revealed resource cards
      */
-    private List<ResourceCard> revealedResourceCards;
+    private final List<ResourceCard> revealedResourceCards;
 
     /**
      * The two revealed gold cards
      */
-    private List<GoldCard> revealedGoldCards;
+    private final List<GoldCard> revealedGoldCards;
 
     /**
      * The two common objective cards
      */
-    private List<ObjectiveCard> commonObjectiveCards;
+    private final List<ObjectiveCard> commonObjectiveCards;
 
 
     /**

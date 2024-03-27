@@ -10,8 +10,113 @@
     "minY": 0
   },
   {
+    "type": "pattern",
+    "points": 2,
+    "positions": [[0,2],[1,1],[2,0]],
+    "kingdoms": ["PLANT","PLANT","PLANT"],
+    "maxX": 2,
+    "maxY": 2,
+    "minX": 0,
+    "minY": 0
+  },
+  {
+    "type": "pattern",
+    "points": 2,
+    "positions": [[0,0],[1,1],[2,2]],
+    "kingdoms": ["ANIMAL","ANIMAL","ANIMAL"],
+    "maxX": 2,
+    "maxY": 2,
+    "minX": 0,
+    "minY": 0
+  },
+  {
+    "type": "pattern",
+    "points": 2,
+    "positions": [[0,2],[1,1],[2,0]],
+    "kingdoms": ["INSECT","INSECT","INSECT"],
+    "maxX": 2,
+    "maxY": 2,
+    "minX": 0,
+    "minY": 0
+  },
+  {
+    "type": "pattern",
+    "points": 2,
+    "positions": [[0,3],[0,1],[1,0]],
+    "kingdoms": ["FUNGI","FUNGI","PLANT"],
+    "maxX": 1,
+    "maxY": 3,
+    "minX": 0,
+    "minY": 0
+  },
+  {
+    "type": "pattern",
+    "points": 2,
+    "positions": [[1,3],[1,1],[0,0]],
+    "kingdoms": ["PLANT","PLANT","INSECT"],
+    "maxX": 1,
+    "maxY": 3,
+    "minX": 0,
+    "minY": 0
+  },
+  {
+    "type": "pattern",
+    "points": 2,
+    "positions": [[0,0],[0,2],[1,3]],
+    "kingdoms": ["ANIMAL","ANIMAL","FUNGI"],
+    "maxX": 1,
+    "maxY": 3,
+    "minX": 0,
+    "minY": 0
+  },
+  {
+    "type": "pattern",
+    "points": 2,
+    "positions": [[1,0],[1,2],[0,3]],
+    "kingdoms": ["INSECT","INSECT","ANIMAL"],
+    "maxX": 1,
+    "maxY": 3,
+    "minX": 0,
+    "minY": 0
+  },
+  {
     "type": "symbols",
-    "points": 1,
-    "symbolsForPoints":{"FUNGI": 2, "ANIMAL": 1}
+    "points": 2,
+    "symbolsForPoints":{"FUNGI": 3}
+  },
+  {
+    "type": "symbols",
+    "points": 2,
+    "symbolsForPoints":{"PLANT": 3}
+  },
+  {
+    "type": "symbols",
+    "points": 2,
+    "symbolsForPoints":{"ANIMAL": 3}
+  },
+  {
+    "type": "symbols",
+    "points": 2,
+    "symbolsForPoints":{"INSECT": 3}
+  },
+  {
+    "type": "symbols",
+    "points": 3,
+    "symbolsForPoints":{"QUILL": 1,"MANUSCRIPT": 1,"INKWELL": 1}
+  },
+  {
+    "type": "symbols",
+    "points": 2,
+    "symbolsForPoints":{"MANUSCRIPT": 2}
+  },
+  {
+    "type": "symbols",
+    "points": 2,
+    "symbolsForPoints":{"INKWELL": 2}
+  },
+  {
+    "type": "symbols",
+    "points": 2,
+    "symbolsForPoints":{"QUILL": 2}
   }
 ]

@@ -72,15 +72,18 @@ public class CenterOfTable {
             System.out.println("ERROR while opening json files");
         }
         // le liste delle carte rivelate le inizializziamo qui? TODO
-        shuffleAll();
+        //shuffleAll(); //può causa problemi nei test mentre si instanzia il centro del tavolo
         this.revealedResourceCards = new ArrayList<>();
-        this.revealedResourceCards.add(removeFromResourceCardsDeck());
+        this.revealedResourceCards.add(removeFromResourceCardsDeck());//prima carta risorsa rivelata
+        this.revealedResourceCards.add(removeFromResourceCardsDeck());//seconda carta risorsa rivelata
 
         this.revealedGoldCards = new ArrayList<>();
-        this.revealedGoldCards.add(removeFromGoldCardsDeck());
+        this.revealedGoldCards.add(removeFromGoldCardsDeck());//prima carta oro rivelata
+        this.revealedGoldCards.add(removeFromGoldCardsDeck());//seconda carta oro rivelata
 
         this.commonObjectiveCards = new ArrayList<>();
-        this.commonObjectiveCards.add(removeFromObjectiveCardsDeck());
+        this.commonObjectiveCards.add(removeFromObjectiveCardsDeck());//prima carta obiettivo rivelata
+        this.commonObjectiveCards.add(removeFromObjectiveCardsDeck());//seconda carta obiettivo rivelata
     }
 
 // ritorniamo una copia delle liste TODO

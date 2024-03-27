@@ -40,6 +40,11 @@ class PatternCalcExtraPointsStrategyTest {
         //PatternObjectiveCard cx = (PatternObjectiveCard) c;
         //assertEquals(Symbol.FUNGI,cx.getSymbolAt(0,0));
 
+        SymbolsObjectiveCard cx = (SymbolsObjectiveCard) c;
+        //assertNull(c);
+        assertEquals(2,cx.getNumOfSymbol(Symbol.MANUSCRIPT));
+        assertEquals(2,cx.getPoints());
+
     }
 
 

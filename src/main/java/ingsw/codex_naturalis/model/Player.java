@@ -64,6 +64,7 @@ public class Player {
      * @param color Color
      */
     public Player(String nickname, Color color,int playerID) {
+        //se il player inserisce come nickname uno spazio?
         this.nickname = nickname;
         this.color = color;
         this.initialCard = null;

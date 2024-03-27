@@ -154,4 +154,9 @@ public class CenterOfTable {
         Collections.shuffle(goldCardsDeck);
         Collections.shuffle(objectiveCardsDeck);
     }
+
+    //creato solo per il test
+    public ObjectiveCard removeFromObjectiveCardsDeck(){
+        return objectiveCardsDeck.removeFirst();
+    }
 }

@@ -29,8 +29,9 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
      */
     @JsonCreator
     public SymbolsObjectiveCard(
-            @JsonProperty("symbolsForPoints") HashMap<Symbol,Integer> symbolsForPoints,
-            @JsonProperty("points") int points){
+            @JsonProperty("points") int points,
+            @JsonProperty("symbolsForPoints") HashMap<Symbol,Integer> symbolsForPoints
+            ){
         super(points);
         this.symbolsForPoints = symbolsForPoints;
     }

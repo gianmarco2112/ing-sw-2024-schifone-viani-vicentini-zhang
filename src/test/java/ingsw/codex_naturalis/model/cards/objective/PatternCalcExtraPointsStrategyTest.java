@@ -3,14 +3,10 @@ package ingsw.codex_naturalis.model.cards.objective;
 import ingsw.codex_naturalis.model.CenterOfTable;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.Player;
-import ingsw.codex_naturalis.model.cards.PlayableSide;
 import ingsw.codex_naturalis.model.cards.resource.ResourceCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,7 +36,9 @@ class PatternCalcExtraPointsStrategyTest {
         player.playCard(c2,2,-2);
         player.playCard(c3,3,-3);
 
-
+        ObjectiveCard c = centerOfTable.removeFromObjectiveCardsDeck();
+        PatternObjectiveCard cx = (PatternObjectiveCard) c;
+        assertEquals(Symbol.FUNGI,cx.getSymbolAt(0,0));
 
     }
 

@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.objective.PatternObjectiveCard;
-import ingsw.codex_naturalis.model.cards.objective.SymbolsObjectiveCard;
 
 /**
  * ObjectiveCard's class
@@ -19,13 +17,13 @@ import ingsw.codex_naturalis.model.cards.objective.SymbolsObjectiveCard;
  * the kingdom in which it belongs to.
  * Finally, ObjectiveCard has an interface that call the right algorithms at runtime.
  */
+
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = PatternObjectiveCard.class, name = "pattern"),
-        @JsonSubTypes.Type(value = SymbolsObjectiveCard.class, name = "symbols")
+        @Type(value = SymbolsObjectiveCard.class, name = "symbols"),
+        @Type(value = PatternObjectiveCard.class, name = "pattern")
 })
 public abstract class ObjectiveCard {
 

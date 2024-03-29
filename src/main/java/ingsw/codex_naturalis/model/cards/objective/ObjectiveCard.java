@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 import ingsw.codex_naturalis.model.PlayerArea;
 
+import java.util.List;
+
 /**
  * ObjectiveCard's class
  * An objective card gives points for each objective achieved
@@ -68,4 +70,6 @@ public abstract class ObjectiveCard {
     }
 
     public abstract void chosen(PlayerArea playerArea);
+
+    public abstract void commonCardDrawn(List<PlayerArea> playerAreas);
 }

@@ -5,6 +5,7 @@ import ingsw.codex_naturalis.model.cards.HandPlayableSide;
 import ingsw.codex_naturalis.model.cards.PlayableCard;
 import ingsw.codex_naturalis.model.cards.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
+import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 
 import java.util.*;
@@ -43,6 +44,12 @@ public class Player {
     private final List<HandPlayableCard> hand;
 
     /**
+     * This list contains the two objective cards given at the start, then
+     * it will be empty
+     */
+    private final List<ObjectiveCard> objectiveCards = new ArrayList<>();
+
+    /**
      * Player area
      */
     private final PlayerArea playerArea;
@@ -77,11 +84,27 @@ public class Player {
 
 
     /**
+     * Center of table getter
+     * @return Center of table
+     */
+    public CenterOfTable getCenterOfTable() {
+        return centerOfTable;
+    }
+
+    /**
      * Center of table setter (called at the start)
      * @param centerOfTable Center of table
      */
     public void setCenterOfTable(CenterOfTable centerOfTable) {
         this.centerOfTable = centerOfTable;
+    }
+
+    /**
+     * Initial card getter
+     * @return Initial card
+     */
+    public InitialCard getInitialCard() {
+        return initialCard;
     }
 
     /**
@@ -152,6 +175,7 @@ public class Player {
      */
     public void drawFromResourceCardsDeck() {
         HandPlayableCard card = centerOfTable.removeFromResourceCardsDeck();
+        card.showFront();
         addCardToHand(card);
         card.drawn(playerArea);
     }
@@ -161,6 +185,7 @@ public class Player {
      */
     public void drawFromGoldCardsDeck() {
         HandPlayableCard card = centerOfTable.removeFromGoldCardsDeck();
+        card.showFront();
         addCardToHand(card);
         card.drawn(playerArea);
     }
@@ -248,5 +273,17 @@ public class Player {
     }
     public List<Player> getPossibleMessageReceiver() {
         return new ArrayList<>(players);
+    }
+
+    public void setObjectiveCards(ObjectiveCard objectiveCard1, ObjectiveCard objectiveCard2){
+        objectiveCards.add(objectiveCard1);
+        objectiveCards.add(objectiveCard2);
+    }
+
+    public void chooseObjectiveCard(ObjectiveCard objectiveCard){
+        playerArea.setObjectiveCard(objectiveCard);
+        objectiveCards.remove(objectiveCard);
+        centerOfTable.discardObjectiveCard(objectiveCards.getFirst());
+        objectiveCards.clear();
     }
 }

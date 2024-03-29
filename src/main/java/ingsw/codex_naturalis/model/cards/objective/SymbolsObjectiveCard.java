@@ -58,4 +58,8 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
     public void chosen(PlayerArea playerArea) {
         setCalcExtraPointsStrategy(new SymbolsCalcExtraPointsStrategy(this, new ArrayList<>(List.of(playerArea))));
     }
+    @Override
+    public void commonCardDrawn(List<PlayerArea> playerAreas){
+        setCalcExtraPointsStrategy(new SymbolsCalcExtraPointsStrategy(this,new ArrayList<>(playerAreas)));
+    }
 }

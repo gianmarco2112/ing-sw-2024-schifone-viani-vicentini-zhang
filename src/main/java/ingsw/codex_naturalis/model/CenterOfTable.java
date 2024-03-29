@@ -3,6 +3,8 @@ package ingsw.codex_naturalis.model;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ingsw.codex_naturalis.model.cards.HandPlayableCard;
+import ingsw.codex_naturalis.model.cards.PlayableCard;
 import ingsw.codex_naturalis.model.cards.gold.GoldCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.resource.ResourceCard;
@@ -46,12 +48,12 @@ public class CenterOfTable {
     /**
      * The two revealed resource cards
      */
-    private final List<ResourceCard> revealedResourceCards;
+    private final List<HandPlayableCard> revealedResourceCards;
 
     /**
      * The two revealed gold cards
      */
-    private final List<GoldCard> revealedGoldCards;
+    private final List<HandPlayableCard> revealedGoldCards;
 
     /**
      * The two common objective cards
@@ -69,24 +71,18 @@ public class CenterOfTable {
             this.goldCardsDeck = objectMapper.readValue(new File(this.goldCardsJsonFilePath), new TypeReference<List<GoldCard>>() {});
             this.objectiveCardsDeck = objectMapper.readValue(new File(this.objectiveCardsJsonFilePath), new TypeReference<List<ObjectiveCard>>() {});
         } catch (IOException e){
-            System.out.println("ERROR while opening json files");
+            System.err.println("ERROR while opening json files");
         }
         // le liste delle carte rivelate le inizializziamo qui? TODO
         //shuffleAll(); //può causa problemi nei test mentre si instanzia il centro del tavolo
         this.revealedResourceCards = new ArrayList<>();
-        this.revealedResourceCards.add(removeFromResourceCardsDeck());//prima carta risorsa rivelata
-        this.revealedResourceCards.add(removeFromResourceCardsDeck());//seconda carta risorsa rivelata
 
         this.revealedGoldCards = new ArrayList<>();
-        this.revealedGoldCards.add(removeFromGoldCardsDeck());//prima carta oro rivelata
-        this.revealedGoldCards.add(removeFromGoldCardsDeck());//seconda carta oro rivelata
 
         this.commonObjectiveCards = new ArrayList<>();
-        this.commonObjectiveCards.add(removeFromObjectiveCardsDeck());//prima carta obiettivo rivelata
-        this.commonObjectiveCards.add(removeFromObjectiveCardsDeck());//seconda carta obiettivo rivelata
     }
 
-// ritorniamo una copia delle liste TODO
+
     /**
      * Common objective cards getter
      * @return Common objective cards
@@ -100,7 +96,7 @@ public class CenterOfTable {
      * Removes the top card of the resource cards deck
      * @return Card
      */
-    public ResourceCard removeFromResourceCardsDeck(){
+    public HandPlayableCard removeFromResourceCardsDeck(){
         return resourceCardsDeck.removeLast();
     }
 
@@ -108,7 +104,7 @@ public class CenterOfTable {
      * Removes the top card of the gold cards deck
      * @return Card
      */
-    public GoldCard removeFromGoldCardsDeck(){
+    public HandPlayableCard removeFromGoldCardsDeck(){
         return goldCardsDeck.removeLast();
     }
 
@@ -117,8 +113,8 @@ public class CenterOfTable {
      * cards deck
      * @return Card
      */
-    public ResourceCard removeFirstFromRevealedResourceCards(){
-        ResourceCard resourceCard = revealedResourceCards.removeFirst();
+    public HandPlayableCard removeFirstFromRevealedResourceCards(){
+        HandPlayableCard resourceCard = revealedResourceCards.removeFirst();
         revealedResourceCards.add(resourceCardsDeck.removeLast());
         return resourceCard;
     }
@@ -128,8 +124,8 @@ public class CenterOfTable {
      * cards deck
      * @return Card
      */
-    public ResourceCard removeLastFromRevealedResourceCards(){
-        ResourceCard resourceCard = revealedResourceCards.removeLast();
+    public HandPlayableCard removeLastFromRevealedResourceCards(){
+        HandPlayableCard resourceCard = revealedResourceCards.removeLast();
         revealedResourceCards.add(resourceCardsDeck.removeLast());
         return resourceCard;
     }
@@ -139,8 +135,8 @@ public class CenterOfTable {
      * cards deck
      * @return Card
      */
-    public GoldCard removeFirstFromRevealedGoldCards(){
-        GoldCard goldCard = revealedGoldCards.removeFirst();
+    public HandPlayableCard removeFirstFromRevealedGoldCards(){
+        HandPlayableCard goldCard = revealedGoldCards.removeFirst();
         revealedGoldCards.add(goldCardsDeck.removeLast());
         return goldCard;
     }
@@ -150,24 +146,45 @@ public class CenterOfTable {
      * cards deck
      * @return Card
      */
-    public GoldCard removeLastFromRevealedGoldCards(){
-        GoldCard goldCard = revealedGoldCards.removeLast();
+    public HandPlayableCard removeLastFromRevealedGoldCards(){
+        HandPlayableCard goldCard = revealedGoldCards.removeLast();
         revealedGoldCards.add(goldCardsDeck.removeLast());
         return goldCard;
     }
 
-    /**
-     * Method to shuffle the center of table decks
-     */
-    public void shuffleAll(){
-        Collections.shuffle(resourceCardsDeck);
-        Collections.shuffle(goldCardsDeck);
-        Collections.shuffle(objectiveCardsDeck);
+    public ObjectiveCard removeFromObjectiveCardsDeck(){
+        return objectiveCardsDeck.removeFirst();
     }
 
-    //creato solo per il test, ma forse è necessario pescare le carte obiettivo in comune,
-    // dato che solo centerOfTable può usare il deck delle carte obiettivo
-    public ObjectiveCard removeFromObjectiveCardsDeck(){
-        return objectiveCardsDeck.removeLast();
+    /**
+     * Gold and resource cards set up
+     * Shuffles the gold and resource decks, draws 2 cards from each deck and
+     * places them faceup
+     */
+    public void setRevealedCards(){
+        Collections.shuffle(resourceCardsDeck);
+        Collections.shuffle(goldCardsDeck);
+        this.revealedResourceCards.add(removeFromResourceCardsDeck());
+        this.revealedResourceCards.add(removeFromResourceCardsDeck());
+        for (HandPlayableCard card : revealedResourceCards){
+            card.showFront();
+        }
+
+        this.revealedGoldCards.add(removeFromGoldCardsDeck());
+        this.revealedGoldCards.add(removeFromGoldCardsDeck());
+        for (HandPlayableCard card : revealedGoldCards){
+            card.showFront();
+        }
+    }
+    public void setCommonObjectiveCards(List<PlayerArea> playerAreas){
+        Collections.shuffle(objectiveCardsDeck);
+        this.commonObjectiveCards.add(removeFromObjectiveCardsDeck());
+        this.commonObjectiveCards.add(removeFromObjectiveCardsDeck());
+        for (ObjectiveCard objectiveCard : commonObjectiveCards){
+            objectiveCard.commonCardDrawn(playerAreas);
+        }
+    }
+    public void discardObjectiveCard(ObjectiveCard objectiveCard){
+        objectiveCardsDeck.add(objectiveCard);
     }
 }

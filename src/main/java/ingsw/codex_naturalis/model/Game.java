@@ -60,14 +60,6 @@ public class Game {
     }
 
     /**
-     * Shuffles all the decks
-     */
-    public void shuffleAll(){
-        Collections.shuffle(this.initialCardsDeck);
-        centerOfTable.shuffleAll();
-    }
-
-    /**
      * Adds a player to the game
      * @param player Player
      */
@@ -97,6 +89,7 @@ public class Game {
      * Deals an initial card to each player
      */
     public void dealInitialCard(){
+        Collections.shuffle(initialCardsDeck);
         for (Player player : playerOrder){
             player.setInitialCard(initialCardsDeck.removeFirst());
         }
@@ -128,5 +121,16 @@ public class Game {
     }
     public void setCurrentPlayer(){
         currentPlayer = playerOrder.getFirst();
+    }
+
+    public void setAndDealObjectiveCards(){
+        List<PlayerArea> playerAreas = new ArrayList<>();
+        for (Player player : playerOrder){
+            playerAreas.add(player.getPlayerArea());
+        }
+        centerOfTable.setCommonObjectiveCards(new ArrayList<>(playerAreas));
+        for (Player player : playerOrder){
+            player.setObjectiveCards(centerOfTable.removeFromObjectiveCardsDeck(), centerOfTable.removeFromObjectiveCardsDeck());
+        }
     }
 }

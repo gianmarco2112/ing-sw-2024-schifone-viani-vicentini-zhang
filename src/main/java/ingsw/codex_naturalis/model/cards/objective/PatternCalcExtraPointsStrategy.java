@@ -51,7 +51,7 @@ public class PatternCalcExtraPointsStrategy implements CalcExtraPointsStrategy {
         int successes = 0;
         boolean success;
 
-        for(int yArea=playerAreas.get(i).getMaxY(); yArea<playerAreas.get(i).getMinY()+getPatternHeight()-1; yArea++){
+        for(int yArea=playerAreas.get(i).getMinY(); yArea<playerAreas.get(i).getMaxY()-getPatternHeight()+1; yArea++){
             for(int xArea=playerAreas.get(i).getMinX(); xArea<playerAreas.get(i).getMaxX()-getPatternWidth()+1; xArea++){
                 success = checkPatternOnCoordinates(xArea, yArea, i, markedArea);
                 if(success){

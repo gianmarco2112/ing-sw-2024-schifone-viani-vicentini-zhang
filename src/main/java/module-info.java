@@ -31,4 +31,6 @@ module ingsw.codex_naturalis {
     exports ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.isPlayable;
     exports ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.getSymbols;
     exports ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.coverCorners;
+
+    exports ingsw.codex_naturalis.exceptions;
 }

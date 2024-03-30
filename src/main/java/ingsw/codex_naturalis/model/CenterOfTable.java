@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ingsw.codex_naturalis.model.cards.HandPlayableCard;
-import ingsw.codex_naturalis.model.cards.PlayableCard;
 import ingsw.codex_naturalis.model.cards.gold.GoldCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.resource.ResourceCard;
@@ -116,6 +115,7 @@ public class CenterOfTable {
     public HandPlayableCard removeFirstFromRevealedResourceCards(){
         HandPlayableCard resourceCard = revealedResourceCards.removeFirst();
         revealedResourceCards.add(resourceCardsDeck.removeLast());
+        revealedResourceCards.getLast().showFront();
         return resourceCard;
     }
 
@@ -127,6 +127,7 @@ public class CenterOfTable {
     public HandPlayableCard removeLastFromRevealedResourceCards(){
         HandPlayableCard resourceCard = revealedResourceCards.removeLast();
         revealedResourceCards.add(resourceCardsDeck.removeLast());
+        revealedResourceCards.getLast().showFront();
         return resourceCard;
     }
 
@@ -138,6 +139,7 @@ public class CenterOfTable {
     public HandPlayableCard removeFirstFromRevealedGoldCards(){
         HandPlayableCard goldCard = revealedGoldCards.removeFirst();
         revealedGoldCards.add(goldCardsDeck.removeLast());
+        revealedGoldCards.getLast().showFront();
         return goldCard;
     }
 
@@ -149,6 +151,7 @@ public class CenterOfTable {
     public HandPlayableCard removeLastFromRevealedGoldCards(){
         HandPlayableCard goldCard = revealedGoldCards.removeLast();
         revealedGoldCards.add(goldCardsDeck.removeLast());
+        revealedGoldCards.getLast().showFront();
         return goldCard;
     }
 
@@ -186,5 +189,18 @@ public class CenterOfTable {
     }
     public void discardObjectiveCard(ObjectiveCard objectiveCard){
         objectiveCardsDeck.add(objectiveCard);
+    }
+
+    //only for test
+    public HandPlayableCard testRemoveFromGoldCardsDeck(){
+        return goldCardsDeck.removeFirst();
+    }
+    //only for test
+    public HandPlayableCard testRemoveFromResourceCardsDeck(){
+        return resourceCardsDeck.removeFirst();
+    }
+    //only for test
+    public ObjectiveCard testRemoveFromObjectiveCardsDeck(){
+        return objectiveCardsDeck.removeLast();
     }
 }

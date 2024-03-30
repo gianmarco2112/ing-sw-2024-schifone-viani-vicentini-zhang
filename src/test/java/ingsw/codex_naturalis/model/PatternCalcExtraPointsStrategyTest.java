@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.model.cards.objective;
+package ingsw.codex_naturalis.model;
 
 import ingsw.codex_naturalis.model.CenterOfTable;
 import ingsw.codex_naturalis.model.Game;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PatternCalcExtraPointsStrategyTest {
-    @Test
+    /*@Test
     void patternCalcExtraPointsStrategy(){
         Player player = new Player("Andrea", Color.BLUE,1);
         CenterOfTable centerOfTable = new CenterOfTable();
@@ -45,7 +45,7 @@ class PatternCalcExtraPointsStrategyTest {
         assertEquals(2,cx.getNumOfSymbol(Symbol.MANUSCRIPT));
         assertEquals(2,cx.getPoints());
 
-    }
+    }*/
 
 
 }

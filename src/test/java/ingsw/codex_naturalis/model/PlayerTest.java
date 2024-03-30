@@ -2,6 +2,9 @@ package ingsw.codex_naturalis.model;
 
 import ingsw.codex_naturalis.exceptions.NotPlayableException;
 import ingsw.codex_naturalis.model.cards.HandPlayableCard;
+import ingsw.codex_naturalis.model.cards.gold.GoldCard;
+import ingsw.codex_naturalis.model.cards.gold.GoldCardBack;
+import ingsw.codex_naturalis.model.cards.gold.GoldCardFront;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
 import ingsw.codex_naturalis.model.cards.initial.InitialCardBack;
 import ingsw.codex_naturalis.model.cards.initial.InitialCardFront;
@@ -13,10 +16,15 @@ import ingsw.codex_naturalis.model.enumerations.Symbol;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * it tests player's properties (nickname, color, id, initial card ect) and actions (draw, play a card)
+ */
 class PlayerTest {
     Player player;
     CenterOfTable centerOfTable;
@@ -41,6 +49,9 @@ class PlayerTest {
         player.drawFromGoldCardsDeck();
     }
 
+    /**
+     * it Tests Player's properties
+     */
     @Test
     void testPlayerProperties(){
         assertEquals("Test",player.getNickname());
@@ -50,6 +61,10 @@ class PlayerTest {
         assertEquals(1,player.getPlayerID());
         assertEquals(0,player.getSentMessages().size());
     }
+
+    /**
+     * it Tests playInitialCard
+     */
     @Test
     void playInitialCard(){
         player.playInitialCard();
@@ -57,13 +72,17 @@ class PlayerTest {
 
         assertEquals(initialCard.getBack(),playerArea.getCardOnCoordinates(0,0));
     }
+
+    /**
+     * it Tests the moments when the card is not playable (not available coordinates or not enough symbols on playerArea)
+     */
     @Test
     void testNotPlayableException() {
         playInitialCard();
         Exception exception;
         Exception exception1;
         //coordinate non valide
-        exception = assertThrows(NotPlayableException.class,() -> player.playCard(player.getHand().getFirst(),10,10 ));
+        exception = assertThrows(NotPlayableException.class,() -> player.playCard(player.getHand().getFirst(),0,1 ));
         assertEquals("This card is not playable here!",exception.getMessage());
         //non risorse sufficienti per poter piazzare la carta
         exception1 = assertThrows(NotPlayableException.class,() -> player.playCard(player.getHand().get(2),1,1 ));
@@ -71,6 +90,9 @@ class PlayerTest {
 
     }
 
+    /**
+     * it Tests if the card is played correctly
+     */
     @Test
     void testPlayCard(){
         playInitialCard();
@@ -80,6 +102,9 @@ class PlayerTest {
                      player.getPlayerArea().getCardOnCoordinates(1,1));
     }
 
+    /**
+     * @return a resource card that gives 1 point when it is played
+     */
     private HandPlayableCard resourceCardWithPoint(){
         return new ResourceCard(
                 new ResourceCardFront(
@@ -98,6 +123,9 @@ class PlayerTest {
                         Symbol.INSECT));
     }
 
+    /**
+     * it Tests that the points earned by player are added correctly
+     */
     @Test
     void testPoints(){
         HandPlayableCard handPlayableCard = resourceCardWithPoint();
@@ -107,29 +135,49 @@ class PlayerTest {
         player.playCard(handPlayableCard,1,1);
         assertEquals(1,player.getPlayerArea().getPoints());
     }
-    @Test
-    void testRequirementsPlayCard(){
 
+    /**
+     * @return a gold card example: to place it the player need to have an INSECT symbol on his playerArea
+     */
+    private HandPlayableCard goldCardExample(){
+        return new GoldCard(
+                new GoldCardFront(
+                        Symbol.INSECT,
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        2,
+                        new HashMap<>(Map.of(Symbol.INSECT,1))
+                ),
+                new GoldCardBack(
+                        Symbol.INSECT,
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        Symbol.INSECT
+                )
+        );
     }
 
-    /*@Test
-    void drawFromResourceCardsDeck() {
-        Player player = new Player("Bob", Color.RED,1);
-        Player player1 = new Player("Bob",Color.RED,2);
-        CenterOfTable centerOfTable = new CenterOfTable();
-        player.setCenterOfTable(centerOfTable);
-        Game game = new Game(1);
-        game.addPlayer(player);
-        game.dealInitialCard();
-        *//*List<HandPlayableCard> hand = player.getList();
-        assertTrue(hand.isEmpty());
-        player.playInitialCard();
+    /**
+     * it tests the placement of a card that has a requirement
+     */
+    @Test
+    void testRequirementsPlayCard(){
+        HandPlayableCard resourceCard = resourceCardWithPoint();
+        HandPlayableCard goldCard = goldCardExample();
+        resourceCard.drawn(player.getPlayerArea());
+        goldCard.drawn(player.getPlayerArea());
+        resourceCard.showBack();
+        goldCard.showFront();
 
+        playInitialCard();
+        player.playCard(resourceCard,1,1);
+        player.playCard(goldCard,-1,-1);
 
-
-        player.drawFromResourceCardsDeck();
-        assertFalse(hand.isEmpty());
-        player.playCard(hand.getFirst(), 0, 0);
-        assertTrue(hand.isEmpty());*//*
-    }*/
+        assertEquals(2,player.getPlayerArea().getPoints());
+        assertEquals(1,player.getPlayerArea().getNumOfSymbol(Symbol.INSECT));
+    }
 }

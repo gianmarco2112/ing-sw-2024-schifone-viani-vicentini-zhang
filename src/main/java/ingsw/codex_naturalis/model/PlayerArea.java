@@ -65,12 +65,19 @@ public class PlayerArea {
         this.numOfSymbols = new HashMap<>();
         this.points = 0;
 
-        //aggiunto per il test obiettivo
+        //inizializzare numOfSymbol
+        initializeNumOfSymbols(numOfSymbols);
+    }
+
+    private void initializeNumOfSymbols(HashMap<Symbol, Integer> numOfSymbols) {
         numOfSymbols.put(Symbol.INSECT,0);
-        this.setMaxX(10);
-        this.setMaxY(10);
-        this.setMinX(-10);
-        this.setMinY(-10);
+        numOfSymbols.put(Symbol.FUNGI,0);
+        numOfSymbols.put(Symbol.ANIMAL,0);
+        numOfSymbols.put(Symbol.PLANT,0);
+        numOfSymbols.put(Symbol.MANUSCRIPT,0);
+        numOfSymbols.put(Symbol.QUILL,0);
+        numOfSymbols.put(Symbol.INKWELL,0);
+        numOfSymbols.put(Symbol.EMPTY,0);
     }
 
 

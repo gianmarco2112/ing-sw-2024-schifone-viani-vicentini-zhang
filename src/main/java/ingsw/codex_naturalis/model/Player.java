@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.model;
 
+import ingsw.codex_naturalis.exceptions.NotPlayableException;
 import ingsw.codex_naturalis.model.cards.HandPlayableCard;
 import ingsw.codex_naturalis.model.cards.HandPlayableSide;
 import ingsw.codex_naturalis.model.cards.PlayableCard;
@@ -153,7 +154,7 @@ public class Player {
      * @param x coordinate x
      * @param y coordinate y
      */
-    public void playCard(HandPlayableCard card, int x, int y) {
+    public void playCard(HandPlayableCard card, int x, int y) throws NotPlayableException{
         HandPlayableSide sideCard;
         if (card.isShowingFront()) {
             sideCard = card.getHandPlayableFront();
@@ -167,6 +168,8 @@ public class Player {
             sideCard.getSymbols();
             sideCard.calcPoints();
             hand.remove(card);
+        }else{
+            throw new NotPlayableException();
         }
     }
 
@@ -243,7 +246,12 @@ public class Player {
         sentMessages.add(new Message(content, receivers));
     }
 
+    /**
+     * Test method
+     * @return playerArea
+     */
     //metodo aggiunto momentaneamente per fare il test degli obiettivi
+    @Deprecated
     public PlayerArea getPlayerArea(){
         return playerArea;
     }

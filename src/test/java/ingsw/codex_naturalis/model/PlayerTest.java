@@ -5,6 +5,9 @@ import ingsw.codex_naturalis.model.cards.HandPlayableCard;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
 import ingsw.codex_naturalis.model.cards.initial.InitialCardBack;
 import ingsw.codex_naturalis.model.cards.initial.InitialCardFront;
+import ingsw.codex_naturalis.model.cards.resource.ResourceCard;
+import ingsw.codex_naturalis.model.cards.resource.ResourceCardBack;
+import ingsw.codex_naturalis.model.cards.resource.ResourceCardFront;
 import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,6 +78,38 @@ class PlayerTest {
         player.playCard(player.getHand().getFirst(),1,1);//attenzione, dopo aver giocato la carta essa viene rimossa dalla mano
         assertEquals(playableSide.getHandPlayableFront(),
                      player.getPlayerArea().getCardOnCoordinates(1,1));
+    }
+
+    private HandPlayableCard resourceCardWithPoint(){
+        return new ResourceCard(
+                new ResourceCardFront(
+                        Symbol.INSECT,
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        1),
+                new ResourceCardBack(
+                        Symbol.INSECT,
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        Symbol.INSECT));
+    }
+
+    @Test
+    void testPoints(){
+        HandPlayableCard handPlayableCard = resourceCardWithPoint();
+        handPlayableCard.drawn(player.getPlayerArea()); //activate card's behavior
+        playInitialCard();
+        handPlayableCard.showFront();
+        player.playCard(handPlayableCard,1,1);
+        assertEquals(1,player.getPlayerArea().getPoints());
+    }
+    @Test
+    void testRequirementsPlayCard(){
+
     }
 
     /*@Test

@@ -191,16 +191,53 @@ public class CenterOfTable {
         objectiveCardsDeck.add(objectiveCard);
     }
 
+    // TESTING METHODS
+    /**
+     * Testing method
+     * @return Card
+     */
     //only for test
+    @Deprecated
     public HandPlayableCard testRemoveFromGoldCardsDeck(){
         return goldCardsDeck.removeFirst();
     }
+
+    /**
+     * Testing method
+     * @return Card
+     */
     //only for test
+    @Deprecated
     public HandPlayableCard testRemoveFromResourceCardsDeck(){
         return resourceCardsDeck.removeFirst();
     }
+
+    /**
+     * Testing method
+     * @return Card
+     */
     //only for test
+    @Deprecated
     public ObjectiveCard testRemoveFromObjectiveCardsDeck(){
         return objectiveCardsDeck.removeLast();
+    }
+
+    /**
+     * Testing method
+     * @return Card
+     */
+    //only for test
+    @Deprecated
+    public HandPlayableCard testGetFromGoldCardsDeck(){
+        return goldCardsDeck.getFirst();
+    }
+    //only for test
+    /**
+     * Testing method
+     * @return Card
+     */
+    @Deprecated
+    public HandPlayableCard testGetFromResourceCardsDeck(){
+        return resourceCardsDeck.getFirst();
     }
 }

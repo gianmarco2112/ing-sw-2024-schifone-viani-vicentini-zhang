@@ -5,6 +5,7 @@ import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.objective.PatternObjectiveCard;
 import ingsw.codex_naturalis.model.cards.objective.SymbolsObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
+import ingsw.codex_naturalis.model.DefaultValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,15 +29,15 @@ class CenterOfTableTest {
     @Test
     void testRemoveFromDecks() {
         //controllo che tutte le carte inizializzate nel mazzo risorsa mostrino il retro
-        for(int i = 0; i<40; i++){
+        for(int i = 0; i<DefaultValue.totNumOfResourceCards; i++){
             assertFalse(centerOfTable.removeFromResourceCardsDeck().isShowingFront());
         }
         //controllo che tutte le carte inizializzate nel mazzo oro mostrino il retro
-        for(int i = 0; i<40; i++){
+        for(int i = 0; i<DefaultValue.totNumOfGoldCards; i++){
             assertFalse(centerOfTable.removeFromGoldCardsDeck().isShowingFront());
         }
         //controllo che siano state inizializzate tutte le carte obiettivo
-        for(int i = 0; i<16; i++){
+        for(int i = 0; i<DefaultValue.totNumOfObjectiveCards; i++){
             assertNotNull(centerOfTable.removeFromObjectiveCardsDeck());
         }
     }
@@ -198,8 +199,23 @@ class CenterOfTableTest {
         assertEquals(2,symbolsObjectiveCard.getNumOfSymbol(Symbol.QUILL));
     }
 
+    /**
+     * it tests if shuffle works correctly
+     */
     @Test
     void testShuffle(){
-        //TODO
+        HandPlayableCard resourceCard = centerOfTable.testGetFromResourceCardsDeck();
+        HandPlayableCard goldCard = centerOfTable.testGetFromGoldCardsDeck();
+
+        //shuffle gold and resource decks
+        centerOfTable.setRevealedCards();
+
+        HandPlayableCard resouceCard1 = centerOfTable.testGetFromResourceCardsDeck();
+        assertNotEquals(resourceCard,resouceCard1);
+
+        HandPlayableCard goldCard1 = centerOfTable.testGetFromGoldCardsDeck();
+        assertNotEquals(goldCard,goldCard1);
+
+
     }
 }

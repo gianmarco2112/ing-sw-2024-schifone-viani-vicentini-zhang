@@ -1,6 +1,9 @@
 package ingsw.codex_naturalis.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
+import ingsw.codex_naturalis.exceptions.MaxNumOfPlayersInException;
+import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,24 +66,29 @@ public class Game {
      * Adds a player to the game
      * @param player Player
      */
-    public void addPlayer(Player player){
-        List<String> nicknames = new ArrayList<>();
-        List<Color> colors = new ArrayList<>();
-        for(Player p : playerOrder){
-            nicknames.add(p.getNickname());
-            colors.add(p.getColor());
-        }
-        if(nicknames.contains(player.getNickname())||colors.contains(player.getColor())){
-            if(nicknames.contains(player.getNickname())){
-                System.out.println("This nickname already exists, please choose another nickname");
-            }
-            if(colors.contains(player.getColor())){
-                System.out.println("This color has already been chosen by another player, please choose another one");
-            }
+    //NOTA : l'eccezione viene catturata poi dal controller che gestisce la logica del gioco
+    public void addPlayer(Player player) throws NicknameAlreadyExistsException, ColorAlreadyChosenException, MaxNumOfPlayersInException {
+        if(playerOrder.size()>DefaultValue.maxNumOfPlayer){
+            throw new MaxNumOfPlayersInException();
         }else{
-            playerOrder.add(player);
+            List<String> nicknames = new ArrayList<>();
+            List<Color> colors = new ArrayList<>();
             for(Player p : playerOrder){
-                p.setPossibleMessageReceivers(player);
+                nicknames.add(p.getNickname());
+                colors.add(p.getColor());
+            }
+            if(nicknames.contains(player.getNickname())||colors.contains(player.getColor())){
+                if(nicknames.contains(player.getNickname())){
+                    throw new NicknameAlreadyExistsException();
+                }
+                if(colors.contains(player.getColor())){
+                    throw new ColorAlreadyChosenException();
+                }
+            }else{
+                playerOrder.add(player);
+                for(Player p : playerOrder){
+                    p.setPossibleMessageReceivers(player);
+                }
             }
         }
     }

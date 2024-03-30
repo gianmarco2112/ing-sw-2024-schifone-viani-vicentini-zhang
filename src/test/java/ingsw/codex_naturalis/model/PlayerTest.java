@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.model;
 
+import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 import ingsw.codex_naturalis.model.cards.HandPlayableCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
@@ -21,8 +22,14 @@ class PlayerTest {
         assertEquals("Bob",player.getNickname());
         assertEquals(Color.RED,player.getColor());
         Game game = new Game(1);
-        game.addPlayer(player);
-        game.addPlayer(player1);
+        try {
+            game.addPlayer(player);
+            game.addPlayer(player1);
+        }catch (NicknameAlreadyExistsException e){
+            System.out.println(e.getMessage());
+        }
+
+
     }
     @Test
     void playCard() {

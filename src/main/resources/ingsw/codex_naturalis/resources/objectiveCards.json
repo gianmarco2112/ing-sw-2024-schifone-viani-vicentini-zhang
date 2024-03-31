@@ -41,7 +41,7 @@
   },
   {
     "type": "pattern",
-    "points": 2,
+    "points": 3,
     "positions": [[0,3],[0,1],[1,0]],
     "kingdoms": ["FUNGI","FUNGI","PLANT"],
     "maxX": 1,
@@ -51,7 +51,7 @@
   },
   {
     "type": "pattern",
-    "points": 2,
+    "points": 3,
     "positions": [[1,3],[1,1],[0,0]],
     "kingdoms": ["PLANT","PLANT","INSECT"],
     "maxX": 1,
@@ -61,7 +61,7 @@
   },
   {
     "type": "pattern",
-    "points": 2,
+    "points": 3,
     "positions": [[0,0],[0,2],[1,3]],
     "kingdoms": ["ANIMAL","ANIMAL","FUNGI"],
     "maxX": 1,
@@ -71,7 +71,7 @@
   },
   {
     "type": "pattern",
-    "points": 2,
+    "points": 3,
     "positions": [[1,0],[1,2],[0,3]],
     "kingdoms": ["INSECT","INSECT","ANIMAL"],
     "maxX": 1,

@@ -52,7 +52,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
         super(points);
         this.pattern=new HashMap<>();
         for(int i = minX; i <= maxX; i++){
-            for(int j = minY; j <= maxX; j++){
+            for(int j = minY; j <= maxY; j++){
                 pattern.put(List.of(i,j),Symbol.EMPTY);
             }
         }

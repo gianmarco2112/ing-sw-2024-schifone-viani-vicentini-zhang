@@ -51,8 +51,8 @@ public class PatternCalcExtraPointsStrategy implements CalcExtraPointsStrategy {
         int successes = 0;
         boolean success;
 
-        for(int yArea=playerAreas.get(i).getMinY(); yArea<playerAreas.get(i).getMaxY()-getPatternHeight()+1; yArea++){
-            for(int xArea=playerAreas.get(i).getMinX(); xArea<playerAreas.get(i).getMaxX()-getPatternWidth()+1; xArea++){
+        for(int yArea=playerAreas.get(i).getMaxY(); yArea>=playerAreas.get(i).getMinY()+getPatternHeight()-1; yArea--){
+            for(int xArea=playerAreas.get(i).getMinX(); xArea<=playerAreas.get(i).getMaxX()-getPatternWidth()+1; xArea++){
                 success = checkPatternOnCoordinates(xArea, yArea, i, markedArea);
                 if(success){
                     successes += 1;
@@ -72,14 +72,14 @@ public class PatternCalcExtraPointsStrategy implements CalcExtraPointsStrategy {
      * @return true if the pattern is overlapping on the area, false if it isn't
      */
     private boolean checkPatternOnCoordinates(int xArea, int yArea, int i, HashMap<List<Integer>,Boolean> markedArea){
-        for(int yPattern=patternObjectiveCard.getMaxY(); yPattern<patternObjectiveCard.getMinY(); yPattern++, yArea++){
-            for(int xPattern=patternObjectiveCard.getMinX(); xPattern<patternObjectiveCard.getMaxX(); xPattern++, xArea++){
+        for(int yPattern=patternObjectiveCard.getMaxY(),y=yArea; yPattern>=patternObjectiveCard.getMinY(); yPattern--, y--){
+            for(int xPattern=patternObjectiveCard.getMinX(),x=xArea; xPattern<=patternObjectiveCard.getMaxX(); xPattern++, x++){
                 if(patternObjectiveCard.getSymbolAt(xPattern, yPattern) != Symbol.EMPTY){
-                    if(!playerAreas.get(i).containsCardOnCoordinates(xArea, yArea)){
+                    if(!playerAreas.get(i).containsCardOnCoordinates(x, y)){
                         return false;
                     }
                     else{
-                        if(patternObjectiveCard.getSymbolAt(xPattern, yPattern) != playerAreas.get(i).getCardOnCoordinates(xArea, yArea).getKingdom()   ||  !markedArea.get(new ArrayList<>(List.of(xArea, yArea)))){
+                        if(markedArea.get(new ArrayList<>(List.of(x, y)))  ||  patternObjectiveCard.getSymbolAt(xPattern, yPattern) != playerAreas.get(i).getCardOnCoordinates(x, y).getKingdom()){
                             return false;
                         }
                     }
@@ -97,10 +97,10 @@ public class PatternCalcExtraPointsStrategy implements CalcExtraPointsStrategy {
      * @param yArea y
      */
     private void markArea(HashMap<List<Integer>,Boolean> areaToMark, int xArea, int yArea){
-        for(int yPattern=patternObjectiveCard.getMaxY(); yPattern<patternObjectiveCard.getMinY(); yPattern++, yArea++){
-            for(int xPattern=patternObjectiveCard.getMinX(); xPattern<patternObjectiveCard.getMaxX(); xPattern++, xArea++){
+        for(int yPattern=patternObjectiveCard.getMaxY(), y=yArea; yPattern>=patternObjectiveCard.getMinY(); yPattern--, y--){
+            for(int xPattern=patternObjectiveCard.getMinX(), x=xArea; xPattern<=patternObjectiveCard.getMaxX(); xPattern++, x++){
                 if(patternObjectiveCard.getSymbolAt(xPattern, yPattern) != Symbol.EMPTY){
-                    areaToMark.replace(new ArrayList<>(List.of(xArea, yArea)),true);
+                    areaToMark.replace(new ArrayList<>(List.of(x, y)),true);
                 }
             }
         }

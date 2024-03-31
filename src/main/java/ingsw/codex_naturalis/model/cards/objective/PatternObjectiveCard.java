@@ -51,8 +51,8 @@ public class PatternObjectiveCard extends ObjectiveCard {
                                 @JsonProperty("minY") int minY) {
         super(points);
         this.pattern=new HashMap<>();
-        for(int i = minX; i < maxX; i++){
-            for(int j = minY; j < maxX; j++){
+        for(int i = minX; i <= maxX; i++){
+            for(int j = minY; j <= maxX; j++){
                 pattern.put(List.of(i,j),Symbol.EMPTY);
             }
         }

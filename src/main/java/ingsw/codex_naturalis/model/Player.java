@@ -272,6 +272,15 @@ public class Player {
         return new ArrayList<>(hand);
     }
 
+    /**
+     * Only for test
+     * @return hand
+     */
+    @Deprecated
+    public List<HandPlayableCard> testGethand(){
+        return hand;
+    }
+
     public List<Message> getSentMessages() {
         return new ArrayList<>(sentMessages);
     }

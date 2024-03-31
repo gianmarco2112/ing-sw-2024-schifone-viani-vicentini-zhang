@@ -1,14 +1,10 @@
 package ingsw.codex_naturalis.model;
 
-import ingsw.codex_naturalis.model.CenterOfTable;
-import ingsw.codex_naturalis.model.Game;
-import ingsw.codex_naturalis.model.Player;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
 import ingsw.codex_naturalis.model.cards.initial.InitialCardBack;
 import ingsw.codex_naturalis.model.cards.initial.InitialCardFront;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.objective.PatternObjectiveCard;
-import ingsw.codex_naturalis.model.cards.resource.ResourceCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PatternCalcExtraPointsStrategyTest {
+class DiagonalPatternCalcExtraPointsStrategyTest {
     Player player;
     CenterOfTable centerOfTable;
     InitialCard initialCard;
@@ -72,6 +68,27 @@ class PatternCalcExtraPointsStrategyTest {
         player.playCard(player.getHand().get(0),-2,2 );
         player.playCard(player.getHand().get(0),-3,3 );
     }
+    private void twoDiagonalTopLeftBottomRight(){
+        player.drawFromResourceCardsDeck();
+        player.getHand().getLast().showBack();
+        player.drawFromResourceCardsDeck();
+        player.getHand().getLast().showBack();
+        player.drawFromResourceCardsDeck();
+        player.getHand().getLast().showBack();
+        player.drawFromResourceCardsDeck();
+        player.getHand().getLast().showBack();
+        player.drawFromResourceCardsDeck();
+        player.getHand().getLast().showBack();
+        player.drawFromResourceCardsDeck();
+        player.getHand().getLast().showBack();
+
+        player.playCard(player.getHand().get(0),-1,1 );
+        player.playCard(player.getHand().get(0),-2,2 );
+        player.playCard(player.getHand().get(0),-3,3 );
+        player.playCard(player.getHand().get(0),-4,4 );
+        player.playCard(player.getHand().get(0),-5,5 );
+        player.playCard(player.getHand().get(0),-6,6 );
+    }
     private ObjectiveCard diagonalTopLeftBottomRightCard(){
         return new PatternObjectiveCard(2,List.of(List.of(0,2),List.of(1,1),List.of(2,0)),List.of(Symbol.INSECT,Symbol.INSECT,Symbol.INSECT),2,2,0,0);
     }
@@ -90,5 +107,25 @@ class PatternCalcExtraPointsStrategyTest {
         patternObjectiveCard.chosen(player.getPlayerArea());
         patternObjectiveCard.execute();
         assertEquals(2,player.getPlayerArea().getExtraPoints());
+    }
+    @Test
+    void twoDiagonalTopLeftBottomRightPattern(){
+        twoDiagonalTopLeftBottomRight();
+        patternObjectiveCard = diagonalTopLeftBottomRightCard();
+        patternObjectiveCard.chosen(player.getPlayerArea());
+        patternObjectiveCard.execute();
+        assertEquals(4,player.getPlayerArea().getExtraPoints());
+    }
+    @Test
+    void mixedDiagonalPattern(){
+        twoDiagonalTopLeftBottomRight();
+        patternObjectiveCard = diagonalTopLeftBottomRightCard();
+        patternObjectiveCard.chosen(player.getPlayerArea());
+        patternObjectiveCard.execute();
+        diagonalBottomLeftTopRight();
+        patternObjectiveCard = diagonalBottomLeftTopRightCard();
+        patternObjectiveCard.chosen(player.getPlayerArea());
+        patternObjectiveCard.execute();
+        assertEquals(6,player.getPlayerArea().getExtraPoints());
     }
 }

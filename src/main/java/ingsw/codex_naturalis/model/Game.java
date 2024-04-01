@@ -66,9 +66,9 @@ public class Game {
      * Adds a player to the game
      * @param player Player
      */
-    //NOTA : l'eccezione viene catturata poi dal controller che gestisce la logica del gioco
+    //NOTA: l'eccezione viene catturata poi dal controller che gestisce la logica del gioco
     public void addPlayer(Player player) throws NicknameAlreadyExistsException, ColorAlreadyChosenException, MaxNumOfPlayersInException {
-        if(playerOrder.size()>DefaultValue.maxNumOfPlayer){
+        if(playerOrder.size() >= DefaultValue.maxNumOfPlayer){
             throw new MaxNumOfPlayersInException();
         }else{
             List<String> nicknames = new ArrayList<>();
@@ -106,6 +106,7 @@ public class Game {
     public Player getFirstPlayer(){
         return playerOrder.getFirst();
     }
+
     public void shufflePlayerList(){
         Collections.shuffle(this.playerOrder);
     }
@@ -120,6 +121,7 @@ public class Game {
     public Player getNextPlayer(){
         return getNextElement(playerOrder,getCurrentPlayer());
     }
+
     public Player getCurrentPlayer(){
         return currentPlayer;
     }
@@ -127,6 +129,7 @@ public class Game {
     public int getGameID() {
         return gameID;
     }
+
     public void setCurrentPlayer(){
         currentPlayer = playerOrder.getFirst();
     }

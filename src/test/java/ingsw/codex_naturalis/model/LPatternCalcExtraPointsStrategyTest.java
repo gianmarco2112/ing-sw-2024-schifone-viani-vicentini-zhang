@@ -140,7 +140,7 @@ public class LPatternCalcExtraPointsStrategyTest {
         return (new PatternObjectiveCard(
                 3,
                 List.of(List.of(1,0),List.of(0,1),List.of(0,3)),
-                List.of(Symbol.INSECT,Symbol.FUNGI,Symbol.FUNGI),
+                List.of(Symbol.PLANT,Symbol.FUNGI,Symbol.FUNGI),
                 1,
                 3,
                 0,
@@ -178,18 +178,66 @@ public class LPatternCalcExtraPointsStrategyTest {
         player.playCard(player.testGethand().getFirst(),2,4 );
     }
     private void bottomRightL(){
+        player.testGethand().add(plantResourceCard());
+        player.testGethand().add(fungiResourceCard());
+        player.testGethand().add(fungiResourceCard());
+        player.testGethand().add(fungiResourceCard());
 
+        player.playCard(player.testGethand().getFirst(),-1,1 );
+        player.playCard(player.testGethand().getFirst(),-2,2 );
+        player.playCard(player.testGethand().getFirst(),-3,3 );
+        player.playCard(player.testGethand().getFirst(),-2,4 );
     }
     private void topLeftL(){
+        player.testGethand().add(animalResourceCard());
+        player.testGethand().add(insectResourceCard());
+        player.testGethand().add(insectResourceCard());
+        player.testGethand().add(insectResourceCard());
 
+        player.playCard(player.testGethand().getFirst(),1,-1 );
+        player.playCard(player.testGethand().getFirst(),2,-2 );
+        player.playCard(player.testGethand().getFirst(),1,-3 );
+        player.playCard(player.testGethand().getFirst(),2,-4 );
     }
     private void topRightL(){
+        player.testGethand().add(fungiResourceCard());
+        player.testGethand().add(animalResourceCard());
+        player.testGethand().add(animalResourceCard());
+        player.testGethand().add(animalResourceCard());
 
+        player.playCard(player.testGethand().getFirst(),-1,-1 );
+        player.playCard(player.testGethand().getFirst(),-2,-2 );
+        player.playCard(player.testGethand().getFirst(),-1,-3 );
+        player.playCard(player.testGethand().getFirst(),-2,-4 );
     }
     @Test
     void bottomLeftLTest(){
         bottomLeftL();
         patternObjectiveCard = bottomLeftLObjectiveCard();
+        patternObjectiveCard.chosen(player.getPlayerArea());
+        patternObjectiveCard.execute();
+        assertEquals(3,player.getPlayerArea().getExtraPoints());
+    }
+    @Test
+    void bottomRightLTest(){
+        bottomRightL();
+        patternObjectiveCard = bottomRightLObjectiveCard();
+        patternObjectiveCard.chosen(player.getPlayerArea());
+        patternObjectiveCard.execute();
+        assertEquals(3,player.getPlayerArea().getExtraPoints());
+    }
+    @Test
+    void topLeftLTest(){
+        topLeftL();
+        patternObjectiveCard = topLeftLObjectiveCard();
+        patternObjectiveCard.chosen(player.getPlayerArea());
+        patternObjectiveCard.execute();
+        assertEquals(3,player.getPlayerArea().getExtraPoints());
+    }
+    @Test
+    void topRightLTest(){
+        topRightL();
+        patternObjectiveCard = topRightLObjectiveCard();
         patternObjectiveCard.chosen(player.getPlayerArea());
         patternObjectiveCard.execute();
         assertEquals(3,player.getPlayerArea().getExtraPoints());

@@ -1,0 +1,91 @@
+package ingsw.codex_naturalis.model;
+
+import ingsw.codex_naturalis.model.cards.initial.InitialCard;
+import ingsw.codex_naturalis.model.cards.initial.InitialCardBack;
+import ingsw.codex_naturalis.model.cards.initial.InitialCardFront;
+import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
+import ingsw.codex_naturalis.model.cards.objective.SymbolsObjectiveCard;
+import ingsw.codex_naturalis.model.enumerations.Color;
+import ingsw.codex_naturalis.model.enumerations.Symbol;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SymbolsCalcExtraPointsStrategyTest {
+    Game game;
+    CenterOfTable centerOfTable = new CenterOfTable();
+    Player player = new Player("Test", Color.RED,0);
+    ObjectiveCard objectiveCard;
+    InitialCard initialCard;
+    @BeforeEach
+    void setUp(){
+        game = new Game(0);
+        game.addPlayer(player);
+        player.setCenterOfTable(centerOfTable);
+        initialCard = new InitialCard(
+                new InitialCardFront(
+                        Symbol.EMPTY,
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false)),
+                new InitialCardBack(
+                        Symbol.EMPTY,
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        List.of(Symbol.EMPTY,Symbol.EMPTY,Symbol.EMPTY)));
+        player.setInitialCard(initialCard);
+        player.playInitialCard();
+    }
+    private ObjectiveCard twoObjecctObjectiveCard(){
+        return new SymbolsObjectiveCard(
+                2,
+                new HashMap<>(Map.of(Symbol.QUILL,2))
+        );
+    }
+    @Test
+    void noExtraPoints(){
+        objectiveCard = twoObjecctObjectiveCard();
+        player.setObjectiveCards(objectiveCard,objectiveCard);
+        player.chooseObjectiveCard(objectiveCard);
+
+        objectiveCard.execute();//grazie a questo test abbiamo corretto un punto del algoritmo
+        assertEquals(0,player.getExtraPoints());
+    }
+    @Test
+    void testTwoObject(){
+        objectiveCard = twoObjecctObjectiveCard();
+        player.setObjectiveCards(objectiveCard,objectiveCard);
+        player.chooseObjectiveCard(objectiveCard);
+
+        int i = 1;
+        while(i<6){
+            player.drawFromResourceCardsDeck();
+            player.getHand().getFirst().showBack();
+            player.playCard(player.getHand().getFirst(),i,i );
+            i++;
+        }
+        player.drawFromResourceCardsDeck();
+        player.playCard(player.getHand().getFirst(),i,i );
+        int j = -1;
+        while(i<13){
+            player.drawFromResourceCardsDeck();
+            player.getHand().getFirst().showBack();
+            player.playCard(player.getHand().getFirst(),j,j );
+            i++;
+            j--;
+        }
+        player.drawFromResourceCardsDeck();
+        player.playCard(player.getHand().getFirst(),j,j );
+
+        objectiveCard.execute();
+        assertEquals(2,player.getExtraPoints());
+    }
+}

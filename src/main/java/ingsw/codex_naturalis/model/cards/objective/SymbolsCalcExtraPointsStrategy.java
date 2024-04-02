@@ -36,6 +36,7 @@ public class SymbolsCalcExtraPointsStrategy implements CalcExtraPointsStrategy {
     public void run() {
         for (PlayerArea playerArea : playerAreas) {
             List<Integer> count = new ArrayList<>();
+            count.add(0);
             Set<Symbol> symbols = symbolsObjectiveCard.getKeySet();
             for (Symbol sb : symbols) {
                 if (symbolsObjectiveCard.getNumOfSymbol(sb) <= playerArea.getNumOfSymbol(sb)) {

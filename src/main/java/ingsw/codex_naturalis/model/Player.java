@@ -303,4 +303,7 @@ public class Player {
         centerOfTable.discardObjectiveCard(objectiveCards.getFirst());
         objectiveCards.clear();
     }
+    public int getExtraPoints(){
+        return playerArea.getExtraPoints(); //potrebbe tornare utile anche in futuro e potrebbe sostituire i metodi deprecati
+    }
 }

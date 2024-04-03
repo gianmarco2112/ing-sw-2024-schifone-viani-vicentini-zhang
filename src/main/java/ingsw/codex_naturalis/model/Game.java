@@ -68,28 +68,20 @@ public class Game {
      */
     //NOTA: l'eccezione viene catturata poi dal controller che gestisce la logica del gioco
     public void addPlayer(Player player) throws NicknameAlreadyExistsException, ColorAlreadyChosenException, MaxNumOfPlayersInException {
-        if(playerOrder.size() >= DefaultValue.maxNumOfPlayer){
+        if(playerOrder.size() >= DefaultValue.maxNumOfPlayer)
             throw new MaxNumOfPlayersInException();
-        }else{
-            List<String> nicknames = new ArrayList<>();
-            List<Color> colors = new ArrayList<>();
-            for(Player p : playerOrder){
-                nicknames.add(p.getNickname());
-                colors.add(p.getColor());
+
+        for(Player p : playerOrder){
+            if(player.getNickname().equals(p.getNickname())){
+                throw new NicknameAlreadyExistsException();
             }
-            if(nicknames.contains(player.getNickname())||colors.contains(player.getColor())){
-                if(nicknames.contains(player.getNickname())){
-                    throw new NicknameAlreadyExistsException();
-                }
-                if(colors.contains(player.getColor())){
-                    throw new ColorAlreadyChosenException();
-                }
-            }else{
-                playerOrder.add(player);
-                for(Player p : playerOrder){
-                    p.setPossibleMessageReceivers(player);
-                }
+            if(player.getColor() == p.getColor()){
+                throw new ColorAlreadyChosenException();
             }
+        }
+        playerOrder.add(player);
+        for(Player p : playerOrder){
+            p.setPossibleMessageReceivers(player);
         }
     }
 

@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.model;
 
 import ingsw.codex_naturalis.exceptions.NotPlayableException;
+import ingsw.codex_naturalis.exceptions.CardNotInHandException;
 import ingsw.codex_naturalis.model.cards.HandPlayableCard;
 import ingsw.codex_naturalis.model.cards.HandPlayableSide;
 import ingsw.codex_naturalis.model.cards.PlayableCard;
@@ -120,7 +121,11 @@ public class Player {
      * This method is called when the player wants to see the other side of the card.
      * @param card Card to flip
      */
-    public void flip(PlayableCard card) {
+    public void flip(PlayableCard card) throws CardNotInHandException{
+
+        if (!hand.contains(card)){
+            throw new CardNotInHandException();
+        }
         if (card.isShowingFront()) {
             card.showBack();
         } else {

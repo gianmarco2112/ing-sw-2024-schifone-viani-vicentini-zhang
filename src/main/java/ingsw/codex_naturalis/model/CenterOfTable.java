@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.model;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ingsw.codex_naturalis.exceptions.EmptyDeckException;
 import ingsw.codex_naturalis.model.cards.HandPlayableCard;
 import ingsw.codex_naturalis.model.cards.gold.GoldCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
@@ -95,7 +96,10 @@ public class CenterOfTable {
      * Removes the top card of the resource cards deck
      * @return Card
      */
-    public HandPlayableCard removeFromResourceCardsDeck(){
+    public HandPlayableCard removeFromResourceCardsDeck() throws EmptyDeckException {
+        if(resourceCardsDeck.isEmpty()){
+            throw new EmptyDeckException();
+        }
         return resourceCardsDeck.removeLast();
     }
 
@@ -103,7 +107,10 @@ public class CenterOfTable {
      * Removes the top card of the gold cards deck
      * @return Card
      */
-    public HandPlayableCard removeFromGoldCardsDeck(){
+    public HandPlayableCard removeFromGoldCardsDeck() throws EmptyDeckException{
+        if(goldCardsDeck.isEmpty()){
+            throw new EmptyDeckException();
+        }
         return goldCardsDeck.removeLast();
     }
 
@@ -114,7 +121,7 @@ public class CenterOfTable {
      */
     public HandPlayableCard removeFirstFromRevealedResourceCards(){
         HandPlayableCard resourceCard = revealedResourceCards.removeFirst();
-        revealedResourceCards.add(resourceCardsDeck.removeLast());
+        revealedResourceCards.add(resourceCardsDeck.removeLast());//forse meglio chiamare removeFromResourceCardsDeck che solleva un'eccezione definita da noi
         revealedResourceCards.getLast().showFront();
         return resourceCard;
     }
@@ -126,7 +133,7 @@ public class CenterOfTable {
      */
     public HandPlayableCard removeLastFromRevealedResourceCards(){
         HandPlayableCard resourceCard = revealedResourceCards.removeLast();
-        revealedResourceCards.add(resourceCardsDeck.removeLast());
+        revealedResourceCards.add(resourceCardsDeck.removeLast());//come sopra
         revealedResourceCards.getLast().showFront();
         return resourceCard;
     }
@@ -138,7 +145,7 @@ public class CenterOfTable {
      */
     public HandPlayableCard removeFirstFromRevealedGoldCards(){
         HandPlayableCard goldCard = revealedGoldCards.removeFirst();
-        revealedGoldCards.add(goldCardsDeck.removeLast());
+        revealedGoldCards.add(goldCardsDeck.removeLast());//come sopra
         revealedGoldCards.getLast().showFront();
         return goldCard;
     }
@@ -150,7 +157,7 @@ public class CenterOfTable {
      */
     public HandPlayableCard removeLastFromRevealedGoldCards(){
         HandPlayableCard goldCard = revealedGoldCards.removeLast();
-        revealedGoldCards.add(goldCardsDeck.removeLast());
+        revealedGoldCards.add(goldCardsDeck.removeLast());//come sopra
         revealedGoldCards.getLast().showFront();
         return goldCard;
     }

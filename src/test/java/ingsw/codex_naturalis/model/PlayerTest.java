@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model;
 
+import ingsw.codex_naturalis.exceptions.CardNotInHandException;
+import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 import ingsw.codex_naturalis.exceptions.NotPlayableException;
 import ingsw.codex_naturalis.model.cards.HandPlayableCard;
 import ingsw.codex_naturalis.model.cards.gold.GoldCard;
@@ -183,13 +185,23 @@ class PlayerTest {
 
     @Test
     void testFlipInitialCard(){
-        if (initialCard.isShowingFront()){
-            player.flip(initialCard);
+        InitialCard playerInitialCard = player.getInitialCard();
+        if (playerInitialCard.isShowingFront()){
+            player.flip(playerInitialCard);
             assertEquals(Boolean.FALSE, initialCard.isShowingFront());
         }
         else{
-            player.flip(initialCard);
+            player.flip(playerInitialCard);
             assertEquals(Boolean.TRUE, initialCard.isShowingFront());
         }
+    }
+
+    @Test
+    void testFlipPlayedInitialCard(){
+        player.playInitialCard();
+        InitialCard playerInitialCard = player.getInitialCard();
+        assertThrows(CardNotInHandException.class, () -> {
+            player.flip(player.getInitialCard());
+        });
     }
 }

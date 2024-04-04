@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model;
 
+import ingsw.codex_naturalis.exceptions.CardNotInHandException;
+import ingsw.codex_naturalis.exceptions.EmptyDeckException;
 import ingsw.codex_naturalis.model.cards.HandPlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.objective.PatternObjectiveCard;
@@ -217,5 +219,15 @@ class CenterOfTableTest {
         assertNotEquals(goldCard,goldCard1);
 
 
+    }
+
+    @Test
+    void testEmptyDeckException() {
+        for (int i = 0; i < 40; i++) {
+            centerOfTable.removeFromResourceCardsDeck();
+        }
+        assertThrows(EmptyDeckException.class, () -> {
+            centerOfTable.removeFromResourceCardsDeck();
+        });
     }
 }

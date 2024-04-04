@@ -204,4 +204,32 @@ class PlayerTest {
             player.flip(player.getInitialCard());
         });
     }
+
+    @Test
+    void testPlayCardWithRequirements(){
+
+        player.playInitialCard();
+
+        // Play first two resource card on back (getting 1 Insect resource)
+        player.getHand().getFirst().showBack();
+        player.playCard(player.getHand().getFirst(), 1, 1);
+        player.getHand().getFirst().showBack();
+        player.playCard(player.getHand().getFirst(), 2, 2);
+
+        // Draw two more resource card from deck and play them on the back
+        player.drawFromResourceCardsDeck();
+        player.getHand().getLast().showBack();
+        player.playCard(player.getHand().getLast(), 3, 3);
+        player.drawFromResourceCardsDeck();
+        player.getHand().getLast().showBack();
+        player.playCard(player.getHand().getLast(), 4, 4);
+        player.drawFromResourceCardsDeck();
+
+        assertThrows(NotPlayableException.class, () -> {
+            player.playCard(player.getHand().getFirst(), 5, 5);
+        });
+        player.getHand().getLast().showBack();
+        player.playCard(player.getHand().getLast(), 5, 5);
+        player.playCard(player.getHand().getFirst(), 6, 6);
+    }
 }

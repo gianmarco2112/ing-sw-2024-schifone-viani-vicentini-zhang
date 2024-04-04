@@ -180,4 +180,16 @@ class PlayerTest {
         assertEquals(2,player.getPlayerArea().getPoints());
         assertEquals(1,player.getPlayerArea().getNumOfSymbol(Symbol.INSECT));
     }
+
+    @Test
+    void testFlipInitialCard(){
+        if (initialCard.isShowingFront()){
+            player.flip(initialCard);
+            assertEquals(Boolean.FALSE, initialCard.isShowingFront());
+        }
+        else{
+            player.flip(initialCard);
+            assertEquals(Boolean.TRUE, initialCard.isShowingFront());
+        }
+    }
 }

@@ -123,7 +123,7 @@ public class Player {
      */
     public void flip(PlayableCard card) throws CardNotInHandException{
 
-        if (!hand.contains(card)){
+        if (!(hand.contains(card) || card == initialCard)){
             throw new CardNotInHandException();
         }
         if (card.isShowingFront()) {

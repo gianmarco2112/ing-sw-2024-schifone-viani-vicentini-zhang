@@ -4,10 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ingsw.codex_naturalis.exceptions.EmptyDeckException;
-import ingsw.codex_naturalis.model.cards.HandPlayableCard;
-import ingsw.codex_naturalis.model.cards.gold.GoldCard;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
-import ingsw.codex_naturalis.model.cards.resource.ResourceCard;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,12 +31,12 @@ public class CenterOfTable {
     /**
      * Resource cards deck
      */
-    private List<ResourceCard> resourceCardsDeck;
+    private List<PlayableCard> resourceCardsDeck;
 
     /**
      * Gold cards deck
      */
-    private List<GoldCard> goldCardsDeck;
+    private List<PlayableCard> goldCardsDeck;
 
     /**
      * Objective cards deck
@@ -48,12 +46,12 @@ public class CenterOfTable {
     /**
      * The two revealed resource cards
      */
-    private final List<HandPlayableCard> revealedResourceCards;
+    private final List<PlayableCard> revealedResourceCards;
 
     /**
      * The two revealed gold cards
      */
-    private final List<HandPlayableCard> revealedGoldCards;
+    private final List<PlayableCard> revealedGoldCards;
 
     /**
      * The two common objective cards
@@ -67,8 +65,8 @@ public class CenterOfTable {
     public CenterOfTable(){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            this.resourceCardsDeck = objectMapper.readValue(new File(this.resourceCardsJsonFilePath), new TypeReference<List<ResourceCard>>() {});
-            this.goldCardsDeck = objectMapper.readValue(new File(this.goldCardsJsonFilePath), new TypeReference<List<GoldCard>>() {});
+            this.resourceCardsDeck = objectMapper.readValue(new File(this.resourceCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
+            this.goldCardsDeck = objectMapper.readValue(new File(this.goldCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
             this.objectiveCardsDeck = objectMapper.readValue(new File(this.objectiveCardsJsonFilePath), new TypeReference<List<ObjectiveCard>>() {});
         } catch (IOException e){
             System.err.println("ERROR while opening json files");
@@ -96,7 +94,7 @@ public class CenterOfTable {
      * Removes the top card of the resource cards deck
      * @return Card
      */
-    public HandPlayableCard removeFromResourceCardsDeck() throws EmptyDeckException {
+    public PlayableCard removeFromResourceCardsDeck() throws EmptyDeckException {
         if(resourceCardsDeck.isEmpty()){
             throw new EmptyDeckException();
         }
@@ -107,7 +105,7 @@ public class CenterOfTable {
      * Removes the top card of the gold cards deck
      * @return Card
      */
-    public HandPlayableCard removeFromGoldCardsDeck() throws EmptyDeckException{
+    public PlayableCard removeFromGoldCardsDeck() throws EmptyDeckException{
         if(goldCardsDeck.isEmpty()){
             throw new EmptyDeckException();
         }
@@ -119,10 +117,10 @@ public class CenterOfTable {
      * cards deck
      * @return Card
      */
-    public HandPlayableCard removeFirstFromRevealedResourceCards(){
-        HandPlayableCard resourceCard = revealedResourceCards.removeFirst();
+    public PlayableCard removeFirstFromRevealedResourceCards(){
+        PlayableCard resourceCard = revealedResourceCards.removeFirst();
         revealedResourceCards.add(resourceCardsDeck.removeLast());//forse meglio chiamare removeFromResourceCardsDeck che solleva un'eccezione definita da noi
-        revealedResourceCards.getLast().showFront();
+        revealedResourceCards.getLast().flip();
         return resourceCard;
     }
 
@@ -131,10 +129,10 @@ public class CenterOfTable {
      * cards deck
      * @return Card
      */
-    public HandPlayableCard removeLastFromRevealedResourceCards(){
-        HandPlayableCard resourceCard = revealedResourceCards.removeLast();
+    public PlayableCard removeLastFromRevealedResourceCards(){
+        PlayableCard resourceCard = revealedResourceCards.removeLast();
         revealedResourceCards.add(resourceCardsDeck.removeLast());//come sopra
-        revealedResourceCards.getLast().showFront();
+        revealedResourceCards.getLast().flip();
         return resourceCard;
     }
 
@@ -143,10 +141,10 @@ public class CenterOfTable {
      * cards deck
      * @return Card
      */
-    public HandPlayableCard removeFirstFromRevealedGoldCards(){
-        HandPlayableCard goldCard = revealedGoldCards.removeFirst();
+    public PlayableCard removeFirstFromRevealedGoldCards(){
+        PlayableCard goldCard = revealedGoldCards.removeFirst();
         revealedGoldCards.add(goldCardsDeck.removeLast());//come sopra
-        revealedGoldCards.getLast().showFront();
+        revealedGoldCards.getLast().flip();
         return goldCard;
     }
 
@@ -155,10 +153,10 @@ public class CenterOfTable {
      * cards deck
      * @return Card
      */
-    public HandPlayableCard removeLastFromRevealedGoldCards(){
-        HandPlayableCard goldCard = revealedGoldCards.removeLast();
+    public PlayableCard removeLastFromRevealedGoldCards(){
+        PlayableCard goldCard = revealedGoldCards.removeLast();
         revealedGoldCards.add(goldCardsDeck.removeLast());//come sopra
-        revealedGoldCards.getLast().showFront();
+        revealedGoldCards.getLast().flip();
         return goldCard;
     }
 
@@ -176,23 +174,20 @@ public class CenterOfTable {
         Collections.shuffle(goldCardsDeck);
         this.revealedResourceCards.add(removeFromResourceCardsDeck());
         this.revealedResourceCards.add(removeFromResourceCardsDeck());
-        for (HandPlayableCard card : revealedResourceCards){
-            card.showFront();
+        for (PlayableCard card : revealedResourceCards){
+            card.flip();
         }
 
         this.revealedGoldCards.add(removeFromGoldCardsDeck());
         this.revealedGoldCards.add(removeFromGoldCardsDeck());
-        for (HandPlayableCard card : revealedGoldCards){
-            card.showFront();
+        for (PlayableCard card : revealedGoldCards){
+            card.flip();
         }
     }
     public void setCommonObjectiveCards(List<PlayerArea> playerAreas){
         Collections.shuffle(objectiveCardsDeck);
         this.commonObjectiveCards.add(removeFromObjectiveCardsDeck());
         this.commonObjectiveCards.add(removeFromObjectiveCardsDeck());
-        for (ObjectiveCard objectiveCard : commonObjectiveCards){
-            objectiveCard.commonCardDrawn(playerAreas);
-        }
     }
     public void discardObjectiveCard(ObjectiveCard objectiveCard){
         objectiveCardsDeck.add(objectiveCard);
@@ -205,7 +200,7 @@ public class CenterOfTable {
      */
     //only for test
     @Deprecated
-    public HandPlayableCard testRemoveFromGoldCardsDeck(){
+    public PlayableCard testRemoveFromGoldCardsDeck(){
         return goldCardsDeck.removeFirst();
     }
 
@@ -215,7 +210,7 @@ public class CenterOfTable {
      */
     //only for test
     @Deprecated
-    public HandPlayableCard testRemoveFromResourceCardsDeck(){
+    public PlayableCard testRemoveFromResourceCardsDeck(){
         return resourceCardsDeck.removeFirst();
     }
 
@@ -235,7 +230,7 @@ public class CenterOfTable {
      */
     //only for test
     @Deprecated
-    public HandPlayableCard testGetFromGoldCardsDeck(){
+    public PlayableCard testGetFromGoldCardsDeck(){
         return goldCardsDeck.getFirst();
     }
     //only for test
@@ -244,7 +239,7 @@ public class CenterOfTable {
      * @return Card
      */
     @Deprecated
-    public HandPlayableCard testGetFromResourceCardsDeck(){
+    public PlayableCard testGetFromResourceCardsDeck(){
         return resourceCardsDeck.getFirst();
     }
 }

@@ -1,30 +1,16 @@
-package ingsw.codex_naturalis.model.cards.playerAreaCardStrategy.calcPoints;
+package ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies;
 
 import ingsw.codex_naturalis.model.PlayerArea;
-import ingsw.codex_naturalis.model.cards.HandPlayableSide;
-import ingsw.codex_naturalis.model.cards.PlayableSide;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
 
 import java.util.List;
 
-public class CornerCalcPointsStrategy implements CalcPointsStrategy{
-
-    private final PlayerArea playerArea;
-    private final HandPlayableSide handPlayableSide;
-
-    private final int points;
-
-
-    public CornerCalcPointsStrategy(PlayerArea playerArea, HandPlayableSide handPlayableSide, int points){
-        this.playerArea = playerArea;
-        this.handPlayableSide = handPlayableSide;
-        this.points = points;
-    }
-
-
+public class CornerPointsStrategy implements PointsStrategy{
     @Override
-    public void run(){
+    public void run(PlayerArea playerArea, PointsGiverAndPointsGiverForCorner playedCard) {
 
-        List<Integer> coordinates = playerArea.getCoordinatesOfCard(handPlayableSide);
+        List<Integer> coordinates = playerArea.getCoordinatesOfCard(playedCard);
         int x = coordinates.getFirst();
         int y = coordinates.getLast();
         int cornersCovered = 0;
@@ -54,6 +40,6 @@ public class CornerCalcPointsStrategy implements CalcPointsStrategy{
             }
         }
 
-        playerArea.setPoints(playerArea.getPoints() + points * cornersCovered);
+        playerArea.setPoints(playerArea.getPoints() + playedCard.getPoints() * cornersCovered);
     }
 }

@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.model;
 
-import ingsw.codex_naturalis.model.cards.PlayableSide;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
@@ -13,9 +14,9 @@ public class PlayerArea {
 
     /**
      * This HashMap represents the player area with all the cards he has placed.
-     * The key represents the coordinates, the value the side of the card played.
+     * The key represents the coordinates, the value the card played.
      */
-    private HashMap<List<Integer>, PlayableSide> area;
+    private Map<List<Integer>, PlayableCard> area;
     /**
      * area max row
      */
@@ -39,7 +40,7 @@ public class PlayerArea {
     /**
      * The count of the symbols of the player
      */
-    private final HashMap<Symbol, Integer> numOfSymbols;
+    private final Map<Symbol, Integer> numOfSymbols;
 
     /**
      * The player's objective card
@@ -64,12 +65,10 @@ public class PlayerArea {
         this.area = new HashMap<>();
         this.numOfSymbols = new HashMap<>();
         this.points = 0;
-
-        //inizializzare numOfSymbol
         initializeNumOfSymbols(numOfSymbols);
     }
 
-    private void initializeNumOfSymbols(HashMap<Symbol, Integer> numOfSymbols) {
+    private void initializeNumOfSymbols(Map<Symbol, Integer> numOfSymbols) {
         numOfSymbols.put(Symbol.INSECT,0);
         numOfSymbols.put(Symbol.FUNGI,0);
         numOfSymbols.put(Symbol.ANIMAL,0);
@@ -186,7 +185,7 @@ public class PlayerArea {
      * @param y Coordinate y
      * @return the card
      */
-    public PlayableSide getCardOnCoordinates(int x, int y){
+    public PlayableCard getCardOnCoordinates(int x, int y){
         return area.get(new ArrayList<>(List.of(x,y)));
     }
 
@@ -221,7 +220,7 @@ public class PlayerArea {
      * @param x coordinate x
      * @param y coordinate y
      */
-    public void setCardOnCoordinates(PlayableSide card, int x, int y){
+    public void setCardOnCoordinates(PlayableCard card, int x, int y){
         area.put(new ArrayList<>(List.of(x,y)), card);
         if(x > maxX)
             maxX = x;
@@ -238,8 +237,8 @@ public class PlayerArea {
      * @param card Card
      * @return The coordinates
      */
-    public List<Integer> getCoordinatesOfCard(PlayableSide card){
-        for (Map.Entry<List<Integer>, PlayableSide> entry : area.entrySet()) {
+    public List<Integer> getCoordinatesOfCard(PlayableCard card){
+        for (Map.Entry<List<Integer>, PlayableCard> entry : area.entrySet()) {
             if (entry.getValue() == card) {
                 return entry.getKey();
             }

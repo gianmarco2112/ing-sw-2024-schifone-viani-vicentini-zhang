@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.exceptions.MaxNumOfPlayersInException;
 import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
-import ingsw.codex_naturalis.model.cards.initial.InitialCard;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ingsw.codex_naturalis.model.enumerations.Color;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.util.ObservableView;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class Game {
     /**
      * Initial cards deck
      */
-    private List<InitialCard> initialCardsDeck;
+    private List<PlayableCard> initialCardsDeck;
 
     /**
      * Center of table
@@ -53,7 +53,7 @@ public class Game {
     public Game(int gameID) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            this.initialCardsDeck = objectMapper.readValue(new File(this.initialCardsJsonFilePath), new TypeReference<List<InitialCard>>() {});
+            this.initialCardsDeck = objectMapper.readValue(new File(this.initialCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
         } catch (IOException e){
             System.out.println("ERROR while opening json file");
         }

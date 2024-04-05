@@ -3,13 +3,11 @@ package ingsw.codex_naturalis.model.cards.objective;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ingsw.codex_naturalis.model.Player;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * class SymbolObjectiveCard
@@ -38,11 +36,28 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
 
 
     /**
+     * this algorithm counts the extra points to assign to the player
+     */
+    public void gainPoints(List<PlayerArea> playerAreas){
+        for (PlayerArea playerArea : playerAreas) {
+            List<Integer> count = new ArrayList<>();
+            count.add(0);
+            Set<Symbol> symbols = getKeySet();
+            for (Symbol sb : symbols) {
+                if (getNumOfSymbol(sb) <= playerArea.getNumOfSymbol(sb)) {
+                    count.add(playerArea.getNumOfSymbol(sb) / getNumOfSymbol(sb));
+                }
+            }
+            playerArea.setExtraPoints(playerArea.getExtraPoints() + getPoints() * Collections.min(count));
+        }
+    }
+
+    /**
      * Method to get the count of a symbol from the HashMap
      * @param symbol the symbol that needs to be counted
      * @return the count of the symbol
      */
-    public Integer getNumOfSymbol(Symbol symbol){
+    private Integer getNumOfSymbol(Symbol symbol){
         return symbolsForPoints.get(symbol);
     }
 
@@ -50,16 +65,9 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
      * Returns a copy of the key set of the HashMap
      * @return the set
      */
-    public Set<Symbol> getKeySet() {
+    private Set<Symbol> getKeySet() {
         return symbolsForPoints.keySet();
     }
 
-    @Override
-    public void chosen(PlayerArea playerArea) {
-        setCalcExtraPointsStrategy(new SymbolsCalcExtraPointsStrategy(this, new ArrayList<>(List.of(playerArea))));
-    }
-    @Override
-    public void commonCardDrawn(List<PlayerArea> playerAreas){
-        setCalcExtraPointsStrategy(new SymbolsCalcExtraPointsStrategy(this,new ArrayList<>(playerAreas)));
-    }
+
 }

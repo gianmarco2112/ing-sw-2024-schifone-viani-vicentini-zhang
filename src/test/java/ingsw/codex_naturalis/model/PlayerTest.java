@@ -1,12 +1,7 @@
 package ingsw.codex_naturalis.model;
 
 import ingsw.codex_naturalis.exceptions.CardNotInHandException;
-import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 import ingsw.codex_naturalis.exceptions.NotPlayableException;
-import ingsw.codex_naturalis.model.cards.HandPlayableCard;
-import ingsw.codex_naturalis.model.cards.gold.GoldCard;
-import ingsw.codex_naturalis.model.cards.gold.GoldCardBack;
-import ingsw.codex_naturalis.model.cards.gold.GoldCardFront;
 import ingsw.codex_naturalis.model.cards.initial.InitialCard;
 import ingsw.codex_naturalis.model.cards.initial.InitialCardBack;
 import ingsw.codex_naturalis.model.cards.initial.InitialCardFront;

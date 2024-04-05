@@ -15,7 +15,7 @@ import java.util.List;
  * An objective card gives points for each objective achieved
  * The objective can be: to have a certain number of symbols on player's area or to compose a certain pattern with cards
  * The patterns can be two type: an L or a diagonal.
- * It is not necessary to have an attribute to represent the color of the PlayableSide, because we can know it from
+ * It is not necessary to have an attribute to represent the color of the ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide, because we can know it from
  * the kingdom in which it belongs to.
  * Finally, ObjectiveCard has an interface that call the right algorithms at runtime.
  */
@@ -34,11 +34,6 @@ public abstract class ObjectiveCard {
      */
     private final int points;
 
-    /**
-     * attribute patternstrategy is used to call at runtime the right strategy to count extra points
-     */
-    protected CalcExtraPointsStrategy calcExtraPointsStrategy;
-
 
     /**
      * Constructor
@@ -50,16 +45,6 @@ public abstract class ObjectiveCard {
     }
 
 
-    public void setCalcExtraPointsStrategy(CalcExtraPointsStrategy calcExtraPointsStrategy){
-        this.calcExtraPointsStrategy = calcExtraPointsStrategy;
-    }
-
-    /**
-     * Invoke at runtime the right algorithm depending on the type of card the player has.
-     */
-    public void execute(){
-        calcExtraPointsStrategy.run();
-    }
 
     /**
      * Getter
@@ -69,7 +54,5 @@ public abstract class ObjectiveCard {
         return points;
     }
 
-    public abstract void chosen(PlayerArea playerArea);
-
-    public abstract void commonCardDrawn(List<PlayerArea> playerAreas);
+    public abstract void gainPoints(List<PlayerArea> playerAreas);
 }

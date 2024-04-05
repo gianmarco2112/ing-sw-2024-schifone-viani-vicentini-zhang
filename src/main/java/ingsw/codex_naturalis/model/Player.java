@@ -2,11 +2,7 @@ package ingsw.codex_naturalis.model;
 
 import ingsw.codex_naturalis.exceptions.NotPlayableException;
 import ingsw.codex_naturalis.exceptions.CardNotInHandException;
-import ingsw.codex_naturalis.model.cards.HandPlayableCard;
-import ingsw.codex_naturalis.model.cards.HandPlayableSide;
-import ingsw.codex_naturalis.model.cards.PlayableCard;
-import ingsw.codex_naturalis.model.cards.PlayableSide;
-import ingsw.codex_naturalis.model.cards.initial.InitialCard;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 
@@ -31,7 +27,7 @@ public class Player {
     /**
      * Initial card (null after playing it)
      */
-    private InitialCard initialCard;
+    private PlayableCard initialCard;
 
     /**
      * Center of the table
@@ -43,7 +39,7 @@ public class Player {
      * It will contain two resource cards and a gold card at the start.
      * During the game, it will contain from two to three resource/golden cards.
      */
-    private final List<HandPlayableCard> hand;
+    private final List<PlayableCard> hand;
 
     /**
      * This list contains the two objective cards given at the start, then
@@ -73,7 +69,6 @@ public class Player {
      * @param color Color
      */
     public Player(String nickname, Color color,int playerID) {
-        //se il player inserisce come nickname uno spazio?
         this.nickname = nickname;
         this.color = color;
         this.initialCard = null;
@@ -105,7 +100,7 @@ public class Player {
      * Initial card getter
      * @return Initial card
      */
-    public InitialCard getInitialCard() {
+    public PlayableCard getInitialCard() {
         return initialCard;
     }
 
@@ -113,7 +108,7 @@ public class Player {
      * Initial card setter (called at the start)
      * @param initialCard Initial card
      */
-    public void setInitialCard(InitialCard initialCard) {
+    public void setInitialCard(PlayableCard initialCard) {
         this.initialCard = initialCard;
     }
 
@@ -126,26 +121,15 @@ public class Player {
         if (!(card != null && (card == initialCard || hand.contains(card)))){
             throw new CardNotInHandException();
         }
-        if (card.isShowingFront()) {
-            card.showBack();
-        } else {
-            card.showFront();
-        }
+        card.flip();
     }
 
     /**
      * Method to play the initial card
      */
     public void playInitialCard(){
-        PlayableSide sideCard;
-        if (initialCard.isShowingFront()) {
-            sideCard = initialCard.getPlayableFront();
-        } else {
-            sideCard = initialCard.getPlayableBack();
-        }
-        playerArea.setCardOnCoordinates(sideCard, 0, 0);
-        sideCard.played(playerArea);
-        sideCard.getSymbols();
+        initialCard.play(playerArea);
+        playerArea.setCardOnCoordinates(initialCard, 0, 0);
         initialCard = null;
     }
 
@@ -159,19 +143,10 @@ public class Player {
      * @param x coordinate x
      * @param y coordinate y
      */
-    public void playCard(HandPlayableCard card, int x, int y) throws NotPlayableException{
-        HandPlayableSide sideCard;
-        if (card.isShowingFront()) {
-            sideCard = card.getHandPlayableFront();
-        } else {
-            sideCard = card.getHandPlayableBack();
-        }
-        if (sideCard.isPlayable(x,y)) {
-            playerArea.setCardOnCoordinates(sideCard, x, y);
-            sideCard.played(playerArea);
-            sideCard.coverCorners(x,y);
-            sideCard.getSymbols();
-            sideCard.calcPoints();
+    public void playCard(PlayableCard card, int x, int y) throws NotPlayableException{
+        if (card.isPlayable(playerArea ,x,y)) {
+            card.play(playerArea, x, y);
+            playerArea.setCardOnCoordinates(card, x, y);
             hand.remove(card);
         }else{
             throw new NotPlayableException();
@@ -182,63 +157,57 @@ public class Player {
      * Draws from the resource cards deck
      */
     public void drawFromResourceCardsDeck() {
-        HandPlayableCard card = centerOfTable.removeFromResourceCardsDeck();
-        card.showFront();
+        PlayableCard card = centerOfTable.removeFromResourceCardsDeck();
+        card.flip();
         addCardToHand(card);
-        card.drawn(playerArea);
     }
 
     /**
      * Draws from the gold cards deck
      */
     public void drawFromGoldCardsDeck() {
-        HandPlayableCard card = centerOfTable.removeFromGoldCardsDeck();
-        card.showFront();
+        PlayableCard card = centerOfTable.removeFromGoldCardsDeck();
+        card.flip();
         addCardToHand(card);
-        card.drawn(playerArea);
     }
 
     /**
      * Draws the first revealed resource card on the table
      */
     public void drawFirstFromRevealedResourceCards() {
-        HandPlayableCard card = centerOfTable.removeFirstFromRevealedResourceCards();
+        PlayableCard card = centerOfTable.removeFirstFromRevealedResourceCards();
         addCardToHand(card);
-        card.drawn(playerArea);
     }
 
     /**
      * Draws the second revealed resource card on the table
      */
     public void drawLastFromRevealedResourceCards() {
-        HandPlayableCard card = centerOfTable.removeLastFromRevealedResourceCards();
+        PlayableCard card = centerOfTable.removeLastFromRevealedResourceCards();
         addCardToHand(card);
-        card.drawn(playerArea);
     }
 
     /**
      * Draws the first revealed gold card on the table
      */
     public void drawFirstFromRevealedGoldCards() {
-        HandPlayableCard card = centerOfTable.removeFirstFromRevealedGoldCards();
+        PlayableCard card = centerOfTable.removeFirstFromRevealedGoldCards();
         addCardToHand(card);
-        card.drawn(playerArea);
     }
 
     /**
      * Draws the second revealed gold card on the table
      */
     public void drawLastFromRevealedGoldCards() {
-        HandPlayableCard card = centerOfTable.removeLastFromRevealedGoldCards();
+        PlayableCard card = centerOfTable.removeLastFromRevealedGoldCards();
         addCardToHand(card);
-        card.drawn(playerArea);
     }
 
     /**
      * Adds the drawn card to the hand
      * @param card Card to add
      */
-    private void addCardToHand(HandPlayableCard card){
+    private void addCardToHand(PlayableCard card){
         hand.add(card);
     }
 
@@ -256,7 +225,6 @@ public class Player {
      * @return playerArea
      */
     //metodo aggiunto momentaneamente per fare il test degli obiettivi
-    @Deprecated
     public PlayerArea getPlayerArea(){
         return playerArea;
     }
@@ -273,7 +241,7 @@ public class Player {
         return nickname;
     }
 
-    public List<HandPlayableCard> getHand() {
+    public List<PlayableCard> getHand() {
         return new ArrayList<>(hand);
     }
 
@@ -282,7 +250,7 @@ public class Player {
      * @return hand
      */
     @Deprecated
-    public List<HandPlayableCard> testGethand(){
+    public List<PlayableCard> testGethand(){
         return hand;
     }
 

@@ -45,8 +45,8 @@ public class PlayableCard {
         this.kingdom = kingdom;
         this.front = front;
         this.back = back;
-        currentPlayableSide = front;
-        showingFront = true;
+        currentPlayableSide = back;
+        showingFront = false;
     }
 
     //---------------------------------------------------------------------------------

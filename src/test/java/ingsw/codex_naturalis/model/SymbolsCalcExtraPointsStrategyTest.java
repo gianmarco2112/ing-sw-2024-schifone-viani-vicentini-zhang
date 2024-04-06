@@ -1,11 +1,12 @@
-package ingsw.codex_naturalis.model;
 
-import ingsw.codex_naturalis.model.cards.initial.InitialCard;
-import ingsw.codex_naturalis.model.cards.initial.InitialCardBack;
-import ingsw.codex_naturalis.model.cards.initial.InitialCardFront;
+package ingsw.codex_naturalis.model;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.objective.SymbolsObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
+import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,21 +22,21 @@ class SymbolsCalcExtraPointsStrategyTest {
     CenterOfTable centerOfTable = new CenterOfTable();
     Player player = new Player("Test", Color.RED,0);
     ObjectiveCard objectiveCard;
-    InitialCard initialCard;
+    PlayableCard initialCard;
     @BeforeEach
     void setUp(){
         game = new Game(0);
         game.addPlayer(player);
         player.setCenterOfTable(centerOfTable);
-        initialCard = new InitialCard(
-                new InitialCardFront(
-                        Symbol.EMPTY,
+        initialCard = new PlayableCard(
+                PlayableCardType.INITIAL,
+                Symbol.EMPTY,
+                new PlayableSide(
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false)),
-                new InitialCardBack(
-                        Symbol.EMPTY,
+                new Back(
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
@@ -56,7 +57,7 @@ class SymbolsCalcExtraPointsStrategyTest {
         player.setObjectiveCards(objectiveCard,objectiveCard);
         player.chooseObjectiveCard(objectiveCard);
 
-        objectiveCard.execute();//grazie a questo test abbiamo corretto un punto del algoritmo
+        objectiveCard.gainPoints(List.of(player.getPlayerArea()));
         assertEquals(0,player.getExtraPoints());
     }
     @Test
@@ -68,7 +69,7 @@ class SymbolsCalcExtraPointsStrategyTest {
         int i = 1;
         while(i<6){
             player.drawFromResourceCardsDeck();
-            player.getHand().getFirst().showBack();
+            player.getHand().getFirst().flip();
             player.playCard(player.getHand().getFirst(),i,i );
             i++;
         }
@@ -77,7 +78,7 @@ class SymbolsCalcExtraPointsStrategyTest {
         int j = -1;
         while(i<13){
             player.drawFromResourceCardsDeck();
-            player.getHand().getFirst().showBack();
+            player.getHand().getFirst().flip();
             player.playCard(player.getHand().getFirst(),j,j );
             i++;
             j--;
@@ -85,7 +86,7 @@ class SymbolsCalcExtraPointsStrategyTest {
         player.drawFromResourceCardsDeck();
         player.playCard(player.getHand().getFirst(),j,j );
 
-        objectiveCard.execute();
+        objectiveCard.gainPoints(List.of(player.getPlayerArea()));
         assertEquals(2,player.getExtraPoints());
     }
 }

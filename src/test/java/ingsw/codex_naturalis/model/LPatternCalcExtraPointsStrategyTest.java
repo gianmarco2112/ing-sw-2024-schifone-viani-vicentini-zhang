@@ -1,14 +1,11 @@
 package ingsw.codex_naturalis.model;
-
-import ingsw.codex_naturalis.model.cards.initial.InitialCard;
-import ingsw.codex_naturalis.model.cards.initial.InitialCardBack;
-import ingsw.codex_naturalis.model.cards.initial.InitialCardFront;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.objective.PatternObjectiveCard;
-import ingsw.codex_naturalis.model.cards.resource.ResourceCard;
-import ingsw.codex_naturalis.model.cards.resource.ResourceCardBack;
-import ingsw.codex_naturalis.model.cards.resource.ResourceCardFront;
 import ingsw.codex_naturalis.model.enumerations.Color;
+import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,22 +17,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LPatternCalcExtraPointsStrategyTest {
     Player player;
     CenterOfTable centerOfTable;
-    InitialCard initialCard;
+    PlayableCard initialCard;
     ObjectiveCard patternObjectiveCard;
     @BeforeEach
     void setUp(){
         player = new Player("Test", Color.RED,1);
         centerOfTable = new CenterOfTable();
         player.setCenterOfTable(centerOfTable);
-        initialCard = new InitialCard(
-                new InitialCardFront(
-                        Symbol.EMPTY,
+        initialCard = new PlayableCard(
+                PlayableCardType.INITIAL,
+                Symbol.EMPTY,
+                new PlayableSide(
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false)),
-                new InitialCardBack(
-                        Symbol.EMPTY,
+                new Back(
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
@@ -44,84 +41,80 @@ public class LPatternCalcExtraPointsStrategyTest {
         player.setInitialCard(initialCard);
         player.playInitialCard();
     }
-    private HandPlayableCard fungiResourceCard(){
-        ResourceCard resourceCard = new ResourceCard(
-                new ResourceCardFront(
-                        Symbol.FUNGI,
+    private PlayableCard fungiResourceCard(){
+        PlayableCard resourceCard;
+        resourceCard = new PlayableCard(
+                PlayableCardType.RESOURCE,
+                Symbol.FUNGI,
+                new PlayableSide(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false)),
+                new Back(
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
-                        0),
-                new ResourceCardBack(
-                        Symbol.FUNGI,
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        Symbol.FUNGI)
+                        List.of(Symbol.FUNGI))
         );
-        resourceCard.drawn(player.getPlayerArea());
         return(resourceCard);
     }
-    private HandPlayableCard insectResourceCard(){
-        ResourceCard resourceCard = new ResourceCard(
-                new ResourceCardFront(
-                        Symbol.INSECT,
+    private PlayableCard insectResourceCard(){
+        PlayableCard resourceCard;
+        resourceCard= new PlayableCard(
+                PlayableCardType.RESOURCE,
+                Symbol.INSECT,
+                new PlayableSide(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false)),
+                new Back(
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
-                        0),
-                new ResourceCardBack(
-                        Symbol.INSECT,
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        Symbol.INSECT)
+                        List.of(Symbol.INSECT))
         );
-        resourceCard.drawn(player.getPlayerArea());
         return(resourceCard);
     }
-    private HandPlayableCard plantResourceCard(){
-        ResourceCard resourceCard = new ResourceCard(
-                new ResourceCardFront(
-                        Symbol.PLANT,
+    private PlayableCard plantResourceCard(){
+        PlayableCard resourceCard;
+        resourceCard = new PlayableCard(
+                PlayableCardType.RESOURCE,
+                Symbol.PLANT,
+                new PlayableSide(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false)),
+                new Back(
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
-                        0),
-                new ResourceCardBack(
-                        Symbol.PLANT,
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        Symbol.PLANT)
+                        List.of(Symbol.PLANT))
         );
-        resourceCard.drawn(player.getPlayerArea());
         return(resourceCard);
     }
-    private HandPlayableCard animalResourceCard(){
-        ResourceCard resourceCard = new ResourceCard(
-                new ResourceCardFront(
-                        Symbol.ANIMAL,
+    private PlayableCard animalResourceCard(){
+        PlayableCard resourceCard;
+        resourceCard= new PlayableCard(
+                PlayableCardType.RESOURCE,
+                Symbol.ANIMAL,
+                new PlayableSide(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false)),
+                new Back(
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
-                        0),
-                new ResourceCardBack(
-                        Symbol.ANIMAL,
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        Symbol.ANIMAL)
+                        List.of(Symbol.ANIMAL))
         );
-        resourceCard.drawn(player.getPlayerArea());
         return(resourceCard);
     }
     private ObjectiveCard bottomLeftLObjectiveCard(){
@@ -213,32 +206,28 @@ public class LPatternCalcExtraPointsStrategyTest {
     void bottomLeftLTest(){
         bottomLeftL();
         patternObjectiveCard = bottomLeftLObjectiveCard();
-        patternObjectiveCard.chosen(player.getPlayerArea());
-        patternObjectiveCard.execute();
+        patternObjectiveCard.gainPoints(List.of(player.getPlayerArea()));
         assertEquals(3,player.getPlayerArea().getExtraPoints());
     }
     @Test
     void bottomRightLTest(){
         bottomRightL();
         patternObjectiveCard = bottomRightLObjectiveCard();
-        patternObjectiveCard.chosen(player.getPlayerArea());
-        patternObjectiveCard.execute();
+        patternObjectiveCard.gainPoints(List.of(player.getPlayerArea()));
         assertEquals(3,player.getPlayerArea().getExtraPoints());
     }
     @Test
     void topLeftLTest(){
         topLeftL();
         patternObjectiveCard = topLeftLObjectiveCard();
-        patternObjectiveCard.chosen(player.getPlayerArea());
-        patternObjectiveCard.execute();
+        patternObjectiveCard.gainPoints(List.of(player.getPlayerArea()));
         assertEquals(3,player.getPlayerArea().getExtraPoints());
     }
     @Test
     void topRightLTest(){
         topRightL();
         patternObjectiveCard = topRightLObjectiveCard();
-        patternObjectiveCard.chosen(player.getPlayerArea());
-        patternObjectiveCard.execute();
+        patternObjectiveCard.gainPoints(List.of(player.getPlayerArea()));
         assertEquals(3,player.getPlayerArea().getExtraPoints());
     }
 }

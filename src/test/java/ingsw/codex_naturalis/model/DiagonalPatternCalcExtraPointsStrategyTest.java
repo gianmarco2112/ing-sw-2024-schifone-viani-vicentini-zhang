@@ -1,11 +1,12 @@
 package ingsw.codex_naturalis.model;
 
-import ingsw.codex_naturalis.model.cards.initial.InitialCard;
-import ingsw.codex_naturalis.model.cards.initial.InitialCardBack;
-import ingsw.codex_naturalis.model.cards.initial.InitialCardFront;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.objective.PatternObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
+import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,22 +18,22 @@ import static org.junit.jupiter.api.Assertions.*;
 class DiagonalPatternCalcExtraPointsStrategyTest {
     Player player;
     CenterOfTable centerOfTable;
-    InitialCard initialCard;
+    PlayableCard initialCard;
     ObjectiveCard patternObjectiveCard;
     @BeforeEach
     void setUp(){
         player = new Player("Test",Color.RED,1);
         centerOfTable = new CenterOfTable();
         player.setCenterOfTable(centerOfTable);
-        initialCard = new InitialCard(
-                new InitialCardFront(
-                        Symbol.EMPTY,
+        initialCard = new PlayableCard(
+                PlayableCardType.INITIAL,
+                Symbol.EMPTY,
+                new PlayableSide(
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false)),
-                new InitialCardBack(
-                        Symbol.EMPTY,
+                new Back(
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
                         new Corner(Symbol.EMPTY,false),
@@ -43,11 +44,11 @@ class DiagonalPatternCalcExtraPointsStrategyTest {
     }
     private void diagonalBottomLeftTopRight(){
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
 
         player.playCard(player.getHand().get(0),1,1 );
         player.playCard(player.getHand().get(0),2,2 );
@@ -58,11 +59,11 @@ class DiagonalPatternCalcExtraPointsStrategyTest {
     }
     private void diagonalTopLeftBottomRight(){
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
 
         player.playCard(player.getHand().get(0),-1,1 );
         player.playCard(player.getHand().get(0),-2,2 );
@@ -70,17 +71,17 @@ class DiagonalPatternCalcExtraPointsStrategyTest {
     }
     private void twoDiagonalTopLeftBottomRight(){
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
         player.drawFromResourceCardsDeck();
-        player.getHand().getLast().showBack();
+        player.getHand().getLast().flip();
 
         player.playCard(player.getHand().get(0),-1,1 );
         player.playCard(player.getHand().get(0),-2,2 );
@@ -96,36 +97,31 @@ class DiagonalPatternCalcExtraPointsStrategyTest {
     void diagonalTopLeftBottomRightPattern(){
         diagonalTopLeftBottomRight();
         patternObjectiveCard = diagonalTopLeftBottomRightCard();
-        patternObjectiveCard.chosen(player.getPlayerArea());
-        patternObjectiveCard.execute();
+        patternObjectiveCard.gainPoints(List.of(player.getPlayerArea()));
         assertEquals(2,player.getPlayerArea().getExtraPoints());
     }
     @Test
     void diagonalBottomLeftTopRightPattern(){
         diagonalBottomLeftTopRight();
         patternObjectiveCard = diagonalBottomLeftTopRightCard();
-        patternObjectiveCard.chosen(player.getPlayerArea());
-        patternObjectiveCard.execute();
+        patternObjectiveCard.gainPoints(List.of(player.getPlayerArea()));
         assertEquals(2,player.getPlayerArea().getExtraPoints());
     }
     @Test
     void twoDiagonalTopLeftBottomRightPattern(){
         twoDiagonalTopLeftBottomRight();
         patternObjectiveCard = diagonalTopLeftBottomRightCard();
-        patternObjectiveCard.chosen(player.getPlayerArea());
-        patternObjectiveCard.execute();
+        patternObjectiveCard.gainPoints(List.of(player.getPlayerArea()));
         assertEquals(4,player.getPlayerArea().getExtraPoints());
     }
     @Test
     void mixedDiagonalPattern(){
         twoDiagonalTopLeftBottomRight();
         patternObjectiveCard = diagonalTopLeftBottomRightCard();
-        patternObjectiveCard.chosen(player.getPlayerArea());
-        patternObjectiveCard.execute();
+        patternObjectiveCard.gainPoints(List.of(player.getPlayerArea()));
         diagonalBottomLeftTopRight();
         patternObjectiveCard = diagonalBottomLeftTopRightCard();
-        patternObjectiveCard.chosen(player.getPlayerArea());
-        patternObjectiveCard.execute();
+        patternObjectiveCard.gainPoints(List.of(player.getPlayerArea()));
         assertEquals(6,player.getPlayerArea().getExtraPoints());
     }
 }

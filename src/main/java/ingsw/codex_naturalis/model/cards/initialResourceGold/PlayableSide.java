@@ -1,9 +1,30 @@
 package ingsw.codex_naturalis.model.cards.initialResourceGold;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.front.Needy;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiver;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverForObject;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Back.class, name = "back"),
+        @JsonSubTypes.Type(value = PointsGiver.class, name = "pointsGiver"),
+        @JsonSubTypes.Type(value = Needy.class, name = "needy"),
+        @JsonSubTypes.Type(value = PointsGiverAndPointsGiverForCorner.class, name = "pointsGiverAndPointsGiverForCorner"),
+        @JsonSubTypes.Type(value = PointsGiverForObject.class, name = "pointsGiverForObject"),
+        @JsonSubTypes.Type(value = PlayableSide.class, name = "playableSide")
+})
 public class PlayableSide {
 
     /**
@@ -24,7 +45,12 @@ public class PlayableSide {
     private final Corner bottomRightCorner;
 
     //-------------------------------------------------------------------------------------------
-    public PlayableSide(Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner){
+    @JsonCreator
+    public PlayableSide(
+            @JsonProperty("topLeftCorner") Corner topLeftCorner,
+            @JsonProperty("topRightCorner") Corner topRightCorner,
+            @JsonProperty("bottomLeftCorner") Corner bottomLeftCorner,
+            @JsonProperty("bottomRightCorner") Corner bottomRightCorner){
         this.topLeftCorner = topLeftCorner;
         this.topRightCorner = topRightCorner;
         this.bottomLeftCorner = bottomLeftCorner;

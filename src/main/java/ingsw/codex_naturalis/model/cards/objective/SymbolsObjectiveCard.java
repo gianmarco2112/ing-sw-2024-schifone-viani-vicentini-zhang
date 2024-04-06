@@ -41,12 +41,14 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
     public void gainPoints(List<PlayerArea> playerAreas){
         for (PlayerArea playerArea : playerAreas) {
             List<Integer> count = new ArrayList<>();
-            count.add(0);
             Set<Symbol> symbols = getKeySet();
             for (Symbol sb : symbols) {
                 if (getNumOfSymbol(sb) <= playerArea.getNumOfSymbol(sb)) {
                     count.add(playerArea.getNumOfSymbol(sb) / getNumOfSymbol(sb));
                 }
+            }
+            if(count.isEmpty()){
+                count.add(0);
             }
             playerArea.setExtraPoints(playerArea.getExtraPoints() + getPoints() * Collections.min(count));
         }

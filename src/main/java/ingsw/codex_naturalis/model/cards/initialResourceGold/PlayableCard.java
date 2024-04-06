@@ -66,7 +66,7 @@ public class PlayableCard {
 
 
     public void flip(){
-        if(showingFront){
+        if(!showingFront){
             showFront();
         }
         else{

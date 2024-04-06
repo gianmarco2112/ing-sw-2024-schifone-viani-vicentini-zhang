@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model.cards.initialResourceGold.front;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.PointsStrategy;
@@ -12,7 +14,16 @@ public class PointsGiverAndPointsGiverForCorner extends Needy {
     private final PointsStrategy pointsStrategy;
 
     //-------------------------------------------------------------------------------------------
-    public PointsGiverAndPointsGiverForCorner(Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, Map<Symbol, Integer> requirements, PointsStrategy pointsStrategy){
+    @JsonCreator
+    public PointsGiverAndPointsGiverForCorner(
+            @JsonProperty("topLeftCorner") Corner topLeftCorner,
+            @JsonProperty("topRightCorner") Corner topRightCorner,
+            @JsonProperty("bottomLeftCorner") Corner bottomLeftCorner,
+            @JsonProperty("bottomRightCorner") Corner bottomRightCorner,
+            @JsonProperty("points") int points,
+            @JsonProperty("requirements") Map<Symbol, Integer> requirements,
+            @JsonProperty("pointsStrategy") PointsStrategy pointsStrategy
+            ){
         super(topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, points, requirements);
         this.pointsStrategy = pointsStrategy;
     }

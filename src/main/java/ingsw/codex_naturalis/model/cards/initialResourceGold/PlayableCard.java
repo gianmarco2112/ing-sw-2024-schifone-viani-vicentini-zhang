@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model.cards.initialResourceGold;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
@@ -33,7 +35,12 @@ public class PlayableCard {
     private boolean showingFront;
 
     //---------------------------------------------------------------------------------
-    public PlayableCard(PlayableCardType playableCardType, Symbol kingdom, PlayableSide front, PlayableSide back){
+    @JsonCreator
+    public PlayableCard(
+            @JsonProperty("playableCardType") PlayableCardType playableCardType,
+            @JsonProperty("kingdom") Symbol kingdom,
+            @JsonProperty("front") PlayableSide front,
+            @JsonProperty("back") PlayableSide back){
         this.playableCardType = playableCardType;
         this.kingdom = kingdom;
         this.front = front;

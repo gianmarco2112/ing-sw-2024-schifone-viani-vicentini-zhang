@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model.cards.initialResourceGold.back;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
@@ -12,7 +14,13 @@ public class Back extends PlayableSide {
     private final List<Symbol> permanentResources;
     
     //----------------------------------------------------------------------------------
-    public Back(Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, List<Symbol> permanentResources){
+    @JsonCreator
+    public Back(
+            @JsonProperty("topLeftCorner") Corner topLeftCorner,
+            @JsonProperty("topRightCorner") Corner topRightCorner,
+            @JsonProperty("bottomLeftCorner") Corner bottomLeftCorner,
+            @JsonProperty("bottomRightCorner") Corner bottomRightCorner,
+            @JsonProperty("permanentResources") List<Symbol> permanentResources){
         super(topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
         this.permanentResources = permanentResources;
     }
@@ -21,7 +29,7 @@ public class Back extends PlayableSide {
 
     @Override
     public String getDescription() {
-        return null;
+        return super.getDescription();
     }
 
     @Override

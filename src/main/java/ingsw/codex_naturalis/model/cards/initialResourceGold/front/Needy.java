@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model.cards.initialResourceGold.front;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.Corner;
 import ingsw.codex_naturalis.model.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
@@ -14,7 +16,14 @@ public abstract class Needy extends PointsGiver{
     private final Map<Symbol, Integer> requirements;
 
     //-------------------------------------------------------------------------------------------
-    public Needy(Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, Map<Symbol, Integer> requirements){
+    @JsonCreator
+    public Needy(
+            @JsonProperty("topLeftCorner") Corner topLeftCorner,
+            @JsonProperty("topRightCorner") Corner topRightCorner,
+            @JsonProperty("bottomLeftCorner") Corner bottomLeftCorner,
+            @JsonProperty("bottomRightCorner") Corner bottomRightCorner,
+            @JsonProperty("points") int points,
+            @JsonProperty("requirements") Map<Symbol, Integer> requirements){
         super(topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, points);
         this.requirements = requirements;
     }

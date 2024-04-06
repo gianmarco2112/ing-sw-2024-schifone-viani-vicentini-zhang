@@ -1,8 +1,9 @@
 [
   {
+    "playableCardType": "GOLD",
+    "kingdom": "FUNGI",
     "front": {
-      "type": "object",
-      "kingdom": "FUNGI",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -12,18 +13,19 @@
       "object": "QUILL"
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "FUNGI",
     "front": {
-      "type": "object",
-      "kingdom": "FUNGI",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "INKWELL", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
@@ -33,18 +35,19 @@
       "object": "INKWELL"
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "FUNGI",
     "front": {
-      "type": "object",
-      "kingdom": "FUNGI",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -54,158 +57,187 @@
       "object": "MANUSCRIPT"
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "FUNGI",
     "front": {
-      "type": "corners",
-      "kingdom": "FUNGI",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  2,
-      "requirements":{"FUNGI": 3, "ANIMAL": 1}
+      "requirements":{"FUNGI": 3, "ANIMAL": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "FUNGI",
     "front": {
-      "type": "corners",
-      "kingdom": "FUNGI",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  2,
-      "requirements":{"FUNGI": 3, "PLANT": 1}
+      "requirements":{"FUNGI": 3, "PLANT": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "FUNGI",
     "front": {
-      "type": "corners",
-      "kingdom": "FUNGI",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  2,
-      "requirements":{"FUNGI": 3, "INSECT": 1}
+      "requirements":{"FUNGI": 3, "INSECT": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "FUNGI",
     "front": {
-      "type": "empty",
-      "kingdom": "FUNGI",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "INKWELL", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  3,
-      "requirements":{"FUNGI": 3}
+      "requirements":{"FUNGI": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
-   "front": {
-     "type": "empty",
-     "kingdom": "FUNGI",
-     "topLeftCorner": {"symbol": "QUILL", "covered": false},
-     "topRightCorner": {"symbol": "EMPTY", "covered": false},
-     "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
-     "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
-     "points":  3,
-     "requirements":{"FUNGI": 3}
-   },
-   "back": {
-     "kingdom": "FUNGI",
-     "topLeftCorner": {"symbol": "EMPTY", "covered": false},
-     "topRightCorner": {"symbol": "EMPTY", "covered": false},
-     "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
-     "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-     "resource": "FUNGI"
-   }
+    "playableCardType": "GOLD",
+    "kingdom": "FUNGI",
+    "front": {
+      "type": "pointsGiverAndPointsGiverForCorner",
+      "topLeftCorner": {"symbol": "QUILL", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "points":  3,
+      "requirements":{"FUNGI": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
+    },
+    "back": {
+      "type": "back",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "permanentResources": ["FUNGI"]
+    }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "FUNGI",
     "front": {
-      "type": "empty",
-      "kingdom": "FUNGI",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "MANUSCRIPT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  3,
-      "requirements":{"FUNGI": 3}
+      "requirements":{"FUNGI": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "FUNGI",
     "front": {
-      "type": "empty",
-      "kingdom": "FUNGI",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  5,
-      "requirements":{"FUNGI": 5}
+      "requirements":{"FUNGI": 5},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "PLANT",
     "front": {
-      "type": "object",
-      "kingdom": "PLANT",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "QUILL", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -215,18 +247,19 @@
       "object": "QUILL"
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "PLANT",
     "front": {
-      "type": "object",
-      "kingdom": "PLANT",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "MANUSCRIPT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
@@ -236,18 +269,19 @@
       "object": "MANUSCRIPT"
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "PLANT",
     "front": {
-      "type": "object",
-      "kingdom": "PLANT",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "INKWELL", "covered": false},
@@ -257,158 +291,187 @@
       "object": "INKWELL"
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "PLANT",
     "front": {
-      "type": "corners",
-      "kingdom": "PLANT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  2,
-      "requirements":{"PLANT": 3, "INSECT": 1}
+      "requirements":{"PLANT": 3, "INSECT": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "PLANT",
     "front": {
-      "type": "corners",
-      "kingdom": "PLANT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  2,
-      "requirements":{"PLANT": 2, "ANIMAL": 1}
+      "requirements":{"PLANT": 3, "ANIMAL": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "PLANT",
     "front": {
-      "type": "corners",
-      "kingdom": "PLANT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  2,
-      "requirements":{"PLANT": 3, "FUNGI": 1}
+      "requirements":{"PLANT": 3, "FUNGI": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "PLANT",
     "front": {
-      "type": "empty",
-      "kingdom": "PLANT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "QUILL", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  3,
-      "requirements":{"PLANT": 3}
+      "requirements":{"PLANT": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "PLANT",
     "front": {
-      "type": "empty",
-      "kingdom": "PLANT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  3,
-      "requirements":{"PLANT": 3}
+      "requirements":{"PLANT": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "PLANT",
     "front": {
-      "type": "empty",
-      "kingdom": "PLANT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "INKWELL", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  3,
-      "requirements":{"PLANT": 3}
+      "requirements":{"PLANT": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "PLANT",
     "front": {
-      "type": "empty",
-      "kingdom": "PLANT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  5,
-      "requirements":{"PLANT": 5}
+      "requirements":{"PLANT": 5},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "ANIMAL",
     "front": {
-      "type": "object",
-      "kingdom": "ANIMAL",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "INKWELL", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -418,18 +481,19 @@
       "object": "INKWELL"
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "ANIMAL",
     "front": {
-      "type": "object",
-      "kingdom": "ANIMAL",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -439,18 +503,19 @@
       "object": "MANUSCRIPT"
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "ANIMAL",
     "front": {
-      "type": "object",
-      "kingdom": "ANIMAL",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "QUILL", "covered": false},
@@ -460,158 +525,187 @@
       "object": "QUILL"
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "ANIMAL",
     "front": {
-      "type": "corners",
-      "kingdom": "ANIMAL",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  2,
-      "requirements":{"ANIMAL": 3, "INSECT": 1}
+      "requirements":{"ANIMAL": 3, "INSECT": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "ANIMAL",
     "front": {
-      "type": "corners",
-      "kingdom": "ANIMAL",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  2,
-      "requirements":{"ANIMAL": 3, "FUNGI": 1}
+      "requirements":{"ANIMAL": 3, "FUNGI": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "ANIMAL",
     "front": {
-      "type": "corners",
-      "kingdom": "ANIMAL",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  2,
-      "requirements":{"ANIMAL": 3, "PLANT": 1}
+      "requirements":{"ANIMAL": 3, "PLANT": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "ANIMAL",
     "front": {
-      "type": "empty",
-      "kingdom": "ANIMAL",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  3,
-      "requirements":{"ANIMAL": 3}
+      "requirements":{"ANIMAL": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "ANIMAL",
     "front": {
-      "type": "empty",
-      "kingdom": "ANIMAL",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "INKWELL", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  3,
-      "requirements":{"ANIMAL": 3}
+      "requirements":{"ANIMAL": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "ANIMAL",
     "front": {
-      "type": "empty",
-      "kingdom": "ANIMAL",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "QUILL", "covered": false},
       "points":  3,
-      "requirements":{"ANIMAL": 3}
+      "requirements":{"ANIMAL": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "ANIMAL",
     "front": {
-      "type": "empty",
-      "kingdom": "ANIMAL",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  5,
-      "requirements":{"ANIMAL": 5}
+      "requirements":{"ANIMAL": 5},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "INSECT",
     "front": {
-      "type": "object",
-      "kingdom": "INSECT",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "QUILL", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
@@ -621,18 +715,19 @@
       "object": "QUILL"
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "INSECT",
     "front": {
-      "type": "object",
-      "kingdom": "INSECT",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
@@ -642,18 +737,19 @@
       "object": "MANUSCRIPT"
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "INSECT",
     "front": {
-      "type": "object",
-      "kingdom": "INSECT",
+      "type": "pointsGiverForObject",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -663,152 +759,180 @@
       "object": "INKWELL"
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "INSECT",
     "front": {
-      "type": "corners",
-      "kingdom": "INSECT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  2,
-      "requirements":{"INSECT": 3, "ANIMAL": 1}
+      "requirements":{"INSECT": 3, "ANIMAL": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "INSECT",
     "front": {
-      "type": "corners",
-      "kingdom": "INSECT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  2,
-      "requirements":{"INSECT": 3, "PLANT": 1}
+      "requirements":{"INSECT": 3, "PLANT": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "INSECT",
     "front": {
-      "type": "corners",
-      "kingdom": "INSECT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  2,
-      "requirements":{"INSECT": 3, "FUNGI": 1}
+      "requirements":{"INSECT": 3, "FUNGI": 1},
+      "pointsStrategy": {
+        "type": "cornerPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "INSECT",
     "front": {
-      "type": "empty",
-      "kingdom": "INSECT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "INKWELL", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  3,
-      "requirements":{"INSECT": 3}
+      "requirements":{"INSECT": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "INSECT",
     "front": {
-      "type": "empty",
-      "kingdom": "INSECT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "MANUSCRIPT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  3,
-      "requirements":{"INSECT": 3}
+      "requirements":{"INSECT": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "INSECT",
     "front": {
-      "type": "empty",
-      "kingdom": "INSECT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "QUILL", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points":  3,
-      "requirements":{"INSECT": 3}
+      "requirements":{"INSECT": 3},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "GOLD",
+    "kingdom": "INSECT",
     "front": {
-      "type": "empty",
-      "kingdom": "INSECT",
+      "type": "pointsGiverAndPointsGiverForCorner",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
       "points":  5,
-      "requirements":{"INSECT": 5}
+      "requirements":{"INSECT": 5},
+      "pointsStrategy": {
+        "type": "standardPointsStrategy"
+      }
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   }
 ]

@@ -145,8 +145,8 @@ public class Player {
      */
     public void playCard(PlayableCard card, int x, int y) throws NotPlayableException{
         if (card.isPlayable(playerArea ,x,y)) {
-            card.play(playerArea, x, y);
             playerArea.setCardOnCoordinates(card, x, y);
+            card.play(playerArea, x, y);
             hand.remove(card);
         }else{
             throw new NotPlayableException();

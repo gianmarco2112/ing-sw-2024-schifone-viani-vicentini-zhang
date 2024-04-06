@@ -1,133 +1,142 @@
 [
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "FUNGI",
     "front": {
-      "kingdom": "FUNGI",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "FUNGI", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "FUNGI", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
-      "points": 0
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true}
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "FUNGI",
     "front": {
-      "kingdom": "FUNGI",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "FUNGI", "covered": false},
       "topRightCorner": {"symbol": "FUNGI", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false}
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "FUNGI",
     "front": {
-      "kingdom": "FUNGI",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "FUNGI", "covered": false},
-      "bottomRightCorner": {"symbol": "FUNGI", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "FUNGI", "covered": false}
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "FUNGI",
     "front": {
-      "kingdom": "FUNGI",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "FUNGI", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomRightCorner": {"symbol": "FUNGI", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "FUNGI", "covered": false}
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "FUNGI",
     "front": {
-      "kingdom": "FUNGI",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "QUILL", "covered": false},
       "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
-      "bottomRightCorner": {"symbol": "FUNGI", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "FUNGI", "covered": false}
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "FUNGI",
     "front": {
-      "kingdom": "FUNGI",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "INKWELL", "covered": false},
       "topRightCorner": {"symbol": "FUNGI", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
-      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "FUNGI",
     "front": {
-      "kingdom": "FUNGI",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "FUNGI", "covered": false},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
       "bottomLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false}
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "FUNGI",
     "front": {
-      "kingdom": "FUNGI",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "FUNGI", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -135,17 +144,19 @@
       "points": 1
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "FUNGI",
     "front": {
-      "kingdom": "FUNGI",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "FUNGI", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -153,17 +164,19 @@
       "points": 1
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "FUNGI",
     "front": {
-      "kingdom": "FUNGI",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "FUNGI", "covered": false},
@@ -171,143 +184,152 @@
       "points": 1
     },
     "back": {
-      "kingdom": "FUNGI",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "FUNGI"
+      "permanentResources": ["FUNGI"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "PLANT",
     "front": {
-      "kingdom": "PLANT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "PLANT", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
-      "points": 0
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true}
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "PLANT",
     "front": {
-      "kingdom": "PLANT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "PLANT", "covered": false},
       "topRightCorner": {"symbol": "PLANT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false}
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "PLANT",
     "front": {
-      "kingdom": "PLANT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
-      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "PLANT", "covered": false}
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "PLANT",
     "front": {
-      "kingdom": "PLANT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "PLANT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "PLANT", "covered": false}
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "PLANT",
     "front": {
-      "kingdom": "PLANT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
       "bottomLeftCorner": {"symbol": "QUILL", "covered": false},
-      "bottomRightCorner": {"symbol": "PLANT", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "PLANT", "covered": false}
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "PLANT",
     "front": {
-      "kingdom": "PLANT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "FUNGI", "covered": false},
       "topRightCorner": {"symbol": "PLANT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
-      "bottomRightCorner": {"symbol": "INKWELL", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "INKWELL", "covered": false}
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "PLANT",
     "front": {
-      "kingdom": "PLANT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
-      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "PLANT",
     "front": {
-      "kingdom": "PLANT",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
@@ -315,17 +337,19 @@
       "points": 1
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "PLANT",
     "front": {
-      "kingdom": "PLANT",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
@@ -333,17 +357,19 @@
       "points": 1
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "PLANT",
     "front": {
-      "kingdom": "PLANT",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "PLANT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -351,143 +377,152 @@
       "points": 1
     },
     "back": {
-      "kingdom": "PLANT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "PLANT"
+      "permanentResources": ["PLANT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "ANIMAL",
     "front": {
-      "kingdom": "ANIMAL",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "ANIMAL", "covered": false},
       "topRightCorner": {"symbol": "ANIMAL", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
-      "points": 0
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true}
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "ANIMAL",
     "front": {
-      "kingdom": "ANIMAL",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "ANIMAL", "covered": false},
-      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "ANIMAL",
     "front": {
-      "kingdom": "ANIMAL",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "ANIMAL", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "ANIMAL", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false}
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "ANIMAL",
     "front": {
-      "kingdom": "ANIMAL",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "ANIMAL", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
-      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "ANIMAL",
     "front": {
-      "kingdom": "ANIMAL",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
       "bottomLeftCorner": {"symbol": "INKWELL", "covered": false},
-      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "ANIMAL",
     "front": {
-      "kingdom": "ANIMAL",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "PLANT", "covered": false},
       "topRightCorner": {"symbol": "ANIMAL", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
-      "bottomRightCorner": {"symbol": "MANUSCRIPT", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "MANUSCRIPT", "covered": false}
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "ANIMAL",
     "front": {
-      "kingdom": "ANIMAL",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "QUILL", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "ANIMAL", "covered": false},
-      "bottomRightCorner": {"symbol": "FUNGI", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "FUNGI", "covered": false}
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "ANIMAL",
     "front": {
-      "kingdom": "ANIMAL",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "ANIMAL", "covered": false},
@@ -495,17 +530,19 @@
       "points": 1
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "ANIMAL",
     "front": {
-      "kingdom": "ANIMAL",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -513,17 +550,19 @@
       "points": 1
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "ANIMAL",
     "front": {
-      "kingdom": "ANIMAL",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "ANIMAL", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -531,143 +570,152 @@
       "points": 1
     },
     "back": {
-      "kingdom": "ANIMAL",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "ANIMAL"
+      "permanentResources": ["ANIMAL"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "INSECT",
     "front": {
-      "kingdom": "INSECT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "INSECT", "covered": false},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
-      "points": 0
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true}
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "INSECT",
     "front": {
-      "kingdom": "INSECT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
-      "bottomRightCorner": {"symbol": "INSECT", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "INSECT", "covered": false}
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "INSECT",
     "front": {
-      "kingdom": "INSECT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "INSECT", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false}
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "INSECT",
     "front": {
-      "kingdom": "INSECT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
-      "bottomRightCorner": {"symbol": "INSECT", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "INSECT", "covered": false}
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "INSECT",
     "front": {
-      "kingdom": "INSECT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "QUILL", "covered": false},
       "bottomLeftCorner": {"symbol": "ANIMAL", "covered": false},
-      "bottomRightCorner": {"symbol": "INSECT", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "INSECT", "covered": false}
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "INSECT",
     "front": {
-      "kingdom": "INSECT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
-      "bottomRightCorner": {"symbol": "FUNGI", "covered": false},
-      "points": 0
+      "bottomRightCorner": {"symbol": "FUNGI", "covered": false}
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "INSECT",
     "front": {
-      "kingdom": "INSECT",
+      "type": "playableSide",
       "topLeftCorner": {"symbol": "INSECT", "covered": false},
       "topRightCorner": {"symbol": "PLANT", "covered": false},
       "bottomLeftCorner": {"symbol": "INKWELL", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
-      "points": 0
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": true}
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "INSECT",
     "front": {
-      "kingdom": "INSECT",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "INSECT", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -675,17 +723,19 @@
       "points": 1
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "INSECT",
     "front": {
-      "kingdom": "INSECT",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
@@ -693,17 +743,19 @@
       "points": 1
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   },
   {
+    "playableCardType": "RESOURCE",
+    "kingdom": "INSECT",
     "front": {
-      "kingdom": "INSECT",
+      "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": true},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
@@ -711,12 +763,12 @@
       "points": 1
     },
     "back": {
-      "kingdom": "INSECT",
+      "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
-      "resource": "INSECT"
+      "permanentResources": ["INSECT"]
     }
   }
 ]

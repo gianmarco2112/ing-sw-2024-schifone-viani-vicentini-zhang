@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies;
 
 import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
 
@@ -16,25 +17,25 @@ public class CornerPointsStrategy implements PointsStrategy{
         int cornersCovered = 0;
 
         if (playerArea.containsCardOnCoordinates(x-1,y+1)){
-            PlayableSide topLeftCard = playerArea.getCardOnCoordinates(x-1,y+1);
+            PlayableCard topLeftCard = playerArea.getCardOnCoordinates(x-1,y+1);
             if (!topLeftCard.getBottomRightCorner().isCovered()){
                 cornersCovered++;
             }
         }
         if (playerArea.containsCardOnCoordinates(x+1,y+1)){
-            PlayableSide topRightCard = playerArea.getCardOnCoordinates(x+1,y+1);
+            PlayableCard topRightCard = playerArea.getCardOnCoordinates(x+1,y+1);
             if (!topRightCard.getBottomLeftCorner().isCovered()){
                 cornersCovered++;
             }
         }
         if (playerArea.containsCardOnCoordinates(x-1,y-1)){
-            PlayableSide bottomLeftCard = playerArea.getCardOnCoordinates(x-1,y-1);
+            PlayableCard bottomLeftCard = playerArea.getCardOnCoordinates(x-1,y-1);
             if (!bottomLeftCard.getTopRightCorner().isCovered()){
                 cornersCovered++;
             }
         }
         if (playerArea.containsCardOnCoordinates(x+1,y-1)){
-            PlayableSide bottomRightCard = playerArea.getCardOnCoordinates(x+1,y-1);
+            PlayableCard bottomRightCard = playerArea.getCardOnCoordinates(x+1,y-1);
             if (!bottomRightCard.getTopLeftCorner().isCovered()){
                 cornersCovered++;
             }

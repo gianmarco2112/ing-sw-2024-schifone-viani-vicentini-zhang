@@ -150,7 +150,6 @@ public class PlayerArea {
      */
     public void setObjectiveCard(ObjectiveCard objectiveCard) {
         this.objectiveCard = objectiveCard;
-        objectiveCard.chosen(this);
     }
 
     /**
@@ -237,9 +236,9 @@ public class PlayerArea {
      * @param card Card
      * @return The coordinates
      */
-    public List<Integer> getCoordinatesOfCard(PlayableCard card){
+    public List<Integer> getCoordinatesOfCard(PlayableSide card){
         for (Map.Entry<List<Integer>, PlayableCard> entry : area.entrySet()) {
-            if (entry.getValue() == card) {
+            if (entry.getValue().getCurrentPlayableSide() == card) {
                 return entry.getKey();
             }
         }

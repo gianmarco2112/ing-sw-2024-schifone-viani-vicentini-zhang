@@ -3,8 +3,7 @@ package ingsw.codex_naturalis.model.cards.objective;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ingsw.codex_naturalis.model.Player;
-import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.*;

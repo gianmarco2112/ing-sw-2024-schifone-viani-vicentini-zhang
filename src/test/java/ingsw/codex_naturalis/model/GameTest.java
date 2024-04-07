@@ -4,6 +4,7 @@ import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.exceptions.MaxNumOfPlayersInException;
 import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 import ingsw.codex_naturalis.model.enumerations.Color;
+import ingsw.codex_naturalis.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

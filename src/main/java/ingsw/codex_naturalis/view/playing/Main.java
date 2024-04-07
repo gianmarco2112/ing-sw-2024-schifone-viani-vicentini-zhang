@@ -13,7 +13,7 @@ public class Main {
 
         TextualUI view = new TextualUI(new ArrayList<>(List.of("Gianmarco", "Andrea", "Alessia", "Leonardo")));
 
-        Controller controller = new Controller(new Game(0), view);
+        Controller controller = new Controller(new Game(0, 4), view);
 
         view.addObserver(controller);
 

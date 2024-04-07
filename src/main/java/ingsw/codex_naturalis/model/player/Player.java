@@ -1,8 +1,7 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.player;
 
-import ingsw.codex_naturalis.exceptions.NotPlayableException;
+import ingsw.codex_naturalis.model.Message;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.TurnStatus;
 

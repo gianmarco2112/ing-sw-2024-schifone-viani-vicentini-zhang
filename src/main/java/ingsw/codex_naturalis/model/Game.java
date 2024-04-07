@@ -8,6 +8,8 @@ import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.enumerations.GameStatus;
+import ingsw.codex_naturalis.model.player.Player;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 
 import java.io.File;
 import java.io.IOException;

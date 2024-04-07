@@ -2,8 +2,8 @@ package ingsw.codex_naturalis.model.cards.initialResourceGold.front;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ingsw.codex_naturalis.model.Corner;
-import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.cards.Corner;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 
 public class PointsGiver extends PlayableSide {

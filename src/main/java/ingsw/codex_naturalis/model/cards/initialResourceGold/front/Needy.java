@@ -2,11 +2,9 @@ package ingsw.codex_naturalis.model.cards.initialResourceGold.front;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ingsw.codex_naturalis.model.Corner;
-import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.cards.Corner;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.PointsStrategy;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.Map;

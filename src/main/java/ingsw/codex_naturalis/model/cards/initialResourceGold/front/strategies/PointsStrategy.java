@@ -2,7 +2,7 @@ package ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
 
 @JsonTypeInfo(

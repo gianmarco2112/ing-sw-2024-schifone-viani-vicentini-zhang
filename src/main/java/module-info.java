@@ -18,6 +18,7 @@ module ingsw.codex_naturalis {
     exports ingsw.codex_naturalis.model  to com.fasterxml.jackson.databind;
 
     exports ingsw.codex_naturalis.model.enumerations;
+    exports ingsw.codex_naturalis.view.playing;
 
     exports ingsw.codex_naturalis.model.cards.initialResourceGold.back to com.fasterxml.jackson.databind;
     opens ingsw.codex_naturalis.model.cards.initialResourceGold.back to com.fasterxml.jackson.databind;
@@ -29,4 +30,10 @@ module ingsw.codex_naturalis {
 
 
     exports ingsw.codex_naturalis.exceptions;
+    exports ingsw.codex_naturalis.model.observerObservable to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.model.observerObservable to com.fasterxml.jackson.databind;
+    exports ingsw.codex_naturalis.model.player to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.model.player to com.fasterxml.jackson.databind;
+    exports ingsw.codex_naturalis.model.cards to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.model.cards to com.fasterxml.jackson.databind;
 }

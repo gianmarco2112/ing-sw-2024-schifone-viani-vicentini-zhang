@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.exceptions.EmptyDeckException;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 
 import java.io.File;
 import java.io.IOException;

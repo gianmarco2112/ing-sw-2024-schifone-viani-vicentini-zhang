@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

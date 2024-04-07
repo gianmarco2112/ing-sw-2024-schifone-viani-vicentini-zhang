@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model;
 
+import ingsw.codex_naturalis.model.player.Player;
+
 import java.time.LocalTime;
 import java.util.*;
 

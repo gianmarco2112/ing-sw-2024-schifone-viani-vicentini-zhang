@@ -1,8 +1,7 @@
 package ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies;
 
-import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
 
 import java.util.List;

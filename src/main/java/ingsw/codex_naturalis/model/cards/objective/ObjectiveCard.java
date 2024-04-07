@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
-import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 
 import java.util.List;
 

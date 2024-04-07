@@ -2,6 +2,7 @@ package ingsw.codex_naturalis.model;
 
 import ingsw.codex_naturalis.exceptions.CardNotInHandException;
 import ingsw.codex_naturalis.exceptions.NotPlayableException;
+import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
@@ -11,6 +12,8 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.St
 import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
+import ingsw.codex_naturalis.model.player.Player;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

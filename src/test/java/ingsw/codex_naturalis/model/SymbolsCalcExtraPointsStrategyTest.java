@@ -1,5 +1,6 @@
 
 package ingsw.codex_naturalis.model;
+import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
@@ -8,14 +9,13 @@ import ingsw.codex_naturalis.model.cards.objective.SymbolsObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
+import ingsw.codex_naturalis.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SymbolsCalcExtraPointsStrategyTest {
     Game game;

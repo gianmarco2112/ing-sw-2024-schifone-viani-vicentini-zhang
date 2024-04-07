@@ -1,4 +1,5 @@
 package ingsw.codex_naturalis.model;
+import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
@@ -7,6 +8,7 @@ import ingsw.codex_naturalis.model.cards.objective.PatternObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
+import ingsw.codex_naturalis.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

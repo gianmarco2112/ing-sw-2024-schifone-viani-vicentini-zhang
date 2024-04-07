@@ -2,8 +2,8 @@ package ingsw.codex_naturalis.controller;
 
 import ingsw.codex_naturalis.exceptions.NotPlayableException;
 import ingsw.codex_naturalis.model.Game;
-import ingsw.codex_naturalis.model.Player;
-import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.player.Player;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.view.playing.events.MessageEvent;
 import ingsw.codex_naturalis.view.playing.events.PlayCardEvent;

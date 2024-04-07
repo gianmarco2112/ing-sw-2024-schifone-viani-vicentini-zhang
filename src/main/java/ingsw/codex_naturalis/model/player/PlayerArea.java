@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.player;
 
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;

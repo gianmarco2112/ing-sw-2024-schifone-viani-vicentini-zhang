@@ -3,32 +3,22 @@ package ingsw.codex_naturalis.model.cards.objective;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.PlayerArea;
+import ingsw.codex_naturalis.model.enumerations.ExtremeCoordinate;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
+import ingsw.codex_naturalis.model.enumerations.ExtremeCoordinate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * class PatternObjectiveCard
  */
 public class PatternObjectiveCard extends ObjectiveCard {
-    /**
-     * pattern max row
-     */
-    private final int maxX;
-    /**
-     * pattern max column
-     */
-    private final int maxY;
-    /**
-     * pattern min row
-     */
-    private final int minX;
-    /**
-     * pattern max column
-     */
-    private final int minY;
+
+    private final Map<ExtremeCoordinate, Integer> extremeCoordinates;
+  
     /**
      * HashMap contains the pattern for the Objective
      */
@@ -50,7 +40,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
                                 @JsonProperty("minX") int minX,
                                 @JsonProperty("minY") int minY) {
         super(points);
-        this.pattern=new HashMap<>();
+        this.pattern = new HashMap<>();
         for(int i = minX; i <= maxX; i++){
             for(int j = minY; j <= maxY; j++){
                 pattern.put(List.of(i,j),Symbol.EMPTY);
@@ -59,12 +49,19 @@ public class PatternObjectiveCard extends ObjectiveCard {
         for(int i=0; i<kingdoms.size();i++){
             this.pattern.put(positions.get(i),kingdoms.get(i));
         }
-        this.maxX = maxX;
-        this.maxY = maxY;
-        this.minX = minX;
-        this.minY = minY;
+        extremeCoordinates = new HashMap<>();
+        setExtremeCoordinate(ExtremeCoordinate.MAX_X, maxX);
+        setExtremeCoordinate(ExtremeCoordinate.MAX_Y, maxY);
+        setExtremeCoordinate(ExtremeCoordinate.MIN_X, minX);
+        setExtremeCoordinate(ExtremeCoordinate.MIN_Y, minY);
     }
 
+    private int getExtremeCoordinate(ExtremeCoordinate extremeCoordinate) {
+        return extremeCoordinates.get(extremeCoordinate);
+    }
+    private void setExtremeCoordinate(ExtremeCoordinate extremeCoordinate, Integer value) {
+        extremeCoordinates.put(extremeCoordinate, value);
+    }
 
 
     /**
@@ -86,8 +83,12 @@ public class PatternObjectiveCard extends ObjectiveCard {
         int successes = 0;
         boolean success;
 
-        for(int yArea=playerAreas.get(i).getMaxY(); yArea>=playerAreas.get(i).getMinY()+getPatternHeight()-1; yArea--){
-            for(int xArea=playerAreas.get(i).getMinX(); xArea<=playerAreas.get(i).getMaxX()-getPatternWidth()+1; xArea++){
+        int playerAreaMaxY = playerAreas.get(i).getExtremeCoordinate(ExtremeCoordinate.MAX_Y);
+        int playerAreaMinY = playerAreas.get(i).getExtremeCoordinate(ExtremeCoordinate.MIN_Y);
+        int playerAreaMinX = playerAreas.get(i).getExtremeCoordinate(ExtremeCoordinate.MIN_X);
+        int playerAreaMaxX = playerAreas.get(i).getExtremeCoordinate(ExtremeCoordinate.MAX_X);
+        for(int yArea = playerAreaMaxY; yArea >= playerAreaMinY + getPatternHeight()-1; yArea--){
+            for(int xArea = playerAreaMinX; xArea <= playerAreaMaxX - getPatternWidth()+1; xArea++){
                 success = checkPatternOnCoordinates(playerAreas, xArea, yArea, i, markedArea);
                 if(success){
                     successes += 1;
@@ -107,8 +108,8 @@ public class PatternObjectiveCard extends ObjectiveCard {
      * @return true if the pattern is overlapping on the area, false if it isn't
      */
     private boolean checkPatternOnCoordinates(List<PlayerArea> playerAreas, int xArea, int yArea, int i, HashMap<List<Integer>,Boolean> markedArea){
-        for(int yPattern=getMaxY(),y=yArea; yPattern>=getMinY(); yPattern--, y--){
-            for(int xPattern=getMinX(),x=xArea; xPattern<=getMaxX(); xPattern++, x++){
+        for(int yPattern = getExtremeCoordinate(ExtremeCoordinate.MAX_Y),y = yArea; yPattern >= getExtremeCoordinate(ExtremeCoordinate.MIN_Y); yPattern--, y--){
+            for(int xPattern = getExtremeCoordinate(ExtremeCoordinate.MIN_X),x = xArea; xPattern <= getExtremeCoordinate(ExtremeCoordinate.MAX_X); xPattern++, x++){
                 if(getSymbolAt(xPattern, yPattern) != Symbol.EMPTY){
                     if(!playerAreas.get(i).containsCardOnCoordinates(x, y)){
                         return false;
@@ -132,8 +133,8 @@ public class PatternObjectiveCard extends ObjectiveCard {
      * @param yArea y
      */
     private void markArea(HashMap<List<Integer>,Boolean> areaToMark, int xArea, int yArea){
-        for(int yPattern=getMaxY(), y=yArea; yPattern>=getMinY(); yPattern--, y--){
-            for(int xPattern=getMinX(), x=xArea; xPattern<=getMaxX(); xPattern++, x++){
+        for(int yPattern = getExtremeCoordinate(ExtremeCoordinate.MAX_Y), y = yArea; yPattern >= getExtremeCoordinate(ExtremeCoordinate.MIN_Y); yPattern--, y--){
+            for(int xPattern = getExtremeCoordinate(ExtremeCoordinate.MIN_X), x = xArea; xPattern <= getExtremeCoordinate(ExtremeCoordinate.MAX_X); xPattern++, x++){
                 if(getSymbolAt(xPattern, yPattern) != Symbol.EMPTY){
                     areaToMark.replace(new ArrayList<>(List.of(x, y)),true);
                 }
@@ -146,7 +147,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
      * @return Pattern width
      */
     private int getPatternWidth(){
-        return getMaxX()+getMinX()+1;
+        return getExtremeCoordinate(ExtremeCoordinate.MAX_X) + getExtremeCoordinate(ExtremeCoordinate.MIN_X)+1;
     }
 
     /**
@@ -154,40 +155,9 @@ public class PatternObjectiveCard extends ObjectiveCard {
      * @return Pattern height
      */
     private int getPatternHeight(){
-        return getMaxY()+getMinY()+1;
+        return getExtremeCoordinate(ExtremeCoordinate.MAX_Y) + getExtremeCoordinate(ExtremeCoordinate.MIN_Y)+1;
     }
-
-    /**
-     * Max row getter
-     * @return Max row
-     */
-    private int getMaxX() {
-        return maxX;
-    }
-
-    /**
-     * Max column getter
-     * @return max y
-     */
-    private int getMaxY() {
-        return maxY;
-    }
-
-    /**
-     * Min row getter
-     * @return min x
-     */
-    private int getMinX() {
-        return minX;
-    }
-
-    /**
-     * Min column getter
-     * @return min y
-     */
-    private int getMinY() {
-        return minY;
-    }
+    
     private Symbol getSymbolAt(int x, int y){
         return pattern.get(new ArrayList<>(List.of(x,y)));
     }

@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.model;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
+import ingsw.codex_naturalis.model.enumerations.ExtremeCoordinate;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
 import java.util.*;
@@ -16,26 +17,12 @@ public class PlayerArea {
      * This HashMap represents the player area with all the cards he has placed.
      * The key represents the coordinates, the value the card played.
      */
-    private Map<List<Integer>, PlayableCard> area;
-    /**
-     * area max row
-     */
-    private int maxX;
+    private final Map<List<Integer>, PlayableCard> area;
 
     /**
-     * area max column
+     * Extreme coordinates of the player area, used from the pattern objective card strategy
      */
-    private int maxY;
-
-    /**
-     * area min row
-     */
-    private int minX;
-
-    /**
-     * area max column
-     */
-    private int minY;
+    private final Map<ExtremeCoordinate, Integer> extremeCoordinates;
 
     /**
      * The count of the symbols of the player
@@ -62,67 +49,39 @@ public class PlayerArea {
      * Constructor
      */
     public PlayerArea(){
+        this.objectiveCard = null;
         this.area = new HashMap<>();
-        this.numOfSymbols = new HashMap<>();
         this.points = 0;
-        initializeNumOfSymbols(numOfSymbols);
+        this.extraPoints = 0;
+        this.extremeCoordinates = new HashMap<>();
+        this.numOfSymbols = new HashMap<>();
+        initializeExtremeCoordinates();
+        initializeNumOfSymbols();
+    }
+    private void initializeExtremeCoordinates() {
+        this.extremeCoordinates.put(ExtremeCoordinate.MAX_X, 0);
+        this.extremeCoordinates.put(ExtremeCoordinate.MAX_Y, 0);
+        this.extremeCoordinates.put(ExtremeCoordinate.MIN_X, 0);
+        this.extremeCoordinates.put(ExtremeCoordinate.MIN_Y, 0);
+    }
+    private void initializeNumOfSymbols() {
+        this.numOfSymbols.put(Symbol.INSECT,0);
+        this.numOfSymbols.put(Symbol.FUNGI,0);
+        this.numOfSymbols.put(Symbol.ANIMAL,0);
+        this.numOfSymbols.put(Symbol.PLANT,0);
+        this.numOfSymbols.put(Symbol.MANUSCRIPT,0);
+        this.numOfSymbols.put(Symbol.QUILL,0);
+        this.numOfSymbols.put(Symbol.INKWELL,0);
+        this.numOfSymbols.put(Symbol.EMPTY,0);
     }
 
-    private void initializeNumOfSymbols(Map<Symbol, Integer> numOfSymbols) {
-        numOfSymbols.put(Symbol.INSECT,0);
-        numOfSymbols.put(Symbol.FUNGI,0);
-        numOfSymbols.put(Symbol.ANIMAL,0);
-        numOfSymbols.put(Symbol.PLANT,0);
-        numOfSymbols.put(Symbol.MANUSCRIPT,0);
-        numOfSymbols.put(Symbol.QUILL,0);
-        numOfSymbols.put(Symbol.INKWELL,0);
-        numOfSymbols.put(Symbol.EMPTY,0);
+
+    public int getExtremeCoordinate(ExtremeCoordinate extremeCoordinate) {
+        return extremeCoordinates.get(extremeCoordinate);
     }
-
-
-    /**
-     * Max row getter
-     * @return max x
-     */
-    public int getMaxX() { return maxX; }
-    /**
-     * Max column getter
-     * @return max y
-     */
-    public int getMaxY() { return maxY; }
-    /**
-     * Min row getter
-     * @return min x
-     */
-    public int getMinX() { return minX; }
-    /**
-     * Min column getter
-     * @return min y
-     */
-    public int getMinY() { return minY; }
-
-    /**
-     * Max row setter
-     * @param maxX Max row
-     */
-    public void setMaxX(int maxX) { this.maxX = maxX; }
-    /**
-     * Max column setter
-     * @param maxY Max column
-     */
-    public void setMaxY(int maxY) { this.maxY = maxY; }
-
-    /**
-     * Min row setter
-     * @param minX Min row
-     */
-    public void setMinX(int minX) { this.minX = minX; }
-
-    /**
-     * Min column setter
-     * @param minY Min column
-     */
-    public void setMinY(int minY) { this.minY = minY; }
+    private void setExtremeCoordinate(ExtremeCoordinate extremeCoordinate, Integer value) {
+        extremeCoordinates.put(extremeCoordinate, value);
+    }
 
     /**
      * Points getter
@@ -221,14 +180,14 @@ public class PlayerArea {
      */
     public void setCardOnCoordinates(PlayableCard card, int x, int y){
         area.put(new ArrayList<>(List.of(x,y)), card);
-        if(x > maxX)
-            maxX = x;
-        if(x < minX)
-            minX = x;
-        if(y > maxY)
-            maxY = y;
-        if(y < minY)
-            minY = y;
+        if(x > getExtremeCoordinate(ExtremeCoordinate.MAX_X))
+            setExtremeCoordinate(ExtremeCoordinate.MAX_X, x);
+        if(x < getExtremeCoordinate(ExtremeCoordinate.MIN_X))
+            setExtremeCoordinate(ExtremeCoordinate.MIN_X, x);
+        if(y > getExtremeCoordinate(ExtremeCoordinate.MAX_Y))
+            setExtremeCoordinate(ExtremeCoordinate.MAX_Y, y);
+        if(y < getExtremeCoordinate(ExtremeCoordinate.MIN_Y))
+            setExtremeCoordinate(ExtremeCoordinate.MIN_Y, y);
     }
 
     /**

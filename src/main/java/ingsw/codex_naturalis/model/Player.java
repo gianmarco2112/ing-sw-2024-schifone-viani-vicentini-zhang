@@ -4,6 +4,7 @@ import ingsw.codex_naturalis.exceptions.NotPlayableException;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
+import ingsw.codex_naturalis.model.enumerations.TurnStatus;
 
 import java.util.*;
 
@@ -12,16 +13,18 @@ import java.util.*;
  */
 public class Player {
 
+    private final int playerID;
     /**
      * Nickname of the player
      */
     private final String nickname;
-    private final int playerID; //l'idea è che ID debba essere univoco tra tutte le partite e il nickname unico in ogni partita
 
     /**
      * Color of the player
      */
-    private final Color color;
+    private Color color;
+
+    private TurnStatus turnStatus;
 
     /**
      * Initial card (null after playing it)
@@ -37,12 +40,6 @@ public class Player {
     private final List<PlayableCard> hand;
 
     /**
-     * This list contains the two objective cards given at the start, then
-     * it will be empty
-     */
-    private final List<ObjectiveCard> objectiveCards = new ArrayList<>();
-
-    /**
      * Player area
      */
     private final PlayerArea playerArea;
@@ -52,27 +49,23 @@ public class Player {
      */
     private final List<Message> sentMessages;
 
-    /**
-     * Players the current player can write to
-     */
-    private final List<Player> players;
-
 
     /**
      * Constructor
      * @param nickname Nickname
-     * @param color Color
      */
-    public Player(String nickname, Color color,int playerID) {
+    public Player(int playerID, String nickname) {
+        this.playerArea = new PlayerArea();
+        this.playerID = playerID;
         this.nickname = nickname;
-        this.color = color;
         this.initialCard = null;
         this.sentMessages = new ArrayList<>();
         this.hand = new ArrayList<>();
-        this.playerArea = new PlayerArea();
-        this.playerID=playerID;
-        this.players=new ArrayList<>();
+        this.turnStatus = TurnStatus.PLAY;
     }
+
+
+
 
 
     /**
@@ -91,6 +84,13 @@ public class Player {
         this.initialCard = initialCard;
     }
 
+    public TurnStatus getTurnStatus() {
+        return turnStatus;
+    }
+
+    public void setTurnStatus(TurnStatus turnStatus) {
+        this.turnStatus = turnStatus;
+    }
 
     /**
      * Method to play the initial card
@@ -119,9 +119,8 @@ public class Player {
     public Color getColor() {
         return color;
     }
-
-    public int getPlayerID() {
-        return playerID;
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public String getNickname() {
@@ -136,17 +135,6 @@ public class Player {
         return new ArrayList<>(sentMessages);
     }
 
-    public void setPossibleMessageReceivers(Player player){
-        players.add(player);
-    }
-    public List<Player> getPossibleMessageReceiver() {
-        return new ArrayList<>(players);
-    }
-
-    public void setObjectiveCards(ObjectiveCard objectiveCard1, ObjectiveCard objectiveCard2){
-        objectiveCards.add(objectiveCard1);
-        objectiveCards.add(objectiveCard2);
-    }
 
    /* public void chooseObjectiveCard(ObjectiveCard objectiveCard){
         playerArea.setObjectiveCard(objectiveCard);
@@ -154,7 +142,4 @@ public class Player {
         centerOfTable.discardObjectiveCard(objectiveCards.getFirst());
         objectiveCards.clear();
     }*/
-    public int getExtraPoints(){
-        return playerArea.getExtraPoints(); //potrebbe tornare utile anche in futuro e potrebbe sostituire i metodi deprecati
-    }
 }

@@ -48,24 +48,30 @@ public class Game {
 
     private GameStatus gameStatus;
 
+    private final int maxNumOfPlayers;
+
 
     /**
      * Constructor
      */
-    public Game(int gameID) {
+    public Game(int gameID, int maxNumOfPlayers) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            this.initialCardsDeck = objectMapper.readValue(new File(this.initialCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
+            this.initialCardsDeck = objectMapper.readValue(new File(initialCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
         } catch (IOException e){
-            System.out.println("ERROR while opening json file");
+            System.err.println("ERROR while opening json file");
         }
         this.centerOfTable = new CenterOfTable();
         this.playerOrder = new ArrayList<>();
         this.gameID = gameID;
         this.gameStatus = GameStatus.WAITING;
-        this.currentPlayer = playerOrder.getFirst();
+        this.maxNumOfPlayers = maxNumOfPlayers;
     }
 
+
+    public int getMaxNumOfPlayers() {
+        return maxNumOfPlayers;
+    }
 
     public GameStatus getGameStatus() {
         return gameStatus;
@@ -79,9 +85,8 @@ public class Game {
      * Adds a player to the game
      * @param player Player
      */
-    //NOTA: l'eccezione viene catturata poi dal controller che gestisce la logica del gioco
     public void addPlayer(Player player) throws NicknameAlreadyExistsException, ColorAlreadyChosenException, MaxNumOfPlayersInException {
-        if(playerOrder.size() >= DefaultValue.maxNumOfPlayer)
+        if(playerOrder.size() >= maxNumOfPlayers)
             throw new MaxNumOfPlayersInException();
 
         for(Player p : playerOrder){
@@ -93,9 +98,6 @@ public class Game {
             }
         }
         playerOrder.add(player);
-        for(Player p : playerOrder){
-            p.setPossibleMessageReceivers(player);
-        }
     }
 
     /**
@@ -134,9 +136,9 @@ public class Game {
             playerAreas.add(player.getPlayerArea());
         }
         centerOfTable.setCommonObjectiveCards(new ArrayList<>(playerAreas));
-        for (Player player : playerOrder){
+        /*for (Player player : playerOrder){
             player.setObjectiveCards(centerOfTable.removeFromObjectiveCardsDeck(), centerOfTable.removeFromObjectiveCardsDeck());
-        }
+        }*/
     }
 
     public CenterOfTable getCenterOfTable() {

@@ -33,26 +33,26 @@ public class ObservableView {
 
 
     public void notifyObservers(FlipCardCommand arg) {
-        for (ObserverController o : obs){
+        /*for (ObserverController o : obs){
             o.update(arg);
-        }
+        }*/
     }
 
     public void notifyObservers(PlayCardEvent arg) {
-        for (ObserverController o : obs){
+        /*for (ObserverController o : obs){
             o.update(arg);
-        }
+        }*/
     }
 
     public void notifyObservers(DrawCardCommand arg) {
-        for (ObserverController o : obs){
+        /*for (ObserverController o : obs){
             o.update(arg);
-        }
+        }*/
     }
 
     public void notifyObservers(MessageEvent arg) {
-        for (ObserverController o : obs){
+        /*for (ObserverController o : obs){
             o.update(arg);
-        }
+        }*/
     }
 }

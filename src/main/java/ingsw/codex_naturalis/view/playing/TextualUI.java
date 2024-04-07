@@ -117,6 +117,7 @@ public class TextualUI extends ObservableView implements Runnable{
             int y = askCoordinateToPlayer("coordinate y");
             try {
                 notifyObservers(new PlayCardEvent(playCardCommand, x, y));
+                removeCardFromTheOptions();
             } catch (NotPlayableException e) {
                 System.err.println(e.getMessage());
             }
@@ -126,6 +127,11 @@ public class TextualUI extends ObservableView implements Runnable{
         }
     }
 
+    private void removeCardFromTheOptions(){
+        flipCardCommands.remove(3);
+        playCardCommands.remove(3);
+    }
+
     private void drawCardCase(){
         System.out.println("--- Which card do you want to draw? ---");
         printUtilityCommands();
@@ -133,10 +139,16 @@ public class TextualUI extends ObservableView implements Runnable{
         try {
             DrawCardCommand drawCardCommand = askGenericCommandToPlayer(drawCardCommands);
             notifyObservers(drawCardCommand);
+            addCardToTheOptions();
         } catch (UtilityCommandException e){
             UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
             utilityCommandCase(utilityCommand);
         }
+    }
+
+    private void addCardToTheOptions() {
+        flipCardCommands.put(3, FlipCardCommand.values()[2]);
+        playCardCommands.put(3, PlayCardCommand.values()[2]);
     }
 
     private void textCase(){

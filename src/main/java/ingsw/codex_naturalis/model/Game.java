@@ -7,6 +7,7 @@ import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.enumerations.GameStatus;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +46,8 @@ public class Game {
      */
     private final int gameID;
 
+    private GameStatus gameStatus;
+
 
     /**
      * Constructor
@@ -58,7 +61,18 @@ public class Game {
         }
         this.centerOfTable = new CenterOfTable();
         this.playerOrder = new ArrayList<>();
-        this.gameID=gameID;
+        this.gameID = gameID;
+        this.gameStatus = GameStatus.WAITING;
+        this.currentPlayer = playerOrder.getFirst();
+    }
+
+
+    public GameStatus getGameStatus() {
+        return gameStatus;
+    }
+
+    public void setGameStatus(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
     }
 
     /**
@@ -101,17 +115,6 @@ public class Game {
     public void shufflePlayerList(){
         Collections.shuffle(this.playerOrder);
     }
-    private Player getNextElement(List<Player> playerList, Player player){
-        int index = playerList.indexOf(player);
-        if(index < playerList.size() -1 ){
-            return playerList.get(index+1);
-        }else{
-            return playerList.getFirst();
-        }
-    }
-    public Player getNextPlayer(){
-        return getNextElement(playerOrder,getCurrentPlayer());
-    }
 
     public Player getCurrentPlayer(){
         return currentPlayer;
@@ -121,8 +124,8 @@ public class Game {
         return gameID;
     }
 
-    public void setCurrentPlayer(){
-        currentPlayer = playerOrder.getFirst();
+    public void setCurrentPlayer(Player currentPlayer){
+        this.currentPlayer = currentPlayer;
     }
 
     public void setAndDealObjectiveCards(){
@@ -134,5 +137,13 @@ public class Game {
         for (Player player : playerOrder){
             player.setObjectiveCards(centerOfTable.removeFromObjectiveCardsDeck(), centerOfTable.removeFromObjectiveCardsDeck());
         }
+    }
+
+    public CenterOfTable getCenterOfTable() {
+        return centerOfTable;
+    }
+
+    public List<Player> getPlayerOrder() {
+        return playerOrder;
     }
 }

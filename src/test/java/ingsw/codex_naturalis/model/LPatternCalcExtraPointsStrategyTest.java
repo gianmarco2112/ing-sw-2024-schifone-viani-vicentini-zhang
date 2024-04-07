@@ -159,48 +159,48 @@ public class LPatternCalcExtraPointsStrategyTest {
                 0));
     }
     private void bottomLeftL(){
-        player.testGethand().add(insectResourceCard());
-        player.testGethand().add(plantResourceCard());
-        player.testGethand().add(plantResourceCard());
-        player.testGethand().add(plantResourceCard());
+        player.getHand().add(insectResourceCard());
+        player.getHand().add(plantResourceCard());
+        player.getHand().add(plantResourceCard());
+        player.getHand().add(plantResourceCard());
 
-        player.playCard(player.testGethand().getFirst(),1,1 );
-        player.playCard(player.testGethand().getFirst(),2,2 );
-        player.playCard(player.testGethand().getFirst(),1,3 );
-        player.playCard(player.testGethand().getFirst(),2,4 );
+        player.playCard(player.getHand().getFirst(),1,1 );
+        player.playCard(player.getHand().getFirst(),2,2 );
+        player.playCard(player.getHand().getFirst(),1,3 );
+        player.playCard(player.getHand().getFirst(),2,4 );
     }
     private void bottomRightL(){
-        player.testGethand().add(plantResourceCard());
-        player.testGethand().add(fungiResourceCard());
-        player.testGethand().add(fungiResourceCard());
-        player.testGethand().add(fungiResourceCard());
+        player.getHand().add(plantResourceCard());
+        player.getHand().add(fungiResourceCard());
+        player.getHand().add(fungiResourceCard());
+        player.getHand().add(fungiResourceCard());
 
-        player.playCard(player.testGethand().getFirst(),-1,1 );
-        player.playCard(player.testGethand().getFirst(),-2,2 );
-        player.playCard(player.testGethand().getFirst(),-3,3 );
-        player.playCard(player.testGethand().getFirst(),-2,4 );
+        player.playCard(player.getHand().getFirst(),-1,1 );
+        player.playCard(player.getHand().getFirst(),-2,2 );
+        player.playCard(player.getHand().getFirst(),-3,3 );
+        player.playCard(player.getHand().getFirst(),-2,4 );
     }
     private void topLeftL(){
-        player.testGethand().add(animalResourceCard());
-        player.testGethand().add(insectResourceCard());
-        player.testGethand().add(insectResourceCard());
-        player.testGethand().add(insectResourceCard());
+        player.getHand().add(animalResourceCard());
+        player.getHand().add(insectResourceCard());
+        player.getHand().add(insectResourceCard());
+        player.getHand().add(insectResourceCard());
 
-        player.playCard(player.testGethand().getFirst(),1,-1 );
-        player.playCard(player.testGethand().getFirst(),2,-2 );
-        player.playCard(player.testGethand().getFirst(),1,-3 );
-        player.playCard(player.testGethand().getFirst(),2,-4 );
+        player.playCard(player.getHand().getFirst(),1,-1 );
+        player.playCard(player.getHand().getFirst(),2,-2 );
+        player.playCard(player.getHand().getFirst(),1,-3 );
+        player.playCard(player.getHand().getFirst(),2,-4 );
     }
     private void topRightL(){
-        player.testGethand().add(fungiResourceCard());
-        player.testGethand().add(animalResourceCard());
-        player.testGethand().add(animalResourceCard());
-        player.testGethand().add(animalResourceCard());
+        player.getHand().add(fungiResourceCard());
+        player.getHand().add(animalResourceCard());
+        player.getHand().add(animalResourceCard());
+        player.getHand().add(animalResourceCard());
 
-        player.playCard(player.testGethand().getFirst(),-1,-1 );
-        player.playCard(player.testGethand().getFirst(),-2,-2 );
-        player.playCard(player.testGethand().getFirst(),-1,-3 );
-        player.playCard(player.testGethand().getFirst(),-2,-4 );
+        player.playCard(player.getHand().getFirst(),-1,-1 );
+        player.playCard(player.getHand().getFirst(),-2,-2 );
+        player.playCard(player.getHand().getFirst(),-1,-3 );
+        player.playCard(player.getHand().getFirst(),-2,-4 );
     }
     @Test
     void bottomLeftLTest(){

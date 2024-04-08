@@ -21,27 +21,6 @@ import java.util.*;
  * Game class
  */
 public class Game {
-    /**
-     * JSON (resource cards)
-     */
-    public static final String resourceCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/resourceCards.json";
-    /**
-     * JSON (gold cards)
-     */
-    public static final String goldCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/goldCards.json";
-    /**
-     * JSON (objective cards)
-     */
-    public static final String objectiveCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/objectiveCards.json";
-    /**
-     * JSON (Initial cards)
-     */
-    public static final String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
-
-
-
-
-
 
     /**
      * Game ID is necessary in order to have multiple game
@@ -103,6 +82,8 @@ public class Game {
      */
     private final List<ObjectiveCard> commonObjectiveCards;
 
+    private final List<Message> messages;
+
 
 
     /**
@@ -111,14 +92,32 @@ public class Game {
     public Game(int gameID, int maxNumOfPlayers) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            this.initialCardsDeck = objectMapper.readValue(new File(initialCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
+            String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
+            String resourceCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/resourceCards.json";
+            String goldCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/goldCards.json";
+            String objectiveCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/objectiveCards.json";
+
+            List<PlayableCard> initialCards = objectMapper.readValue(new File(initialCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
+            List<PlayableCard> resourceCards = objectMapper.readValue(new File(resourceCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
+            List<PlayableCard> goldCards = objectMapper.readValue(new File(goldCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
+            List<ObjectiveCard> objectiveCards = objectMapper.readValue(new File(objectiveCardsJsonFilePath), new TypeReference<List<ObjectiveCard>>() {});
+
+            this.initialCardsDeck = new Deck<>(initialCards);
+            this.resourceCardsDeck = new Deck<>(resourceCards);
+            this.goldCardsDeck = new Deck<>(goldCards);
+            this.objectiveCardsDeck = new Deck<>(objectiveCards);
         } catch (IOException e){
             System.err.println("ERROR while opening json file");
         }
+
         this.playerOrder = new ArrayList<>();
         this.gameID = gameID;
         this.gameStatus = GameStatus.WAITING;
         this.maxNumOfPlayers = maxNumOfPlayers;
+        this.messages = new ArrayList<>();
+        this.revealedResourceCards = new ArrayList<>();
+        this.revealedGoldCards = new ArrayList<>();
+        this.commonObjectiveCards = new ArrayList<>();
     }
 
 
@@ -171,6 +170,10 @@ public class Game {
         playerOrder.add(player);
     }
 
+    public List<Message> getMessages() {
+        return messages;
+    }
+
     /**
      * Deals an initial card to each player
      */
@@ -181,6 +184,9 @@ public class Game {
         }
     }
 
+    public List<ObjectiveCard> getCommonObjectiveCards(){
+        return commonObjectiveCards;
+    }
     public void setCommonObjectiveCards(List<PlayerArea> playerAreas){
         objectiveCardsDeck.shuffle();
         this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());

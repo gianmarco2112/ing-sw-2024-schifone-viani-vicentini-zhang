@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.model.player;
 
+import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
@@ -210,10 +211,18 @@ public class PlayerArea {
      * @return The area to mark
      */
     public Map<List<Integer>,Boolean> getAreaToMark(){
-        Map<List<Integer>, Boolean> areaToMark = new HashMap<>();
+        Map<List<Integer>, Boolean> areaToMark = new LinkedHashMap<>();
         for (List<Integer> key : area.keySet()) {
             areaToMark.put(key, false);
         }
         return areaToMark;
+    }
+
+    /**
+     * Area getter
+     * @return Area
+     */
+    public Map<List<Integer>, PlayableCard> getArea(){
+        return area;
     }
 }

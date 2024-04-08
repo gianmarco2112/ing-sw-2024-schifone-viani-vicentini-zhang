@@ -18,19 +18,26 @@ public class Message {
      * Sent time
      */
     private final LocalTime sentTime;
+
+    /**
+     * Sender of the message
+     */
+    private final String sender;
     /**
      * Receivers of the message
      */
-    private final List<Player> receivers;
+    private final List<String> receivers;
 
 
     /**
      * Constructor
      * @param content Content
+     * @param sender Sender
      * @param receivers Receivers
      */
-    public Message(String content, List<Player> receivers){
+    public Message(String content, String sender, List<String> receivers){
         this.content = content;
+        this.sender = sender;
         this.receivers = new ArrayList<>(receivers);
         this.sentTime = LocalTime.now();
     }
@@ -56,7 +63,15 @@ public class Message {
      * Receivers getter
      * @return List of receivers
      */
-    public List<Player> getReceivers() {
+    public List<String> getReceivers() {
         return receivers;
+    }
+
+    /**
+     * Sender getter
+     * @return Sender
+     */
+    public String getSender() {
+        return sender;
     }
 }

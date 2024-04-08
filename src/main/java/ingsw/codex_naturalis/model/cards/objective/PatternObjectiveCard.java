@@ -31,14 +31,16 @@ public class PatternObjectiveCard extends ObjectiveCard {
      * @param maxY max column of the pattern
      */
     @JsonCreator
-    public PatternObjectiveCard(@JsonProperty("points") int points,
-                                @JsonProperty("positions") List<List<Integer>> positions,
-                                @JsonProperty("kingdoms") List<Symbol> kingdoms,
-                                @JsonProperty("maxX") int maxX,
-                                @JsonProperty("maxY") int maxY,
-                                @JsonProperty("minX") int minX,
-                                @JsonProperty("minY") int minY) {
-        super(points);
+    public PatternObjectiveCard(
+            @JsonProperty("cardID") String cardID,
+            @JsonProperty("points") int points,
+            @JsonProperty("positions") List<List<Integer>> positions,
+            @JsonProperty("kingdoms") List<Symbol> kingdoms,
+            @JsonProperty("maxX") int maxX,
+            @JsonProperty("maxY") int maxY,
+            @JsonProperty("minX") int minX,
+            @JsonProperty("minY") int minY) {
+        super(cardID, points);
         this.pattern = new HashMap<>();
         for(int i = minX; i <= maxX; i++){
             for(int j = minY; j <= maxY; j++){
@@ -159,5 +161,10 @@ public class PatternObjectiveCard extends ObjectiveCard {
     
     private Symbol getSymbolAt(int x, int y){
         return pattern.get(new ArrayList<>(List.of(x,y)));
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
     }
 }

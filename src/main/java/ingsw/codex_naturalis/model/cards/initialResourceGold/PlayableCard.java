@@ -2,12 +2,13 @@ package ingsw.codex_naturalis.model.cards.initialResourceGold;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
-public class PlayableCard {
+public class PlayableCard extends Card {
 
     /**
      * Card type, can be INITIAL, RESOURCE or GOLD
@@ -37,10 +38,12 @@ public class PlayableCard {
     //---------------------------------------------------------------------------------
     @JsonCreator
     public PlayableCard(
+            @JsonProperty("cardID") String cardID,
             @JsonProperty("playableCardType") PlayableCardType playableCardType,
             @JsonProperty("kingdom") Symbol kingdom,
             @JsonProperty("front") PlayableSide front,
             @JsonProperty("back") PlayableSide back){
+        super(cardID);
         this.playableCardType = playableCardType;
         this.kingdom = kingdom;
         this.front = front;
@@ -84,6 +87,7 @@ public class PlayableCard {
         currentPlayableSide = back;
     }
 
+    @Override
     public String getDescription(){
         return currentPlayableSide.getDescription();
     }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
+import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
         @Type(value = SymbolsObjectiveCard.class, name = "symbols"),
         @Type(value = PatternObjectiveCard.class, name = "pattern")
 })
-public abstract class ObjectiveCard {
+public abstract class ObjectiveCard extends Card {
 
     /**
      * attribute points represents the points that objective card gives for each objective achieved
@@ -40,7 +41,10 @@ public abstract class ObjectiveCard {
      * @param points points of ObjectiveCard
      */
     @JsonCreator
-    public ObjectiveCard(@JsonProperty("points") int points){
+    public ObjectiveCard(
+            @JsonProperty("cardID") String cardID,
+            @JsonProperty("points") int points){
+        super(cardID);
         this.points = points;
     }
 
@@ -55,4 +59,6 @@ public abstract class ObjectiveCard {
     }
 
     public abstract void gainPoints(List<PlayerArea> playerAreas);
+
+    public abstract String getDescription();
 }

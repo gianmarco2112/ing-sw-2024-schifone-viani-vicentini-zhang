@@ -26,10 +26,11 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
      */
     @JsonCreator
     public SymbolsObjectiveCard(
+            @JsonProperty("cardID") String cardID,
             @JsonProperty("points") int points,
             @JsonProperty("symbolsForPoints") HashMap<Symbol,Integer> symbolsForPoints
             ){
-        super(points);
+        super(cardID, points);
         this.symbolsForPoints = symbolsForPoints;
     }
 
@@ -51,6 +52,11 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
             }
             playerArea.setExtraPoints(playerArea.getExtraPoints() + getPoints() * Collections.min(count));
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
     }
 
     /**

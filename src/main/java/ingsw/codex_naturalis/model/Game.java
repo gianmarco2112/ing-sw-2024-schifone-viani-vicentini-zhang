@@ -6,7 +6,9 @@ import ingsw.codex_naturalis.exceptions.MaxNumOfPlayersInException;
 import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.GameStatus;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.player.PlayerArea;
@@ -19,6 +21,42 @@ import java.util.*;
  * Game class
  */
 public class Game {
+    /**
+     * JSON (resource cards)
+     */
+    public static final String resourceCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/resourceCards.json";
+    /**
+     * JSON (gold cards)
+     */
+    public static final String goldCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/goldCards.json";
+    /**
+     * JSON (objective cards)
+     */
+    public static final String objectiveCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/objectiveCards.json";
+    /**
+     * JSON (Initial cards)
+     */
+    public static final String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
+
+
+
+
+
+
+    /**
+     * Game ID is necessary in order to have multiple game
+     */
+    private final int gameID;
+
+    /**
+     * Game status
+     */
+    private GameStatus gameStatus;
+
+    /**
+     * Max number of players of the game, the game creator decides this parameter
+     */
+    private final int maxNumOfPlayers;
 
     /**
      * Contains all the players of the game, ordered by the turn they play
@@ -31,26 +69,40 @@ public class Game {
     private Player currentPlayer;
 
     /**
-     * JSON (Initial cards)
-     */
-    public static final String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
-    /**
      * Initial cards deck
      */
-    private List<PlayableCard> initialCardsDeck;
+    private Deck<PlayableCard> initialCardsDeck;
 
     /**
-     * Center of table
+     * Resource cards deck
      */
-    private final CenterOfTable centerOfTable;
+    private Deck<PlayableCard> resourceCardsDeck;
+
     /**
-     * Game ID is necessary in order to have multiple game
+     * Gold cards deck
      */
-    private final int gameID;
+    private Deck<PlayableCard> goldCardsDeck;
 
-    private GameStatus gameStatus;
+    /**
+     * Objective cards deck
+     */
+    private Deck<ObjectiveCard> objectiveCardsDeck;
 
-    private final int maxNumOfPlayers;
+    /**
+     * The two revealed resource cards
+     */
+    private final List<PlayableCard> revealedResourceCards;
+
+    /**
+     * The two revealed gold cards
+     */
+    private final List<PlayableCard> revealedGoldCards;
+
+    /**
+     * The two common objective cards
+     */
+    private final List<ObjectiveCard> commonObjectiveCards;
+
 
 
     /**
@@ -63,7 +115,6 @@ public class Game {
         } catch (IOException e){
             System.err.println("ERROR while opening json file");
         }
-        this.centerOfTable = new CenterOfTable();
         this.playerOrder = new ArrayList<>();
         this.gameID = gameID;
         this.gameStatus = GameStatus.WAITING;
@@ -71,18 +122,36 @@ public class Game {
     }
 
 
-    public int getMaxNumOfPlayers() {
-        return maxNumOfPlayers;
+
+    public int getGameID() {
+        return gameID;
     }
 
     public GameStatus getGameStatus() {
         return gameStatus;
     }
-
-    public void setGameStatus(GameStatus gameStatus) {
+    public void setGameStatus(GameStatus gameStatus){
         this.gameStatus = gameStatus;
     }
 
+    public int getMaxNumOfPlayers() {
+        return maxNumOfPlayers;
+    }
+    public List<Player> getPlayerOrder() {
+        return playerOrder;
+    }
+    public Player getFirstPlayer(){
+        return playerOrder.getFirst();
+    }
+    public void shufflePlayerList(){
+        Collections.shuffle(this.playerOrder);
+    }
+    public Player getCurrentPlayer(){
+        return currentPlayer;
+    }
+    public void setCurrentPlayer(Player currentPlayer){
+        this.currentPlayer = currentPlayer;
+    }
     /**
      * Adds a player to the game
      * @param player Player
@@ -106,48 +175,36 @@ public class Game {
      * Deals an initial card to each player
      */
     public void dealInitialCard(){
-        Collections.shuffle(initialCardsDeck);
+        initialCardsDeck.shuffle();
         for (Player player : playerOrder){
-            player.setInitialCard(initialCardsDeck.removeFirst());
+            player.setInitialCard(initialCardsDeck.drawACard());
         }
     }
 
-    public Player getFirstPlayer(){
-        return playerOrder.getFirst();
+    public void setCommonObjectiveCards(List<PlayerArea> playerAreas){
+        objectiveCardsDeck.shuffle();
+        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());
+        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());
     }
 
-    public void shufflePlayerList(){
-        Collections.shuffle(this.playerOrder);
-    }
-
-    public Player getCurrentPlayer(){
-        return currentPlayer;
-    }
-
-    public int getGameID() {
-        return gameID;
-    }
-
-    public void setCurrentPlayer(Player currentPlayer){
-        this.currentPlayer = currentPlayer;
-    }
-
-    public void setAndDealObjectiveCards(){
-        List<PlayerArea> playerAreas = new ArrayList<>();
-        for (Player player : playerOrder){
-            playerAreas.add(player.getPlayerArea());
+    /**
+     * Gold and resource cards set up
+     * Shuffles the gold and resource decks, draws 2 cards from each deck and
+     * places them faceup
+     */
+    public void setRevealedCards(){
+        resourceCardsDeck.shuffle();
+        this.revealedResourceCards.add(resourceCardsDeck.drawACard());
+        this.revealedResourceCards.add(resourceCardsDeck.drawACard());
+        for (PlayableCard card : revealedResourceCards){
+            card.flip();
         }
-        centerOfTable.setCommonObjectiveCards(new ArrayList<>(playerAreas));
-        /*for (Player player : playerOrder){
-            player.setObjectiveCards(centerOfTable.removeFromObjectiveCardsDeck(), centerOfTable.removeFromObjectiveCardsDeck());
-        }*/
-    }
 
-    public CenterOfTable getCenterOfTable() {
-        return centerOfTable;
-    }
-
-    public List<Player> getPlayerOrder() {
-        return playerOrder;
+        goldCardsDeck.shuffle();
+        this.revealedGoldCards.add(goldCardsDeck.drawACard());
+        this.revealedGoldCards.add(goldCardsDeck.drawACard());
+        for (PlayableCard card : revealedGoldCards){
+            card.flip();
+        }
     }
 }

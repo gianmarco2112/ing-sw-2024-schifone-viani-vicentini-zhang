@@ -16,7 +16,7 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
     /**
      * contains the List of Symbol
      */
-    private final HashMap<Symbol,Integer> symbolsForPoints;
+    private final Map<Symbol,Integer> symbolsForPoints;
 
 
     /**

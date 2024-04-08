@@ -7,6 +7,7 @@ import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Needy extends PointsGiver{
@@ -21,7 +22,7 @@ public abstract class Needy extends PointsGiver{
             @JsonProperty("bottomLeftCorner") Corner bottomLeftCorner,
             @JsonProperty("bottomRightCorner") Corner bottomRightCorner,
             @JsonProperty("points") int points,
-            @JsonProperty("requirements") Map<Symbol, Integer> requirements){
+            @JsonProperty("requirements") HashMap<Symbol, Integer> requirements){
         super(topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, points);
         this.requirements = requirements;
     }

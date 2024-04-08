@@ -14,7 +14,7 @@ import java.util.*;
 public class PlayerArea {
 
     /**
-     * This HashMap represents the player area with all the cards he has placed.
+     * This Map represents the player area with all the cards he has placed.
      * The key represents the coordinates, the value the card played.
      */
     private final Map<List<Integer>, PlayableCard> area;
@@ -50,7 +50,7 @@ public class PlayerArea {
      */
     public PlayerArea(){
         this.objectiveCard = null;
-        this.area = new HashMap<>();
+        this.area = new LinkedHashMap<>();
         this.points = 0;
         this.extraPoints = 0;
         this.extremeCoordinates = new HashMap<>();
@@ -209,8 +209,8 @@ public class PlayerArea {
      * objective card strategy
      * @return The area to mark
      */
-    public HashMap<List<Integer>,Boolean> getAreaToMark(){
-        HashMap<List<Integer>, Boolean> areaToMark = new HashMap<>();
+    public Map<List<Integer>,Boolean> getAreaToMark(){
+        Map<List<Integer>, Boolean> areaToMark = new HashMap<>();
         for (List<Integer> key : area.keySet()) {
             areaToMark.put(key, false);
         }

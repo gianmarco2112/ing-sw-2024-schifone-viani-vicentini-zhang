@@ -21,7 +21,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
     /**
      * HashMap contains the pattern for the Objective
      */
-    private final HashMap<List<Integer>, Symbol> pattern;
+    private final Map<List<Integer>, Symbol> pattern;
     /**
      * constructor
      * @param points points that
@@ -80,7 +80,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
      */
     private void checkPatternOnPlayer(List<PlayerArea> playerAreas, int i){
 
-        HashMap<List<Integer>,Boolean> markedArea = playerAreas.get(i).getAreaToMark();
+        Map<List<Integer>,Boolean> markedArea = playerAreas.get(i).getAreaToMark();
         int successes = 0;
         boolean success;
 
@@ -108,7 +108,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
      * @param markedArea marked area
      * @return true if the pattern is overlapping on the area, false if it isn't
      */
-    private boolean checkPatternOnCoordinates(List<PlayerArea> playerAreas, int xArea, int yArea, int i, HashMap<List<Integer>,Boolean> markedArea){
+    private boolean checkPatternOnCoordinates(List<PlayerArea> playerAreas, int xArea, int yArea, int i, Map<List<Integer>,Boolean> markedArea){
         for(int yPattern = getExtremeCoordinate(ExtremeCoordinate.MAX_Y),y = yArea; yPattern >= getExtremeCoordinate(ExtremeCoordinate.MIN_Y); yPattern--, y--){
             for(int xPattern = getExtremeCoordinate(ExtremeCoordinate.MIN_X),x = xArea; xPattern <= getExtremeCoordinate(ExtremeCoordinate.MAX_X); xPattern++, x++){
                 if(getSymbolAt(xPattern, yPattern) != Symbol.EMPTY){
@@ -133,7 +133,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
      * @param xArea x
      * @param yArea y
      */
-    private void markArea(HashMap<List<Integer>,Boolean> areaToMark, int xArea, int yArea){
+    private void markArea(Map<List<Integer>,Boolean> areaToMark, int xArea, int yArea){
         for(int yPattern = getExtremeCoordinate(ExtremeCoordinate.MAX_Y), y = yArea; yPattern >= getExtremeCoordinate(ExtremeCoordinate.MIN_Y); yPattern--, y--){
             for(int xPattern = getExtremeCoordinate(ExtremeCoordinate.MIN_X), x = xArea; xPattern <= getExtremeCoordinate(ExtremeCoordinate.MAX_X); xPattern++, x++){
                 if(getSymbolAt(xPattern, yPattern) != Symbol.EMPTY){

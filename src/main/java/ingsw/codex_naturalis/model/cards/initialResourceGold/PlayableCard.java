@@ -30,10 +30,6 @@ public class PlayableCard extends Card {
      * Current side showing
      */
     private PlayableSide currentPlayableSide;
-    /**
-     * True if showing the front side
-     */
-    private boolean showingFront;
 
     //---------------------------------------------------------------------------------
     @JsonCreator
@@ -66,8 +62,7 @@ public class PlayableCard extends Card {
     }
 
 
-
-
+    @Override
     public void flip(){
         if(!showingFront){
             showFront();

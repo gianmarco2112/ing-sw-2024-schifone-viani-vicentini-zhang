@@ -6,6 +6,7 @@ import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class PointsGiverForObject extends Needy {
@@ -20,7 +21,7 @@ public class PointsGiverForObject extends Needy {
             @JsonProperty("bottomLeftCorner") Corner bottomLeftCorner,
             @JsonProperty("bottomRightCorner") Corner bottomRightCorner,
             @JsonProperty("points") int points,
-            @JsonProperty("requirements") Map<Symbol, Integer> requirements,
+            @JsonProperty("requirements") HashMap<Symbol, Integer> requirements,
             @JsonProperty("object") Symbol object){
         super(topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, points, requirements);
         this.object = object;

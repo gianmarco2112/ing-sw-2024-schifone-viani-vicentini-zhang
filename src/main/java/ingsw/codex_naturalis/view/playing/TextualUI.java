@@ -12,6 +12,8 @@ import static ingsw.codex_naturalis.view.playing.events.commands.UtilityCommand.
 
 public class TextualUI extends ObservableView implements Runnable{
 
+    String nickname;
+
     private final Scanner s = new Scanner(System.in);
 
     private final Map<Integer, String> playerNicknames = new LinkedHashMap<>();
@@ -25,7 +27,7 @@ public class TextualUI extends ObservableView implements Runnable{
     private final Map<String, UtilityCommand> utilityCommands = new LinkedHashMap<>();
 
 
-    public TextualUI(List<String> playerNicknames){
+    public TextualUI(String nickname, List<String> playerNicknames){
 
         for (int key = 0; key < playerNicknames.size(); key++) {
             this.playerNicknames.put(key+1, playerNicknames.get(key));
@@ -166,7 +168,7 @@ public class TextualUI extends ObservableView implements Runnable{
                         playersToText = new ArrayList<>(playerNicknames.values());
             }
             String message = askMessageContentToPlayer();
-            notifyObservers(new MessageEvent(message, playersToText));
+            notifyObservers(new MessageEvent(message, nickname, playersToText));
         } catch (UtilityCommandException e) {
             UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
             utilityCommandCase(utilityCommand);

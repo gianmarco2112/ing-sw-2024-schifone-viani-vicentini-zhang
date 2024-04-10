@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.model.player;
 
 import ingsw.codex_naturalis.model.Message;
+import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.TurnStatus;
@@ -12,7 +13,6 @@ import java.util.*;
  */
 public class Player {
 
-    private final int playerID;
     /**
      * Nickname of the player
      */
@@ -23,6 +23,9 @@ public class Player {
      */
     private Color color;
 
+    /**
+     * Turn status of the player: play or draw
+     */
     private TurnStatus turnStatus;
 
     /**
@@ -43,22 +46,16 @@ public class Player {
      */
     private final PlayerArea playerArea;
 
-    /**
-     * Sent messages
-     */
-    private final List<Message> sentMessages;
 
 
     /**
      * Constructor
      * @param nickname Nickname
      */
-    public Player(int playerID, String nickname) {
+    public Player(String nickname) {
         this.playerArea = new PlayerArea();
-        this.playerID = playerID;
         this.nickname = nickname;
         this.initialCard = null;
-        this.sentMessages = new ArrayList<>();
         this.hand = new ArrayList<>();
         this.turnStatus = TurnStatus.PLAY;
     }
@@ -91,26 +88,6 @@ public class Player {
         this.turnStatus = turnStatus;
     }
 
-    /**
-     * Method to play the initial card
-     */
-    public void playInitialCard(){
-        initialCard.play(playerArea);
-        playerArea.setCardOnCoordinates(initialCard, 0, 0);
-        initialCard = null;
-    }
-
-
-    /**
-     * Method to write a message
-     * @param content Content of the message
-     * @param receivers Receivers
-     */
-    public void writeMessage(String content, List<Player> receivers){
-        sentMessages.add(new Message(content, receivers));
-    }
-
-
     public PlayerArea getPlayerArea(){
         return playerArea;
     }
@@ -130,15 +107,15 @@ public class Player {
         return hand;
     }
 
-    public List<Message> getSentMessages() {
-        return new ArrayList<>(sentMessages);
+
+    //to the controller
+    /**
+     * Method to play the initial card
+     */
+    public void playInitialCard(){
+        initialCard.play(playerArea);
+        playerArea.setCardOnCoordinates(initialCard, 0, 0);
+        initialCard = null;
     }
 
-
-   /* public void chooseObjectiveCard(ObjectiveCard objectiveCard){
-        playerArea.setObjectiveCard(objectiveCard);
-        objectiveCards.remove(objectiveCard);
-        centerOfTable.discardObjectiveCard(objectiveCards.getFirst());
-        objectiveCards.clear();
-    }*/
 }

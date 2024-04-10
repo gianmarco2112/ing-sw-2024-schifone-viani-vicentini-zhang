@@ -7,7 +7,12 @@ import java.util.List;
 
 public class Deck <T extends Card>{
 
-    private List<T> cards;
+    private final List<T> cards;
+
+
+    public Deck(List<T> cards){
+        this.cards = cards;
+    }
 
 
     public void shuffle(){

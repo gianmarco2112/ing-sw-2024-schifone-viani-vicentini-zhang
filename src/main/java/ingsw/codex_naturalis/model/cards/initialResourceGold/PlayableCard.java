@@ -45,7 +45,6 @@ public class PlayableCard extends Card {
         this.front = front;
         this.back = back;
         currentPlayableSide = back;
-        showingFront = false;
     }
 
     //---------------------------------------------------------------------------------

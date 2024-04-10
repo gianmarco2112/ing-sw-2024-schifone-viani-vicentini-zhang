@@ -58,6 +58,10 @@ public abstract class ObjectiveCard extends Card {
         return points;
     }
 
+    public void flip(String nickname){
+        showingFront = !showingFront;
+    }
+
     public abstract void gainPoints(List<PlayerArea> playerAreas);
 
     public abstract String getDescription();

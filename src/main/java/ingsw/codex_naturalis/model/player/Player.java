@@ -1,17 +1,17 @@
 package ingsw.codex_naturalis.model.player;
 
-import ingsw.codex_naturalis.model.Message;
-import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.TurnStatus;
+import ingsw.codex_naturalis.model.observerObservable.Event;
+import ingsw.codex_naturalis.model.observerObservable.Observable;
 
 import java.util.*;
 
 /**
  * Player class
  */
-public class Player {
+public class Player extends Observable<Event> {
 
     /**
      * Nickname of the player
@@ -33,13 +33,12 @@ public class Player {
      */
     private PlayableCard initialCard;
 
-
     /**
      * This list contains the card/cards the player currently has in his hands.
      * It will contain two resource cards and a gold card at the start.
      * During the game, it will contain from two to three resource/golden cards.
      */
-    private final List<PlayableCard> hand;
+    private List<PlayableCard> hand;
 
     /**
      * Player area
@@ -62,8 +61,6 @@ public class Player {
 
 
 
-
-
     /**
      * Initial card getter
      * @return Initial card
@@ -71,7 +68,6 @@ public class Player {
     public PlayableCard getInitialCard() {
         return initialCard;
     }
-
     /**
      * Initial card setter (called at the start)
      * @param initialCard Initial card
@@ -83,9 +79,9 @@ public class Player {
     public TurnStatus getTurnStatus() {
         return turnStatus;
     }
-
     public void setTurnStatus(TurnStatus turnStatus) {
         this.turnStatus = turnStatus;
+        notifyObservers(Event.TURN_STATUS_CHANGED, nickname);
     }
 
     public PlayerArea getPlayerArea(){
@@ -104,18 +100,25 @@ public class Player {
     }
 
     public List<PlayableCard> getHand(){
-        return hand;
+        return new ArrayList<>(hand);
+    }
+    public void setHand(List<PlayableCard> hand){
+        this.hand = hand;
+        notifyObservers(Event.HAND_CHANGED, nickname);
     }
 
 
-    //to the controller
+
+
+
     /**
      * Method to play the initial card
      */
+    @Deprecated
     public void playInitialCard(){
-        initialCard.play(playerArea);
+        /*initialCard.play(playerArea);
         playerArea.setCardOnCoordinates(initialCard, 0, 0);
-        initialCard = null;
+        initialCard = null;*/
     }
 
 }

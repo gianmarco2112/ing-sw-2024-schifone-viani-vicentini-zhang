@@ -6,10 +6,11 @@ import ingsw.codex_naturalis.exceptions.MaxNumOfPlayersInException;
 import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.GameStatus;
+import ingsw.codex_naturalis.model.observerObservable.Event;
+import ingsw.codex_naturalis.model.observerObservable.Observable;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 
@@ -20,7 +21,8 @@ import java.util.*;
 /**
  * Game class
  */
-public class Game {
+public class Game extends Observable<Event> {
+
 
     /**
      * Game ID is necessary in order to have multiple game
@@ -40,7 +42,7 @@ public class Game {
     /**
      * Contains all the players of the game, ordered by the turn they play
      */
-    private final List<Player> playerOrder;
+    private List<Player> playerOrder;
 
     /**
      * Current player
@@ -70,19 +72,19 @@ public class Game {
     /**
      * The two revealed resource cards
      */
-    private final List<PlayableCard> revealedResourceCards;
+    private List<PlayableCard> revealedResourceCards;
 
     /**
      * The two revealed gold cards
      */
-    private final List<PlayableCard> revealedGoldCards;
+    private List<PlayableCard> revealedGoldCards;
 
     /**
      * The two common objective cards
      */
-    private final List<ObjectiveCard> commonObjectiveCards;
+    private List<ObjectiveCard> commonObjectiveCards;
 
-    private final List<Message> messages;
+    private List<Message> messages;
 
 
 
@@ -136,25 +138,119 @@ public class Game {
     public int getMaxNumOfPlayers() {
         return maxNumOfPlayers;
     }
+
     public List<Player> getPlayerOrder() {
-        return playerOrder;
+        return new ArrayList<>(playerOrder);
     }
-    public Player getFirstPlayer(){
-        return playerOrder.getFirst();
+    public void setPlayerOrder(List<Player> playerOrder){
+        this.playerOrder = playerOrder;
     }
-    public void shufflePlayerList(){
-        Collections.shuffle(this.playerOrder);
-    }
+
     public Player getCurrentPlayer(){
         return currentPlayer;
     }
-    public void setCurrentPlayer(Player currentPlayer){
+    public void setCurrentPlayer(Player currentPlayer, String nickname){
         this.currentPlayer = currentPlayer;
+        notifyObservers(Event.TURN_CHANGED, nickname);
     }
+
+    public List<Message> getMessages() {
+        return new ArrayList<>(messages);
+    }
+    public void setMessages(List<Message> messages, String nickname){
+        this.messages = messages;
+        notifyObservers(Event.MESSAGE_SENT, nickname);
+    }
+
+    public List<ObjectiveCard> getCommonObjectiveCards(){
+        return new ArrayList<>(commonObjectiveCards);
+    }
+    public void setCommonObjectiveCards(List<ObjectiveCard> commonObjectiveCards){
+        this.commonObjectiveCards = commonObjectiveCards;
+    }
+
+    public Deck<PlayableCard> getInitialCardsDeck() {
+        return initialCardsDeck;
+    }
+
+    public Deck<PlayableCard> getResourceCardsDeck() {
+        return resourceCardsDeck;
+    }
+
+    public Deck<PlayableCard> getGoldCardsDeck() {
+        return goldCardsDeck;
+    }
+
+    public Deck<ObjectiveCard> getObjectiveCardsDeck() {
+        return objectiveCardsDeck;
+    }
+
+    public List<PlayableCard> getRevealedResourceCards() {
+        return new ArrayList<>(revealedResourceCards);
+    }
+    public void setRevealedResourceCards(List<PlayableCard> revealedResourceCards, String nickname){
+        this.revealedResourceCards = revealedResourceCards;
+        notifyObservers(Event.REVEALED_RESOURCE_CARDS_CHANGED, nickname);
+    }
+
+    public List<PlayableCard> getRevealedGoldCards() {
+        return new ArrayList<>(revealedGoldCards);
+    }
+    public void setRevealedGoldCards(List<PlayableCard> revealedGoldCards, String nickname){
+        this.revealedGoldCards = revealedGoldCards;
+        notifyObservers(Event.REVEALED_GOLD_CARDS_CHANGED, nickname);
+    }
+
+
+
+
+
+
+    @Deprecated
+    public void seTCommonObjectiveCards(List<PlayerArea> playerAreas){
+        objectiveCardsDeck.shuffle();
+        /*this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());
+        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());*/
+    }
+
+    @Deprecated
+    public void shufflePlayerList(){
+        Collections.shuffle(this.playerOrder);
+    }
+
+    @Deprecated
+    public void setRevealedCards(){
+        resourceCardsDeck.shuffle();
+       /* this.revealedResourceCards.add(resourceCardsDeck.drawACard());
+        this.revealedResourceCards.add(resourceCardsDeck.drawACard());
+        for (PlayableCard card : revealedResourceCards){
+            card.flip();
+        }
+
+        goldCardsDeck.shuffle();
+        this.revealedGoldCards.add(goldCardsDeck.drawACard());
+        this.revealedGoldCards.add(goldCardsDeck.drawACard());
+        for (PlayableCard card : revealedGoldCards){
+            card.flip();
+        }*/
+    }
+
+    /**
+     * Deals an initial card to each player
+     */
+    @Deprecated
+    public void dealInitialCard(){
+        /*initialCardsDeck.shuffle();
+        for (Player player : playerOrder){
+            player.setInitialCard(initialCardsDeck.drawACard());
+        }*/
+    }
+
     /**
      * Adds a player to the game
      * @param player Player
      */
+    @Deprecated
     public void addPlayer(Player player) throws NicknameAlreadyExistsException, ColorAlreadyChosenException, MaxNumOfPlayersInException {
         if(playerOrder.size() >= maxNumOfPlayers)
             throw new MaxNumOfPlayersInException();
@@ -168,49 +264,5 @@ public class Game {
             }
         }
         playerOrder.add(player);
-    }
-
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    /**
-     * Deals an initial card to each player
-     */
-    public void dealInitialCard(){
-        initialCardsDeck.shuffle();
-        for (Player player : playerOrder){
-            player.setInitialCard(initialCardsDeck.drawACard());
-        }
-    }
-
-    public List<ObjectiveCard> getCommonObjectiveCards(){
-        return commonObjectiveCards;
-    }
-    public void setCommonObjectiveCards(List<PlayerArea> playerAreas){
-        objectiveCardsDeck.shuffle();
-        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());
-        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());
-    }
-
-    /**
-     * Gold and resource cards set up
-     * Shuffles the gold and resource decks, draws 2 cards from each deck and
-     * places them faceup
-     */
-    public void setRevealedCards(){
-        resourceCardsDeck.shuffle();
-        this.revealedResourceCards.add(resourceCardsDeck.drawACard());
-        this.revealedResourceCards.add(resourceCardsDeck.drawACard());
-        for (PlayableCard card : revealedResourceCards){
-            card.flip();
-        }
-
-        goldCardsDeck.shuffle();
-        this.revealedGoldCards.add(goldCardsDeck.drawACard());
-        this.revealedGoldCards.add(goldCardsDeck.drawACard());
-        for (PlayableCard card : revealedGoldCards){
-            card.flip();
-        }
     }
 }

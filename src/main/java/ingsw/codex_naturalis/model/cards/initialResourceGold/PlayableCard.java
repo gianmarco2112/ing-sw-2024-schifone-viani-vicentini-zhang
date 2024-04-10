@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.Corner;
+import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
@@ -60,15 +61,20 @@ public class PlayableCard extends Card {
         return currentPlayableSide;
     }
 
+    public void setCurrentPlayableSide(PlayableSide currentPlayableSide) {
+        this.currentPlayableSide = currentPlayableSide;
+    }
+
 
     @Override
-    public void flip(){
+    public void flip(String nickname){
         if(!showingFront){
             showFront();
         }
         else{
             showBack();
         }
+        notifyObservers(Event.HAND_CHANGED, nickname);
     }
 
     private void showFront() {
@@ -79,6 +85,14 @@ public class PlayableCard extends Card {
     private void showBack() {
         showingFront = false;
         currentPlayableSide = back;
+    }
+
+    public PlayableSide getFront() {
+        return front;
+    }
+
+    public PlayableSide getBack() {
+        return back;
     }
 
     @Override

@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        TextualUI view = new TextualUI(new ArrayList<>(List.of("Gianmarco", "Andrea", "Alessia", "Leonardo")));
+        TextualUI view = new TextualUI("nickname", new ArrayList<>(List.of("Gianmarco", "Andrea", "Alessia", "Leonardo")));
 
         Controller controller = new Controller(new Game(0, 4), view);
 

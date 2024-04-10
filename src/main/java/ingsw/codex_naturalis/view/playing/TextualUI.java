@@ -1,16 +1,15 @@
 package ingsw.codex_naturalis.view.playing;
 
-import ingsw.codex_naturalis.exceptions.NotPlayableException;
-import ingsw.codex_naturalis.exceptions.UtilityCommandException;
-import ingsw.codex_naturalis.view.playing.events.MessageEvent;
-import ingsw.codex_naturalis.view.playing.events.PlayCardEvent;
-import ingsw.codex_naturalis.view.playing.events.commands.*;
+import ingsw.codex_naturalis.exceptions.*;
+import ingsw.codex_naturalis.model.observerObservable.Event;
+import ingsw.codex_naturalis.model.observerObservable.GameView;
+import ingsw.codex_naturalis.view.playing.commands.*;
 
 import java.util.*;
 
-import static ingsw.codex_naturalis.view.playing.events.commands.UtilityCommand.CANCEL;
+import static ingsw.codex_naturalis.view.playing.commands.UtilityCommand.CANCEL;
 
-public class TextualUI extends ObservableView implements Runnable{
+public class TextualUI extends ObservableView implements Observer<GameView, Event>, Runnable{
 
     String nickname;
 
@@ -56,17 +55,21 @@ public class TextualUI extends ObservableView implements Runnable{
     public void run() {
         while (true) {
             Command command = askCommandToPlayer();
-            switch (command) {
-                case FLIP_CARD -> flipCardCase();
-                case PLAY_CARD -> playCardCase();
-                case DRAW_CARD -> drawCardCase();
-                case TEXT -> textCase();
+            try {
+                switch (command) {
+                    case FLIP_CARD -> flipCardCase();
+                    case PLAY_CARD -> playCardCase();
+                    case DRAW_CARD -> drawCardCase();
+                    case TEXT -> textCase();
+                }
+            } catch (NoSuchNicknameException e){
+                System.err.println(e.getMessage());
             }
         }
     }
 
 
-    public void printUtilityCommands(){
+    private void printUtilityCommands(){
         for (Map.Entry<String, UtilityCommand> entry : utilityCommands.entrySet())
             System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
     }
@@ -102,7 +105,7 @@ public class TextualUI extends ObservableView implements Runnable{
         printFlipCardCommands();
         try {
             FlipCardCommand flipCardCommand = askGenericCommandToPlayer(flipCardCommands);
-            notifyObservers(flipCardCommand);
+            notifyFlipCard(nickname, flipCardCommand);
         } catch (UtilityCommandException e){
             UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
             utilityCommandCase(utilityCommand);
@@ -118,9 +121,9 @@ public class TextualUI extends ObservableView implements Runnable{
             int x = askCoordinateToPlayer("coordinate x");
             int y = askCoordinateToPlayer("coordinate y");
             try {
-                notifyObservers(new PlayCardEvent(playCardCommand, x, y));
+                notifyPlayCard(nickname, playCardCommand, x, y);
                 removeCardFromTheOptions();
-            } catch (NotPlayableException e) {
+            } catch (NotPlayableException | NotYourTurnException e) {
                 System.err.println(e.getMessage());
             }
         } catch (UtilityCommandException e) {
@@ -140,11 +143,13 @@ public class TextualUI extends ObservableView implements Runnable{
         printDrawCardCommands();
         try {
             DrawCardCommand drawCardCommand = askGenericCommandToPlayer(drawCardCommands);
-            notifyObservers(drawCardCommand);
+            notifyDrawCard(nickname, drawCardCommand);
             addCardToTheOptions();
         } catch (UtilityCommandException e){
             UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
             utilityCommandCase(utilityCommand);
+        } catch (NotYourTurnStatusException | NotYourTurnException | EmptyDeckException | NoMoreRevealedCardHereException e){
+            System.err.println(e.getMessage());
         }
     }
 
@@ -168,7 +173,7 @@ public class TextualUI extends ObservableView implements Runnable{
                         playersToText = new ArrayList<>(playerNicknames.values());
             }
             String message = askMessageContentToPlayer();
-            notifyObservers(new MessageEvent(message, nickname, playersToText));
+            notifyText(nickname, textCommand, message, playersToText);
         } catch (UtilityCommandException e) {
             UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
             utilityCommandCase(utilityCommand);
@@ -263,5 +268,51 @@ public class TextualUI extends ObservableView implements Runnable{
                 System.err.println("This is not a command: "+ input);
             }
         }
+    }
+
+
+
+
+
+    @Override
+    public void update(GameView o, Event arg, String nickname) {
+        try {
+            switch (arg) {
+                case HAND_CHANGED -> showHand(o, nickname);
+                case PLAYER_AREA_CHANGED -> showPlayerArea(o, nickname);
+                case DECK_CHANGED -> showDecks(o, nickname);
+                case MESSAGE_SENT -> showChat(o, nickname);
+                case REVEALED_GOLD_CARDS_CHANGED -> showRevealedGoldCards(o, nickname);
+                case REVEALED_RESOURCE_CARDS_CHANGED -> showRevealedResourceCards(o, nickname);
+                case TURN_CHANGED -> showTurn(o, nickname);
+                case TURN_STATUS_CHANGED -> showTurnStatus(o, nickname);
+            }
+        } catch (NoSuchNicknameException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    private void showTurnStatus(GameView o, String nickname) {
+    }
+
+    private void showTurn(GameView o, String nickname) {
+    }
+
+    private void showRevealedResourceCards(GameView o, String nickname) {
+    }
+
+    private void showRevealedGoldCards(GameView o, String nickname) {
+    }
+
+    private void showChat(GameView o, String nickname) {
+    }
+
+    private void showDecks(GameView o, String nickname) {
+    }
+
+    private void showPlayerArea(GameView o, String nickname) {
+    }
+
+    private void showHand(GameView o, String nickname) {
     }
 }

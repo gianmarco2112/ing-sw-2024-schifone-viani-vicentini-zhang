@@ -1,16 +1,17 @@
 package ingsw.codex_naturalis.controller;
 
-import ingsw.codex_naturalis.exceptions.NotPlayableException;
+import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.Message;
+import ingsw.codex_naturalis.model.enumerations.TurnStatus;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.view.playing.events.MessageEvent;
-import ingsw.codex_naturalis.view.playing.events.PlayCardEvent;
 import ingsw.codex_naturalis.view.playing.TextualUI;
-import ingsw.codex_naturalis.view.playing.events.commands.DrawCardCommand;
-import ingsw.codex_naturalis.view.playing.events.commands.FlipCardCommand;
-import ingsw.codex_naturalis.view.playing.events.commands.PlayCardCommand;
+import ingsw.codex_naturalis.view.playing.commands.DrawCardCommand;
+import ingsw.codex_naturalis.view.playing.commands.FlipCardCommand;
+import ingsw.codex_naturalis.view.playing.commands.PlayCardCommand;
+import ingsw.codex_naturalis.view.playing.commands.TextCommand;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,30 +30,53 @@ public class Controller implements ObserverController {
     }
 
     //-----------------------------------------------------------------------------------------
+    private Player getPlayerByNickname(String nickname) throws NoSuchNicknameException{
+
+        List<Player> playerOrder = model.getPlayerOrder();
+        for (Player player : playerOrder) {
+            if (player.getNickname().equals(nickname))
+                return player;
+        }
+        throw new NoSuchNicknameException();
+
+    }
+
+
     @Override
-    public void update(FlipCardCommand arg) {
-        flip(arg);
+    public void updateFlipCard(String nickname, FlipCardCommand flipCardCommand) {
+
+        flip(nickname, flipCardCommand);
+
     }
 
     /**
      * Method called to flip a resource or gold card from the hand
      * @param flipCardCommand Index of the card
      */
-    public void flip(FlipCardCommand flipCardCommand) {
+    private void flip(String nickname, FlipCardCommand flipCardCommand) {
 
         Map<FlipCardCommand, Integer> eventToHandIndex = new HashMap<>();
         eventToHandIndex.put(FlipCardCommand.FLIP_CARD_1, 0);
         eventToHandIndex.put(FlipCardCommand.FLIP_CARD_2, 1);
         eventToHandIndex.put(FlipCardCommand.FLIP_CARD_3, 2);
 
-        PlayableCard cardToFlip = model.getCurrentPlayer().getHand().get(eventToHandIndex.get(flipCardCommand));
-        cardToFlip.flip();
+        Player player = getPlayerByNickname(nickname);
+
+        PlayableCard cardToFlip = player.getHand().get(eventToHandIndex.get(flipCardCommand));
+        cardToFlip.flip(nickname);
+
     }
 
 
+
     @Override
-    public void update(PlayCardEvent arg) {
-        playCard(arg.playCardCommand(), arg.x(), arg.y());
+    public void updatePlayCard(String nickname, PlayCardCommand playCardCommand, int x, int y) throws NotYourTurnException {
+
+        if (!nickname.equals(model.getCurrentPlayer().getNickname()))
+            throw new NotYourTurnException();
+
+        playCard(nickname, playCardCommand, x, y);
+
     }
 
     /**
@@ -62,143 +86,183 @@ public class Controller implements ObserverController {
      * @param y Coordinate y on the player area
      * @throws NotPlayableException When the card can't be placed in that spot
      */
-    public void playCard(PlayCardCommand playCardCommand, int x, int y) throws NotPlayableException {
+    private void playCard(String nickname, PlayCardCommand playCardCommand, int x, int y) throws NotPlayableException {
 
         Map<PlayCardCommand, Integer> eventToHandIndex = new HashMap<>();
         eventToHandIndex.put(PlayCardCommand.PLAY_CARD_1, 0);
         eventToHandIndex.put(PlayCardCommand.PLAY_CARD_2, 1);
         eventToHandIndex.put(PlayCardCommand.PLAY_CARD_3, 2);
 
-        List<PlayableCard> hand = model.getCurrentPlayer().getHand();
-        PlayableCard cardToPlay = hand.get(eventToHandIndex.get(playCardCommand));
-        PlayerArea playerArea = model.getCurrentPlayer().getPlayerArea();
+        Player player = getPlayerByNickname(nickname);
 
+        PlayableCard cardToPlay = player.getHand().get(eventToHandIndex.get(playCardCommand));
+        PlayerArea playerArea = model.getCurrentPlayer().getPlayerArea();
         if(!cardToPlay.isPlayable(playerArea, x, y))
             throw new NotPlayableException();
+        playerArea.setCardOnCoordinates(cardToPlay, x, y, nickname);
 
-        playerArea.setCardOnCoordinates(cardToPlay, x, y);
-        cardToPlay.play(playerArea, x, y);
+        List<PlayableCard> hand = player.getHand();
         hand.remove(cardToPlay);
+        player.setHand(hand);
+
+        player.setTurnStatus(TurnStatus.DRAW);
+
     }
 
 
     @Override
-    public void update(DrawCardCommand arg) {
-        switch (arg) {
+    public void updateDrawCard(String nickname, DrawCardCommand drawCardCommand) throws NotYourTurnException, NotYourTurnStatusException{
+
+        if (!nickname.equals(model.getCurrentPlayer().getNickname()))
+            throw new NotYourTurnException();
+
+        if (!model.getCurrentPlayer().getTurnStatus().equals(TurnStatus.DRAW))
+            throw new NotYourTurnStatusException();
+
+        Player player = getPlayerByNickname(nickname);
+
+        PlayableCard drawnCard = null;
+        switch (drawCardCommand) {
             case DRAW_FROM_RESOURCE_CARDS_DECK ->
-                drawFromResourceCardsDeck();
+                drawnCard = drawFromResourceCardsDeck(nickname);
             case DRAW_FROM_GOLD_CARDS_DECK ->
-                drawFromGoldCardsDeck();
+                drawnCard = drawFromGoldCardsDeck(nickname);
             case DRAW_REVEALED_RESOURCE_CARD_1 ->
-                drawFirstFromRevealedResourceCards();
+                drawnCard = drawFromRevealedResourceCards(nickname, DrawCardCommand.DRAW_REVEALED_RESOURCE_CARD_1);
             case DRAW_REVEALED_RESOURCE_CARD_2 ->
-                drawLastFromRevealedResourceCards();
+                drawnCard = drawFromRevealedResourceCards(nickname, DrawCardCommand.DRAW_REVEALED_RESOURCE_CARD_2);
             case DRAW_REVEALED_GOLD_CARD_1 ->
-                drawFirstFromRevealedGoldCards();
+                drawnCard = drawFromRevealedGoldCards(nickname, DrawCardCommand.DRAW_REVEALED_GOLD_CARD_1);
             case DRAW_REVEALED_GOLD_CARD_2 ->
-                drawLastFromRevealedGoldCards();
+                drawnCard = drawFromRevealedGoldCards(nickname, DrawCardCommand.DRAW_REVEALED_GOLD_CARD_2);
         }
-        nextPlayer();
+
+        List<PlayableCard> hand = player.getHand();
+        hand.add(drawnCard);
+        player.setHand(hand);
+
+        nextPlayer(nickname);
+        player.setTurnStatus(TurnStatus.PLAY);
+
     }
 
     /**
      * Draws from the resource cards deck
      */
-    public void drawFromResourceCardsDeck() {
+    private PlayableCard drawFromResourceCardsDeck(String nickname) throws EmptyDeckException, NoSuchNicknameException {
 
-        List<PlayableCard> hand = model.getCurrentPlayer().getHand();
+        if (model.getResourceCardsDeck().isEmpty())
+            throw new EmptyDeckException();
 
-        PlayableCard cardToDraw = model.getCenterOfTable().removeFromResourceCardsDeck();
+        PlayableCard drawnCard = model.getResourceCardsDeck().drawACard(nickname);
 
-        cardToDraw.flip();
-        hand.add(cardToDraw);
+        drawnCard.flip(nickname);
+
+        return drawnCard;
+
     }
 
     /**
      * Draws from the gold cards deck
      */
-    public void drawFromGoldCardsDeck() {
+    private PlayableCard drawFromGoldCardsDeck(String nickname) throws EmptyDeckException{
 
-        List<PlayableCard> hand = model.getCurrentPlayer().getHand();
+        if (model.getGoldCardsDeck().isEmpty())
+            throw new EmptyDeckException();
 
-        PlayableCard cardToDraw = model.getCenterOfTable().removeFromGoldCardsDeck();
+        PlayableCard drawnCard = model.getGoldCardsDeck().drawACard(nickname);
 
-        cardToDraw.flip();
-        hand.add(cardToDraw);
+        drawnCard.flip(nickname);
+
+        return drawnCard;
     }
 
     /**
      * Draws the first revealed resource card on the table
      */
-    public void drawFirstFromRevealedResourceCards() {
+    private PlayableCard drawFromRevealedResourceCards(String nickname, DrawCardCommand drawCardCommand) throws NoMoreRevealedCardHereException {
 
-        List<PlayableCard> hand = model.getCurrentPlayer().getHand();
+        Map<DrawCardCommand, Integer> eventToHandIndex = new HashMap<>();
+        eventToHandIndex.put(DrawCardCommand.DRAW_REVEALED_RESOURCE_CARD_1, 0);
+        eventToHandIndex.put(DrawCardCommand.DRAW_REVEALED_RESOURCE_CARD_2, 1);
 
-        PlayableCard cardToDraw = model.getCenterOfTable().removeFirstFromRevealedResourceCards();
+        List<PlayableCard> revealedResourceCards = model.getRevealedResourceCards();
+        PlayableCard drawnCard = revealedResourceCards.get(eventToHandIndex.get(drawCardCommand));
+        if (drawnCard == null)
+            throw new NoMoreRevealedCardHereException();
 
-        hand.add(cardToDraw);
-    }
+        PlayableCard cardToReveal = null;
+        if (!model.getResourceCardsDeck().isEmpty()) {
+            try {
+                cardToReveal = model.getResourceCardsDeck().drawACard(nickname);
+                cardToReveal.flip(nickname);
+            } catch (EmptyDeckException e){
+                System.err.println("The resource cards deck is now empty!");
+            }
+        }
+        revealedResourceCards.set(eventToHandIndex.get(drawCardCommand), cardToReveal);
+        model.setRevealedResourceCards(revealedResourceCards, nickname);
 
-    /**
-     * Draws the second revealed resource card on the table
-     */
-    public void drawLastFromRevealedResourceCards() {
-
-        List<PlayableCard> hand = model.getCurrentPlayer().getHand();
-
-        PlayableCard cardToDraw = model.getCenterOfTable().removeLastFromRevealedResourceCards();
-
-        hand.add(cardToDraw);
+        return drawnCard;
     }
 
     /**
      * Draws the first revealed gold card on the table
      */
-    public void drawFirstFromRevealedGoldCards() {
+    private PlayableCard drawFromRevealedGoldCards(String nickname, DrawCardCommand drawCardCommand) {
 
-        List<PlayableCard> hand = model.getCurrentPlayer().getHand();
+        Map<DrawCardCommand, Integer> eventToHandIndex = new HashMap<>();
+        eventToHandIndex.put(DrawCardCommand.DRAW_REVEALED_GOLD_CARD_1, 0);
+        eventToHandIndex.put(DrawCardCommand.DRAW_REVEALED_GOLD_CARD_2, 1);
 
-        PlayableCard cardToDraw = model.getCenterOfTable().removeFirstFromRevealedGoldCards();
+        List<PlayableCard> revealedGoldCards = model.getRevealedGoldCards();
+        PlayableCard drawnCard = revealedGoldCards.get(eventToHandIndex.get(drawCardCommand));
+        if (drawnCard == null)
+            throw new NoMoreRevealedCardHereException();
 
-        hand.add(cardToDraw);
-    }
+        PlayableCard cardToReveal = null;
+        if (!model.getGoldCardsDeck().isEmpty()) {
+            try {
+                cardToReveal = model.getGoldCardsDeck().drawACard(nickname);
+                cardToReveal.flip(nickname);
+            } catch (EmptyDeckException e){
+                System.err.println("The gold cards deck is now empty!");
+            }
+        }
+        revealedGoldCards.set(eventToHandIndex.get(drawCardCommand), cardToReveal);
+        model.setRevealedGoldCards(revealedGoldCards, nickname);
 
-    /**
-     * Draws the last revealed resource card on the table
-     */
-    public void drawLastFromRevealedGoldCards() {
-
-        List<PlayableCard> hand = model.getCurrentPlayer().getHand();
-
-        PlayableCard cardToDraw = model.getCenterOfTable().removeLastFromRevealedGoldCards();
-
-        hand.add(cardToDraw);
+        return drawnCard;
     }
 
     /**
      * Sets the new current player
      */
-    private void nextPlayer() {
-        model.setCurrentPlayer(getNextPlayer());
-    }
-
-    /**
-     * Gets the new current player
-     * @return New current player
-     */
-    private Player getNextPlayer() {
+    private void nextPlayer(String nickname) {
+        Player nextPlayer;
         int index = model.getPlayerOrder().indexOf(model.getCurrentPlayer());
         if(index < model.getPlayerOrder().size() -1 ){
-            return model.getPlayerOrder().get(index+1);
+            nextPlayer = model.getPlayerOrder().get(index+1);
         }else{
-            return model.getPlayerOrder().getFirst();
+            nextPlayer = model.getPlayerOrder().getFirst();
         }
+        model.setCurrentPlayer(nextPlayer, nickname);
     }
 
 
     @Override
-    public void update(MessageEvent arg) {
-        // to do
-        System.out.println("Choise: " + arg.content());
+    public void updateText(String nickname, TextCommand arg, String content, List<String> receivers) {
+
+        sendAMessage(nickname, arg, content, receivers);
+
     }
+    private void sendAMessage(String nickname, TextCommand arg, String content, List<String> receivers){
+
+        List<Message> messages = model.getMessages();
+        Message messageToSend = new Message(content, nickname, receivers);
+        messages.add(messageToSend);
+        model.setMessages(messages, nickname);
+
+    }
+
 }

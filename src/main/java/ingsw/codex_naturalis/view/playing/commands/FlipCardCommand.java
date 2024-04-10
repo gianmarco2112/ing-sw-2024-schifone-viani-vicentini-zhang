@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.view.playing.events.commands;
+package ingsw.codex_naturalis.view.playing.commands;
 
 public enum FlipCardCommand {
 

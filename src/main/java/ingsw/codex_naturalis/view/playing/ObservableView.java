@@ -1,10 +1,10 @@
 package ingsw.codex_naturalis.view.playing;
 
 import ingsw.codex_naturalis.controller.ObserverController;
-import ingsw.codex_naturalis.view.playing.events.MessageEvent;
-import ingsw.codex_naturalis.view.playing.events.PlayCardEvent;
-import ingsw.codex_naturalis.view.playing.events.commands.DrawCardCommand;
-import ingsw.codex_naturalis.view.playing.events.commands.FlipCardCommand;
+import ingsw.codex_naturalis.view.playing.commands.DrawCardCommand;
+import ingsw.codex_naturalis.view.playing.commands.FlipCardCommand;
+import ingsw.codex_naturalis.view.playing.commands.PlayCardCommand;
+import ingsw.codex_naturalis.view.playing.commands.TextCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,27 +32,27 @@ public class ObservableView {
     }
 
 
-    public void notifyObservers(FlipCardCommand arg) {
-        /*for (ObserverController o : obs){
-            o.update(arg);
-        }*/
+    public void notifyFlipCard(String nickname, FlipCardCommand flipCardCommand) {
+        for (ObserverController o : obs){
+            o.updateFlipCard(nickname, flipCardCommand);
+        }
     }
 
-    public void notifyObservers(PlayCardEvent arg) {
-        /*for (ObserverController o : obs){
-            o.update(arg);
-        }*/
+    public void notifyPlayCard(String nickname, PlayCardCommand playCardCommand, int x, int y) {
+        for (ObserverController o : obs){
+            o.updatePlayCard(nickname, playCardCommand, x, y);
+        }
     }
 
-    public void notifyObservers(DrawCardCommand arg) {
-        /*for (ObserverController o : obs){
-            o.update(arg);
-        }*/
+    public void notifyDrawCard(String nickname, DrawCardCommand drawCardCommand) {
+        for (ObserverController o : obs){
+            o.updateDrawCard(nickname, drawCardCommand);
+        }
     }
 
-    public void notifyObservers(MessageEvent arg) {
-        /*for (ObserverController o : obs){
-            o.update(arg);
-        }*/
+    public void notifyText(String nickname, TextCommand textCommand, String content, List<String> receivers) {
+        for (ObserverController o : obs){
+            o.updateText(nickname, textCommand, content, receivers);
+        }
     }
 }

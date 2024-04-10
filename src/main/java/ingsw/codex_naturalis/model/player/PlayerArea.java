@@ -6,13 +6,15 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.enumerations.ExtremeCoordinate;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
+import ingsw.codex_naturalis.model.observerObservable.Event;
+import ingsw.codex_naturalis.model.observerObservable.Observable;
 
 import java.util.*;
 
 /**
  * The player area
  */
-public class PlayerArea {
+public class PlayerArea extends Observable<Event> {
 
     /**
      * This Map represents the player area with all the cards he has placed.
@@ -89,7 +91,6 @@ public class PlayerArea {
      * @return Points
      */
     public int getPoints() { return points; }
-
     /**
      * Points setter
      * @param points to add to the player
@@ -103,7 +104,6 @@ public class PlayerArea {
     public ObjectiveCard getObjectiveCard() {
         return objectiveCard;
     }
-
     /**
      * Objective card setter
      * @param objectiveCard Objective card
@@ -119,7 +119,6 @@ public class PlayerArea {
     public int getExtraPoints() {
         return extraPoints;
     }
-
     /**
      * Extra points setter
      * @param extraPoints Extra points to set
@@ -137,7 +136,6 @@ public class PlayerArea {
     public Boolean containsCardOnCoordinates(int x, int y){
         return area.containsKey(new ArrayList<>(List.of(x,y)));
     }
-
     /**
      * Returns the card placed on the given coordinates
      * @param x Coordinate x
@@ -147,7 +145,6 @@ public class PlayerArea {
     public PlayableCard getCardOnCoordinates(int x, int y){
         return area.get(new ArrayList<>(List.of(x,y)));
     }
-
     /**
      * Returns the count of the given symbol
      * @param symbol symbol
@@ -156,7 +153,6 @@ public class PlayerArea {
     public Integer getNumOfSymbol(Symbol symbol){
         return numOfSymbols.get(symbol);
     }
-
     /**
      * Decreases by one the count of the given symbol
      * @param symbol Symbol
@@ -164,7 +160,6 @@ public class PlayerArea {
     public void decrNumOfSymbol(Symbol symbol){
         numOfSymbols.replace(symbol, getNumOfSymbol(symbol)-1);
     }
-
     /**
      * Increases by one the count of the given symbol
      * @param symbol Symbol
@@ -172,14 +167,13 @@ public class PlayerArea {
     public void incrNumOfSymbol(Symbol symbol){
         numOfSymbols.replace(symbol, getNumOfSymbol(symbol)+1);
     }
-
     /**
      * Places the given card on the given coordinates and adjusts the max coordinates
      * @param card the card to play
      * @param x coordinate x
      * @param y coordinate y
      */
-    public void setCardOnCoordinates(PlayableCard card, int x, int y){
+    public void setCardOnCoordinates(PlayableCard card, int x, int y, String nickname){
         area.put(new ArrayList<>(List.of(x,y)), card);
         if(x > getExtremeCoordinate(ExtremeCoordinate.MAX_X))
             setExtremeCoordinate(ExtremeCoordinate.MAX_X, x);
@@ -189,8 +183,11 @@ public class PlayerArea {
             setExtremeCoordinate(ExtremeCoordinate.MAX_Y, y);
         if(y < getExtremeCoordinate(ExtremeCoordinate.MIN_Y))
             setExtremeCoordinate(ExtremeCoordinate.MIN_Y, y);
-    }
 
+        card.play(this, x, y);
+
+        notifyObservers(Event.PLAYER_AREA_CHANGED, nickname);
+    }
     /**
      * Method to get the coordinates of a card
      * @param card Card
@@ -204,7 +201,6 @@ public class PlayerArea {
         }
         return new ArrayList<>();
     }
-
     /**
      * Method to get the player area with a boolean instead of the card, it is necessary for the pattern
      * objective card strategy

@@ -1,5 +1,6 @@
 [
   {
+    "cardID": "I01",
     "playableCardType": "INITIAL",
     "kingdom": "EMPTY",
     "front": {
@@ -19,6 +20,7 @@
     }
   },
   {
+    "cardID": "I02",
     "playableCardType": "INITIAL",
     "kingdom": "EMPTY",
     "front": {
@@ -38,6 +40,7 @@
     }
   },
   {
+    "cardID": "I03",
     "playableCardType": "INITIAL",
     "kingdom": "EMPTY",
     "front": {
@@ -57,6 +60,7 @@
     }
   },
   {
+    "cardID": "I04",
     "playableCardType": "INITIAL",
     "kingdom": "EMPTY",
     "front": {
@@ -76,6 +80,7 @@
     }
   },
   {
+    "cardID": "I05",
     "playableCardType": "INITIAL",
     "kingdom": "EMPTY",
     "front": {
@@ -95,6 +100,7 @@
     }
   },
   {
+    "cardID": "I06",
     "playableCardType": "INITIAL",
     "kingdom": "EMPTY",
     "front": {

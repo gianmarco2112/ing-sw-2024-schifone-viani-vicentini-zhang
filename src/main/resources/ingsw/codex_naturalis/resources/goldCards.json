@@ -1,5 +1,6 @@
 [
   {
+    "cardID": "G01",
     "playableCardType": "GOLD",
     "kingdom": "FUNGI",
     "front": {
@@ -22,6 +23,7 @@
     }
   },
   {
+    "cardID": "G02",
     "playableCardType": "GOLD",
     "kingdom": "FUNGI",
     "front": {
@@ -44,6 +46,7 @@
     }
   },
   {
+    "cardID": "G03",
     "playableCardType": "GOLD",
     "kingdom": "FUNGI",
     "front": {
@@ -66,6 +69,7 @@
     }
   },
   {
+    "cardID": "G04",
     "playableCardType": "GOLD",
     "kingdom": "FUNGI",
     "front": {
@@ -90,6 +94,7 @@
     }
   },
   {
+    "cardID": "G05",
     "playableCardType": "GOLD",
     "kingdom": "FUNGI",
     "front": {
@@ -114,6 +119,7 @@
     }
   },
   {
+    "cardID": "G06",
     "playableCardType": "GOLD",
     "kingdom": "FUNGI",
     "front": {
@@ -138,6 +144,7 @@
     }
   },
   {
+    "cardID": "G07",
     "playableCardType": "GOLD",
     "kingdom": "FUNGI",
     "front": {
@@ -162,6 +169,7 @@
     }
   },
   {
+    "cardID": "G08",
     "playableCardType": "GOLD",
     "kingdom": "FUNGI",
     "front": {
@@ -186,6 +194,7 @@
     }
   },
   {
+    "cardID": "G09",
     "playableCardType": "GOLD",
     "kingdom": "FUNGI",
     "front": {
@@ -210,6 +219,7 @@
     }
   },
   {
+    "cardID": "G10",
     "playableCardType": "GOLD",
     "kingdom": "FUNGI",
     "front": {
@@ -234,6 +244,7 @@
     }
   },
   {
+    "cardID": "G11",
     "playableCardType": "GOLD",
     "kingdom": "PLANT",
     "front": {
@@ -256,6 +267,7 @@
     }
   },
   {
+    "cardID": "G12",
     "playableCardType": "GOLD",
     "kingdom": "PLANT",
     "front": {
@@ -278,6 +290,7 @@
     }
   },
   {
+    "cardID": "G13",
     "playableCardType": "GOLD",
     "kingdom": "PLANT",
     "front": {
@@ -300,6 +313,7 @@
     }
   },
   {
+    "cardID": "G14",
     "playableCardType": "GOLD",
     "kingdom": "PLANT",
     "front": {
@@ -324,6 +338,7 @@
     }
   },
   {
+    "cardID": "G15",
     "playableCardType": "GOLD",
     "kingdom": "PLANT",
     "front": {
@@ -348,6 +363,7 @@
     }
   },
   {
+    "cardID": "G16",
     "playableCardType": "GOLD",
     "kingdom": "PLANT",
     "front": {
@@ -372,6 +388,7 @@
     }
   },
   {
+    "cardID": "G17",
     "playableCardType": "GOLD",
     "kingdom": "PLANT",
     "front": {
@@ -396,6 +413,7 @@
     }
   },
   {
+    "cardID": "G18",
     "playableCardType": "GOLD",
     "kingdom": "PLANT",
     "front": {
@@ -420,6 +438,7 @@
     }
   },
   {
+    "cardID": "G19",
     "playableCardType": "GOLD",
     "kingdom": "PLANT",
     "front": {
@@ -444,6 +463,7 @@
     }
   },
   {
+    "cardID": "G20",
     "playableCardType": "GOLD",
     "kingdom": "PLANT",
     "front": {
@@ -468,6 +488,7 @@
     }
   },
   {
+    "cardID": "G21",
     "playableCardType": "GOLD",
     "kingdom": "ANIMAL",
     "front": {
@@ -490,6 +511,7 @@
     }
   },
   {
+    "cardID": "G22",
     "playableCardType": "GOLD",
     "kingdom": "ANIMAL",
     "front": {
@@ -512,6 +534,7 @@
     }
   },
   {
+    "cardID": "G23",
     "playableCardType": "GOLD",
     "kingdom": "ANIMAL",
     "front": {
@@ -534,6 +557,7 @@
     }
   },
   {
+    "cardID": "G24",
     "playableCardType": "GOLD",
     "kingdom": "ANIMAL",
     "front": {
@@ -558,6 +582,7 @@
     }
   },
   {
+    "cardID": "G25",
     "playableCardType": "GOLD",
     "kingdom": "ANIMAL",
     "front": {
@@ -582,6 +607,7 @@
     }
   },
   {
+    "cardID": "G26",
     "playableCardType": "GOLD",
     "kingdom": "ANIMAL",
     "front": {
@@ -606,6 +632,7 @@
     }
   },
   {
+    "cardID": "G27",
     "playableCardType": "GOLD",
     "kingdom": "ANIMAL",
     "front": {
@@ -630,6 +657,7 @@
     }
   },
   {
+    "cardID": "G28",
     "playableCardType": "GOLD",
     "kingdom": "ANIMAL",
     "front": {
@@ -654,6 +682,7 @@
     }
   },
   {
+    "cardID": "G29",
     "playableCardType": "GOLD",
     "kingdom": "ANIMAL",
     "front": {
@@ -678,6 +707,7 @@
     }
   },
   {
+    "cardID": "G30",
     "playableCardType": "GOLD",
     "kingdom": "ANIMAL",
     "front": {
@@ -702,6 +732,7 @@
     }
   },
   {
+    "cardID": "G31",
     "playableCardType": "GOLD",
     "kingdom": "INSECT",
     "front": {
@@ -724,6 +755,7 @@
     }
   },
   {
+    "cardID": "G32",
     "playableCardType": "GOLD",
     "kingdom": "INSECT",
     "front": {
@@ -746,6 +778,7 @@
     }
   },
   {
+    "cardID": "G33",
     "playableCardType": "GOLD",
     "kingdom": "INSECT",
     "front": {
@@ -768,6 +801,7 @@
     }
   },
   {
+    "cardID": "G34",
     "playableCardType": "GOLD",
     "kingdom": "INSECT",
     "front": {
@@ -792,6 +826,7 @@
     }
   },
   {
+    "cardID": "G35",
     "playableCardType": "GOLD",
     "kingdom": "INSECT",
     "front": {
@@ -816,6 +851,7 @@
     }
   },
   {
+    "cardID": "G36",
     "playableCardType": "GOLD",
     "kingdom": "INSECT",
     "front": {
@@ -840,6 +876,7 @@
     }
   },
   {
+    "cardID": "G37",
     "playableCardType": "GOLD",
     "kingdom": "INSECT",
     "front": {
@@ -864,6 +901,7 @@
     }
   },
   {
+    "cardID": "G38",
     "playableCardType": "GOLD",
     "kingdom": "INSECT",
     "front": {
@@ -888,6 +926,7 @@
     }
   },
   {
+    "cardID": "G39",
     "playableCardType": "GOLD",
     "kingdom": "INSECT",
     "front": {
@@ -912,6 +951,7 @@
     }
   },
   {
+    "cardID": "G40",
     "playableCardType": "GOLD",
     "kingdom": "INSECT",
     "front": {

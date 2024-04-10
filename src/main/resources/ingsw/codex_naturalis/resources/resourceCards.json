@@ -1,5 +1,6 @@
 [
   {
+    "cardID": "R01",
     "playableCardType": "RESOURCE",
     "kingdom": "FUNGI",
     "front": {
@@ -19,6 +20,7 @@
     }
   },
   {
+    "cardID": "R02",
     "playableCardType": "RESOURCE",
     "kingdom": "FUNGI",
     "front": {
@@ -38,6 +40,7 @@
     }
   },
   {
+    "cardID": "R03",
     "playableCardType": "RESOURCE",
     "kingdom": "FUNGI",
     "front": {
@@ -57,6 +60,7 @@
     }
   },
   {
+    "cardID": "R04",
     "playableCardType": "RESOURCE",
     "kingdom": "FUNGI",
     "front": {
@@ -76,6 +80,7 @@
     }
   },
   {
+    "cardID": "R05",
     "playableCardType": "RESOURCE",
     "kingdom": "FUNGI",
     "front": {
@@ -95,6 +100,7 @@
     }
   },
   {
+    "cardID": "R06",
     "playableCardType": "RESOURCE",
     "kingdom": "FUNGI",
     "front": {
@@ -114,6 +120,7 @@
     }
   },
   {
+    "cardID": "R07",
     "playableCardType": "RESOURCE",
     "kingdom": "FUNGI",
     "front": {
@@ -133,6 +140,7 @@
     }
   },
   {
+    "cardID": "R08",
     "playableCardType": "RESOURCE",
     "kingdom": "FUNGI",
     "front": {
@@ -153,6 +161,7 @@
     }
   },
   {
+    "cardID": "R09",
     "playableCardType": "RESOURCE",
     "kingdom": "FUNGI",
     "front": {
@@ -173,6 +182,7 @@
     }
   },
   {
+    "cardID": "R10",
     "playableCardType": "RESOURCE",
     "kingdom": "FUNGI",
     "front": {
@@ -193,6 +203,7 @@
     }
   },
   {
+    "cardID": "R11",
     "playableCardType": "RESOURCE",
     "kingdom": "PLANT",
     "front": {
@@ -212,6 +223,7 @@
     }
   },
   {
+    "cardID": "R12",
     "playableCardType": "RESOURCE",
     "kingdom": "PLANT",
     "front": {
@@ -231,6 +243,7 @@
     }
   },
   {
+    "cardID": "R13",
     "playableCardType": "RESOURCE",
     "kingdom": "PLANT",
     "front": {
@@ -250,6 +263,7 @@
     }
   },
   {
+    "cardID": "R14",
     "playableCardType": "RESOURCE",
     "kingdom": "PLANT",
     "front": {
@@ -269,6 +283,7 @@
     }
   },
   {
+    "cardID": "R15",
     "playableCardType": "RESOURCE",
     "kingdom": "PLANT",
     "front": {
@@ -288,6 +303,7 @@
     }
   },
   {
+    "cardID": "R16",
     "playableCardType": "RESOURCE",
     "kingdom": "PLANT",
     "front": {
@@ -307,6 +323,7 @@
     }
   },
   {
+    "cardID": "R17",
     "playableCardType": "RESOURCE",
     "kingdom": "PLANT",
     "front": {
@@ -326,6 +343,7 @@
     }
   },
   {
+    "cardID": "R18",
     "playableCardType": "RESOURCE",
     "kingdom": "PLANT",
     "front": {
@@ -346,6 +364,7 @@
     }
   },
   {
+    "cardID": "R19",
     "playableCardType": "RESOURCE",
     "kingdom": "PLANT",
     "front": {
@@ -366,6 +385,7 @@
     }
   },
   {
+    "cardID": "R20",
     "playableCardType": "RESOURCE",
     "kingdom": "PLANT",
     "front": {
@@ -386,6 +406,7 @@
     }
   },
   {
+    "cardID": "R21",
     "playableCardType": "RESOURCE",
     "kingdom": "ANIMAL",
     "front": {
@@ -405,6 +426,7 @@
     }
   },
   {
+    "cardID": "R22",
     "playableCardType": "RESOURCE",
     "kingdom": "ANIMAL",
     "front": {
@@ -424,6 +446,7 @@
     }
   },
   {
+    "cardID": "R23",
     "playableCardType": "RESOURCE",
     "kingdom": "ANIMAL",
     "front": {
@@ -443,6 +466,7 @@
     }
   },
   {
+    "cardID": "R24",
     "playableCardType": "RESOURCE",
     "kingdom": "ANIMAL",
     "front": {
@@ -462,6 +486,7 @@
     }
   },
   {
+    "cardID": "R25",
     "playableCardType": "RESOURCE",
     "kingdom": "ANIMAL",
     "front": {
@@ -481,6 +506,7 @@
     }
   },
   {
+    "cardID": "R26",
     "playableCardType": "RESOURCE",
     "kingdom": "ANIMAL",
     "front": {
@@ -500,6 +526,7 @@
     }
   },
   {
+    "cardID": "R27",
     "playableCardType": "RESOURCE",
     "kingdom": "ANIMAL",
     "front": {
@@ -519,6 +546,7 @@
     }
   },
   {
+    "cardID": "R28",
     "playableCardType": "RESOURCE",
     "kingdom": "ANIMAL",
     "front": {
@@ -539,6 +567,7 @@
     }
   },
   {
+    "cardID": "R29",
     "playableCardType": "RESOURCE",
     "kingdom": "ANIMAL",
     "front": {
@@ -559,6 +588,7 @@
     }
   },
   {
+    "cardID": "R30",
     "playableCardType": "RESOURCE",
     "kingdom": "ANIMAL",
     "front": {
@@ -579,6 +609,7 @@
     }
   },
   {
+    "cardID": "R31",
     "playableCardType": "RESOURCE",
     "kingdom": "INSECT",
     "front": {
@@ -598,6 +629,7 @@
     }
   },
   {
+    "cardID": "R32",
     "playableCardType": "RESOURCE",
     "kingdom": "INSECT",
     "front": {
@@ -617,6 +649,7 @@
     }
   },
   {
+    "cardID": "R33",
     "playableCardType": "RESOURCE",
     "kingdom": "INSECT",
     "front": {
@@ -636,6 +669,7 @@
     }
   },
   {
+    "cardID": "R34",
     "playableCardType": "RESOURCE",
     "kingdom": "INSECT",
     "front": {
@@ -655,6 +689,7 @@
     }
   },
   {
+    "cardID": "R35",
     "playableCardType": "RESOURCE",
     "kingdom": "INSECT",
     "front": {
@@ -674,6 +709,7 @@
     }
   },
   {
+    "cardID": "R36",
     "playableCardType": "RESOURCE",
     "kingdom": "INSECT",
     "front": {
@@ -693,6 +729,7 @@
     }
   },
   {
+    "cardID": "R37",
     "playableCardType": "RESOURCE",
     "kingdom": "INSECT",
     "front": {
@@ -712,6 +749,7 @@
     }
   },
   {
+    "cardID": "R38",
     "playableCardType": "RESOURCE",
     "kingdom": "INSECT",
     "front": {
@@ -732,6 +770,7 @@
     }
   },
   {
+    "cardID": "R39",
     "playableCardType": "RESOURCE",
     "kingdom": "INSECT",
     "front": {
@@ -752,6 +791,7 @@
     }
   },
   {
+    "cardID": "R40",
     "playableCardType": "RESOURCE",
     "kingdom": "INSECT",
     "front": {

@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.controller;
+package ingsw.codex_naturalis.controller.gameplayPhase;
 
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
@@ -7,24 +7,24 @@ import ingsw.codex_naturalis.model.enumerations.TurnStatus;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.view.playing.TextualUI;
-import ingsw.codex_naturalis.view.playing.commands.DrawCardCommand;
-import ingsw.codex_naturalis.view.playing.commands.FlipCardCommand;
-import ingsw.codex_naturalis.view.playing.commands.PlayCardCommand;
-import ingsw.codex_naturalis.view.playing.commands.TextCommand;
+import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
+import ingsw.codex_naturalis.view.gameplayPhase.commands.DrawCardCommand;
+import ingsw.codex_naturalis.view.gameplayPhase.commands.FlipCardCommand;
+import ingsw.codex_naturalis.view.gameplayPhase.commands.PlayCardCommand;
+import ingsw.codex_naturalis.view.gameplayPhase.commands.TextCommand;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class Controller implements ObserverController {
+public class GameplayController implements GameplayObserver {
 
     private final Game model;
-    private final TextualUI view;
+    private final GameplayUI view;
 
     //--------------------------------------------------------------------------------------
-    public Controller(Game model, TextualUI view) {
+    public GameplayController(Game model, GameplayUI view) {
         this.model = model;
         this.view = view;
     }

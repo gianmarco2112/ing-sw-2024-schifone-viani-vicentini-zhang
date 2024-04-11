@@ -1,15 +1,15 @@
-package ingsw.codex_naturalis.view.playing;
+package ingsw.codex_naturalis.view.gameplayPhase;
 
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.observerObservable.GameView;
-import ingsw.codex_naturalis.view.playing.commands.*;
+import ingsw.codex_naturalis.view.gameplayPhase.commands.*;
 
 import java.util.*;
 
-import static ingsw.codex_naturalis.view.playing.commands.UtilityCommand.CANCEL;
+import static ingsw.codex_naturalis.view.gameplayPhase.commands.UtilityCommand.CANCEL;
 
-public class TextualUI extends ObservableView implements Observer<GameView, Event>, Runnable{
+public class GameplayTextualUI extends GameplayUI {
 
     String nickname;
 
@@ -26,7 +26,9 @@ public class TextualUI extends ObservableView implements Observer<GameView, Even
     private final Map<String, UtilityCommand> utilityCommands = new LinkedHashMap<>();
 
 
-    public TextualUI(String nickname, List<String> playerNicknames){
+    public GameplayTextualUI(String nickname, List<String> playerNicknames){
+
+        this.nickname = nickname;
 
         for (int key = 0; key < playerNicknames.size(); key++) {
             this.playerNicknames.put(key+1, playerNicknames.get(key));

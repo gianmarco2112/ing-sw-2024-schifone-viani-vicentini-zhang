@@ -34,4 +34,8 @@ public class Deck <T extends Card> extends Observable<Event>{
     public boolean isEmpty(){
         return cards.isEmpty();
     }
+
+    public T getFirstCard(){
+        return cards.getFirst();
+    }
 }

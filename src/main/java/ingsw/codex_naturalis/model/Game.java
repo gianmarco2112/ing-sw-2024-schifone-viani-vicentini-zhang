@@ -114,7 +114,7 @@ public class Game extends Observable<Event> {
 
         this.playerOrder = new ArrayList<>();
         this.gameID = gameID;
-        this.gameStatus = GameStatus.WAITING;
+        this.gameStatus = GameStatus.LOBBY;
         this.maxNumOfPlayers = maxNumOfPlayers;
         this.messages = new ArrayList<>();
         this.revealedResourceCards = new ArrayList<>();
@@ -133,6 +133,10 @@ public class Game extends Observable<Event> {
     }
     public void setGameStatus(GameStatus gameStatus){
         this.gameStatus = gameStatus;
+        switch (gameStatus) {
+            case SETUP -> notifyObservers(Event.SETUP_STATUS, "");
+            case GAMEPLAY -> notifyObservers(Event.GAMEPLAY_STATUS, "");
+        }
     }
 
     public int getMaxNumOfPlayers() {

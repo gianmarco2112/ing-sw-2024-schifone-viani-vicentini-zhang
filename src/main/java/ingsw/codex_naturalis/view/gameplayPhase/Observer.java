@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.view.playing;
+package ingsw.codex_naturalis.view.gameplayPhase;
 
 import ingsw.codex_naturalis.model.observerObservable.Observable;
 

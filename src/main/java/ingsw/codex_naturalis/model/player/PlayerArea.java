@@ -221,4 +221,7 @@ public class PlayerArea extends Observable<Event> {
     public Map<List<Integer>, PlayableCard> getArea(){
         return area;
     }
+    public Map<Symbol, Integer> getNumOfSymbols() {
+        return numOfSymbols;
+    }
 }

@@ -1,6 +1,6 @@
 package ingsw.codex_naturalis.model.observerObservable;
 
-import ingsw.codex_naturalis.view.playing.Observer;
+import ingsw.codex_naturalis.view.gameplayPhase.Observer;
 
 import java.util.ArrayList;
 import java.util.List;

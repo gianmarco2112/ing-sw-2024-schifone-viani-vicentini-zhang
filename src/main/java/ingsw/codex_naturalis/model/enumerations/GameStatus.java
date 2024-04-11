@@ -2,9 +2,8 @@ package ingsw.codex_naturalis.model.enumerations;
 
 public enum GameStatus {
 
-    WAITING,
+    LOBBY,
     SETUP,
-    PLAYING,
-    ENDED
+    GAMEPLAY,
 
 }

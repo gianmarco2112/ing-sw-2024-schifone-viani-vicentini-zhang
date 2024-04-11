@@ -2,6 +2,8 @@ package ingsw.codex_naturalis.model.observerObservable;
 
 public enum Event {
 
+    SETUP_STATUS,
+    GAMEPLAY_STATUS,
     HAND_CHANGED,
     PLAYER_AREA_CHANGED,
     DECK_CHANGED,

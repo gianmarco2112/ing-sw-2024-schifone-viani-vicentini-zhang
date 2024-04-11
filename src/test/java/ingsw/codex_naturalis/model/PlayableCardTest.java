@@ -42,8 +42,7 @@ public class PlayableCardTest {
                         List.of(Symbol.QUILL,Symbol.QUILL,Symbol.QUILL)));
     }
     private void setInitialCard(){
-        player.setInitialCard(initialCard);
-        player.playInitialCard();
+        player.getPlayerArea().setCardOnCoordinates(initialCard,0,0,"Test");
     }
     private PlayableCard insectResourceCard(){
         PlayableCard resourceCard;
@@ -71,6 +70,7 @@ public class PlayableCardTest {
         PlayableCard card = insectResourceCard();
         assertTrue(card.isPlayable(player.getPlayerArea(),1,1));
         assertFalse(card.isPlayable(player.getPlayerArea(),3,3));
+        assertFalse(card.isPlayable(player.getPlayerArea(),0,0));
     }
     @Test
     void testPlayWithoutCoordinates(){
@@ -92,5 +92,25 @@ public class PlayableCardTest {
         card.play(player.getPlayerArea(),1,1);
         assertEquals(3,player.getPlayerArea().getNumOfSymbol(Symbol.QUILL));
         assertEquals(1,player.getPlayerArea().getNumOfSymbol(Symbol.INSECT));
+    }
+    @Test
+    void simplePlayableCardTest(){
+        PlayableCard card = insectResourceCard();
+        assertEquals(PlayableCardType.RESOURCE,card.getPlayableCardType());
+        assertEquals(Symbol.INSECT,card.getKingdom());
+        assertEquals(card.getBack(),card.getCurrentPlayableSide());
+        card.flip("Test");
+        assertEquals(card.getFront(),card.getCurrentPlayableSide());
+        card.setCurrentPlayableSide(card.getBack());
+        assertEquals(card.getBack(),card.getCurrentPlayableSide());
+        card.flip("Test");
+        assertEquals(Symbol.EMPTY,card.getBottomLeftCorner().getSymbol());
+        assertEquals(Symbol.EMPTY,card.getBottomRightCorner().getSymbol());
+        assertEquals(Symbol.EMPTY,card.getTopLeftCorner().getSymbol());
+        assertEquals(Symbol.EMPTY,card.getTopRightCorner().getSymbol());
+        assertFalse(card.getBottomLeftCorner().isCovered());
+        assertFalse(card.getBottomRightCorner().isCovered());
+        assertFalse(card.getTopLeftCorner().isCovered());
+        assertFalse(card.getTopRightCorner().isCovered());
     }
 }

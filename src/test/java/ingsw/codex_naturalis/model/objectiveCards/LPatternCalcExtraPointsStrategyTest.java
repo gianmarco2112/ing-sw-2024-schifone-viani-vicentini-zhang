@@ -1,11 +1,11 @@
-package ingsw.codex_naturalis.model;
+package ingsw.codex_naturalis.model.objectiveCards;
+import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.objective.PatternObjectiveCard;
-import ingsw.codex_naturalis.model.enumerations.Color;
 import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.model.enumerations.Symbol;
 import ingsw.codex_naturalis.model.player.Player;
@@ -18,15 +18,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LPatternCalcExtraPointsStrategyTest {
     Player player;
-    CenterOfTable centerOfTable;
+    Game game;
     PlayableCard initialCard;
     ObjectiveCard patternObjectiveCard;
     @BeforeEach
     void setUp(){
-        player = new Player("Test", Color.RED,1);
-        centerOfTable = new CenterOfTable();
-        player.setCenterOfTable(centerOfTable);
+        player = new Player("Test");
+        game = new Game(0,4);
+        game.addPlayer(player);
         initialCard = new PlayableCard(
+                "ITest",
                 PlayableCardType.INITIAL,
                 Symbol.EMPTY,
                 new PlayableSide(
@@ -46,6 +47,7 @@ public class LPatternCalcExtraPointsStrategyTest {
     private PlayableCard fungiResourceCard(){
         PlayableCard resourceCard;
         resourceCard = new PlayableCard(
+                "RTest",
                 PlayableCardType.RESOURCE,
                 Symbol.FUNGI,
                 new PlayableSide(
@@ -65,6 +67,7 @@ public class LPatternCalcExtraPointsStrategyTest {
     private PlayableCard insectResourceCard(){
         PlayableCard resourceCard;
         resourceCard= new PlayableCard(
+                "RTest",
                 PlayableCardType.RESOURCE,
                 Symbol.INSECT,
                 new PlayableSide(
@@ -84,6 +87,7 @@ public class LPatternCalcExtraPointsStrategyTest {
     private PlayableCard plantResourceCard(){
         PlayableCard resourceCard;
         resourceCard = new PlayableCard(
+                "RTest",
                 PlayableCardType.RESOURCE,
                 Symbol.PLANT,
                 new PlayableSide(
@@ -103,6 +107,7 @@ public class LPatternCalcExtraPointsStrategyTest {
     private PlayableCard animalResourceCard(){
         PlayableCard resourceCard;
         resourceCard= new PlayableCard(
+                "RTest",
                 PlayableCardType.RESOURCE,
                 Symbol.ANIMAL,
                 new PlayableSide(
@@ -121,6 +126,7 @@ public class LPatternCalcExtraPointsStrategyTest {
     }
     private ObjectiveCard bottomLeftLObjectiveCard(){
         return (new PatternObjectiveCard(
+                "OTest",
                 3,
                 List.of(List.of(0,0),List.of(1,1),List.of(1,3)),
                 List.of(Symbol.INSECT,Symbol.PLANT,Symbol.PLANT),
@@ -132,6 +138,7 @@ public class LPatternCalcExtraPointsStrategyTest {
     }
     private ObjectiveCard bottomRightLObjectiveCard(){
         return (new PatternObjectiveCard(
+                "OTest",
                 3,
                 List.of(List.of(1,0),List.of(0,1),List.of(0,3)),
                 List.of(Symbol.PLANT,Symbol.FUNGI,Symbol.FUNGI),
@@ -142,6 +149,7 @@ public class LPatternCalcExtraPointsStrategyTest {
     }
     private ObjectiveCard topLeftLObjectiveCard(){
         return (new PatternObjectiveCard(
+                "OTest",
                 3,
                 List.of(List.of(0,3),List.of(1,2),List.of(1,0)),
                 List.of(Symbol.ANIMAL,Symbol.INSECT,Symbol.INSECT),
@@ -152,6 +160,7 @@ public class LPatternCalcExtraPointsStrategyTest {
     }
     private ObjectiveCard topRightLObjectiveCard(){
         return (new PatternObjectiveCard(
+                "OTest",
                 3,
                 List.of(List.of(0,0),List.of(0,2),List.of(1,3)),
                 List.of(Symbol.ANIMAL,Symbol.ANIMAL,Symbol.FUNGI),
@@ -161,48 +170,28 @@ public class LPatternCalcExtraPointsStrategyTest {
                 0));
     }
     private void bottomLeftL(){
-        player.getHand().add(insectResourceCard());
-        player.getHand().add(plantResourceCard());
-        player.getHand().add(plantResourceCard());
-        player.getHand().add(plantResourceCard());
-
-        player.playCard(player.getHand().getFirst(),1,1 );
-        player.playCard(player.getHand().getFirst(),2,2 );
-        player.playCard(player.getHand().getFirst(),1,3 );
-        player.playCard(player.getHand().getFirst(),2,4 );
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),1,1,"Test");
+        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),2,2,"Test");
+        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),1,3,"Test");
+        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),2,4,"Test");
     }
     private void bottomRightL(){
-        player.getHand().add(plantResourceCard());
-        player.getHand().add(fungiResourceCard());
-        player.getHand().add(fungiResourceCard());
-        player.getHand().add(fungiResourceCard());
-
-        player.playCard(player.getHand().getFirst(),-1,1 );
-        player.playCard(player.getHand().getFirst(),-2,2 );
-        player.playCard(player.getHand().getFirst(),-3,3 );
-        player.playCard(player.getHand().getFirst(),-2,4 );
+        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),-1,1,"Test");
+        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-2,2,"Test");
+        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-3,3,"Test");
+        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-2,4,"Test");
     }
     private void topLeftL(){
-        player.getHand().add(animalResourceCard());
-        player.getHand().add(insectResourceCard());
-        player.getHand().add(insectResourceCard());
-        player.getHand().add(insectResourceCard());
-
-        player.playCard(player.getHand().getFirst(),1,-1 );
-        player.playCard(player.getHand().getFirst(),2,-2 );
-        player.playCard(player.getHand().getFirst(),1,-3 );
-        player.playCard(player.getHand().getFirst(),2,-4 );
+        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),1,-1,"Test");
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),2,-2,"Test");
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),1,-3,"Test");
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),2,-4,"Test");
     }
     private void topRightL(){
-        player.getHand().add(fungiResourceCard());
-        player.getHand().add(animalResourceCard());
-        player.getHand().add(animalResourceCard());
-        player.getHand().add(animalResourceCard());
-
-        player.playCard(player.getHand().getFirst(),-1,-1 );
-        player.playCard(player.getHand().getFirst(),-2,-2 );
-        player.playCard(player.getHand().getFirst(),-1,-3 );
-        player.playCard(player.getHand().getFirst(),-2,-4 );
+        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-1,-1,"Test");
+        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),-2,-2,"Test");
+        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),-1,-3,"Test");
+        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),-2,-4,"Test");
     }
     @Test
     void bottomLeftLTest(){

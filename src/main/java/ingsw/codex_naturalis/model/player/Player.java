@@ -116,9 +116,9 @@ public class Player extends Observable<Event> {
      */
     @Deprecated
     public void playInitialCard(){
-        /*initialCard.play(playerArea);
-        playerArea.setCardOnCoordinates(initialCard, 0, 0);
-        initialCard = null;*/
+        //initialCard.play(playerArea); se questo metodo va spostato, basta setCardOnCoordinates perché al suo interno viene chiamato play
+        playerArea.setCardOnCoordinates(initialCard, 0, 0,nickname);
+        initialCard = null;
     }
 
 }

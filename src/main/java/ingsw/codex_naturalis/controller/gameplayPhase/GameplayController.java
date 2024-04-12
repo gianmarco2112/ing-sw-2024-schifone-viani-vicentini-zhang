@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.controller.gameplayPhase;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.Message;
+import ingsw.codex_naturalis.model.enumerations.GameStatus;
 import ingsw.codex_naturalis.model.enumerations.TurnStatus;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.player.PlayerArea;
@@ -23,10 +24,16 @@ public class GameplayController implements GameplayObserver {
     private final Game model;
     private final GameplayUI view;
 
+    //including the player who gets to 20 points
+    private int turnsLeftInSecondToLastRound;
+    private int turnsLeftInLastRound;
+
     //--------------------------------------------------------------------------------------
     public GameplayController(Game model, GameplayUI view) {
         this.model = model;
         this.view = view;
+        turnsLeftInLastRound = model.getNumOfPlayers();
+        turnsLeftInSecondToLastRound = model.getNumOfPlayers();
     }
 
     //-----------------------------------------------------------------------------------------
@@ -96,7 +103,7 @@ public class GameplayController implements GameplayObserver {
         Player player = getPlayerByNickname(nickname);
 
         PlayableCard cardToPlay = player.getHand().get(eventToHandIndex.get(playCardCommand));
-        PlayerArea playerArea = model.getCurrentPlayer().getPlayerArea();
+        PlayerArea playerArea = player.getPlayerArea();
         if(!cardToPlay.isPlayable(playerArea, x, y))
             throw new NotPlayableException();
         playerArea.setCardOnCoordinates(cardToPlay, x, y, nickname);
@@ -105,13 +112,32 @@ public class GameplayController implements GameplayObserver {
         hand.remove(cardToPlay);
         player.setHand(hand);
 
-        player.setTurnStatus(TurnStatus.DRAW);
+        if (player.getPlayerArea().getPoints() >= 20 && model.getGameStatus() == GameStatus.GAMEPLAY) {
+            turnsLeftInSecondToLastRound = model.getNumOfPlayers() - model.getPlayerOrder().indexOf(player);
+            model.setGameStatus(GameStatus.LAST_ROUND_20_POINTS, nickname);
+        }
+
+        if (turnsLeftInSecondToLastRound > 0 && model.getGameStatus() != GameStatus.LAST_ROUND_DECKS_EMPTY)
+            player.setTurnStatus(TurnStatus.DRAW);
+
+        if (turnsLeftInSecondToLastRound == 0) {
+            turnsLeftInLastRound--;
+            nextPlayer(nickname);
+        }
+
+        if (turnsLeftInSecondToLastRound > 0 && model.getGameStatus() == GameStatus.LAST_ROUND_DECKS_EMPTY) {
+            turnsLeftInSecondToLastRound--;
+            nextPlayer(nickname);
+        }
+
+        if (turnsLeftInLastRound == 0)
+            model.setGameStatus(GameStatus.ENDGAME, nickname);
 
     }
 
 
     @Override
-    public void updateDrawCard(String nickname, DrawCardCommand drawCardCommand) throws NotYourTurnException, NotYourTurnStatusException{
+    public void updateDrawCard(String nickname, DrawCardCommand drawCardCommand) throws NotYourTurnException, NotYourTurnStatusException {
 
         if (!nickname.equals(model.getCurrentPlayer().getNickname()))
             throw new NotYourTurnException();
@@ -144,6 +170,16 @@ public class GameplayController implements GameplayObserver {
         nextPlayer(nickname);
         player.setTurnStatus(TurnStatus.PLAY);
 
+        if (model.getResourceCardsDeck().isEmpty() &&
+        model.getGoldCardsDeck().isEmpty() &&
+        model.getRevealedResourceCards().isEmpty() &&
+        model.getRevealedGoldCards().isEmpty()) {
+            turnsLeftInSecondToLastRound = model.getNumOfPlayers() - model.getPlayerOrder().indexOf(player) - 1;
+            model.setGameStatus(GameStatus.LAST_ROUND_DECKS_EMPTY, nickname);
+        }
+
+        if (model.getGameStatus() == GameStatus.LAST_ROUND_20_POINTS)
+            turnsLeftInSecondToLastRound--;
     }
 
     /**
@@ -188,17 +224,16 @@ public class GameplayController implements GameplayObserver {
 
         List<PlayableCard> revealedResourceCards = model.getRevealedResourceCards();
         PlayableCard drawnCard = revealedResourceCards.get(eventToHandIndex.get(drawCardCommand));
-        if (drawnCard == null)
+        DrawCardCommand otherDrawCardCommand = DrawCardCommand.DRAW_REVEALED_RESOURCE_CARD_1;
+        if (drawCardCommand == DrawCardCommand.DRAW_REVEALED_RESOURCE_CARD_1)
+            otherDrawCardCommand = DrawCardCommand.DRAW_REVEALED_RESOURCE_CARD_2;
+        if (drawnCard == null && revealedResourceCards.get(eventToHandIndex.get(otherDrawCardCommand)) != null)
             throw new NoMoreRevealedCardHereException();
 
         PlayableCard cardToReveal = null;
         if (!model.getResourceCardsDeck().isEmpty()) {
-            try {
-                cardToReveal = model.getResourceCardsDeck().drawACard(nickname);
-                cardToReveal.flip(nickname);
-            } catch (EmptyDeckException e){
-                System.err.println("The resource cards deck is now empty!");
-            }
+            cardToReveal = model.getResourceCardsDeck().drawACard(nickname);
+            cardToReveal.flip(nickname);
         }
         revealedResourceCards.set(eventToHandIndex.get(drawCardCommand), cardToReveal);
         model.setRevealedResourceCards(revealedResourceCards, nickname);
@@ -217,7 +252,10 @@ public class GameplayController implements GameplayObserver {
 
         List<PlayableCard> revealedGoldCards = model.getRevealedGoldCards();
         PlayableCard drawnCard = revealedGoldCards.get(eventToHandIndex.get(drawCardCommand));
-        if (drawnCard == null)
+        DrawCardCommand otherDrawCardCommand = DrawCardCommand.DRAW_REVEALED_GOLD_CARD_1;
+        if (drawCardCommand == DrawCardCommand.DRAW_REVEALED_GOLD_CARD_1)
+            otherDrawCardCommand = DrawCardCommand.DRAW_REVEALED_GOLD_CARD_2;
+        if (drawnCard == null && revealedGoldCards.get(eventToHandIndex.get(otherDrawCardCommand)) != null)
             throw new NoMoreRevealedCardHereException();
 
         PlayableCard cardToReveal = null;
@@ -241,9 +279,9 @@ public class GameplayController implements GameplayObserver {
     private void nextPlayer(String nickname) {
         Player nextPlayer;
         int index = model.getPlayerOrder().indexOf(model.getCurrentPlayer());
-        if(index < model.getPlayerOrder().size() -1 ){
+        if (index < model.getPlayerOrder().size() -1 ) {
             nextPlayer = model.getPlayerOrder().get(index+1);
-        }else{
+        } else {
             nextPlayer = model.getPlayerOrder().getFirst();
         }
         model.setCurrentPlayer(nextPlayer, nickname);

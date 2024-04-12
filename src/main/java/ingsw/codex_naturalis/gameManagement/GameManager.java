@@ -4,6 +4,7 @@ import ingsw.codex_naturalis.controller.gameplayPhase.GameplayController;
 import ingsw.codex_naturalis.controller.lobbyPhase.LobbyController;
 import ingsw.codex_naturalis.controller.setupPhase.SetupController;
 import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.enumerations.GameStatus;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
 import ingsw.codex_naturalis.view.gameplayPhase.Observer;
@@ -86,10 +87,12 @@ public class GameManager implements Observer<Game, Event> {
 
     @Override
     public void update(Game o, Event arg, String nickname) {
-        switch (arg) {
-            case SETUP_STATUS -> setupPhase();
-            case GAMEPLAY_STATUS -> gameplayPhase();
-        }
+        if (arg == Event.GAME_STATUS_CHANGED)
+            nextPhase(o);
+    }
+
+    public void nextPhase(Game o){
+        GameStatus gameStatus = o.getGameStatus();
     }
 
     private void setupPhase(){

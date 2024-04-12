@@ -37,7 +37,7 @@ public class Game extends Observable<Event> {
     /**
      * Max number of players of the game, the game creator decides this parameter
      */
-    private final int maxNumOfPlayers;
+    private final int numOfPlayers;
 
     /**
      * Contains all the players of the game, ordered by the turn they play
@@ -91,7 +91,7 @@ public class Game extends Observable<Event> {
     /**
      * Constructor
      */
-    public Game(int gameID, int maxNumOfPlayers) {
+    public Game(int gameID, int numOfPlayers) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
@@ -115,7 +115,7 @@ public class Game extends Observable<Event> {
         this.playerOrder = new ArrayList<>();
         this.gameID = gameID;
         this.gameStatus = GameStatus.LOBBY;
-        this.maxNumOfPlayers = maxNumOfPlayers;
+        this.numOfPlayers = numOfPlayers;
         this.messages = new ArrayList<>();
         this.revealedResourceCards = new ArrayList<>();
         this.revealedGoldCards = new ArrayList<>();
@@ -131,16 +131,13 @@ public class Game extends Observable<Event> {
     public GameStatus getGameStatus() {
         return gameStatus;
     }
-    public void setGameStatus(GameStatus gameStatus){
+    public void setGameStatus(GameStatus gameStatus, String nickname){
         this.gameStatus = gameStatus;
-        switch (gameStatus) {
-            case SETUP -> notifyObservers(Event.SETUP_STATUS, "");
-            case GAMEPLAY -> notifyObservers(Event.GAMEPLAY_STATUS, "");
-        }
+        notifyObservers(Event.GAME_STATUS_CHANGED, nickname);
     }
 
-    public int getMaxNumOfPlayers() {
-        return maxNumOfPlayers;
+    public int getNumOfPlayers() {
+        return numOfPlayers;
     }
 
     public List<Player> getPlayerOrder() {
@@ -256,7 +253,7 @@ public class Game extends Observable<Event> {
      */
     @Deprecated
     public void addPlayer(Player player) throws NicknameAlreadyExistsException, ColorAlreadyChosenException, MaxNumOfPlayersInException {
-        if(playerOrder.size() >= maxNumOfPlayers)
+        if(playerOrder.size() >= numOfPlayers)
             throw new MaxNumOfPlayersInException();
 
         for(Player p : playerOrder){

@@ -25,10 +25,10 @@ class GameTest {
     @Test
     void simpleGameTest(){
         assertEquals(0,game.getGameID());
-        game.setGameStatus(GameStatus.SETUP);
-        game.setGameStatus(GameStatus.GAMEPLAY);
+        game.setGameStatus(GameStatus.SETUP,"Test");
+        game.setGameStatus(GameStatus.GAMEPLAY,"Test");
         assertEquals(GameStatus.GAMEPLAY,game.getGameStatus());
-        assertEquals(4,game.getMaxNumOfPlayers());
+        assertEquals(4,game.getNumOfPlayers());
 
     }
 }

@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.view.gameplayPhase.commands;
+package ingsw.codex_naturalis.events.gameplayPhase;
 
 public enum Command{
 

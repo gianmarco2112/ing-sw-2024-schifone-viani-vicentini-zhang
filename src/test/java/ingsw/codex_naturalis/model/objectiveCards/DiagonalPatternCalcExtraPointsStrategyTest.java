@@ -7,13 +7,12 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.cards.objective.PatternObjectiveCard;
-import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
-import ingsw.codex_naturalis.model.enumerations.Symbol;
+import ingsw.codex_naturalis.enumerations.PlayableCardType;
+import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

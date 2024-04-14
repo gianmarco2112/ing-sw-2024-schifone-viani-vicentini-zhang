@@ -11,7 +11,7 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.front.Needy;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiver;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverForObject;
-import ingsw.codex_naturalis.model.enumerations.Symbol;
+import ingsw.codex_naturalis.enumerations.Symbol;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,

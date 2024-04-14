@@ -1,6 +1,6 @@
-package ingsw.codex_naturalis.view.gameplayPhase.commands;
+package ingsw.codex_naturalis.events.gameplayPhase;
 
-public enum PlayCardCommand{
+public enum PlayCard {
 
     PLAY_CARD_1("Play card 1"),
     PLAY_CARD_2("Play card 2"),
@@ -8,7 +8,7 @@ public enum PlayCardCommand{
 
     private final String description;
 
-    PlayCardCommand(String description){
+    PlayCard(String description){
         this.description = description;
     }
 

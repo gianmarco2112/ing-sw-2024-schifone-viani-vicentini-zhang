@@ -1,20 +1,20 @@
 package ingsw.codex_naturalis.controller.gameplayPhase;
 
 
+import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
+import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourTurnStatusException;
-import ingsw.codex_naturalis.view.gameplayPhase.commands.DrawCardCommand;
-import ingsw.codex_naturalis.view.gameplayPhase.commands.FlipCardCommand;
-import ingsw.codex_naturalis.view.gameplayPhase.commands.PlayCardCommand;
-import ingsw.codex_naturalis.view.gameplayPhase.commands.TextCommand;
+import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
+import ingsw.codex_naturalis.events.gameplayPhase.Message;
 
 import java.util.List;
 
 public interface GameplayObserver {
 
-    void updateFlipCard(String nickname, FlipCardCommand flipCardCommand);
-    void updatePlayCard(String nickname, PlayCardCommand playCardCommand, int x, int y) throws NotYourTurnException;
-    void updateDrawCard(String nickname, DrawCardCommand drawCardCommand) throws NotYourTurnException, NotYourTurnStatusException;
-    void updateText(String nickname, TextCommand textCommand, String content, List<String> receivers);
+    void updateFlipCard(FlipCard flipCard);
+    void updatePlayCard(PlayCard playCard, int x, int y) throws NotYourTurnException;
+    void updateDrawCard(DrawCard drawCard) throws NotYourTurnException, NotYourTurnStatusException;
+    void updateText(Message message, String content, List<String> receivers);
 
 }

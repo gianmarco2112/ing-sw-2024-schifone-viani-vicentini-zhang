@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.model.enumerations;
+package ingsw.codex_naturalis.enumerations;
 /**
  * Symbols' enumeration
  * This enumeration represents all the different type of Symbols (Resources or Objects)

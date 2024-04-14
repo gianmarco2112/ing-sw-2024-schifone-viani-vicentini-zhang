@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.observerObservable.Observable;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Card extends Observable<Event> {
 
@@ -39,10 +42,15 @@ public abstract class Card extends Observable<Event> {
 
 
 
+
+
     public Immutable getImmutableCard(){
         return new Immutable(cardID, showingFront, getDescription());
     }
 
-    public record Immutable(String cardID, boolean showingFront, String description) {}
+    public record Immutable(String cardID, boolean showingFront, String description) implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 2L;
+    }
 
 }

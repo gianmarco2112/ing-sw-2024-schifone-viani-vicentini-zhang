@@ -17,7 +17,7 @@ module ingsw.codex_naturalis {
     opens ingsw.codex_naturalis.model to com.fasterxml.jackson.databind;
     exports ingsw.codex_naturalis.model  to com.fasterxml.jackson.databind;
 
-    exports ingsw.codex_naturalis.model.enumerations;
+    exports ingsw.codex_naturalis.enumerations;
     exports ingsw.codex_naturalis.view.gameplayPhase;
     exports ingsw.codex_naturalis.model.cards;
 
@@ -29,8 +29,6 @@ module ingsw.codex_naturalis {
 
     exports ingsw.codex_naturalis;
 
-    exports ingsw.codex_naturalis.view.gameplayPhase.commands;
-
 
     exports ingsw.codex_naturalis.exceptions;
     exports ingsw.codex_naturalis.model.observerObservable to com.fasterxml.jackson.databind;
@@ -39,6 +37,10 @@ module ingsw.codex_naturalis {
     opens ingsw.codex_naturalis.model.player to com.fasterxml.jackson.databind;
     opens ingsw.codex_naturalis.model.cards to com.fasterxml.jackson.databind;
     exports ingsw.codex_naturalis.controller.gameplayPhase;
-    exports ingsw.codex_naturalis.gameManagement;
-    opens ingsw.codex_naturalis.gameManagement to javafx.fxml;
+    exports ingsw.codex_naturalis.events.lobbyPhase;
+    opens ingsw.codex_naturalis.events.lobbyPhase to javafx.fxml;
+    exports ingsw.codex_naturalis.events.gameplayPhase;
+    opens ingsw.codex_naturalis.enumerations to javafx.fxml;
+    exports ingsw.codex_naturalis.distributed;
+    opens ingsw.codex_naturalis.distributed to javafx.fxml;
 }

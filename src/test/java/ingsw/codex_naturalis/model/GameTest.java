@@ -1,10 +1,6 @@
 package ingsw.codex_naturalis.model;
 
-import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
-import ingsw.codex_naturalis.exceptions.MaxNumOfPlayersInException;
-import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
-import ingsw.codex_naturalis.model.enumerations.GameStatus;
-import ingsw.codex_naturalis.model.player.Player;
+import ingsw.codex_naturalis.enumerations.GameStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

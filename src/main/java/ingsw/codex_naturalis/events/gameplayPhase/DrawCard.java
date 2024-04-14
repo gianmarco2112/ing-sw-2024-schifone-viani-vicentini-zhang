@@ -1,6 +1,6 @@
-package ingsw.codex_naturalis.view.gameplayPhase.commands;
+package ingsw.codex_naturalis.events.gameplayPhase;
 
-public enum DrawCardCommand {
+public enum DrawCard {
 
     DRAW_FROM_RESOURCE_CARDS_DECK("Draw from the resource cards deck"),
     DRAW_FROM_GOLD_CARDS_DECK("Draw from the gold cards deck"),
@@ -11,7 +11,7 @@ public enum DrawCardCommand {
 
     private final String description;
 
-    DrawCardCommand(String description){
+    DrawCard(String description){
         this.description = description;
     }
 

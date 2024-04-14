@@ -6,8 +6,8 @@ import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.player.PlayerArea;
-import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
-import ingsw.codex_naturalis.model.enumerations.Symbol;
+import ingsw.codex_naturalis.enumerations.PlayableCardType;
+import ingsw.codex_naturalis.enumerations.Symbol;
 
 public class PlayableCard extends Card {
 

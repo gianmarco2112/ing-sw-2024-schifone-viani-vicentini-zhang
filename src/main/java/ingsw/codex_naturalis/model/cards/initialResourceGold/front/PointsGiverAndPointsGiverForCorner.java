@@ -5,10 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.PointsStrategy;
-import ingsw.codex_naturalis.model.enumerations.Symbol;
+import ingsw.codex_naturalis.enumerations.Symbol;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class PointsGiverAndPointsGiverForCorner extends Needy {
 

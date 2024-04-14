@@ -1,6 +1,6 @@
-package ingsw.codex_naturalis.view.gameplayPhase.commands;
+package ingsw.codex_naturalis.events.gameplayPhase;
 
-public enum FlipCardCommand {
+public enum FlipCard {
 
     FLIP_CARD_1("Flip card 1"),
     FLIP_CARD_2("Flip card 2"),
@@ -8,7 +8,7 @@ public enum FlipCardCommand {
 
     private final String description;
 
-    FlipCardCommand(String description){
+    FlipCard(String description){
         this.description = description;
     }
 

@@ -1,9 +1,6 @@
 package ingsw.codex_naturalis.model;
 
 
-import ingsw.codex_naturalis.controller.gameplayPhase.GameplayController;
-import ingsw.codex_naturalis.exceptions.NotPlayableException;
-import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
@@ -12,11 +9,9 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAn
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverForObject;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.CornerPointsStrategy;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.StandardPointsStrategy;
-import ingsw.codex_naturalis.model.enumerations.PlayableCardType;
-import ingsw.codex_naturalis.model.enumerations.Symbol;
+import ingsw.codex_naturalis.enumerations.PlayableCardType;
+import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.model.player.Player;
-import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
-import ingsw.codex_naturalis.view.gameplayPhase.commands.PlayCardCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

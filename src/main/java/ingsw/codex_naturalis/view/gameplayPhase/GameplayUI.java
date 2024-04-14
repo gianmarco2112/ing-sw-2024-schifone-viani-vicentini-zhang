@@ -1,8 +1,7 @@
 package ingsw.codex_naturalis.view.gameplayPhase;
 
-import ingsw.codex_naturalis.model.observerObservable.Event;
-import ingsw.codex_naturalis.model.observerObservable.GameView;
+import ingsw.codex_naturalis.view.GameUI;
 
-public abstract class GameplayUI extends GameplayObservable implements Observer<GameView, Event>, Runnable{
+public abstract class GameplayUI extends GameplayObservable implements GameUI {
 
 }

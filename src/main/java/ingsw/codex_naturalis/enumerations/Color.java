@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.model.enumerations;
+package ingsw.codex_naturalis.enumerations;
 /**
  * Color's enumeration
  * Each player is represented on the score track by a token of a specific color.

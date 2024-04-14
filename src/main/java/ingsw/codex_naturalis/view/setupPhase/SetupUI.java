@@ -1,10 +1,8 @@
 package ingsw.codex_naturalis.view.setupPhase;
 
-import ingsw.codex_naturalis.model.observerObservable.Event;
-import ingsw.codex_naturalis.model.observerObservable.GameView;
-import ingsw.codex_naturalis.view.gameplayPhase.Observer;
+import ingsw.codex_naturalis.view.GameUI;
 
-public abstract class SetupUI implements Observer<GameView, Event> {
+public abstract class SetupUI extends SetupObservable implements GameUI {
 
 
 }

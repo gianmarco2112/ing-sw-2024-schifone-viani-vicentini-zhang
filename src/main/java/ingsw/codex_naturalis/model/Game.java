@@ -1,14 +1,14 @@
 package ingsw.codex_naturalis.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.exceptions.MaxNumOfPlayersInException;
 import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
-import ingsw.codex_naturalis.model.enumerations.GameStatus;
+import ingsw.codex_naturalis.enumerations.GameStatus;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.observerObservable.Observable;
 import ingsw.codex_naturalis.model.player.Player;
@@ -16,12 +16,56 @@ import ingsw.codex_naturalis.model.player.PlayerArea;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Game class
  */
 public class Game extends Observable<Event> {
+
+    public record Immutable(int gameID, GameStatus gameStatus, List<String> playerOrder,
+                            String currentPlayer, List<Player.ImmutableHidden> hiddenPlayers,
+                            Player.Immutable player, Card.Immutable topResourceCardDeck,
+                            Card.Immutable topGoldCardDeck, List<Card.Immutable> revealedResourceCards,
+                            List<Card.Immutable> revealedGoldCards, List<Card.Immutable> commonObjectiveCards,
+                            List<Message> chat) implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 4L; }
+
+    public Game.Immutable getImmutableGame(String playerNicknameReceiver) {
+
+        List<String> playerOrderString = new ArrayList<>();
+        Player.Immutable playerReceiver = null;
+        List<Player.ImmutableHidden> immutableHiddenPlayers = new ArrayList<>();
+        for (Player player : playerOrder) {
+            playerOrderString.add(player.getNickname());
+            if (!player.getNickname().equals(playerNicknameReceiver))
+                immutableHiddenPlayers.add(player.getImmutableHiddenPlayer());
+            else
+                playerReceiver = player.getImmutablePlayer();
+        }
+
+        List<Card.Immutable> immutableRevealedResourceCards = new ArrayList<>();
+        for (PlayableCard card : revealedResourceCards)
+            immutableRevealedResourceCards.add(card.getImmutableCard());
+
+        List<Card.Immutable> immutableRevealedGoldCards = new ArrayList<>();
+        for (PlayableCard card : revealedGoldCards)
+            immutableRevealedGoldCards.add(card.getImmutableCard());
+
+        List<Card.Immutable> immutableCommonObjectiveCards = new ArrayList<>();
+        for (ObjectiveCard card : commonObjectiveCards)
+            immutableCommonObjectiveCards.add(card.getImmutableCard());
+
+        return new Immutable(gameID, gameStatus, playerOrderString,
+                currentPlayer.getNickname(), immutableHiddenPlayers, playerReceiver,
+                getResourceCardsDeck().getFirstCard().getImmutableCard(),
+                getGoldCardsDeck().getFirstCard().getImmutableCard(), immutableRevealedResourceCards,
+                immutableRevealedGoldCards, immutableCommonObjectiveCards, chat);
+
+    }
 
 
     /**
@@ -84,7 +128,7 @@ public class Game extends Observable<Event> {
      */
     private List<ObjectiveCard> commonObjectiveCards;
 
-    private List<Message> messages;
+    private List<Message> chat;
 
 
 
@@ -116,7 +160,7 @@ public class Game extends Observable<Event> {
         this.gameID = gameID;
         this.gameStatus = GameStatus.LOBBY;
         this.numOfPlayers = numOfPlayers;
-        this.messages = new ArrayList<>();
+        this.chat = new ArrayList<>();
         this.revealedResourceCards = new ArrayList<>();
         this.revealedGoldCards = new ArrayList<>();
         this.commonObjectiveCards = new ArrayList<>();
@@ -155,11 +199,11 @@ public class Game extends Observable<Event> {
         notifyObservers(Event.TURN_CHANGED, nickname);
     }
 
-    public List<Message> getMessages() {
-        return new ArrayList<>(messages);
+    public List<Message> getChat() {
+        return new ArrayList<>(chat);
     }
     public void setMessages(List<Message> messages, String nickname){
-        this.messages = messages;
+        this.chat = messages;
         notifyObservers(Event.MESSAGE_SENT, nickname);
     }
 
@@ -200,6 +244,23 @@ public class Game extends Observable<Event> {
     public void setRevealedGoldCards(List<PlayableCard> revealedGoldCards, String nickname){
         this.revealedGoldCards = revealedGoldCards;
         notifyObservers(Event.REVEALED_GOLD_CARDS_CHANGED, nickname);
+    }
+
+    /**
+     * Adds a player to the game
+     * @param player Player
+     */
+    public void addPlayer(Player player) throws NicknameAlreadyExistsException, MaxNumOfPlayersInException {
+        if(playerOrder.size() >= numOfPlayers)
+            throw new MaxNumOfPlayersInException();
+
+        for(Player p : playerOrder){
+            if(player.getNickname().equals(p.getNickname())){
+                throw new NicknameAlreadyExistsException();
+            }
+        }
+        playerOrder.add(player);
+        notifyObservers(Event.PLAYER, player.getNickname());
     }
 
 
@@ -247,23 +308,4 @@ public class Game extends Observable<Event> {
         }*/
     }
 
-    /**
-     * Adds a player to the game
-     * @param player Player
-     */
-    @Deprecated
-    public void addPlayer(Player player) throws NicknameAlreadyExistsException, ColorAlreadyChosenException, MaxNumOfPlayersInException {
-        if(playerOrder.size() >= numOfPlayers)
-            throw new MaxNumOfPlayersInException();
-
-        for(Player p : playerOrder){
-            if(player.getNickname().equals(p.getNickname())){
-                throw new NicknameAlreadyExistsException();
-            }
-            if(player.getColor() == p.getColor()){
-                throw new ColorAlreadyChosenException();
-            }
-        }
-        playerOrder.add(player);
-    }
 }

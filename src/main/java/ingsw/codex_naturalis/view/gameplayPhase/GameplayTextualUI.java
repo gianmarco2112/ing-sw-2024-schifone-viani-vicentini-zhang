@@ -1,15 +1,18 @@
 package ingsw.codex_naturalis.view.gameplayPhase;
 
+import ingsw.codex_naturalis.enumerations.PlayersConnectedStatus;
+import ingsw.codex_naturalis.events.gameplayPhase.*;
 import ingsw.codex_naturalis.exceptions.*;
+import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.observerObservable.Event;
-import ingsw.codex_naturalis.model.observerObservable.GameView;
-import ingsw.codex_naturalis.view.gameplayPhase.commands.*;
 
 import java.util.*;
 
-import static ingsw.codex_naturalis.view.gameplayPhase.commands.UtilityCommand.CANCEL;
+import static ingsw.codex_naturalis.events.gameplayPhase.UtilityCommand.CANCEL;
 
 public class GameplayTextualUI extends GameplayUI {
+
+    private boolean running;
 
     String nickname;
 
@@ -18,15 +21,17 @@ public class GameplayTextualUI extends GameplayUI {
     private final Map<Integer, String> playerNicknames = new LinkedHashMap<>();
 
     private final Map<Integer, Command> commands = new LinkedHashMap<>();
-    private final Map<Integer, FlipCardCommand> flipCardCommands = new LinkedHashMap<>();
-    private final Map<Integer, PlayCardCommand> playCardCommands = new LinkedHashMap<>();
-    private final Map<Integer, DrawCardCommand> drawCardCommands = new LinkedHashMap<>();
-    private final Map<Integer, TextCommand> textCommands = new LinkedHashMap<>();
+    private final Map<Integer, FlipCard> flipCardCommands = new LinkedHashMap<>();
+    private final Map<Integer, PlayCard> playCardCommands = new LinkedHashMap<>();
+    private final Map<Integer, DrawCard> drawCardCommands = new LinkedHashMap<>();
+    private final Map<Integer, Message> textCommands = new LinkedHashMap<>();
 
     private final Map<String, UtilityCommand> utilityCommands = new LinkedHashMap<>();
 
 
     public GameplayTextualUI(String nickname, List<String> playerNicknames){
+
+        running = true;
 
         this.nickname = nickname;
 
@@ -37,17 +42,17 @@ public class GameplayTextualUI extends GameplayUI {
         for (int key = 0; key < Command.values().length; key++) {
             commands.put(key, Command.values()[key]);
         }
-        for (int key = 0; key < FlipCardCommand.values().length; key++) {
-            flipCardCommands.put(key+1, FlipCardCommand.values()[key]);
+        for (int key = 0; key < FlipCard.values().length; key++) {
+            flipCardCommands.put(key+1, FlipCard.values()[key]);
         }
-        for (int key = 0; key < PlayCardCommand.values().length; key++) {
-            playCardCommands.put(key+1, PlayCardCommand.values()[key]);
+        for (int key = 0; key < PlayCard.values().length; key++) {
+            playCardCommands.put(key+1, PlayCard.values()[key]);
         }
-        for (int key = 0; key < DrawCardCommand.values().length; key++) {
-            drawCardCommands.put(key+1, DrawCardCommand.values()[key]);
+        for (int key = 0; key < DrawCard.values().length; key++) {
+            drawCardCommands.put(key+1, DrawCard.values()[key]);
         }
-        for (int key = 0; key < TextCommand.values().length; key++) {
-            textCommands.put(key+1, TextCommand.values()[key]);
+        for (int key = 0; key < Message.values().length; key++) {
+            textCommands.put(key+1, Message.values()[key]);
         }
         utilityCommands.put("/", CANCEL);
     }
@@ -55,7 +60,7 @@ public class GameplayTextualUI extends GameplayUI {
 
     @Override
     public void run() {
-        while (true) {
+        while (running) {
             Command command = askCommandToPlayer();
             try {
                 switch (command) {
@@ -70,25 +75,30 @@ public class GameplayTextualUI extends GameplayUI {
         }
     }
 
+    @Override
+    public void stop() {
+        running = false;
+    }
+
 
     private void printUtilityCommands(){
         for (Map.Entry<String, UtilityCommand> entry : utilityCommands.entrySet())
             System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
     }
     private void printFlipCardCommands(){
-        for (Map.Entry<Integer, FlipCardCommand> entry : flipCardCommands.entrySet())
+        for (Map.Entry<Integer, FlipCard> entry : flipCardCommands.entrySet())
             System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
     }
     private void printPlayCardCommands(){
-        for (Map.Entry<Integer, PlayCardCommand> entry : playCardCommands.entrySet())
+        for (Map.Entry<Integer, PlayCard> entry : playCardCommands.entrySet())
             System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
     }
     private void printDrawCardCommands(){
-        for (Map.Entry<Integer, DrawCardCommand> entry : drawCardCommands.entrySet())
+        for (Map.Entry<Integer, DrawCard> entry : drawCardCommands.entrySet())
             System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
     }
     private void printTextCommands(){
-        for (Map.Entry<Integer, TextCommand> entry : textCommands.entrySet())
+        for (Map.Entry<Integer, Message> entry : textCommands.entrySet())
             System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
     }
 
@@ -106,8 +116,8 @@ public class GameplayTextualUI extends GameplayUI {
         printUtilityCommands();
         printFlipCardCommands();
         try {
-            FlipCardCommand flipCardCommand = askGenericCommandToPlayer(flipCardCommands);
-            notifyFlipCard(nickname, flipCardCommand);
+            FlipCard flipCard = askGenericCommandToPlayer(flipCardCommands);
+            notifyFlipCard(flipCard);
         } catch (UtilityCommandException e){
             UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
             utilityCommandCase(utilityCommand);
@@ -119,11 +129,11 @@ public class GameplayTextualUI extends GameplayUI {
         printUtilityCommands();
         printPlayCardCommands();
         try {
-            PlayCardCommand playCardCommand = askGenericCommandToPlayer(playCardCommands);
+            PlayCard playCard = askGenericCommandToPlayer(playCardCommands);
             int x = askCoordinateToPlayer("coordinate x");
             int y = askCoordinateToPlayer("coordinate y");
             try {
-                notifyPlayCard(nickname, playCardCommand, x, y);
+                notifyPlayCard(playCard, x, y);
                 removeCardFromTheOptions();
             } catch (NotPlayableException | NotYourTurnException e) {
                 System.err.println(e.getMessage());
@@ -144,8 +154,8 @@ public class GameplayTextualUI extends GameplayUI {
         printUtilityCommands();
         printDrawCardCommands();
         try {
-            DrawCardCommand drawCardCommand = askGenericCommandToPlayer(drawCardCommands);
-            notifyDrawCard(nickname, drawCardCommand);
+            DrawCard drawCard = askGenericCommandToPlayer(drawCardCommands);
+            notifyDrawCard(drawCard);
             addCardToTheOptions();
         } catch (UtilityCommandException e){
             UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
@@ -156,8 +166,8 @@ public class GameplayTextualUI extends GameplayUI {
     }
 
     private void addCardToTheOptions() {
-        flipCardCommands.put(3, FlipCardCommand.values()[2]);
-        playCardCommands.put(3, PlayCardCommand.values()[2]);
+        flipCardCommands.put(3, FlipCard.values()[2]);
+        playCardCommands.put(3, PlayCard.values()[2]);
     }
 
     private void textCase(){
@@ -165,7 +175,7 @@ public class GameplayTextualUI extends GameplayUI {
         printUtilityCommands();
         printTextCommands();
         try {
-            TextCommand textCommand = askGenericCommandToPlayer(textCommands);
+            Message textCommand = askGenericCommandToPlayer(textCommands);
             List<String> playersToText = new ArrayList<>();
             switch (textCommand) {
                 case TEXT_A_PLAYER -> {
@@ -175,7 +185,7 @@ public class GameplayTextualUI extends GameplayUI {
                         playersToText = new ArrayList<>(playerNicknames.values());
             }
             String message = askMessageContentToPlayer();
-            notifyText(nickname, textCommand, message, playersToText);
+            notifyText(textCommand, message, playersToText);
         } catch (UtilityCommandException e) {
             UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
             utilityCommandCase(utilityCommand);
@@ -276,45 +286,19 @@ public class GameplayTextualUI extends GameplayUI {
 
 
 
-    @Override
-    public void update(GameView o, Event arg, String nickname) {
+    public void update(Game.Immutable o, Event arg, String nickname, String playerWhoUpdated) {
         try {
             switch (arg) {
-                case HAND_CHANGED -> showHand(o, nickname);
-                case PLAYER_AREA_CHANGED -> showPlayerArea(o, nickname);
-                case DECK_CHANGED -> showDecks(o, nickname);
-                case MESSAGE_SENT -> showChat(o, nickname);
-                case REVEALED_GOLD_CARDS_CHANGED -> showRevealedGoldCards(o, nickname);
-                case REVEALED_RESOURCE_CARDS_CHANGED -> showRevealedResourceCards(o, nickname);
-                case TURN_CHANGED -> showTurn(o, nickname);
-                case TURN_STATUS_CHANGED -> showTurnStatus(o, nickname);
+
             }
         } catch (NoSuchNicknameException e) {
             System.err.println(e.getMessage());
         }
     }
 
-    private void showTurnStatus(GameView o, String nickname) {
+    @Override
+    public void setPlayersConnectedStatus(PlayersConnectedStatus playersConnectedStatus) {
+
     }
 
-    private void showTurn(GameView o, String nickname) {
-    }
-
-    private void showRevealedResourceCards(GameView o, String nickname) {
-    }
-
-    private void showRevealedGoldCards(GameView o, String nickname) {
-    }
-
-    private void showChat(GameView o, String nickname) {
-    }
-
-    private void showDecks(GameView o, String nickname) {
-    }
-
-    private void showPlayerArea(GameView o, String nickname) {
-    }
-
-    private void showHand(GameView o, String nickname) {
-    }
 }

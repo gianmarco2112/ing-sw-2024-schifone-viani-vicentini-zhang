@@ -2,13 +2,16 @@ package ingsw.codex_naturalis.model;
 
 import ingsw.codex_naturalis.model.player.Player;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.*;
 
 /**
  * MessageEvent class
  */
-public class Message {
+public class Message implements Serializable {
+
+    private static final long serialVersionUID = 3L;
 
     /**
      * Content of the message

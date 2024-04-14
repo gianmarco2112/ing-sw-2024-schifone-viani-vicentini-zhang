@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        GameplayUI view = new GameplayTextualUI("nickname", new ArrayList<>(List.of("Gianmarco", "Andrea", "Alessia", "Leonardo")));
+        /*GameplayUI view = new GameplayTextualUI("nickname", new ArrayList<>(List.of("Gianmarco", "Andrea", "Alessia", "Leonardo")));
 
         Game game = new Game(1, 3);
         Player player = new Player("nickname");
@@ -23,6 +23,6 @@ public class Main {
 
         view.addObserver(gameplayController);
 
-        view.run();
+        view.run();*/
     }
 }

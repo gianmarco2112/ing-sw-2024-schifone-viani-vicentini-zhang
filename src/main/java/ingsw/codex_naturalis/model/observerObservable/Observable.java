@@ -27,9 +27,9 @@ public class Observable<Event extends Enum<Event>> {
 
 
 
-    public void notifyObservers(Event arg, String nickname) {
+    public void notifyObservers(Event arg, String playerWhoUpdated) {
         for (Observer<Observable<Event>, Event> o : obs) {
-            o.update(this, arg, nickname);
+            o.update(this, arg, playerWhoUpdated);
         }
     }
 }

@@ -1,17 +1,51 @@
 package ingsw.codex_naturalis.model.player;
 
+import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.enumerations.Color;
-import ingsw.codex_naturalis.model.enumerations.TurnStatus;
+import ingsw.codex_naturalis.enumerations.Color;
+import ingsw.codex_naturalis.enumerations.TurnStatus;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.observerObservable.Observable;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Player class
  */
 public class Player extends Observable<Event> {
+
+    public record Immutable(String nickname, Color color, TurnStatus turnStatus,
+                            Card.Immutable initialCard, List<Card.Immutable> hand,
+                            PlayerArea.Immutable playerArea) implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 5L; }
+
+    public record ImmutableHidden(String nickname, Color color, TurnStatus turnStatus,
+                            Card.Immutable initialCard, List<Card.Immutable> hand,
+                            PlayerArea.ImmutableHidden playerArea) implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 7L; }
+
+    public Player.Immutable getImmutablePlayer(){
+
+        List<Card.Immutable> immutableHand = new ArrayList<>();
+        for (PlayableCard playableCard : hand)
+            immutableHand.add(playableCard.getImmutableCard());
+        return new Player.Immutable(nickname, color, turnStatus, initialCard.getImmutableCard(),
+                immutableHand, playerArea.getImmutablePlayerArea());
+    }
+
+    public Player.ImmutableHidden getImmutableHiddenPlayer(){
+
+        List<Card.Immutable> immutableHand = new ArrayList<>();
+        for (PlayableCard playableCard : hand)
+            immutableHand.add(playableCard.getImmutableCard());
+        return new Player.ImmutableHidden(nickname, color, turnStatus, initialCard.getImmutableCard(),
+                    immutableHand, playerArea.getImmutableHiddenPlayerArea());
+    }
+
 
     /**
      * Nickname of the player

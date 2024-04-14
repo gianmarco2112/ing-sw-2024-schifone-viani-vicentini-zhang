@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.model.enumerations;
+package ingsw.codex_naturalis.enumerations;
 
 public enum ExtremeCoordinate {
 

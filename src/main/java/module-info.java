@@ -5,6 +5,7 @@ module ingsw.codex_naturalis {
     requires org.controlsfx.controls;
 
     requires com.fasterxml.jackson.databind;
+    requires java.rmi;
 
     opens ingsw.codex_naturalis to javafx.fxml;
 
@@ -18,6 +19,7 @@ module ingsw.codex_naturalis {
     exports ingsw.codex_naturalis.model  to com.fasterxml.jackson.databind;
 
     exports ingsw.codex_naturalis.enumerations;
+    exports ingsw.codex_naturalis.distributed.rmi;
     exports ingsw.codex_naturalis.view.gameplayPhase;
     exports ingsw.codex_naturalis.model.cards;
 

@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.distributed.local;
+package ingsw.codex_naturalis.distributed.rmi;
 
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
@@ -19,11 +19,22 @@ import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
 
+import java.io.Serial;
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.RMIClientSocketFactory;
+import java.rmi.server.RMIServerSocketFactory;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 public class ServerImpl implements Server, Observer<Game, Event> {
 
-    public record GameSpecs(int ID, int currentNumOfPlayers, int maxNumOfPlayers){}
+
+    public record GameSpecs(int ID, int currentNumOfPlayers, int maxNumOfPlayers) implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 11L; }
+
+    private final List<Client> newClients = new ArrayList<>();
 
     private final List<SetupController> setupControllersOfStartingGames = new ArrayList<>();
     private final List<SetupController> setupControllers = new ArrayList<>();
@@ -34,10 +45,11 @@ public class ServerImpl implements Server, Observer<Game, Event> {
     @Override
     public void register(Client client) {
 
-        //to remove
-        //clientsToGame.put(new Game(0, 4), null);
-
-        client.updateLobbyUI(getGamesSpecs());
+        try {
+            client.updateLobbyUI(getGamesSpecs());
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the client");
+        }
 
     }
 
@@ -80,22 +92,44 @@ public class ServerImpl implements Server, Observer<Game, Event> {
         Player player = new Player(nickname);
         try {
             gameToAccess.addPlayer(player);
-            client.setNickname(nickname);
-            if (gameToAccess.getPlayerOrder().size() < gameToAccess.getNumOfPlayers())
-                client.updateView(GameStatus.SETUP, PlayersConnectedStatus.WAIT);
+            try {
+                client.setNickname(nickname);
+            } catch (RemoteException e) {
+                System.err.println("Error while updating the client");
+            }
+            if (gameToAccess.getPlayerOrder().size() < gameToAccess.getNumOfPlayers()) {
+                try {
+                    client.updateView(GameStatus.SETUP, PlayersConnectedStatus.WAIT);
+                } catch (RemoteException e) {
+                    System.err.println("Error while updating the client");
+                }
+            }
             else {
                 setupControllersOfStartingGames.remove(setupController);
                 setupControllers.add(setupController);
-                client.updateView(GameStatus.SETUP, PlayersConnectedStatus.GO);
+                try {
+                    client.updateView(GameStatus.SETUP, PlayersConnectedStatus.GO);
+                } catch (RemoteException e) {
+                    System.err.println("Error while updating the client");
+                }
                 for (Client c : clients)
-                    if (!c.equals(client))
-                        c.updatePlayersConnectedStatus(PlayersConnectedStatus.GO);
+                    if (!c.equals(client)) {
+                        try {
+                            c.updatePlayersConnectedStatus(PlayersConnectedStatus.GO);
+                        } catch (RemoteException e) {
+                            System.err.println("Error while updating the client");
+                        }
+                    }
             }
 
         } catch (NicknameAlreadyExistsException | MaxNumOfPlayersInException e) {
 
             setupController.removeView(client);
-            client.setNickname(null);
+            try {
+                client.setNickname(null);
+            } catch (RemoteException ex) {
+                System.err.println("Error while updating the client");
+            }
             throw e;
 
         }
@@ -109,13 +143,21 @@ public class ServerImpl implements Server, Observer<Game, Event> {
         Player player = new Player(nickname);
         game.addPlayer(player);
 
-        client.setNickname(nickname);
+        try {
+            client.setNickname(nickname);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the client");
+        }
 
         SetupController setupController = new SetupController(game, client);
 
         setupControllersOfStartingGames.add(setupController);
 
-        client.updateView(GameStatus.SETUP, PlayersConnectedStatus.WAIT);
+        try {
+            client.updateView(GameStatus.SETUP, PlayersConnectedStatus.WAIT);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the client");
+        }
 
     }
 
@@ -134,12 +176,12 @@ public class ServerImpl implements Server, Observer<Game, Event> {
     }
 
     @Override
-    public void updateInitialCard(ClientImpl client, InitialCardEvent initialCardEvent) {
+    public void updateInitialCard(Client client, InitialCardEvent initialCardEvent) {
         findSetupControllerByClient(client).updateInitialCard(client, initialCardEvent);
     }
 
     @Override
-    public void updateColor(ClientImpl client, Color color) {
+    public void updateColor(Client client, Color color) {
         findSetupControllerByClient(client).updateColor(client, color);
     }
 
@@ -172,16 +214,26 @@ public class ServerImpl implements Server, Observer<Game, Event> {
 
         for (SetupController setupController : setupControllers) {
             if (o.equals(setupController.getModel())) {
-                for (Client client : setupController.getViews())
-                    client.updateGameUI(o.getImmutableGame(client.getNickname()), arg, playerWhoUpdated);
+                for (Client client : setupController.getViews()) {
+                    try {
+                        client.updateGameUI(o.getImmutableGame(client.getNickname()), arg, playerWhoUpdated);
+                    } catch (RemoteException e) {
+                        System.err.println("Error while getting the client nickname");
+                    }
+                }
                 return;
             }
         }
 
         for (GameplayController gameplayController : gameplayControllers) {
             if (o.equals(gameplayController.getModel())) {
-                for (Client client : gameplayController.getViews())
-                    client.updateGameUI(o.getImmutableGame(client.getNickname()), arg, playerWhoUpdated);
+                for (Client client : gameplayController.getViews()) {
+                    try {
+                        client.updateGameUI(o.getImmutableGame(client.getNickname()), arg, playerWhoUpdated);
+                    } catch (RemoteException e) {
+                        System.err.println("Error while getting the client nickname");
+                    }
+                }
                 return;
             }
         }

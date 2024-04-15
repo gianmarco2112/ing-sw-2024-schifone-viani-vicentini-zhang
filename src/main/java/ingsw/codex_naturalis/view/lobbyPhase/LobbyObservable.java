@@ -1,7 +1,7 @@
 package ingsw.codex_naturalis.view.lobbyPhase;
 
 import ingsw.codex_naturalis.events.lobbyPhase.NetworkProtocol;
-import ingsw.codex_naturalis.distributed.local.LobbyObserver;
+import ingsw.codex_naturalis.distributed.rmi.LobbyObserver;
 
 import java.util.ArrayList;
 import java.util.List;

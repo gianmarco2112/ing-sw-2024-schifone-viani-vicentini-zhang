@@ -44,7 +44,7 @@ public abstract class ObjectiveCard extends Card {
 
     public record Immutable(String cardID, boolean showingFront, String card) implements Serializable {
         @Serial
-        private static final long serialVersionUID = 2L;
+        private static final long serialVersionUID = 9L;
     }
 
 

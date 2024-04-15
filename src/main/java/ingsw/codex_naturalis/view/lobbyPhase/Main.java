@@ -1,15 +1,22 @@
 package ingsw.codex_naturalis.view.lobbyPhase;
 
-import ingsw.codex_naturalis.distributed.local.ClientImpl;
-import ingsw.codex_naturalis.distributed.local.ServerImpl;
+import ingsw.codex_naturalis.distributed.rmi.ClientImpl;
+import ingsw.codex_naturalis.distributed.rmi.ServerImpl;
+
+import java.rmi.RemoteException;
 
 public class Main {
     public static void main(String[] args){
         /*LobbyUI view = new LobbyTextualUI();
-        view.run();*/
+        view.run();
 
-        ServerImpl server = new ServerImpl();
-        ClientImpl client = new ClientImpl(server);
-        client.run();
+       // ServerImpl server = new ServerImpl();
+        ClientImpl client = null;
+        try {
+            client = new ClientImpl(server);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        client.run();*/
     }
 }

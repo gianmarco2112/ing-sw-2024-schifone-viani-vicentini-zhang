@@ -32,30 +32,6 @@ public abstract class Card extends Observable<Event> {
         return showingFront;
     }
 
-    public void setShowingFront(boolean showingFront) {
-        this.showingFront = showingFront;
-    }
-
     public abstract void flip(String nickname);
-
-    //public abstract String getDescription(Symbol kingdom);
-
-
-
-
-
-
-   /* public Immutable getImmutableCard(){
-        return new Immutable(cardID, showingFront, getDescription(kingdom), toString());
-    }
-
-    public Immutable getImmutableHiddenCard(){
-        return new Immutable(cardID, false, getDescription(Symbol kingdom), toString());
-    }
-
-    public record Immutable(String cardID, boolean showingFront, String description, String handCard) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 2L;
-    }*/
 
 }

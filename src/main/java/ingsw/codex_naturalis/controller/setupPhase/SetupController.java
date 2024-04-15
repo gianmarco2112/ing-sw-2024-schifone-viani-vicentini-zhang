@@ -7,6 +7,7 @@ import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +64,12 @@ public class SetupController {
     }
 
     public void updateInitialCard(Client client, InitialCardEvent initialCardEvent) {
-        Player player = getPlayerByNickname(client.getNickname());
+        Player player = null;
+        try {
+            player = getPlayerByNickname(client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
         switch (initialCardEvent) {
             case FLIP -> player.getInitialCard().flip("");
             case PLAY -> player.playInitialCard();
@@ -72,7 +78,12 @@ public class SetupController {
 
     public void updateColor(Client client, Color color) {
         readyClients++;
-        Player player = getPlayerByNickname(client.getNickname());
+        Player player = null;
+        try {
+            player = getPlayerByNickname(client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
         model.setColorToPlayer(color, player);
         if (readyClients == model.getNumOfPlayers()) {
             model.setupHands();

@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.distributed.local;
+package ingsw.codex_naturalis.distributed.rmi;
 
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
@@ -24,25 +24,43 @@ import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
 import ingsw.codex_naturalis.view.setupPhase.ObjectiveCardChoice;
 import ingsw.codex_naturalis.view.setupPhase.SetupUI;
 
+import java.rmi.RemoteException;
+import java.rmi.server.RMIClientSocketFactory;
+import java.rmi.server.RMIServerSocketFactory;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class ClientImpl implements Client, LobbyObserver, SetupObserver, GameplayObserver, Runnable {
+public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObserver, SetupObserver, GameplayObserver, Runnable {
 
     private String nickname;
 
     private final Map<Integer, UIChoice> uiChoices = new LinkedHashMap<>();
-    private final UIChoice uiChoice;
+    private  UIChoice uiChoice;
 
     private GameUI currentGameView;
 
-    private final LobbyUI lobbyView;
+    private  LobbyUI lobbyView;
     private SetupUI setupView;
     private GameplayUI gameplayView;
 
-    private Server server;
+    private  Server server;
 
-    public ClientImpl(Server server){
+    public ClientImpl(Server server) throws RemoteException{
+        super();
+        initClientImpl(server);
+    }
 
+    public ClientImpl(Server server, int port) throws RemoteException {
+        super(port);
+        initClientImpl(server);
+    }
+
+    public ClientImpl(Server server, int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
+        super(port, csf, ssf);
+        initClientImpl(server);
+    }
+
+    private void initClientImpl(Server server) throws RemoteException{
         uiChoice = askUIChoice();
 
         lobbyView = uiChoice.createLobbyUI();
@@ -50,8 +68,8 @@ public class ClientImpl implements Client, LobbyObserver, SetupObserver, Gamepla
 
         this.server = server;
         server.register(this);
-
     }
+
 
 
     private UIChoice askUIChoice() {
@@ -142,15 +160,27 @@ public class ClientImpl implements Client, LobbyObserver, SetupObserver, Gamepla
 
     @Override
     public void updateNetworkProtocol(NetworkProtocol networkProtocol) {
-        server.updateNetworkProtocol(this, networkProtocol);
+        try {
+            server.updateNetworkProtocol(this, networkProtocol);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
     }
     @Override
     public void updateGameToAccess(int gameID, String nickname) {
-        server.updateGameToAccess(this, gameID, nickname);
+        try {
+            server.updateGameToAccess(this, gameID, nickname);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
     }
     @Override
     public void updateNewGame(int numOfPlayers, String nickname) {
-        server.updateNewGame(this, numOfPlayers, nickname);
+        try {
+            server.updateNewGame(this, numOfPlayers, nickname);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
     }
 
 
@@ -158,17 +188,29 @@ public class ClientImpl implements Client, LobbyObserver, SetupObserver, Gamepla
 
     @Override
     public void updateReady() {
-        server.updateReady(this);
+        try {
+            server.updateReady(this);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
     }
 
     @Override
     public void updateInitialCard(InitialCardEvent initialCardEvent) {
-        server.updateInitialCard(this, initialCardEvent);
+        try {
+            server.updateInitialCard(this, initialCardEvent);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
     }
 
     @Override
     public void updateColor(Color color) {
-        server.updateColor(this, color);
+        try {
+            server.updateColor(this, color);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
     }
 
     @Override
@@ -179,19 +221,35 @@ public class ClientImpl implements Client, LobbyObserver, SetupObserver, Gamepla
 
     @Override
     public void updateFlipCard(FlipCard flipCard) {
-        server.updateFlipCard(this, flipCard);
+        try {
+            server.updateFlipCard(this, flipCard);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
     }
     @Override
     public void updatePlayCard(PlayCard playCard, int x, int y) throws NotYourTurnException {
-        server.updatePlayCard(this, playCard, x, y);
+        try {
+            server.updatePlayCard(this, playCard, x, y);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
     }
     @Override
     public void updateDrawCard(DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException {
-        server.updateDrawCard(this, drawCard);
+        try {
+            server.updateDrawCard(this, drawCard);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
     }
     @Override
     public void updateText(Message message, String content, List<String> receivers) {
-        server.updateText(this, message, content, receivers);
+        try {
+            server.updateText(this, message, content, receivers);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
     }
 
 

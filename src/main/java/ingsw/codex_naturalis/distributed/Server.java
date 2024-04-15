@@ -1,6 +1,6 @@
 package ingsw.codex_naturalis.distributed;
 
-import ingsw.codex_naturalis.distributed.local.ClientImpl;
+import ingsw.codex_naturalis.distributed.rmi.ClientImpl;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
@@ -11,28 +11,30 @@ import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
 import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 
-public interface Server {
+public interface Server extends Remote {
 
-    void register(Client client);
-
-
-    void updateNetworkProtocol(Client client, NetworkProtocol networkProtocol);
-    void updateGameToAccess(Client client, int gameID, String nickname);
-    void updateNewGame(Client client, int numOfPlayers, String nickname);
+    void register(Client client) throws RemoteException;
 
 
-    void updateReady(Client client);
-
-    void updateInitialCard(ClientImpl client, InitialCardEvent initialCardEvent);
-
-    void updateColor(ClientImpl client, Color color);
+    void updateNetworkProtocol(Client client, NetworkProtocol networkProtocol) throws RemoteException;
+    void updateGameToAccess(Client client, int gameID, String nickname) throws RemoteException;
+    void updateNewGame(Client client, int numOfPlayers, String nickname) throws RemoteException;
 
 
-    void updateFlipCard(Client client, FlipCard flipCard);
-    void updatePlayCard(Client client, PlayCard playCard, int x, int y) throws NotYourTurnException;
-    void updateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException;
-    void updateText(Client client, Message message, String content, List<String> receivers);
+    void updateReady(Client client) throws RemoteException;
+
+    void updateInitialCard(Client client, InitialCardEvent initialCardEvent) throws RemoteException;
+
+    void updateColor(Client client, Color color) throws RemoteException;
+
+
+    void updateFlipCard(Client client, FlipCard flipCard) throws RemoteException;
+    void updatePlayCard(Client client, PlayCard playCard, int x, int y) throws NotYourTurnException, RemoteException;
+    void updateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException, RemoteException;
+    void updateText(Client client, Message message, String content, List<String> receivers) throws RemoteException;
 
 }

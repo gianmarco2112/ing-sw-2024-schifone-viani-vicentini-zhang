@@ -29,9 +29,9 @@ public class Game extends Observable<Event> {
 
     public record Immutable(int gameID, GameStatus gameStatus, List<String> playerOrder,
                             String currentPlayer, List<Player.ImmutableHidden> hiddenPlayers,
-                            Player.Immutable player, Card.Immutable topResourceCardDeck,
-                            Card.Immutable topGoldCardDeck, List<Card.Immutable> revealedResourceCards,
-                            List<Card.Immutable> revealedGoldCards, List<Card.Immutable> commonObjectiveCards,
+                            Player.Immutable player, PlayableCard.Immutable topResourceCardDeck,
+                            PlayableCard.Immutable topGoldCardDeck, List<PlayableCard.Immutable> revealedResourceCards,
+                            List<PlayableCard.Immutable> revealedGoldCards, List<ObjectiveCard.Immutable> commonObjectiveCards,
                             List<Message> chat) implements Serializable {
         @Serial
         private static final long serialVersionUID = 4L; }
@@ -49,22 +49,22 @@ public class Game extends Observable<Event> {
                 playerReceiver = player.getImmutablePlayer();
         }
 
-        List<Card.Immutable> immutableRevealedResourceCards = new ArrayList<>();
+        List<PlayableCard.Immutable> immutableRevealedResourceCards = new ArrayList<>();
         for (PlayableCard card : revealedResourceCards)
-            immutableRevealedResourceCards.add(card.getImmutableCard());
+            immutableRevealedResourceCards.add(card.getImmutablePlayableCard());
 
-        List<Card.Immutable> immutableRevealedGoldCards = new ArrayList<>();
+        List<PlayableCard.Immutable> immutableRevealedGoldCards = new ArrayList<>();
         for (PlayableCard card : revealedGoldCards)
-            immutableRevealedGoldCards.add(card.getImmutableCard());
+            immutableRevealedGoldCards.add(card.getImmutablePlayableCard());
 
-        List<Card.Immutable> immutableCommonObjectiveCards = new ArrayList<>();
+        List<ObjectiveCard.Immutable> immutableCommonObjectiveCards = new ArrayList<>();
         for (ObjectiveCard card : commonObjectiveCards)
-            immutableCommonObjectiveCards.add(card.getImmutableCard());
+            immutableCommonObjectiveCards.add(card.getImmutableObjectiveCard());
 
         return new Immutable(gameID, gameStatus, playerOrderString,
                 currentPlayer.getNickname(), immutableHiddenPlayers, playerReceiver,
-                getResourceCardsDeck().getFirstCard().getImmutableCard(),
-                getGoldCardsDeck().getFirstCard().getImmutableCard(), immutableRevealedResourceCards,
+                getResourceCardsDeck().getFirstCard().getImmutablePlayableCard(),
+                getGoldCardsDeck().getFirstCard().getImmutablePlayableCard(), immutableRevealedResourceCards,
                 immutableRevealedGoldCards, immutableCommonObjectiveCards, chat);
 
     }

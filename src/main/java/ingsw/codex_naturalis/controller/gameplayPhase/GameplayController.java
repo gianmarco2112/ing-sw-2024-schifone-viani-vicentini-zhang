@@ -13,6 +13,7 @@ import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,10 +68,19 @@ public class GameplayController {
         eventToHandIndex.put(FlipCard.FLIP_CARD_2, 1);
         eventToHandIndex.put(FlipCard.FLIP_CARD_3, 2);
 
-        Player player = getPlayerByNickname(client.getNickname());
+        Player player = null;
+        try {
+            player = getPlayerByNickname(client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
         PlayableCard cardToFlip = player.getHand().get(eventToHandIndex.get(flipCard));
-        cardToFlip.flip(client.getNickname());
+        try {
+            cardToFlip.flip(client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
     }
 
@@ -78,8 +88,12 @@ public class GameplayController {
 
     public void updatePlayCard(Client client, PlayCard playCard, int x, int y) throws NotYourTurnException {
 
-        if (!client.getNickname().equals(model.getCurrentPlayer().getNickname()))
-            throw new NotYourTurnException();
+        try {
+            if (!client.getNickname().equals(model.getCurrentPlayer().getNickname()))
+                throw new NotYourTurnException();
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
         if (!model.getCurrentPlayer().getTurnStatus().equals(TurnStatus.PLAY))
             throw new NotYourPlayTurnStatusException();
@@ -102,13 +116,22 @@ public class GameplayController {
         eventToHandIndex.put(PlayCard.PLAY_CARD_2, 1);
         eventToHandIndex.put(PlayCard.PLAY_CARD_3, 2);
 
-        Player player = getPlayerByNickname(client.getNickname());
+        Player player = null;
+        try {
+            player = getPlayerByNickname(client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
         PlayableCard cardToPlay = player.getHand().get(eventToHandIndex.get(playCard));
         PlayerArea playerArea = player.getPlayerArea();
         if(!cardToPlay.isPlayable(playerArea, x, y))
             throw new NotPlayableException();
-        playerArea.setCardOnCoordinates(cardToPlay, x, y, client.getNickname());
+        try {
+            playerArea.setCardOnCoordinates(cardToPlay, x, y, client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
         List<PlayableCard> hand = player.getHand();
         hand.remove(cardToPlay);
@@ -116,7 +139,11 @@ public class GameplayController {
 
         if (player.getPlayerArea().getPoints() >= 20 && model.getGameStatus() == GameStatus.GAMEPLAY) {
             turnsLeftInSecondToLastRound = model.getNumOfPlayers() - model.getPlayerOrder().indexOf(player);
-            model.setGameStatus(GameStatus.LAST_ROUND_20_POINTS, client.getNickname());
+            try {
+                model.setGameStatus(GameStatus.LAST_ROUND_20_POINTS, client.getNickname());
+            } catch (RemoteException e) {
+                System.err.println("Error while getting nickname");
+            }
         }
 
         if (turnsLeftInSecondToLastRound > 0 && model.getGameStatus() != GameStatus.LAST_ROUND_DECKS_EMPTY)
@@ -132,8 +159,13 @@ public class GameplayController {
             nextPlayer(client);
         }
 
-        if (turnsLeftInLastRound == 0)
-            model.setGameStatus(GameStatus.ENDGAME, client.getNickname());
+        if (turnsLeftInLastRound == 0) {
+            try {
+                model.setGameStatus(GameStatus.ENDGAME, client.getNickname());
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
     }
 
@@ -141,13 +173,22 @@ public class GameplayController {
 
     public void updateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException {
 
-        if (!client.getNickname().equals(model.getCurrentPlayer().getNickname()))
-            throw new NotYourTurnException();
+        try {
+            if (!client.getNickname().equals(model.getCurrentPlayer().getNickname()))
+                throw new NotYourTurnException();
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
         if (!model.getCurrentPlayer().getTurnStatus().equals(TurnStatus.DRAW))
             throw new NotYourDrawTurnStatusException();
 
-        Player player = getPlayerByNickname(client.getNickname());
+        Player player = null;
+        try {
+            player = getPlayerByNickname(client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
         PlayableCard drawnCard = null;
         switch (drawCard) {
@@ -177,7 +218,11 @@ public class GameplayController {
         model.getRevealedResourceCards().isEmpty() &&
         model.getRevealedGoldCards().isEmpty()) {
             turnsLeftInSecondToLastRound = model.getNumOfPlayers() - model.getPlayerOrder().indexOf(player) - 1;
-            model.setGameStatus(GameStatus.LAST_ROUND_DECKS_EMPTY, client.getNickname());
+            try {
+                model.setGameStatus(GameStatus.LAST_ROUND_DECKS_EMPTY, client.getNickname());
+            } catch (RemoteException e) {
+                System.err.println("Error while getting nickname");
+            }
         }
 
         if (model.getGameStatus() == GameStatus.LAST_ROUND_20_POINTS)
@@ -192,9 +237,18 @@ public class GameplayController {
         if (model.getResourceCardsDeck().isEmpty())
             throw new EmptyDeckException();
 
-        PlayableCard drawnCard = model.getResourceCardsDeck().drawACard(client.getNickname());
+        PlayableCard drawnCard = null;
+        try {
+            drawnCard = model.getResourceCardsDeck().drawACard(client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
-        drawnCard.flip(client.getNickname());
+        try {
+            drawnCard.flip(client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
         return drawnCard;
 
@@ -208,9 +262,18 @@ public class GameplayController {
         if (model.getGoldCardsDeck().isEmpty())
             throw new EmptyDeckException();
 
-        PlayableCard drawnCard = model.getGoldCardsDeck().drawACard(client.getNickname());
+        PlayableCard drawnCard = null;
+        try {
+            drawnCard = model.getGoldCardsDeck().drawACard(client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
-        drawnCard.flip(client.getNickname());
+        try {
+            drawnCard.flip(client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
         return drawnCard;
     }
@@ -234,11 +297,23 @@ public class GameplayController {
 
         PlayableCard cardToReveal = null;
         if (!model.getResourceCardsDeck().isEmpty()) {
-            cardToReveal = model.getResourceCardsDeck().drawACard(client.getNickname());
-            cardToReveal.flip(client.getNickname());
+            try {
+                cardToReveal = model.getResourceCardsDeck().drawACard(client.getNickname());
+            } catch (RemoteException e) {
+                System.err.println("Error while getting nickname");
+            }
+            try {
+                cardToReveal.flip(client.getNickname());
+            } catch (RemoteException e) {
+                System.err.println("Error while getting nickname");
+            }
         }
         revealedResourceCards.set(eventToHandIndex.get(drawCard), cardToReveal);
-        model.setRevealedResourceCards(revealedResourceCards, client.getNickname());
+        try {
+            model.setRevealedResourceCards(revealedResourceCards, client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
         return drawnCard;
     }
@@ -263,14 +338,26 @@ public class GameplayController {
         PlayableCard cardToReveal = null;
         if (!model.getGoldCardsDeck().isEmpty()) {
             try {
-                cardToReveal = model.getGoldCardsDeck().drawACard(client.getNickname());
-                cardToReveal.flip(client.getNickname());
+                try {
+                    cardToReveal = model.getGoldCardsDeck().drawACard(client.getNickname());
+                } catch (RemoteException e) {
+                    System.err.println("Error while getting nickname");
+                }
+                try {
+                    cardToReveal.flip(client.getNickname());
+                } catch (RemoteException e) {
+                    System.err.println("Error while getting nickname");
+                }
             } catch (EmptyDeckException e){
                 System.err.println("The gold cards deck is now empty!");
             }
         }
         revealedGoldCards.set(eventToHandIndex.get(drawCard), cardToReveal);
-        model.setRevealedGoldCards(revealedGoldCards, client.getNickname());
+        try {
+            model.setRevealedGoldCards(revealedGoldCards, client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
         return drawnCard;
     }
@@ -286,7 +373,11 @@ public class GameplayController {
         } else {
             nextPlayer = model.getPlayerOrder().getFirst();
         }
-        model.setCurrentPlayer(nextPlayer, client.getNickname());
+        try {
+            model.setCurrentPlayer(nextPlayer, client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
     }
 
 
@@ -299,9 +390,18 @@ public class GameplayController {
     private void sendAMessage(Client client, Message arg, String content, List<String> receivers){
 
         List<ingsw.codex_naturalis.model.Message> messages = model.getChat();
-        ingsw.codex_naturalis.model.Message messageToSend = new ingsw.codex_naturalis.model.Message(content, client.getNickname(), receivers);
+        ingsw.codex_naturalis.model.Message messageToSend = null;
+        try {
+            messageToSend = new ingsw.codex_naturalis.model.Message(content, client.getNickname(), receivers);
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
         messages.add(messageToSend);
-        model.setMessages(messages, client.getNickname());
+        try {
+            model.setMessages(messages, client.getNickname());
+        } catch (RemoteException e) {
+            System.err.println("Error while getting nickname");
+        }
 
     }
 

@@ -1,7 +1,7 @@
 package ingsw.codex_naturalis.view.lobbyPhase;
 
 
-import ingsw.codex_naturalis.distributed.local.ServerImpl;
+import ingsw.codex_naturalis.distributed.rmi.ServerImpl;
 
 import java.util.List;
 

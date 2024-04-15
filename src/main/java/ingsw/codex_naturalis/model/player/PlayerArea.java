@@ -18,14 +18,14 @@ import java.util.*;
  */
 public class PlayerArea extends Observable<Event> {
 
-    public record Immutable(Map<List<Integer>,Card.Immutable> area,
+    public record Immutable(Map<List<Integer>,PlayableCard.Immutable> area,
                             Map<ExtremeCoordinate, Integer> extremeCoordinates,
-                            Map<Symbol, Integer> numOfSymbols, Card.Immutable objectiveCard,
+                            Map<Symbol, Integer> numOfSymbols, ObjectiveCard.Immutable objectiveCard,
                             int points, int extraPoints) implements Serializable {
         @Serial
         private static final long serialVersionUID = 6L; }
 
-    public record ImmutableHidden(Map<List<Integer>,Card.Immutable> area,
+    public record ImmutableHidden(Map<List<Integer>,PlayableCard.Immutable> area,
                             Map<ExtremeCoordinate, Integer> extremeCoordinates,
                             Map<Symbol, Integer> numOfSymbols,
                             int points) implements Serializable {
@@ -34,20 +34,20 @@ public class PlayerArea extends Observable<Event> {
 
     public PlayerArea.Immutable getImmutablePlayerArea(){
 
-        Map<List<Integer>, Card.Immutable> immutableArea = new LinkedHashMap<>();
+        Map<List<Integer>, PlayableCard.Immutable> immutableArea = new LinkedHashMap<>();
         for (List<Integer> key : area.keySet()) {
-            immutableArea.replace(key, area.get(key).getImmutableCard());
+            immutableArea.replace(key, area.get(key).getImmutablePlayableCard());
         }
         return new PlayerArea.Immutable(immutableArea, extremeCoordinates, numOfSymbols,
-                objectiveCard.getImmutableCard(), points, extraPoints);
+                objectiveCard.getImmutableObjectiveCard(), points, extraPoints);
 
     }
 
     public PlayerArea.ImmutableHidden getImmutableHiddenPlayerArea(){
 
-        Map<List<Integer>, Card.Immutable> immutableArea = new LinkedHashMap<>();
+        Map<List<Integer>, PlayableCard.Immutable> immutableArea = new LinkedHashMap<>();
         for (List<Integer> key : area.keySet()) {
-            immutableArea.replace(key, area.get(key).getImmutableCard());
+            immutableArea.replace(key, area.get(key).getImmutablePlayableCard());
         }
         return new PlayerArea.ImmutableHidden(immutableArea, extremeCoordinates, numOfSymbols, points);
 

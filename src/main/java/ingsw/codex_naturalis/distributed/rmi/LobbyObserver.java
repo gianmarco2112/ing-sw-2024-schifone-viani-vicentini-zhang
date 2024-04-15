@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.distributed.local;
+package ingsw.codex_naturalis.distributed.rmi;
 
 import ingsw.codex_naturalis.events.lobbyPhase.NetworkProtocol;
 

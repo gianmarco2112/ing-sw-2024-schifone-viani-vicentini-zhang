@@ -106,6 +106,11 @@ public class ClientImpl implements Client, LobbyObserver, SetupObserver, Gamepla
     }
 
     @Override
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    @Override
     public String getNickname() {
         return nickname;
     }

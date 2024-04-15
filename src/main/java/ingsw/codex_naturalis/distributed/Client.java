@@ -14,6 +14,8 @@ public interface Client {
 
     void updateLobbyUI(List<ServerImpl.GameSpecs> gamesSpecs);
 
+    void setNickname(String nickname);
+
     String getNickname();
 
     void updateView(GameStatus gameStatus, PlayersConnectedStatus playersConnectedStatus);

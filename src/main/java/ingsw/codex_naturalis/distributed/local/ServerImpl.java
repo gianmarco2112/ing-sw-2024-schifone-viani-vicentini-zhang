@@ -78,6 +78,7 @@ public class ServerImpl implements Server, Observer<Game, Event> {
         Player player = new Player(nickname);
         try {
             gameToAccess.addPlayer(player);
+            client.setNickname(nickname);
             if (gameToAccess.getPlayerOrder().size() < gameToAccess.getNumOfPlayers())
                 client.updateView(GameStatus.SETUP, PlayersConnectedStatus.WAIT);
             else {
@@ -90,6 +91,7 @@ public class ServerImpl implements Server, Observer<Game, Event> {
         } catch (NicknameAlreadyExistsException | MaxNumOfPlayersInException e) {
 
             setupController.removeView(client);
+            client.setNickname(null);
             throw e;
 
         }
@@ -102,6 +104,8 @@ public class ServerImpl implements Server, Observer<Game, Event> {
         Game game = new Game(gameID, numOfPlayers);
         Player player = new Player(nickname);
         game.addPlayer(player);
+
+        client.setNickname(nickname);
 
         SetupController setupController = new SetupController(game, client);
 

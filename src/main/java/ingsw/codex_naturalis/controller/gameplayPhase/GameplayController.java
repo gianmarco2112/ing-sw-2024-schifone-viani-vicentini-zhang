@@ -81,6 +81,9 @@ public class GameplayController {
         if (!client.getNickname().equals(model.getCurrentPlayer().getNickname()))
             throw new NotYourTurnException();
 
+        if (!model.getCurrentPlayer().getTurnStatus().equals(TurnStatus.PLAY))
+            throw new NotYourTurnStatusException();
+
         playCard(client, playCard, x, y);
 
     }

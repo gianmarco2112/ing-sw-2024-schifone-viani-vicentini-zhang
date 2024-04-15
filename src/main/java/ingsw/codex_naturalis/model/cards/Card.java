@@ -48,6 +48,10 @@ public abstract class Card extends Observable<Event> {
         return new Immutable(cardID, showingFront, getDescription());
     }
 
+    public Immutable getImmutableHiddenCard(){
+        return new Immutable(cardID, false, getDescription());
+    }
+
     public record Immutable(String cardID, boolean showingFront, String description) implements Serializable {
         @Serial
         private static final long serialVersionUID = 2L;

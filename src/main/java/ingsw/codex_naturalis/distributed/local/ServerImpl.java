@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.distributed.local;
 
+import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.events.lobbyPhase.NetworkProtocol;
 import ingsw.codex_naturalis.enumerations.PlayersConnectedStatus;
@@ -16,6 +17,7 @@ import ingsw.codex_naturalis.view.gameplayPhase.Observer;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
+import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
 
 import java.util.*;
 
@@ -82,6 +84,8 @@ public class ServerImpl implements Server, Observer<Game, Event> {
             if (gameToAccess.getPlayerOrder().size() < gameToAccess.getNumOfPlayers())
                 client.updateView(GameStatus.SETUP, PlayersConnectedStatus.WAIT);
             else {
+                setupControllersOfStartingGames.remove(setupController);
+                setupControllers.add(setupController);
                 client.updateView(GameStatus.SETUP, PlayersConnectedStatus.GO);
                 for (Client c : clients)
                     if (!c.equals(client))
@@ -117,14 +121,27 @@ public class ServerImpl implements Server, Observer<Game, Event> {
 
 
 
+    private SetupController findSetupControllerByClient(Client client) throws NoControllerFoundException{
+        for (SetupController setupController : setupControllers)
+            if (setupController.getViews().contains(client))
+                return setupController;
+        throw new NoControllerFoundException();
+    }
 
     @Override
     public void updateReady(Client client) {
+        findSetupControllerByClient(client).updateReady(client);
     }
 
+    @Override
+    public void updateInitialCard(ClientImpl client, InitialCardEvent initialCardEvent) {
+        findSetupControllerByClient(client).updateInitialCard(client, initialCardEvent);
+    }
 
-
-
+    @Override
+    public void updateColor(ClientImpl client, Color color) {
+        findSetupControllerByClient(client).updateColor(client, color);
+    }
 
 
     @Override

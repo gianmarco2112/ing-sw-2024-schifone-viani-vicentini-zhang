@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.distributed;
 
+import ingsw.codex_naturalis.distributed.local.ClientImpl;
+import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
@@ -7,6 +9,7 @@ import ingsw.codex_naturalis.events.lobbyPhase.NetworkProtocol;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
+import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
 
 import java.util.List;
 
@@ -21,6 +24,10 @@ public interface Server {
 
 
     void updateReady(Client client);
+
+    void updateInitialCard(ClientImpl client, InitialCardEvent initialCardEvent);
+
+    void updateColor(ClientImpl client, Color color);
 
 
     void updateFlipCard(Client client, FlipCard flipCard);

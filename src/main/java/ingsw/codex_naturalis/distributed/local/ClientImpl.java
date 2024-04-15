@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.distributed.local;
 
+import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.events.lobbyPhase.NetworkProtocol;
 import ingsw.codex_naturalis.enumerations.PlayersConnectedStatus;
@@ -19,6 +20,8 @@ import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.view.lobbyPhase.LobbyUI;
+import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
+import ingsw.codex_naturalis.view.setupPhase.ObjectiveCardChoice;
 import ingsw.codex_naturalis.view.setupPhase.SetupUI;
 
 import java.util.*;
@@ -158,8 +161,20 @@ public class ClientImpl implements Client, LobbyObserver, SetupObserver, Gamepla
         server.updateReady(this);
     }
 
+    @Override
+    public void updateInitialCard(InitialCardEvent initialCardEvent) {
+        server.updateInitialCard(this, initialCardEvent);
+    }
 
+    @Override
+    public void updateColor(Color color) {
+        server.updateColor(this, color);
+    }
 
+    @Override
+    public void updateObjectiveCardChoice(ObjectiveCardChoice objectiveCardChoice) {
+
+    }
 
 
     @Override

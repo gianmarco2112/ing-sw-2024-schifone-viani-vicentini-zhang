@@ -1,6 +1,8 @@
 package ingsw.codex_naturalis.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import ingsw.codex_naturalis.enumerations.Color;
+import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.exceptions.MaxNumOfPlayersInException;
 import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 
@@ -87,6 +89,14 @@ public class Game extends Observable<Event> {
      * Contains all the players of the game, ordered by the turn they play
      */
     private List<Player> playerOrder;
+
+    public void setColorToPlayer(Color color, Player player) throws ColorAlreadyChosenException{
+        for (Player p : playerOrder) {
+            if (p.getColor() == color)
+                throw new ColorAlreadyChosenException();
+        }
+        player.setColor(color);
+    }
 
     /**
      * Current player
@@ -266,13 +276,53 @@ public class Game extends Observable<Event> {
 
 
 
+    public void setupResourceAndGoldCards(){
+        resourceCardsDeck.shuffle();
+        this.revealedResourceCards.add(resourceCardsDeck.drawACard(""));
+        this.revealedResourceCards.add(resourceCardsDeck.drawACard(""));
+        for (PlayableCard card : revealedResourceCards){
+            card.flip("");
+        }
 
+        goldCardsDeck.shuffle();
+        this.revealedGoldCards.add(goldCardsDeck.drawACard(""));
+        this.revealedGoldCards.add(goldCardsDeck.drawACard(""));
+        for (PlayableCard card : revealedGoldCards){
+            card.flip("");
+        }
 
-    @Deprecated
-    public void seTCommonObjectiveCards(List<PlayerArea> playerAreas){
+        notifyObservers(Event.CARDS_SETUP, "");
+    }
+
+    /**
+     * Deals an initial card to each player
+     */
+    public void dealInitialCards(){
+        initialCardsDeck.shuffle();
+        for (Player player : playerOrder){
+            player.setInitialCard(initialCardsDeck.drawACard(""));
+        }
+
+        notifyObservers(Event.INITIAL_CARDS_SETUP, "");
+    }
+
+    public void setupHands() {
+
+        for (Player player : playerOrder) {
+            List<PlayableCard> hand = new ArrayList<>();
+            hand.add(resourceCardsDeck.drawACard(""));
+            hand.add(resourceCardsDeck.drawACard(""));
+            hand.add(goldCardsDeck.drawACard(""));
+            player.setupHand(hand);
+        }
+
+        notifyObservers(Event.HANDS_SETUP, "");
+    }
+
+    public void setupCommonObjectiveCards(){
         objectiveCardsDeck.shuffle();
-        /*this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());
-        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());*/
+        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard(""));
+        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard(""));
     }
 
     @Deprecated
@@ -280,32 +330,5 @@ public class Game extends Observable<Event> {
         Collections.shuffle(this.playerOrder);
     }
 
-    @Deprecated
-    public void setRevealedCards(){
-        resourceCardsDeck.shuffle();
-       /* this.revealedResourceCards.add(resourceCardsDeck.drawACard());
-        this.revealedResourceCards.add(resourceCardsDeck.drawACard());
-        for (PlayableCard card : revealedResourceCards){
-            card.flip();
-        }
-
-        goldCardsDeck.shuffle();
-        this.revealedGoldCards.add(goldCardsDeck.drawACard());
-        this.revealedGoldCards.add(goldCardsDeck.drawACard());
-        for (PlayableCard card : revealedGoldCards){
-            card.flip();
-        }*/
-    }
-
-    /**
-     * Deals an initial card to each player
-     */
-    @Deprecated
-    public void dealInitialCard(){
-        /*initialCardsDeck.shuffle();
-        for (Player player : playerOrder){
-            player.setInitialCard(initialCardsDeck.drawACard());
-        }*/
-    }
 
 }

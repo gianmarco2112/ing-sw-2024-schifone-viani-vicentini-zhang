@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.view.setupPhase;
 
 import ingsw.codex_naturalis.controller.setupPhase.SetupObserver;
+import ingsw.codex_naturalis.enumerations.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +29,30 @@ public class SetupObservable {
     }
 
 
+
     public void notifyReady() {
         for (SetupObserver o : obs){
             o.updateReady();
         }
     }
 
-    /*public void notifyFlipCard(FlipCard flipCardCommand) {
+    public void notifyInitialCard(InitialCardEvent initialCardEvent) {
         for (SetupObserver o : obs){
-            o.updateFlipCard(flipCardCommand);
+            o.updateInitialCard(initialCardEvent);
         }
-    }*/
+    }
+
+    public void notifyColor(Color color) {
+        for (SetupObserver o : obs){
+            o.updateColor(color);
+        }
+    }
+
+    public void notifyObjectiveCardChoice(ObjectiveCardChoice objectiveCardChoice) {
+        for (SetupObserver o : obs){
+            o.updateObjectiveCardChoice(objectiveCardChoice);
+        }
+    }
+
+
 }

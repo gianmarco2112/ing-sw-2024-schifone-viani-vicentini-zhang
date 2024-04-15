@@ -39,11 +39,11 @@ public class Player extends Observable<Event> {
 
     public Player.ImmutableHidden getImmutableHiddenPlayer(){
 
-        List<Card.Immutable> immutableHand = new ArrayList<>();
+        List<Card.Immutable> immutableHiddenHand = new ArrayList<>();
         for (PlayableCard playableCard : hand)
-            immutableHand.add(playableCard.getImmutableCard());
+            immutableHiddenHand.add(playableCard.getImmutableHiddenCard());
         return new Player.ImmutableHidden(nickname, color, turnStatus, initialCard.getImmutableCard(),
-                    immutableHand, playerArea.getImmutableHiddenPlayerArea());
+                    immutableHiddenHand, playerArea.getImmutableHiddenPlayerArea());
     }
 
 
@@ -109,6 +109,15 @@ public class Player extends Observable<Event> {
     public void setInitialCard(PlayableCard initialCard) {
         this.initialCard = initialCard;
     }
+    /**
+     * Method to play the initial card
+     */
+    public void playInitialCard(){
+
+        playerArea.setInitialCard(initialCard, nickname);
+        initialCard = null;
+
+    }
 
     public TurnStatus getTurnStatus() {
         return turnStatus;
@@ -127,6 +136,7 @@ public class Player extends Observable<Event> {
     }
     public void setColor(Color color) {
         this.color = color;
+        notifyObservers(Event.COLOR_SETUP, "");
     }
 
     public String getNickname() {
@@ -141,18 +151,14 @@ public class Player extends Observable<Event> {
         notifyObservers(Event.HAND_CHANGED, nickname);
     }
 
-
-
-
-
-    /**
-     * Method to play the initial card
-     */
-    @Deprecated
-    public void playInitialCard(){
-        //initialCard.play(playerArea); se questo metodo va spostato, basta setCardOnCoordinates perché al suo interno viene chiamato play
-        playerArea.setCardOnCoordinates(initialCard, 0, 0,nickname);
-        initialCard = null;
+    public void setupHand(List<PlayableCard> hand){
+        this.hand = hand;
     }
+
+
+
+
+
+
 
 }

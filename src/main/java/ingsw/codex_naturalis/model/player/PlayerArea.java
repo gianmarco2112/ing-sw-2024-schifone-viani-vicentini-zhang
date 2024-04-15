@@ -204,6 +204,12 @@ public class PlayerArea extends Observable<Event> {
     public void incrNumOfSymbol(Symbol symbol){
         numOfSymbols.replace(symbol, getNumOfSymbol(symbol)+1);
     }
+    public void setInitialCard(PlayableCard initialCard, String nickname) {
+
+        area.put(new ArrayList<>(List.of(0,0)), initialCard);
+
+        notifyObservers(Event.INITIAL_CARD_PLAYED, nickname);
+    }
     /**
      * Places the given card on the given coordinates and adjusts the max coordinates
      * @param card the card to play

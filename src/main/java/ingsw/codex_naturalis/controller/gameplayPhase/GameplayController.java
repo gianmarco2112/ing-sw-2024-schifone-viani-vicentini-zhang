@@ -82,7 +82,7 @@ public class GameplayController {
             throw new NotYourTurnException();
 
         if (!model.getCurrentPlayer().getTurnStatus().equals(TurnStatus.PLAY))
-            throw new NotYourTurnStatusException();
+            throw new NotYourPlayTurnStatusException();
 
         playCard(client, playCard, x, y);
 
@@ -139,13 +139,13 @@ public class GameplayController {
 
 
 
-    public void updateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourTurnStatusException {
+    public void updateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException {
 
         if (!client.getNickname().equals(model.getCurrentPlayer().getNickname()))
             throw new NotYourTurnException();
 
         if (!model.getCurrentPlayer().getTurnStatus().equals(TurnStatus.DRAW))
-            throw new NotYourTurnStatusException();
+            throw new NotYourDrawTurnStatusException();
 
         Player player = getPlayerByNickname(client.getNickname());
 

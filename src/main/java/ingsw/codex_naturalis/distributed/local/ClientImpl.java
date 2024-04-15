@@ -8,7 +8,7 @@ import ingsw.codex_naturalis.controller.setupPhase.SetupObserver;
 import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
-import ingsw.codex_naturalis.exceptions.NotYourTurnStatusException;
+import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.distributed.UIChoice;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.enumerations.GameStatus;
@@ -171,7 +171,7 @@ public class ClientImpl implements Client, LobbyObserver, SetupObserver, Gamepla
         server.updatePlayCard(this, playCard, x, y);
     }
     @Override
-    public void updateDrawCard(DrawCard drawCard) throws NotYourTurnException, NotYourTurnStatusException {
+    public void updateDrawCard(DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException {
         server.updateDrawCard(this, drawCard);
     }
     @Override

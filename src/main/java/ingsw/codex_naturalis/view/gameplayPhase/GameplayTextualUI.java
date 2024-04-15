@@ -160,7 +160,7 @@ public class GameplayTextualUI extends GameplayUI {
         } catch (UtilityCommandException e){
             UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
             utilityCommandCase(utilityCommand);
-        } catch (NotYourTurnStatusException | NotYourTurnException | EmptyDeckException | NoMoreRevealedCardHereException e){
+        } catch (NotYourDrawTurnStatusException | NotYourTurnException | EmptyDeckException | NoMoreRevealedCardHereException e){
             System.err.println(e.getMessage());
         }
     }

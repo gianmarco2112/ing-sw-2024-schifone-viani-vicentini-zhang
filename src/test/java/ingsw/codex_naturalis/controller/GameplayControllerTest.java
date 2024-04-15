@@ -226,7 +226,7 @@ class GameplayControllerTest {
         card = player2.getHand().getFirst();
         assertEquals("G01",card.getCardID());
 
-        assertThrows(NotYourTurnStatusException.class,()->{gameplayController.updateDrawCard("Test", DrawCard.DRAW_FROM_RESOURCE_CARDS_DECK);});
+        assertThrows(NotYourDrawTurnStatusException.class,()->{gameplayController.updateDrawCard("Test", DrawCard.DRAW_FROM_RESOURCE_CARDS_DECK);});
     }
 
     @Test

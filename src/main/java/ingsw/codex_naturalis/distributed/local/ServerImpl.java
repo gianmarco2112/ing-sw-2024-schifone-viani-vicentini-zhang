@@ -138,7 +138,7 @@ public class ServerImpl implements Server, Observer<Game, Event> {
     }
 
     @Override
-    public void updateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourTurnStatusException {
+    public void updateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException {
        // this.gameplayController.updateDrawCard(client, drawCard);
     }
 

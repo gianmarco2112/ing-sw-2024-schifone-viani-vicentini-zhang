@@ -1,14 +1,20 @@
 package ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies;
 
+import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
 
 import java.util.List;
 
-public class CornerPointsStrategy implements PointsStrategy{
+public class CornerStrategy implements Strategy {
     @Override
-    public void run(PlayerArea playerArea, PointsGiverAndPointsGiverForCorner playedCard) {
+    public String handCardToString(Symbol kingdom) {
+        return null;
+    }
+
+    @Override
+    public void gainPoints(PlayerArea playerArea, PointsGiverAndPointsGiverForCorner playedCard) {
 
         List<Integer> coordinates = playerArea.getCoordinatesOfCard(playedCard);
         int x = coordinates.getFirst();

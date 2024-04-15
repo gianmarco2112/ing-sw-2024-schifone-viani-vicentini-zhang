@@ -74,6 +74,11 @@ public class PatternObjectiveCard extends ObjectiveCard {
         }
     }
 
+    @Override
+    public String cardToString() {
+        return null;
+    }
+
     /**
      * Method to check for patterns in the current player area
      * @param i player index
@@ -163,8 +168,4 @@ public class PatternObjectiveCard extends ObjectiveCard {
         return pattern.get(new ArrayList<>(List.of(x,y)));
     }
 
-    @Override
-    public String getDescription() {
-        return null;
-    }
 }

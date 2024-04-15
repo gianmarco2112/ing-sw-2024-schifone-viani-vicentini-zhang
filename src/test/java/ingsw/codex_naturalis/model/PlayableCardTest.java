@@ -7,8 +7,8 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverForObject;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.CornerPointsStrategy;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.StandardPointsStrategy;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.CornerStrategy;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.StandardStrategy;
 import ingsw.codex_naturalis.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.model.player.Player;
@@ -180,7 +180,7 @@ public class PlayableCardTest {
                         new Corner(Symbol.EMPTY,false),
                         2,
                         requirements,
-                        new CornerPointsStrategy()
+                        new CornerStrategy()
                 ),
                 new Back(
                         new Corner(Symbol.EMPTY,false),
@@ -208,7 +208,7 @@ public class PlayableCardTest {
                         new Corner(Symbol.EMPTY,false),
                         2,
                         requirements,
-                        new StandardPointsStrategy()
+                        new StandardStrategy()
                 ),
                 new Back(
                         new Corner(Symbol.EMPTY,false),

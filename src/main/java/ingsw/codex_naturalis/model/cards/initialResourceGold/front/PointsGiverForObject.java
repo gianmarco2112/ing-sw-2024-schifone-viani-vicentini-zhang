@@ -28,9 +28,10 @@ public class PointsGiverForObject extends Needy {
 
     //-------------------------------------------------------------------------------------------
     @Override
-    public String getDescription() {
+    public String handCardToString(Symbol kingdom) {
         return null;
     }
+
 
     @Override
     protected void gainPoints(PlayerArea playerArea){

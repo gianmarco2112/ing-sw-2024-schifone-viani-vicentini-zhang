@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.player.PlayerArea;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.PointsStrategy;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.Strategy;
 import ingsw.codex_naturalis.enumerations.Symbol;
 
 import java.util.HashMap;
 
 public class PointsGiverAndPointsGiverForCorner extends Needy {
 
-    private final PointsStrategy pointsStrategy;
+    private final Strategy strategy;
 
     //-------------------------------------------------------------------------------------------
     @JsonCreator
@@ -22,20 +22,21 @@ public class PointsGiverAndPointsGiverForCorner extends Needy {
             @JsonProperty("bottomRightCorner") Corner bottomRightCorner,
             @JsonProperty("points") int points,
             @JsonProperty("requirements") HashMap<Symbol, Integer> requirements,
-            @JsonProperty("pointsStrategy") PointsStrategy pointsStrategy
+            @JsonProperty("pointsStrategy") Strategy strategy
             ){
         super(topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, points, requirements);
-        this.pointsStrategy = pointsStrategy;
+        this.strategy = strategy;
     }
 
     //-------------------------------------------------------------------------------------------
+
     @Override
-    public String getDescription() {
-        return null;
+    public String handCardToString(Symbol kingdom) {
+        return strategy.handCardToString(kingdom);
     }
 
     @Override
     protected void gainPoints(PlayerArea playerArea){
-        pointsStrategy.run(playerArea, this);
+        strategy.gainPoints(playerArea, this);
     }
 }

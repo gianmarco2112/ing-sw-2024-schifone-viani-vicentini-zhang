@@ -55,9 +55,10 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
     }
 
     @Override
-    public String getDescription() {
+    public String cardToString() {
         return null;
     }
+
 
     /**
      * Method to get the count of a symbol from the HashMap

@@ -6,9 +6,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
+import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.model.cards.Card;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -29,6 +33,21 @@ import java.util.List;
         @Type(value = PatternObjectiveCard.class, name = "pattern")
 })
 public abstract class ObjectiveCard extends Card {
+
+    public ObjectiveCard.Immutable getImmutableObjectiveCard(){
+        return new ObjectiveCard.Immutable(getCardID(), showingFront, cardToString());
+    }
+
+    public ObjectiveCard.Immutable getImmutableHiddenPlayableCard(){
+        return new ObjectiveCard.Immutable(getCardID(), false, cardToString());
+    }
+
+    public record Immutable(String cardID, boolean showingFront, String card) implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 2L;
+    }
+
+
 
     /**
      * attribute points represents the points that objective card gives for each objective achieved
@@ -64,5 +83,6 @@ public abstract class ObjectiveCard extends Card {
 
     public abstract void gainPoints(List<PlayerArea> playerAreas);
 
-    public abstract String getDescription();
+    public abstract String cardToString();
+
 }

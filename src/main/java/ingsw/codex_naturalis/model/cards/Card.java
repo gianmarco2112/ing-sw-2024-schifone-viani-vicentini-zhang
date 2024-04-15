@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.model.cards;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.observerObservable.Observable;
 
@@ -37,24 +38,24 @@ public abstract class Card extends Observable<Event> {
 
     public abstract void flip(String nickname);
 
-    public abstract String getDescription();
+    //public abstract String getDescription(Symbol kingdom);
 
 
 
 
 
 
-    public Immutable getImmutableCard(){
-        return new Immutable(cardID, showingFront, getDescription());
+   /* public Immutable getImmutableCard(){
+        return new Immutable(cardID, showingFront, getDescription(kingdom), toString());
     }
 
     public Immutable getImmutableHiddenCard(){
-        return new Immutable(cardID, false, getDescription());
+        return new Immutable(cardID, false, getDescription(Symbol kingdom), toString());
     }
 
-    public record Immutable(String cardID, boolean showingFront, String description) implements Serializable {
+    public record Immutable(String cardID, boolean showingFront, String description, String handCard) implements Serializable {
         @Serial
         private static final long serialVersionUID = 2L;
-    }
+    }*/
 
 }

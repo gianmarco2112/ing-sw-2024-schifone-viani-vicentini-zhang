@@ -14,7 +14,7 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiver;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverForObject;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.StandardPointsStrategy;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.StandardStrategy;
 import ingsw.codex_naturalis.model.enumerations.*;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
@@ -148,7 +148,7 @@ class GameplayControllerTest {
                         new Corner(Symbol.EMPTY,false),
                         2,
                         requirements,
-                        new StandardPointsStrategy()
+                        new StandardStrategy()
                 ),
                 new Back(
                         new Corner(Symbol.EMPTY,false),

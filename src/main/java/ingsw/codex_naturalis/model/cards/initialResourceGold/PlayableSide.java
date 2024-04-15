@@ -13,6 +13,8 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAn
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverForObject;
 import ingsw.codex_naturalis.enumerations.Symbol;
 
+import java.util.Map;
+
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "type"
@@ -64,11 +66,6 @@ public class PlayableSide {
     public Corner getBottomRightCorner() { return bottomRightCorner; }
 
 
-
-
-    public String getDescription(){
-        return null;
-    }
 
     public void play(PlayerArea playerArea){
         gainSymbols(playerArea);
@@ -176,5 +173,16 @@ public class PlayableSide {
         if(bottomRightCorner.getSymbol() != Symbol.EMPTY){
             playerArea.incrNumOfSymbol(bottomRightCorner.getSymbol());
         }
+    }
+
+
+
+
+    public String handCardToString(Symbol kingdom) {
+        return null;
+    }
+
+    public String playerAreaCardToString(Symbol kingdom){
+        return null;
     }
 }

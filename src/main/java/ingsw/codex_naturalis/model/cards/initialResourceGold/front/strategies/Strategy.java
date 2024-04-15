@@ -2,6 +2,7 @@ package ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
 
@@ -10,11 +11,12 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAn
         property = "type"
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = CornerPointsStrategy.class, name = "cornerPointsStrategy"),
-        @JsonSubTypes.Type(value = StandardPointsStrategy.class, name = "standardPointsStrategy")
+        @JsonSubTypes.Type(value = CornerStrategy.class, name = "cornerPointsStrategy"),
+        @JsonSubTypes.Type(value = StandardStrategy.class, name = "standardPointsStrategy")
 })
-public interface PointsStrategy {
+public interface Strategy {
 
-    void run(PlayerArea playerArea, PointsGiverAndPointsGiverForCorner playedCard);
+    String handCardToString(Symbol kingdom);
+    void gainPoints(PlayerArea playerArea, PointsGiverAndPointsGiverForCorner playedCard);
 
 }

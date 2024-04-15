@@ -9,7 +9,25 @@ import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.enumerations.Symbol;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 public class PlayableCard extends Card {
+
+    public PlayableCard.Immutable getImmutablePlayableCard(){
+        return new PlayableCard.Immutable(getCardID(), showingFront, playerAreaCardToString(kingdom), handCardToString(kingdom));
+    }
+
+    public PlayableCard.Immutable getImmutableHiddenPlayableCard(){
+        return new PlayableCard.Immutable(getCardID(), false, playerAreaCardToString(kingdom), handCardToString(kingdom));
+    }
+
+    public record Immutable(String cardID, boolean showingFront, String description, String handCard) implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 2L;
+    }
+
+
 
     /**
      * Card type, can be INITIAL, RESOURCE or GOLD
@@ -95,9 +113,12 @@ public class PlayableCard extends Card {
         return back;
     }
 
-    @Override
-    public String getDescription(){
-        return currentPlayableSide.getDescription();
+    public String handCardToString(Symbol kingdom) {
+        return currentPlayableSide.handCardToString(kingdom);
+    }
+
+    public String playerAreaCardToString(Symbol kingdom){
+        return currentPlayableSide.playerAreaCardToString(kingdom);
     }
 
     public Corner getTopLeftCorner(){ return currentPlayableSide.getTopLeftCorner(); }

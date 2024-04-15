@@ -28,8 +28,8 @@ public class Back extends PlayableSide {
     //----------------------------------------------------------------------------------
 
     @Override
-    public String getDescription() {
-        return super.getDescription();
+    public String handCardToString(Symbol kingdom) {
+        return null;
     }
 
     @Override

@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.model.cards.objective;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ingsw.codex_naturalis.model.DefaultValue;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.enumerations.Symbol;
 
@@ -56,9 +57,38 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
 
     @Override
     public String cardToString() {
-        return null;
+        // bc is "border color"
+        String bc = DefaultValue.GoldColor;
+        int numOfSymbolsToWrite = getNumOfSymbols();
+        String outString = bc + "╭───────────╮\n";
+        outString = outString + "│     "  + getPoints()
+                + "p    │\n" + "│           │\n" + "│   " + DefaultValue.ANSI_RESET;
+
+        if (numOfSymbolsToWrite == 2){
+            outString = outString + " ";
+        }
+        for (Map.Entry<Symbol, Integer> set: symbolsForPoints.entrySet()) {
+            for (int i = 0; i < set.getValue(); i++) {
+                    outString = outString + set.getKey().getColoredChar() + " ";
+            }
+        }
+
+        outString = outString + bc + "   │\n│           │\n╰───────────╯" + DefaultValue.ANSI_RESET;
+
+        return outString;
     }
 
+    /**
+     * Method to get the number of symbols to write for cardToString()
+     */
+    private int getNumOfSymbols(){
+        int sum = 0;
+
+        for (Map.Entry<Symbol, Integer> set: symbolsForPoints.entrySet()) {
+            sum = sum + set.getValue();
+        }
+        return sum;
+    }
 
     /**
      * Method to get the count of a symbol from the HashMap

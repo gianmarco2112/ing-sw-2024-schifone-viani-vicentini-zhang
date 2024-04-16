@@ -289,7 +289,7 @@ public class GameplayTextualUI extends GameplayUI {
     public void update(Game.Immutable o, Event arg, String nickname, String playerWhoUpdated) {
         try {
             switch (arg) {
-                //o.player().playerArea().area().get(new ArrayList<>(List.of(0,0)))
+                o.player().playerArea().area().get(new ArrayList<>(List.of(0,0))).
             }
         } catch (NoSuchNicknameException e) {
             System.err.println(e.getMessage());

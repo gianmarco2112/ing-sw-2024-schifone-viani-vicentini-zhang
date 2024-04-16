@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.enumerations.ExtremeCoordinate;
 import ingsw.codex_naturalis.enumerations.Symbol;
+import ingsw.codex_naturalis.model.DefaultValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,7 +77,112 @@ public class PatternObjectiveCard extends ObjectiveCard {
 
     @Override
     public String cardToString() {
-        return null;
+        // bc is "border color"
+        String bc = DefaultValue.GoldColor;
+        Map<List<Integer>, Symbol> mappedPattern = pattern;
+        int unusedLine = getUnusedLineInPattern();
+        String outString = bc + "╭───────────╮\n";
+        outString = outString + "│     "  + getPoints() + "p    │\n" + DefaultValue.ANSI_RESET;
+
+        if (unusedLine != -1){
+            mappedPattern = removeLineFromPattern(pattern, unusedLine);
+        }
+        if (patternIsMappableIn3x3(mappedPattern)) {
+            mappedPattern = normalizeCoordinates(mappedPattern);
+            for (int i = 0; i < 3; i++)
+            {
+                outString = outString + bc + "│ " + DefaultValue.ANSI_RESET;
+                for (int j = 0; j < 3; j++) {
+                    if (mappedPattern.containsKey(List.of(j, i))) {
+                        outString = outString + mappedPattern.get(List.of(j, i)).getColor();
+                        if (mappedPattern.containsKey(List.of(j, i + 1)))
+                            outString = outString + "███";
+                        else
+                            outString = outString + "▇▇▇";
+                        outString = outString + DefaultValue.ANSI_RESET;
+                    }
+                    else
+                        outString = outString + "   ";
+                }
+                outString = outString + bc + " │\n" + DefaultValue.ANSI_RESET;
+            }
+        }
+        else{
+            outString = outString + bc + "│           │\n│    Err    │\n│           │\n" + DefaultValue.ANSI_RESET;
+        }
+
+        outString = outString + bc + "╰───────────╯" + DefaultValue.ANSI_RESET;
+
+        return outString;
+    }
+
+    private int getUnusedLineInPattern(){
+        int unusedLineCoordinate = -1;
+        boolean isLineUsed;
+        int i = extremeCoordinates.get(ExtremeCoordinate.MIN_Y);
+
+        while (i != extremeCoordinates.get(ExtremeCoordinate.MAX_Y)){
+            isLineUsed = false;
+            for (Map.Entry<List<Integer>, Symbol> set: pattern.entrySet()) {
+                if (set.getKey().getLast() == i) {
+                    isLineUsed = true;
+                }
+            }
+            if (!isLineUsed){
+                unusedLineCoordinate = i;
+            }
+            i++;
+        }
+        return unusedLineCoordinate;
+    }
+
+    private boolean patternIsMappableIn3x3(Map<List<Integer>, Symbol> patt){
+        boolean isMappalbe = false;
+        int max_x = Integer.MIN_VALUE;
+        int min_x = Integer.MAX_VALUE;
+        int max_y = Integer.MIN_VALUE;
+        int min_y = Integer.MAX_VALUE;
+        for (Map.Entry<List<Integer>, Symbol> set: patt.entrySet()) {
+            if (set.getKey().getFirst() > max_x)
+                max_x = set.getKey().getFirst();
+            else if (set.getKey().getFirst() < min_x)
+                min_x = set.getKey().getFirst();
+            if (set.getKey().getLast() > max_y)
+                max_y = set.getKey().getFirst();
+            else if (set.getKey().getLast() < min_y)
+                min_y = set.getKey().getFirst();
+        }
+        if (max_y - min_y == 2 && max_x - min_x== 2)
+            isMappalbe = true;
+        return isMappalbe;
+    }
+    
+    /**
+     * Method to map the pattern. Call this only if patterIsMappableIn3x3() is true
+     * @param unmappedPattern copy of this.pattern
+     * @param lineToRemove line not used in pattern
+     */
+    private Map<List<Integer>, Symbol> removeLineFromPattern(Map<List<Integer>, Symbol> unmappedPattern, int lineToRemove){
+        Map<List<Integer>, Symbol> mappedPattern = unmappedPattern;
+
+        int i = extremeCoordinates.get(ExtremeCoordinate.MAX_Y);
+        while (i >= lineToRemove){
+            for (Map.Entry<List<Integer>, Symbol> set: mappedPattern.entrySet()) {
+                set.getKey().set(1, set.getKey().getLast() - 1);
+            }
+            i--;
+
+        }
+        return mappedPattern;
+    }
+
+    private Map<List<Integer>, Symbol> normalizeCoordinates(Map<List<Integer>, Symbol> unmappedPattern) {
+        Map<List<Integer>, Symbol> mappedPattern = unmappedPattern;
+        for (Map.Entry<List<Integer>, Symbol> set : mappedPattern.entrySet()) {
+            set.getKey().set(0, set.getKey().getFirst() - extremeCoordinates.get(ExtremeCoordinate.MIN_X));
+            set.getKey().set(1, set.getKey().getLast() - extremeCoordinates.get(ExtremeCoordinate.MIN_Y));
+        }
+        return mappedPattern;
     }
 
     /**

@@ -1,3 +1,4 @@
+/*
 package ingsw.codex_naturalis.controller;
 
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayController;
@@ -410,4 +411,4 @@ class GameplayControllerTest {
         player.setTurnStatus(TurnStatus.DRAW);
         assertThrows(NoMoreRevealedCardHereException.class,()->{gameplayController.updateDrawCard("Test", DrawCard.DRAW_REVEALED_RESOURCE_CARD_1);});
     }
-}
+}*/

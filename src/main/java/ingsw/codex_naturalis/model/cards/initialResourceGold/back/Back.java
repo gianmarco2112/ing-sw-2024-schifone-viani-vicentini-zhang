@@ -2,6 +2,7 @@ package ingsw.codex_naturalis.model.cards.initialResourceGold.back;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ingsw.codex_naturalis.model.DefaultValue;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
@@ -29,7 +30,10 @@ public class Back extends PlayableSide {
 
     @Override
     public String handCardToString(Symbol kingdom) {
-        return null;
+        String outString = kingdom.getColor() +
+        "╭──┬─────┬──╮\n│  │     │  │\n├──╯  " + kingdom.getColoredChar() + kingdom.getColor() +
+                "  ╰──┤\n├──╮     ╭──┤\n│  │     │  │\n╰──┴─────┴──╯" + DefaultValue.ANSI_RESET;
+        return outString;
     }
 
     @Override
@@ -38,4 +42,9 @@ public class Back extends PlayableSide {
             playerArea.incrNumOfSymbol(sb);
         }
     }
+    @Override
+    public String playerAreaCardToString(Symbol kingdom){
+        return null;
+    }
+
 }

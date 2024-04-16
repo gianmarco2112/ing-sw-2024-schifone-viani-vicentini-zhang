@@ -72,8 +72,11 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
                     outString = outString + set.getKey().getColoredChar() + " ";
             }
         }
+        if (numOfSymbolsToWrite == 2){
+            outString = outString + " ";
+        }
 
-        outString = outString + bc + "   │\n│           │\n╰───────────╯" + DefaultValue.ANSI_RESET;
+        outString = outString + bc + "  │\n│           │\n╰───────────╯" + DefaultValue.ANSI_RESET;
 
         return outString;
     }

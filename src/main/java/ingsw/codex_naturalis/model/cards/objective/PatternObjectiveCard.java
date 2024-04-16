@@ -75,27 +75,43 @@ public class PatternObjectiveCard extends ObjectiveCard {
         }
     }
 
+    private Map<List<Integer>, Symbol> patternMutableAsCopy(){
+        Map<List<Integer>, Symbol> patternCopy = new HashMap<List<Integer>, Symbol>();
+        List<Integer> list = new ArrayList();
+        for (Map.Entry<List<Integer>, Symbol> set: pattern.entrySet()) {
+            list = new ArrayList<>();
+            list.add(set.getKey().getFirst());
+            list.add(set.getKey().getLast());
+            patternCopy.put(list, set.getValue());
+        }
+        return patternCopy;
+    }
+
     @Override
     public String cardToString() {
         // bc is "border color"
         String bc = DefaultValue.GoldColor;
-        Map<List<Integer>, Symbol> mappedPattern = pattern;
+        Map<List<Integer>, Symbol> mappedPattern = patternMutableAsCopy();
         int unusedLine = getUnusedLineInPattern();
         String outString = bc + "╭───────────╮\n";
         outString = outString + "│     "  + getPoints() + "p    │\n" + DefaultValue.ANSI_RESET;
 
         if (unusedLine != -1){
-            mappedPattern = removeLineFromPattern(pattern, unusedLine);
+            mappedPattern = removeLineFromPattern(mappedPattern, unusedLine);
+        }
+        if (patternIs3x2(mappedPattern)){
+            mappedPattern = addEmptyColumn(mappedPattern);
         }
         if (patternIsMappableIn3x3(mappedPattern)) {
             mappedPattern = normalizeCoordinates(mappedPattern);
-            for (int i = 0; i < 3; i++)
+            for (int i = 2; i >= 0; i--)
             {
                 outString = outString + bc + "│ " + DefaultValue.ANSI_RESET;
-                for (int j = 0; j < 3; j++) {
-                    if (mappedPattern.containsKey(List.of(j, i))) {
+                for (int j = 0; j <= 2; j++) {
+                    if (mappedPattern.get(List.of(j, i)) != Symbol.EMPTY) {
                         outString = outString + mappedPattern.get(List.of(j, i)).getColor();
-                        if (mappedPattern.containsKey(List.of(j, i + 1)))
+                        if (mappedPattern.get(List.of(j, i + 1)) == Symbol.EMPTY ||
+                                !mappedPattern.containsKey(List.of(j, i + 1)))
                             outString = outString + "███";
                         else
                             outString = outString + "▇▇▇";
@@ -119,19 +135,17 @@ public class PatternObjectiveCard extends ObjectiveCard {
     private int getUnusedLineInPattern(){
         int unusedLineCoordinate = -1;
         boolean isLineUsed;
-        int i = extremeCoordinates.get(ExtremeCoordinate.MIN_Y);
 
-        while (i != extremeCoordinates.get(ExtremeCoordinate.MAX_Y)){
+        for (int i = extremeCoordinates.get(ExtremeCoordinate.MIN_Y); i <= extremeCoordinates.get(ExtremeCoordinate.MAX_Y); i++) {
             isLineUsed = false;
-            for (Map.Entry<List<Integer>, Symbol> set: pattern.entrySet()) {
-                if (set.getKey().getLast() == i) {
+            for (int j = extremeCoordinates.get(ExtremeCoordinate.MIN_X); j <= extremeCoordinates.get(ExtremeCoordinate.MAX_X); j++) {
+                if (pattern.get(List.of(j, i)) != Symbol.EMPTY){
                     isLineUsed = true;
                 }
             }
             if (!isLineUsed){
                 unusedLineCoordinate = i;
             }
-            i++;
         }
         return unusedLineCoordinate;
     }
@@ -148,13 +162,35 @@ public class PatternObjectiveCard extends ObjectiveCard {
             else if (set.getKey().getFirst() < min_x)
                 min_x = set.getKey().getFirst();
             if (set.getKey().getLast() > max_y)
-                max_y = set.getKey().getFirst();
+                max_y = set.getKey().getLast();
             else if (set.getKey().getLast() < min_y)
-                min_y = set.getKey().getFirst();
+                min_y = set.getKey().getLast();
         }
-        if (max_y - min_y == 2 && max_x - min_x== 2)
+        if (max_y - min_y == 2 && max_x - min_x == 2)
             isMappalbe = true;
         return isMappalbe;
+    }
+
+    private boolean patternIs3x2(Map<List<Integer>, Symbol> patt){
+        boolean is3x2 = false;
+        int max_x = Integer.MIN_VALUE;
+        int min_x = Integer.MAX_VALUE;
+        int max_y = Integer.MIN_VALUE;
+        int min_y = Integer.MAX_VALUE;
+        for (Map.Entry<List<Integer>, Symbol> set: patt.entrySet()) {
+            if (set.getKey().getFirst() > max_x)
+                max_x = set.getKey().getFirst();
+            else if (set.getKey().getFirst() < min_x)
+                min_x = set.getKey().getFirst();
+
+            if (set.getKey().getLast() > max_y)
+                max_y = set.getKey().getLast();
+            else if (set.getKey().getLast() < min_y)
+                min_y = set.getKey().getLast();
+        }
+        if (max_y - min_y == 2 && max_x - min_x == 1)
+            is3x2 = true;
+        return is3x2;
     }
     
     /**
@@ -163,24 +199,76 @@ public class PatternObjectiveCard extends ObjectiveCard {
      * @param lineToRemove line not used in pattern
      */
     private Map<List<Integer>, Symbol> removeLineFromPattern(Map<List<Integer>, Symbol> unmappedPattern, int lineToRemove){
+        Symbol symbolToCopy = Symbol.EMPTY;
         Map<List<Integer>, Symbol> mappedPattern = unmappedPattern;
-
-        int i = extremeCoordinates.get(ExtremeCoordinate.MAX_Y);
-        while (i >= lineToRemove){
-            for (Map.Entry<List<Integer>, Symbol> set: mappedPattern.entrySet()) {
-                set.getKey().set(1, set.getKey().getLast() - 1);
+        for (int i = extremeCoordinates.get(ExtremeCoordinate.MIN_Y); i <= extremeCoordinates.get(ExtremeCoordinate.MAX_Y); i++) {
+            for (int j = extremeCoordinates.get(ExtremeCoordinate.MIN_X); j <= extremeCoordinates.get(ExtremeCoordinate.MAX_X); j++) {
+                if (i == lineToRemove) {
+                    mappedPattern.remove(List.of(j, i));
+                }
             }
-            i--;
-
+        }
+        for (int i = extremeCoordinates.get(ExtremeCoordinate.MIN_Y); i <= extremeCoordinates.get(ExtremeCoordinate.MAX_Y); i++) {
+            for (int j = extremeCoordinates.get(ExtremeCoordinate.MIN_X); j <= extremeCoordinates.get(ExtremeCoordinate.MAX_X); j++) {
+                if (mappedPattern.containsKey(List.of(j, i)) && i > lineToRemove){
+                    symbolToCopy = mappedPattern.get(List.of(j, i));
+                    mappedPattern.remove(List.of(j, i));
+                    mappedPattern.put(List.of(j, i-1), symbolToCopy);
+                }
+            }
         }
         return mappedPattern;
     }
 
     private Map<List<Integer>, Symbol> normalizeCoordinates(Map<List<Integer>, Symbol> unmappedPattern) {
+        Map<List<Integer>, Symbol> mappedPattern = new HashMap<List<Integer>, Symbol>();
+        int max_x = Integer.MIN_VALUE;
+        int min_x = Integer.MAX_VALUE;
+        int max_y = Integer.MIN_VALUE;
+        int min_y = Integer.MAX_VALUE;
+        for (Map.Entry<List<Integer>, Symbol> set: unmappedPattern.entrySet()) {
+            if (set.getKey().getFirst() > max_x)
+                max_x = set.getKey().getFirst();
+            else if (set.getKey().getFirst() < min_x)
+                min_x = set.getKey().getFirst();
+
+            if (set.getKey().getLast() > max_y)
+                max_y = set.getKey().getLast();
+            else if (set.getKey().getLast() < min_y)
+                min_y = set.getKey().getLast();
+        }
+
+        for (int i = min_y; i <= max_y; i++) {
+            for (int j = min_x; j <= max_x ; j++) {
+                mappedPattern.put(List.of(j - min_x, i - min_y), unmappedPattern.get(List.of(j, i)));
+            }
+        }
+        return mappedPattern;
+    }
+
+    private Map<List<Integer>, Symbol> addEmptyColumn(Map<List<Integer>, Symbol> unmappedPattern) {
         Map<List<Integer>, Symbol> mappedPattern = unmappedPattern;
+        int cardsInColumn0 = 0;
+        int cardsInColumn1 = 0;
         for (Map.Entry<List<Integer>, Symbol> set : mappedPattern.entrySet()) {
-            set.getKey().set(0, set.getKey().getFirst() - extremeCoordinates.get(ExtremeCoordinate.MIN_X));
-            set.getKey().set(1, set.getKey().getLast() - extremeCoordinates.get(ExtremeCoordinate.MIN_Y));
+            if(set.getValue() != Symbol.EMPTY){
+                if (set.getKey().getFirst() == extremeCoordinates.get(ExtremeCoordinate.MAX_X)){
+                    cardsInColumn1++;
+                }
+                else if (set.getKey().getFirst() == extremeCoordinates.get(ExtremeCoordinate.MIN_X)){
+                    cardsInColumn0++;
+                }
+            }
+        }
+        if (cardsInColumn1 > cardsInColumn0){
+            mappedPattern.put(List.of(2, 0), Symbol.EMPTY);
+            mappedPattern.put(List.of(2, 1), Symbol.EMPTY);
+            mappedPattern.put(List.of(2, 2), Symbol.EMPTY);
+        }
+        else{
+            mappedPattern.put(List.of(-1, 0), Symbol.EMPTY);
+            mappedPattern.put(List.of(-1, 1), Symbol.EMPTY);
+            mappedPattern.put(List.of(-1, 2), Symbol.EMPTY);
         }
         return mappedPattern;
     }

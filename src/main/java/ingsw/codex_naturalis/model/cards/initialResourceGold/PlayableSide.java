@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import ingsw.codex_naturalis.model.DefaultValue;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
@@ -174,16 +175,13 @@ public class PlayableSide {
         }
     }
 
-
-
-
     public String handCardToString(Symbol kingdom) {
-        String bc = kingdom.getColor();
-        String outString = bc;
-        return outString;
+        StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(this, kingdom));
+        return outString.toString();
     }
 
     public String playerAreaCardToString(Symbol kingdom){
-        return null;
+        StringBuilder outString = new StringBuilder(DefaultValue.getTUIPlayerAreaCardSideTemplate(this, kingdom));
+        return outString.toString();
     }
 }

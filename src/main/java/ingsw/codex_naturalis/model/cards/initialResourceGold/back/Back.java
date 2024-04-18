@@ -37,31 +37,31 @@ public class Back extends PlayableSide {
 
     @Override
     public String handCardToString(Symbol kingdom) {
-        StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(this));
+        StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(this, kingdom));
         if (kingdom == Symbol.EMPTY) {
             if(permanentResources.size() == 1){
                 if (getTopLeftCorner().getSymbol() == Symbol.EMPTY ^ getTopRightCorner().getSymbol() == Symbol.EMPTY){
-                    outString.replace(43, 44, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                    outString.replace(53, 54, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
                 }
                 else if (getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY){
-                    outString.replace(34, 35, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                    outString.replace(39, 40, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
                 }
             } else if (permanentResources.size() == 2) {
                 if(getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY){
-                    outString.replace(34, 35, permanentResources.getLast().getColoredChar() + kingdom.getColor());
-                    outString.replace(20, 21, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                    outString.replace(39, 40, permanentResources.getLast().getColoredChar() + kingdom.getColor());
+                    outString.replace(25, 26, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
                 }
             } else if (permanentResources.size() == 3){
                 if (getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY
                         && getBottomLeftCorner().getSymbol() == Symbol.EMPTY && getBottomRightCorner().getSymbol() == Symbol.EMPTY){
-                    outString.replace(48, 49, permanentResources.getLast().getColoredChar() + kingdom.getColor());
-                    outString.replace(34, 35, permanentResources.get(1).getColoredChar() + kingdom.getColor());
-                    outString.replace(20, 21, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                    outString.replace(53, 54, permanentResources.getLast().getColoredChar() + kingdom.getColor());
+                    outString.replace(39, 40, permanentResources.get(1).getColoredChar() + kingdom.getColor());
+                    outString.replace(25, 26, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
                 }
             }
         }
         else{
-            outString.replace(34, 35, kingdom.getColoredChar() + kingdom.getColor());
+            outString.replace(39, 40, kingdom.getColoredChar() + kingdom.getColor());
         }
         outString.insert(0, kingdom.getColor());
         outString.append(DefaultValue.ANSI_RESET);
@@ -71,31 +71,31 @@ public class Back extends PlayableSide {
 
     @Override
     public String playerAreaCardToString(Symbol kingdom){
-        StringBuilder outString = new StringBuilder(DefaultValue.getTUIPlayerAreaCardSideTemplate(this));
+        StringBuilder outString = new StringBuilder(DefaultValue.getTUIPlayerAreaCardSideTemplate(this, kingdom));
         if (kingdom == Symbol.EMPTY) {
             if(permanentResources.size() == 1){
                 if (getTopLeftCorner().getSymbol() == Symbol.EMPTY ^ getTopRightCorner().getSymbol() == Symbol.EMPTY){
-                    outString.replace(23, 24, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                    outString.replace(33, 34, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
                 }
                 else if (getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY){
-                    outString.replace(14, 15, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                    outString.replace(19, 20, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
                 }
             } else if (permanentResources.size() == 2) {
                 if(getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY){
-                    outString.replace(14, 15, permanentResources.getLast().getColoredChar() + kingdom.getColor());
-                    outString.replace(8, 9, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                    outString.replace(19, 20, permanentResources.getLast().getColoredChar() + kingdom.getColor());
+                    outString.replace(13, 14, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
                 }
             } else if (permanentResources.size() == 3){
                 if (getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY
                     && getBottomLeftCorner().getSymbol() == Symbol.EMPTY && getBottomRightCorner().getSymbol() == Symbol.EMPTY){
-                    outString.replace(20, 21, permanentResources.getLast().getColoredChar() + kingdom.getColor());
-                    outString.replace(14, 15, permanentResources.get(1).getColoredChar() + kingdom.getColor());
-                    outString.replace(8, 9, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                    outString.replace(25, 26, permanentResources.getLast().getColoredChar() + kingdom.getColor());
+                    outString.replace(19, 20, permanentResources.get(1).getColoredChar() + kingdom.getColor());
+                    outString.replace(13, 14, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
                 }
             }
         }
         else{
-            outString.replace(14, 15, kingdom.getColoredChar() + kingdom.getColor());
+            outString.replace(19, 20, kingdom.getColoredChar() + kingdom.getColor());
         }
         outString.insert(0, kingdom.getColor());
         outString.append(DefaultValue.ANSI_RESET);

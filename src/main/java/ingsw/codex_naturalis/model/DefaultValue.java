@@ -16,8 +16,9 @@ public class DefaultValue {
     public static final String GoldColor = "\u001B[33m";
     public static final String AnimalColor = "\u001B[34m";
     public static final String InsectColor = "\u001B[35m";
+    public static final String WHITE = "\u001B[37m";
 
-    public static String getTUIHandCardSideTemplate(PlayableSide side){
+    public static String getTUIHandCardSideTemplate(PlayableSide side, Symbol kingdom){
         String cardTemplate = "";
         boolean tl_is_covered = side.getTopLeftCorner().isCovered();
         boolean tr_is_covered = side.getTopRightCorner().isCovered();
@@ -156,23 +157,26 @@ public class DefaultValue {
         StringBuilder cardTemplateBuilder = new StringBuilder(cardTemplate);
 
         if (side.getBottomRightCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(67, 68, side.getBottomRightCorner().getSymbol().getColoredChar());
+            cardTemplateBuilder.replace(67, 68, side.getBottomRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getBottomLeftCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(57, 58, side.getBottomLeftCorner().getSymbol().getColoredChar());
+            cardTemplateBuilder.replace(57, 58, side.getBottomLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getTopRightCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(25, 26, side.getTopRightCorner().getSymbol().getColoredChar());
+            cardTemplateBuilder.replace(25, 26, side.getTopRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(15, 16, side.getTopLeftCorner().getSymbol().getColoredChar());
+            cardTemplateBuilder.replace(15, 16, side.getTopLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
+        cardTemplateBuilder.insert(0, kingdom.getColor());
+        cardTemplateBuilder.append(DefaultValue.ANSI_RESET);
+
         cardTemplate = cardTemplateBuilder.toString();
 
         return cardTemplate;
     }
 
-    public static String getTUIPlayerAreaCardSideTemplate(PlayableSide side){
+    public static String getTUIPlayerAreaCardSideTemplate(PlayableSide side, Symbol kingdom){
         String cardTemplate = "";
         boolean tl_is_covered = side.getTopLeftCorner().isCovered();
         boolean tr_is_covered = side.getTopRightCorner().isCovered();
@@ -296,17 +300,19 @@ public class DefaultValue {
         StringBuilder cardTemplateBuilder = new StringBuilder(cardTemplate);
 
         if (side.getBottomRightCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(21, 22, side.getBottomRightCorner().getSymbol().getColoredChar());
+            cardTemplateBuilder.replace(21, 22, side.getBottomRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getBottomLeftCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(19, 20, side.getBottomLeftCorner().getSymbol().getColoredChar());
+            cardTemplateBuilder.replace(19, 20, side.getBottomLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getTopRightCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(9, 10, side.getTopRightCorner().getSymbol().getColoredChar());
+            cardTemplateBuilder.replace(9, 10, side.getTopRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(7, 8, side.getTopLeftCorner().getSymbol().getColoredChar());
+            cardTemplateBuilder.replace(7, 8, side.getTopLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
+        cardTemplateBuilder.insert(0, kingdom.getColor());
+        cardTemplateBuilder.append(DefaultValue.ANSI_RESET);
         cardTemplate = cardTemplateBuilder.toString();
 
         return cardTemplate;

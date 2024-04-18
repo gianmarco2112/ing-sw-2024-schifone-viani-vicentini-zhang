@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.model.cards.initialResourceGold.front;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.enumerations.Symbol;
+import ingsw.codex_naturalis.model.DefaultValue;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
@@ -30,7 +31,14 @@ public class PointsGiver extends PlayableSide {
 
     @Override
     public String handCardToString(Symbol kingdom) {
-        return null;
+        StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(this, kingdom));
+        if (getTopLeftCorner().getSymbol() != Symbol.EMPTY){
+            outString.replace(38, 41, DefaultValue.ANSI_RESET + getPoints() + "│p" + kingdom.getColor());
+        }
+        else{
+            outString.replace(24, 27, DefaultValue.ANSI_RESET + getPoints() + "│p" + kingdom.getColor());
+        }
+        return outString.toString();
     }
 
 

@@ -12,10 +12,10 @@ public enum Symbol {
     ANIMAL(DefaultValue.AnimalColor + "A" + DefaultValue.ANSI_RESET, DefaultValue.AnimalColor),
     FUNGI(DefaultValue.FungiColor + "F" + DefaultValue.ANSI_RESET, DefaultValue.FungiColor),
     INSECT(DefaultValue.InsectColor + "I" + DefaultValue.ANSI_RESET, DefaultValue.InsectColor),
-    QUILL("Q", ""),
-    INKWELL("I", ""),
-    MANUSCRIPT("M", ""),
-    EMPTY(" ", "");
+    QUILL(DefaultValue.WHITE + "Q" + DefaultValue.ANSI_RESET, DefaultValue.WHITE),
+    INKWELL(DefaultValue.WHITE + "I" + DefaultValue.ANSI_RESET, DefaultValue.WHITE),
+    MANUSCRIPT(DefaultValue.WHITE + "M" + DefaultValue.ANSI_RESET, DefaultValue.WHITE),
+    EMPTY(" ", DefaultValue.WHITE);
 
     private final String coloredChar;
     private final String color;

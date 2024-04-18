@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.view;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import ingsw.codex_naturalis.model.Deck;
+import ingsw.codex_naturalis.model.DefaultValue;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,13 +56,40 @@ public class CardTUIRappresentation {
     @Test
     void resourceAndGoldCardBackRappresentationTest(){
         PlayableCard card;
+        for (int i = 0; i < 6; i++) {
+            card = initialCardsDeck.drawACard("test");
+            System.out.println(card.getBack().handCardToString(card.getKingdom()));
+            System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
+        }
         for (int i = 0; i < 40; i++) {
             card = resourceCardsDeck.drawACard("test");
             System.out.println(card.getBack().handCardToString(card.getKingdom()));
+            System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
         }
         for (int i = 0; i < 40; i++) {
             card = goldCardsDeck.drawACard("test");
             System.out.println(card.getBack().handCardToString(card.getKingdom()));
+            System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
+        }
+    }
+
+    @Test
+    void defaultValueCardTemplatingTest(){
+        PlayableCard card;
+        for (int i = 0; i < 6; i++) {
+            card = initialCardsDeck.drawACard("test");
+            System.out.println(DefaultValue.getTUIHandCardSideTemplate(card.getBack()));
+            System.out.println(DefaultValue.getTUIPlayerAreaCardSideTemplate(card.getBack()));
+        }
+        for (int i = 0; i < 40; i++) {
+            card = resourceCardsDeck.drawACard("test");
+            System.out.println(DefaultValue.getTUIHandCardSideTemplate(card.getBack()));
+            System.out.println(DefaultValue.getTUIPlayerAreaCardSideTemplate(card.getBack()));
+        }
+        for (int i = 0; i < 40; i++) {
+            card = goldCardsDeck.drawACard("test");
+            System.out.println(DefaultValue.getTUIHandCardSideTemplate(card.getBack()));
+            System.out.println(DefaultValue.getTUIPlayerAreaCardSideTemplate(card.getBack()));
         }
     }
 }

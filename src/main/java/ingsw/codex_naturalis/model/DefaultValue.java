@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.model;
 
+import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 
 public class DefaultValue {
@@ -152,6 +153,22 @@ public class DefaultValue {
                     "│  │     │  │\n" +
                     "╰──┴─────┴──╯";
         }
+        StringBuilder cardTemplateBuilder = new StringBuilder(cardTemplate);
+
+        if (side.getBottomRightCorner().getSymbol() != Symbol.EMPTY){
+            cardTemplateBuilder.replace(67, 68, side.getBottomRightCorner().getSymbol().getColoredChar());
+        }
+        if (side.getBottomLeftCorner().getSymbol() != Symbol.EMPTY){
+            cardTemplateBuilder.replace(57, 58, side.getBottomLeftCorner().getSymbol().getColoredChar());
+        }
+        if (side.getTopRightCorner().getSymbol() != Symbol.EMPTY){
+            cardTemplateBuilder.replace(25, 26, side.getTopRightCorner().getSymbol().getColoredChar());
+        }
+        if (side.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
+            cardTemplateBuilder.replace(15, 16, side.getTopLeftCorner().getSymbol().getColoredChar());
+        }
+        cardTemplate = cardTemplateBuilder.toString();
+
         return cardTemplate;
     }
 
@@ -276,6 +293,22 @@ public class DefaultValue {
                     "│ ║ │\n" +
                     "╰─╨─╯";
         }
+        StringBuilder cardTemplateBuilder = new StringBuilder(cardTemplate);
+
+        if (side.getBottomRightCorner().getSymbol() != Symbol.EMPTY){
+            cardTemplateBuilder.replace(21, 22, side.getBottomRightCorner().getSymbol().getColoredChar());
+        }
+        if (side.getBottomLeftCorner().getSymbol() != Symbol.EMPTY){
+            cardTemplateBuilder.replace(19, 20, side.getBottomLeftCorner().getSymbol().getColoredChar());
+        }
+        if (side.getTopRightCorner().getSymbol() != Symbol.EMPTY){
+            cardTemplateBuilder.replace(9, 10, side.getTopRightCorner().getSymbol().getColoredChar());
+        }
+        if (side.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
+            cardTemplateBuilder.replace(7, 8, side.getTopLeftCorner().getSymbol().getColoredChar());
+        }
+        cardTemplate = cardTemplateBuilder.toString();
+
         return cardTemplate;
     }
 }

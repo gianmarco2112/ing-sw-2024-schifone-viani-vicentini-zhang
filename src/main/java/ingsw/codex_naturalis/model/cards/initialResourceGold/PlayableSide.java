@@ -179,7 +179,9 @@ public class PlayableSide {
 
 
     public String handCardToString(Symbol kingdom) {
-        return null;
+        String bc = kingdom.getColor();
+        String outString = bc;
+        return outString;
     }
 
     public String playerAreaCardToString(Symbol kingdom){

@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model;
 
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
+
 public class DefaultValue {
     public final static int maxNumOfPlayer = 4;
     public final static int minNumOfPlayer = 2;
@@ -13,4 +15,267 @@ public class DefaultValue {
     public static final String GoldColor = "\u001B[33m";
     public static final String AnimalColor = "\u001B[34m";
     public static final String InsectColor = "\u001B[35m";
+
+    public static String getTUIHandCardSideTemplate(PlayableSide side){
+        String cardTemplate = "";
+        boolean tl_is_covered = side.getTopLeftCorner().isCovered();
+        boolean tr_is_covered = side.getTopRightCorner().isCovered();
+        boolean bl_is_covered = side.getBottomLeftCorner().isCovered();
+        boolean br_is_covered = side.getBottomRightCorner().isCovered();
+
+        if (tl_is_covered && tr_is_covered && bl_is_covered && br_is_covered){
+            cardTemplate =
+                    "╭───────────╮\n" +
+                    "│           │\n" +
+                    "│           │\n" +
+                    "│           │\n" +
+                    "│           │\n" +
+                    "╰───────────╯";
+        } else if (!tl_is_covered && tr_is_covered && bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭──┬────────╮\n" +
+                    "│  │        │\n" +
+                    "├──╯        │\n" +
+                    "│           │\n" +
+                    "│           │\n" +
+                    "╰───────────╯";
+        } else if (tl_is_covered && !tr_is_covered && bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭────────┬──╮\n" +
+                    "│        │  │\n" +
+                    "│        ╰──┤\n" +
+                    "│           │\n" +
+                    "│           │\n" +
+                    "╰───────────╯";
+        } else if (!tl_is_covered && !tr_is_covered && bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭──┬─────┬──╮\n" +
+                    "│  │     │  │\n" +
+                    "├──╯     ╰──┤\n" +
+                    "│           │\n" +
+                    "│           │\n" +
+                    "╰───────────╯";
+        } else if (tl_is_covered && tr_is_covered && !bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭───────────╮\n" +
+                    "│           │\n" +
+                    "│           │\n" +
+                    "├──╮        │\n" +
+                    "│  │        │\n" +
+                    "╰──┴────────╯";
+        } else if (!tl_is_covered && tr_is_covered && !bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭──┬────────╮\n" +
+                    "│  │        │\n" +
+                    "├──╯        │\n" +
+                    "├──╮        │\n" +
+                    "│  │        │\n" +
+                    "╰──┴────────╯";
+        } else if (tl_is_covered && !tr_is_covered && !bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭────────┬──╮\n" +
+                    "│        │  │\n" +
+                    "│        ╰──┤\n" +
+                    "├──╮        │\n" +
+                    "│  │        │\n" +
+                    "╰──┴────────╯";
+        } else if (!tl_is_covered && !tr_is_covered && !bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭──┬─────┬──╮\n" +
+                    "│  │     │  │\n" +
+                    "├──╯     ╰──┤\n" +
+                    "├──╮        │\n" +
+                    "│  │        │\n" +
+                    "╰──┴────────╯";
+        } else if (tl_is_covered && tr_is_covered && bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭───────────╮\n" +
+                    "│           │\n" +
+                    "│           │\n" +
+                    "│        ╭──┤\n" +
+                    "│        │  │\n" +
+                    "╰────────┴──╯";
+        } else if (!tl_is_covered && tr_is_covered && bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭──┬────────╮\n" +
+                    "│  │        │\n" +
+                    "├──╯        │\n" +
+                    "│        ╭──┤\n" +
+                    "│        │  │\n" +
+                    "╰────────┴──╯";
+        } else if (tl_is_covered && !tr_is_covered && bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭────────┬──╮\n" +
+                    "│        │  │\n" +
+                    "│        ╰──┤\n" +
+                    "│        ╭──┤\n" +
+                    "│        │  │\n" +
+                    "╰────────┴──╯";
+        } else if (!tl_is_covered && !tr_is_covered && bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭──┬─────┬──╮\n" +
+                    "│  │     │  │\n" +
+                    "├──╯     ╰──┤\n" +
+                    "│        ╭──┤\n" +
+                    "│        │  │\n" +
+                    "╰────────┴──╯";
+        } else if (tl_is_covered && tr_is_covered && !bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭───────────╮\n" +
+                    "│           │\n" +
+                    "│           │\n" +
+                    "├──╮     ╭──┤\n" +
+                    "│  │     │  │\n" +
+                    "╰──┴─────┴──╯";
+        } else if (!tl_is_covered && tr_is_covered && !bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭──┬────────╮\n" +
+                    "│  │        │\n" +
+                    "├──╯        │\n" +
+                    "├──╮     ╭──┤\n" +
+                    "│  │     │  │\n" +
+                    "╰──┴─────┴──╯";
+        } else if (tl_is_covered && !tr_is_covered && !bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭────────┬──╮\n" +
+                    "│        │  │\n" +
+                    "│        ╰──┤\n" +
+                    "├──╮     ╭──┤\n" +
+                    "│  │     │  │\n" +
+                    "╰──┴─────┴──╯";
+        } else if (!tl_is_covered && !tr_is_covered && !bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭──┬─────┬──╮\n" +
+                    "│  │     │  │\n" +
+                    "├──╯     ╰──┤\n" +
+                    "├──╮     ╭──┤\n" +
+                    "│  │     │  │\n" +
+                    "╰──┴─────┴──╯";
+        }
+        return cardTemplate;
+    }
+
+    public static String getTUIPlayerAreaCardSideTemplate(PlayableSide side){
+        String cardTemplate = "";
+        boolean tl_is_covered = side.getTopLeftCorner().isCovered();
+        boolean tr_is_covered = side.getTopRightCorner().isCovered();
+        boolean bl_is_covered = side.getBottomLeftCorner().isCovered();
+        boolean br_is_covered = side.getBottomRightCorner().isCovered();
+
+        if (tl_is_covered && tr_is_covered && bl_is_covered && br_is_covered){
+            cardTemplate =
+                    "╭───╮\n" +
+                    "│   │\n" +
+                    "│   │\n" +
+                    "│   │\n" +
+                    "╰───╯";
+
+        } else if (!tl_is_covered && tr_is_covered && bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭─┬─╮\n" +
+                    "│ │ │\n" +
+                    "├─┘ │\n" +
+                    "│   │\n" +
+                    "╰───╯";
+        } else if (tl_is_covered && !tr_is_covered && bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭─┬─╮\n" +
+                    "│ │ │\n" +
+                    "│ └─┤\n" +
+                    "│   │\n" +
+                    "╰───╯";
+        } else if (!tl_is_covered && !tr_is_covered && bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭─╥─╮\n" +
+                    "│ ║ │\n" +
+                    "├─╨─┤\n" +
+                    "│   │\n" +
+                    "╰───╯";
+        } else if (tl_is_covered && tr_is_covered && !bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭───╮\n" +
+                    "│   │\n" +
+                    "├─┐ │\n" +
+                    "│ │ │\n" +
+                    "╰─┴─╯";
+        } else if (!tl_is_covered && tr_is_covered && !bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭─┬─╮\n" +
+                    "│ │ │\n" +
+                    "╞═╡ │\n" +
+                    "│ │ │\n" +
+                    "╰─┴─╯";
+        } else if (tl_is_covered && !tr_is_covered && !bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭─┬─╮\n" +
+                    "│ │ │\n" +
+                    "├─▞─┤\n" +
+                    "│ │ │\n" +
+                    "╰─┴─╯";
+        } else if (!tl_is_covered && !tr_is_covered && !bl_is_covered && br_is_covered) {
+            cardTemplate =
+                    "╭─╥─╮\n" +
+                    "│ ║ │\n" +
+                    "╞═╃─┤\n" +
+                    "│ │ │\n" +
+                    "╰─┴─╯";
+        } else if (tl_is_covered && tr_is_covered && bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭───╮\n" +
+                    "│   │\n" +
+                    "│ ┌─┤\n" +
+                    "│ │ │\n" +
+                    "╰─┴─╯";
+        } else if (!tl_is_covered && tr_is_covered && bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭─┬─╮\n" +
+                    "│ │ │\n" +
+                    "├─▚─┤\n" +
+                    "│ │ │\n" +
+                    "╰─┴─╯";
+        } else if (tl_is_covered && !tr_is_covered && bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭─┬─╮\n" +
+                    "│ │ │\n" +
+                    "│ ╞═╡\n" +
+                    "│ │ │\n" +
+                    "╰─┴─╯";
+        } else if (!tl_is_covered && !tr_is_covered && bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭─╥─╮\n" +
+                    "│ ║ │\n" +
+                    "├─╄═╡\n" +
+                    "│ │ │\n" +
+                    "╰─┴─╯";
+        } else if (tl_is_covered && tr_is_covered && !bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭───╮\n" +
+                    "│   │\n" +
+                    "├─╥─┤\n" +
+                    "│ ║ │\n" +
+                    "╰─╨─╯";
+        } else if (!tl_is_covered && tr_is_covered && !bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭─┬─╮\n" +
+                    "│ │ │\n" +
+                    "╞═╅─┤\n" +
+                    "│ ║ │\n" +
+                    "╰─╨─╯";
+        } else if (tl_is_covered && !tr_is_covered && !bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭─┬─╮\n" +
+                    "│ │ │\n" +
+                    "├─╆═╡\n" +
+                    "│ ║ │\n" +
+                    "╰─╨─╯";
+        } else if (!tl_is_covered && !tr_is_covered && !bl_is_covered && !br_is_covered) {
+            cardTemplate =
+                    "╭─╥─╮\n" +
+                    "│ ║ │\n" +
+                    "╞═╬═╡\n" +
+                    "│ ║ │\n" +
+                    "╰─╨─╯";
+        }
+        return cardTemplate;
+    }
 }

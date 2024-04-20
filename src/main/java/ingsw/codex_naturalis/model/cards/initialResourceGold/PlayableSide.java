@@ -66,7 +66,6 @@ public class PlayableSide {
     public Corner getBottomRightCorner() { return bottomRightCorner; }
 
 
-
     public void play(PlayerArea playerArea){
         gainSymbols(playerArea);
     }

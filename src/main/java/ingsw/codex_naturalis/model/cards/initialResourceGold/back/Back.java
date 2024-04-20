@@ -29,22 +29,76 @@ public class Back extends PlayableSide {
     //----------------------------------------------------------------------------------
 
     @Override
-    public String handCardToString(Symbol kingdom) {
-        String outString = kingdom.getColor() +
-        "╭──┬─────┬──╮\n│  │     │  │\n├──╯  " + kingdom.getColoredChar() + kingdom.getColor() +
-                "  ╰──┤\n├──╮     ╭──┤\n│  │     │  │\n╰──┴─────┴──╯" + DefaultValue.ANSI_RESET;
-        return outString;
-    }
-
-    @Override
     protected void gainSymbols(PlayerArea playerArea){
         for (Symbol sb : permanentResources) {
             playerArea.incrNumOfSymbol(sb);
         }
     }
+
     @Override
-    public String playerAreaCardToString(Symbol kingdom){
-        return null;
+    public String handCardToString(Symbol kingdom) {
+        StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(this));
+        if (kingdom == Symbol.EMPTY) {
+            if(permanentResources.size() == 1){
+                if (getTopLeftCorner().getSymbol() == Symbol.EMPTY ^ getTopRightCorner().getSymbol() == Symbol.EMPTY){
+                    outString.replace(43, 44, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                }
+                else if (getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY){
+                    outString.replace(34, 35, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                }
+            } else if (permanentResources.size() == 2) {
+                if(getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY){
+                    outString.replace(34, 35, permanentResources.getLast().getColoredChar() + kingdom.getColor());
+                    outString.replace(20, 21, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                }
+            } else if (permanentResources.size() == 3){
+                if (getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY
+                        && getBottomLeftCorner().getSymbol() == Symbol.EMPTY && getBottomRightCorner().getSymbol() == Symbol.EMPTY){
+                    outString.replace(48, 49, permanentResources.getLast().getColoredChar() + kingdom.getColor());
+                    outString.replace(34, 35, permanentResources.get(1).getColoredChar() + kingdom.getColor());
+                    outString.replace(20, 21, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                }
+            }
+        }
+        else{
+            outString.replace(34, 35, kingdom.getColoredChar() + kingdom.getColor());
+        }
+        outString.insert(0, kingdom.getColor());
+        outString.append(DefaultValue.ANSI_RESET);
+        return outString.toString();
     }
 
+
+    @Override
+    public String playerAreaCardToString(Symbol kingdom){
+        StringBuilder outString = new StringBuilder(DefaultValue.getTUIPlayerAreaCardSideTemplate(this));
+        if (kingdom == Symbol.EMPTY) {
+            if(permanentResources.size() == 1){
+                if (getTopLeftCorner().getSymbol() == Symbol.EMPTY ^ getTopRightCorner().getSymbol() == Symbol.EMPTY){
+                    outString.replace(23, 24, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                }
+                else if (getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY){
+                    outString.replace(14, 15, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                }
+            } else if (permanentResources.size() == 2) {
+                if(getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY){
+                    outString.replace(14, 15, permanentResources.getLast().getColoredChar() + kingdom.getColor());
+                    outString.replace(8, 9, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                }
+            } else if (permanentResources.size() == 3){
+                if (getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY
+                    && getBottomLeftCorner().getSymbol() == Symbol.EMPTY && getBottomRightCorner().getSymbol() == Symbol.EMPTY){
+                    outString.replace(20, 21, permanentResources.getLast().getColoredChar() + kingdom.getColor());
+                    outString.replace(14, 15, permanentResources.get(1).getColoredChar() + kingdom.getColor());
+                    outString.replace(8, 9, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
+                }
+            }
+        }
+        else{
+            outString.replace(14, 15, kingdom.getColoredChar() + kingdom.getColor());
+        }
+        outString.insert(0, kingdom.getColor());
+        outString.append(DefaultValue.ANSI_RESET);
+        return outString.toString();
+    }
 }

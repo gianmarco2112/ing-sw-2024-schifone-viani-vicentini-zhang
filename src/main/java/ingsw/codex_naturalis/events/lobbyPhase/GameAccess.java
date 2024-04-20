@@ -1,5 +1,10 @@
 package ingsw.codex_naturalis.events.lobbyPhase;
 
+import ingsw.codex_naturalis.view.lobbyPhase.LobbyTextualUI;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public enum GameAccess {
 
     NEW_GAME("Create a new game"),
@@ -14,4 +19,5 @@ public enum GameAccess {
     public String getDescription() {
         return description;
     }
+
 }

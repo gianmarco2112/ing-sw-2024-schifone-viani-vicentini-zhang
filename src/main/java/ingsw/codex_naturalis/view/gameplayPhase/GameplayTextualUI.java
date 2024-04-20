@@ -75,7 +75,6 @@ public class GameplayTextualUI extends GameplayUI {
         }
     }
 
-    @Override
     public void stop() {
         running = false;
     }
@@ -296,7 +295,6 @@ public class GameplayTextualUI extends GameplayUI {
         }
     }
 
-    @Override
     public void setPlayersConnectedStatus(PlayersConnectedStatus playersConnectedStatus) {
 
     }

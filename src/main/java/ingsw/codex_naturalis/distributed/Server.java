@@ -1,11 +1,9 @@
 package ingsw.codex_naturalis.distributed;
 
-import ingsw.codex_naturalis.distributed.rmi.ClientImpl;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
-import ingsw.codex_naturalis.events.lobbyPhase.NetworkProtocol;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
@@ -20,7 +18,6 @@ public interface Server extends Remote {
     void register(Client client) throws RemoteException;
 
 
-    void updateNetworkProtocol(Client client, NetworkProtocol networkProtocol) throws RemoteException;
     void updateGameToAccess(Client client, int gameID, String nickname) throws RemoteException;
     void updateNewGame(Client client, int numOfPlayers, String nickname) throws RemoteException;
 

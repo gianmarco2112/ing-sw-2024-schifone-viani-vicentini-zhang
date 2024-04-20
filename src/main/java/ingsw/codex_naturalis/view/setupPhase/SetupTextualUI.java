@@ -12,29 +12,19 @@ import java.util.*;
 
 public class SetupTextualUI extends SetupUI {
 
-    private PlayersConnectedStatus playersConnectedStatus;
-
     private boolean running;
 
     private final Scanner s = new Scanner(System.in);
 
-    private String myNickname;
-
-    private List<String> nicknames = new ArrayList<>();
 
 
 
 
-    public SetupTextualUI(PlayersConnectedStatus playersConnectedStatus){
+    public SetupTextualUI(){
         running = true;
-        this.playersConnectedStatus = playersConnectedStatus;
-        this.myNickname = myNickname;
     }
 
-    @Override
-    public void setPlayersConnectedStatus(PlayersConnectedStatus playersConnectedStatus) {
-        this.playersConnectedStatus = playersConnectedStatus;
-    }
+
 
 
 
@@ -42,9 +32,6 @@ public class SetupTextualUI extends SetupUI {
 
     @Override
     public void run() {
-
-        //waiting for all players to join
-        waitingForPlayers();
 
         //the players tells when he's ready to play
         ready();
@@ -61,16 +48,7 @@ public class SetupTextualUI extends SetupUI {
     }
 
 
-    private void waitingForPlayers() {
 
-        while (playersConnectedStatus == PlayersConnectedStatus.WAIT) {
-            try {
-                System.out.println("Waiting for players to join...");
-                Thread.sleep(3000);
-            } catch (InterruptedException e) { }
-        }
-
-    }
 
     private void ready() {
 
@@ -192,6 +170,7 @@ public class SetupTextualUI extends SetupUI {
 
 
 
+
     @Override
     public void stop() {
         running = false;
@@ -201,7 +180,7 @@ public class SetupTextualUI extends SetupUI {
 
 
 
-    @Override
+
     public void update(Game.Immutable o, Event arg, String nickname, String playerWhoUpdated) {
         switch (arg) {
             case CARDS_SETUP -> showCardsSetup(o);

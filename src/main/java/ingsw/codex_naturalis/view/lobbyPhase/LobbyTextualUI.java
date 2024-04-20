@@ -1,158 +1,117 @@
 package ingsw.codex_naturalis.view.lobbyPhase;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.events.lobbyPhase.GameAccess;
-import ingsw.codex_naturalis.events.lobbyPhase.NetworkProtocol;
-import ingsw.codex_naturalis.distributed.rmi.ServerImpl;
+import ingsw.codex_naturalis.distributed.ServerImpl;
 import ingsw.codex_naturalis.exceptions.*;
-import ingsw.codex_naturalis.events.gameplayPhase.UtilityCommand;
 
 import java.util.*;
 
-import static ingsw.codex_naturalis.events.gameplayPhase.UtilityCommand.CANCEL;
-
 public class LobbyTextualUI extends LobbyUI {
-
-    private String nickname;
 
     private boolean running;
 
     private final Scanner s = new Scanner(System.in);
 
-    private boolean gamesSpecsChanged;
-    private List<ServerImpl.GameSpecs> gamesSpecs = new ArrayList<>();
+    Map<Integer, ServerImpl.GameSpecs>  gameSpecsMap = new LinkedHashMap<>();
 
-    private final Map<String, UtilityCommand> utilityCommands = new LinkedHashMap<>();
+    private boolean askingWhichGameToAccess = false;
 
 
     public LobbyTextualUI(){
         running = true;
-        utilityCommands.put("/", CANCEL);
     }
+
 
 
     @Override
     public void run() {
-
-        NetworkProtocol networkProtocol = askNetworkProtocol();
-        notifyNetworkProtocol(networkProtocol);
 
         gameAccess();
 
     }
 
 
-    private void printUtilityCommands(){
-        for (Map.Entry<String, UtilityCommand> entry : utilityCommands.entrySet())
-            System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
-    }
-    private void utilityCommandCase(UtilityCommand utilityCommand){
-        switch (utilityCommand) {
-            case CANCEL -> {
-                System.err.println("Request canceled");
-                System.out.println();
-            }
-        }
-    }
-
-    private NetworkProtocol askNetworkProtocol() {
-
-        Map<Integer, NetworkProtocol> networkProtocolMap = new LinkedHashMap<>();
-        for (int key = 0; key < NetworkProtocol.values().length; key++) {
-            networkProtocolMap.put(key+1, NetworkProtocol.values()[key]);
-        }
-        System.out.println("Please choose a network protocol from the following options: ");
-        for (Map.Entry<Integer, NetworkProtocol> entry : networkProtocolMap.entrySet()) {
-            System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
-        }
-
-        while (true) {
-            String input = s.next();
-            try{
-                Integer number = Integer.parseInt(input);
-                if (networkProtocolMap.containsKey(number))
-                    return networkProtocolMap.get(number);
-                else
-                    System.err.println("This is not a command: " + number);
-            } catch (NumberFormatException e) {
-                System.err.println("This is not a command: "+ input);
-            }
-        }
-
-    }
 
     private void gameAccess() {
 
         while (running) {
-            GameAccess gameAccess = askGameAccess();
-            switch (gameAccess) {
-                case NEW_GAME -> newGameAccess();
-                case EXISTING_GAME -> existingGameAccess();
+            int option = askGameAccess();
+            switch (option) {
+                case 1 -> newGameAccess();
+                case 2 -> existingGameAccess();
+                default -> System.err.println("Invalid option");
             }
         }
-        System.out.println();
-        System.out.println("Waiting for players to join");
 
     }
-    private GameAccess askGameAccess() {
 
-        Map<Integer, GameAccess> gameAccessMap = new LinkedHashMap<>();
-        for (int key = 0; key < GameAccess.values().length; key++) {
-            gameAccessMap.put(key+1, GameAccess.values()[key]);
+    private <Event extends Enum<Event>> void printOptions(Class<Event> event){
+        for (int i = 0; i < event.getEnumConstants().length; i++) {
+            System.out.println(i+1 + " - " + event.getEnumConstants()[i]);
         }
-        System.out.println("Please choose an option for game access: ");
-        for (Map.Entry<Integer, GameAccess> entry : gameAccessMap.entrySet()) {
-            System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
-        }
+    }
+
+    private int askGameAccess() {
 
         while (true) {
+            System.out.println("\n--------------------");
+            System.out.println("Please choose an option for game access: ");
+            printOptions(GameAccess.class);
+            System.out.println("--------------------");
             String input = s.next();
             try{
-                Integer number = Integer.parseInt(input);
-                if (gameAccessMap.containsKey(number))
-                    return gameAccessMap.get(number);
-                else
-                    System.err.println("This is not a command: " + number);
+                return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.err.println("This is not a command: "+ input);
+                System.err.println("Invalid option");
             }
         }
 
     }
+
     private void newGameAccess() {
 
-        try {
-            int numOfPlayers = askNumOfPlayers();
-            String nickname = askNickname();
-            notifyNewGame(numOfPlayers, nickname);
-        } catch (UtilityCommandException e) {
-            UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
-            utilityCommandCase(utilityCommand);
-        }
+        int numOfPlayers = askNumOfPlayers();
+        if (numOfPlayers == 0)
+            gameAccess();
+
+        String nickname = askNickname();
+        if (nickname.equals("/"))
+            newGameAccess();
+
+        notifyNewGame(numOfPlayers, nickname);
 
     }
     private void existingGameAccess() {
-
+        int gameID = 0;
         try {
-            int gameID = askWhichGameToAccess();
-            String nickname = askNickname();
-            notifyGameToAccess(gameID, nickname);
-        } catch (UtilityCommandException e) {
-            UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
-            utilityCommandCase(utilityCommand);
-        } catch (NicknameAlreadyExistsException | NoExistingGamesAvailable | MaxNumOfPlayersInException |
-                 NotReachableGameException e) {
+            gameID = askWhichGameToAccess();
+            askingWhichGameToAccess = false;
+            if (gameID == 0)
+                gameAccess();
+        } catch (NoExistingGamesAvailable e){
             System.err.println(e.getMessage());
+            gameAccess();
         }
+        String nickname = askNickname();
+        if (nickname.equals("/"))
+            existingGameAccess();
+
+        notifyGameToAccess(gameID, nickname);
 
     }
-    private int askNumOfPlayers() throws UtilityCommandException {
-
-        System.out.println("Please specify the number of players for the game   (Min: 2, Max: 4)");
+    private int askNumOfPlayers() {
 
         while (true) {
+            System.out.println("\n--------------------");
+            System.out.println("Please specify the number of players for the game   (Min: 2, Max: 4)");
+            System.out.println("/ - Back");
+            System.out.println("--------------------");
             String input = s.next();
-            if (utilityCommands.containsKey(input))
-                throw new UtilityCommandException(input);
+            if (input.equals("/"))
+                return 0;
             try {
                 int numOfPlayers = Integer.parseInt(input);
                 if (numOfPlayers < 2)
@@ -162,71 +121,67 @@ public class LobbyTextualUI extends LobbyUI {
                 else
                     return numOfPlayers;
             } catch (NumberFormatException e) {
-                System.err.println("This is not a number: " + input);
+                System.err.println("Invalid option");
             }
         }
 
     }
     private void printGamesToAccess(Map<Integer, ServerImpl.GameSpecs>  gameSpecsMap) {
 
+        System.out.println("\n--------------------");
         System.out.println("Which game do you want to access?");
-        printUtilityCommands();
+        System.out.println("/ - Back");
         for (Map.Entry<Integer, ServerImpl.GameSpecs> entry : gameSpecsMap.entrySet()) {
             System.out.println(entry.getKey() + " - "
                     + "Game ID: " + entry.getValue().ID()
                     + "    Current number of players connected: " + entry.getValue().currentNumOfPlayers()
                     + "    Max number of players: " + entry.getValue().maxNumOfPlayers());
         }
+        System.out.println("--------------------");
 
     }
-    private int askWhichGameToAccess() throws UtilityCommandException, NoExistingGamesAvailable {
 
-        if (gamesSpecs.isEmpty())
+
+
+    private int askWhichGameToAccess() throws NoExistingGamesAvailable {
+
+        if (gameSpecsMap.isEmpty())
             throw new NoExistingGamesAvailable();
 
-        Map<Integer, ServerImpl.GameSpecs>  gameSpecsMap = new LinkedHashMap<>();
-        for (int key = 0; key < gamesSpecs.size(); key++)
-            gameSpecsMap.put(key+1, gamesSpecs.get(key));
         printGamesToAccess(gameSpecsMap);
-        gamesSpecsChanged = false;
 
+        askingWhichGameToAccess = true;
 
         while (true) {
-            String input = null;
-            while (input == null) {
-                if (gamesSpecsChanged) {
-                    gameSpecsMap.clear();
-                    for (int key = 0; key < gamesSpecs.size(); key++)
-                        gameSpecsMap.put(key+1, gamesSpecs.get(key));
-                    printGamesToAccess(gameSpecsMap);
-                    gamesSpecsChanged = false;
-                }
-                if (s.hasNext())
-                    input = s.next();
-            }
 
-            if (utilityCommands.containsKey(input))
-                throw new UtilityCommandException(input);
+            String input = null;
+            if (s.hasNext())
+                input = s.next();
+            else
+                printGamesToAccess(gameSpecsMap);
+
+            if (input.equals("/"))
+                return 0;
+
             try{
                 Integer number = Integer.parseInt(input);
                 if (gameSpecsMap.containsKey(number))
                     return gameSpecsMap.get(number).ID();
                 else
-                    System.err.println("This is not a command: " + number);
+                    System.err.println("Invalid option");
             } catch (NumberFormatException e) {
-                System.err.println("This is not a command: "+ input);
+                System.err.println("Invalid option");
             }
         }
 
     }
-    private String askNickname() throws UtilityCommandException {
-
-        System.out.println("Choose your nickname");
+    private String askNickname()  {
 
         while (true) {
+            System.out.println("\n--------------------");
+            System.out.println("Choose your nickname");
+            System.out.println("--------------------");
             String input = s.next();
-            if (utilityCommands.containsKey(input))
-                throw new UtilityCommandException(input);
             if (input.length() > 20)
                 System.err.println("Too many characters!");
             else
@@ -236,16 +191,38 @@ public class LobbyTextualUI extends LobbyUI {
     }
 
 
+
+
+    @Override
+    public void updateGamesSpecs(String jsonGamesSpecs){
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<ServerImpl.GameSpecs> gamesSpecs = new ArrayList<>();
+
+        try {
+            gamesSpecs = objectMapper.readValue(jsonGamesSpecs, new TypeReference<List<ServerImpl.GameSpecs>>(){});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (int key = 0; key < gamesSpecs.size(); key++)
+            gameSpecsMap.put(key+1, gamesSpecs.get(key));
+
+        if (askingWhichGameToAccess) {
+            gameSpecsMap.clear();
+            for (int key = 0; key < gamesSpecs.size(); key++)
+                gameSpecsMap.put(key+1, gamesSpecs.get(key));
+
+            printGamesToAccess(gameSpecsMap);
+        }
+    }
+
+
     @Override
     public void stop() {
         running = false;
     }
 
-
-    @Override
-    public void updateGamesSpecs(List<ServerImpl.GameSpecs> gamesSpecs){
-        this.gamesSpecs = gamesSpecs;
-        gamesSpecsChanged = true;
-    }
 
 }

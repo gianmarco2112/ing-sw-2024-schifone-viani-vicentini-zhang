@@ -1,7 +1,6 @@
 package ingsw.codex_naturalis.view.lobbyPhase;
 
-import ingsw.codex_naturalis.events.lobbyPhase.NetworkProtocol;
-import ingsw.codex_naturalis.distributed.rmi.LobbyObserver;
+import ingsw.codex_naturalis.distributed.LobbyObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +30,7 @@ public class LobbyObservable {
     }
 
 
-    public void notifyNetworkProtocol(NetworkProtocol networkProtocol) {
-        for (LobbyObserver o : obs){
-            o.updateNetworkProtocol(networkProtocol);
-        }
-    }
+
 
     public void notifyNewGame(int numOfPlayers, String nickname) {
         for (LobbyObserver o : obs){

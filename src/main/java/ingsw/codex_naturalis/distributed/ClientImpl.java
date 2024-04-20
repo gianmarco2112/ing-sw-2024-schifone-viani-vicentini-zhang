@@ -1,20 +1,12 @@
-package ingsw.codex_naturalis.distributed.rmi;
+package ingsw.codex_naturalis.distributed;
 
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
-import ingsw.codex_naturalis.events.lobbyPhase.NetworkProtocol;
-import ingsw.codex_naturalis.enumerations.PlayersConnectedStatus;
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayObserver;
 import ingsw.codex_naturalis.controller.setupPhase.SetupObserver;
-import ingsw.codex_naturalis.distributed.Client;
-import ingsw.codex_naturalis.distributed.Server;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
-import ingsw.codex_naturalis.distributed.UIChoice;
-import ingsw.codex_naturalis.model.Game;
-import ingsw.codex_naturalis.enumerations.GameStatus;
-import ingsw.codex_naturalis.model.observerObservable.Event;
-import ingsw.codex_naturalis.view.GameUI;
+import ingsw.codex_naturalis.view.gameStartingPhase.GameStartingUI;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
@@ -29,21 +21,33 @@ import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObserver, SetupObserver, GameplayObserver, Runnable {
 
+    private enum UI {
+        LOBBY,
+        GAME_STARTING,
+        SETUP,
+        GAMEPLAY
+    }
+
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
+
     private String nickname;
 
-    private final Map<Integer, UIChoice> uiChoices = new LinkedHashMap<>();
     private  UIChoice uiChoice;
 
-    private GameUI currentGameView;
+    private UI uiState;
 
-    private  LobbyUI lobbyView;
+    private LobbyUI lobbyView;
+    private GameStartingUI gameStartingView;
     private SetupUI setupView;
     private GameplayUI gameplayView;
 
     private  Server server;
+
 
     public ClientImpl(Server server) throws RemoteException{
         super();
@@ -61,6 +65,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     }
 
     private void initClientImpl(Server server) throws RemoteException{
+
         uiChoice = askUIChoice();
 
         lobbyView = uiChoice.createLobbyUI();
@@ -68,8 +73,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
         this.server = server;
         server.register(this);
-    }
 
+    }
 
 
     private UIChoice askUIChoice() {
@@ -89,7 +94,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
         }
         System.out.println(ANSI_RESET);
         System.out.println();
-        System.out.println("Before we begin, please choose your preferred user interface (UI) option:");
+        System.out.println("Please choose your preferred user interface (UI) option:");
+        Map<Integer, UIChoice> uiChoices = new LinkedHashMap<>();
         for (int key = 0; key < UIChoice.values().length; key++) {
             uiChoices.put(key+1, UIChoice.values()[key]);
         }
@@ -116,56 +122,68 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
 
 
+
     @Override
-    public void updateGameUI(Game.Immutable o, Event arg, String playerWhoUpdated) {
-        this.currentGameView.update(o, arg, nickname, playerWhoUpdated);
+    public void updateLobbyUIGameSpecs(String jsonGamesSpecs) {
+        lobbyView.updateGamesSpecs(jsonGamesSpecs);
     }
 
     @Override
-    public void updateLobbyUI(List<ServerImpl.GameSpecs> gamesSpecs) {
-        lobbyView.updateGamesSpecs(gamesSpecs);
+    public void reportError(String error) throws RemoteException {
+        System.err.println(error);
     }
 
     @Override
-    public void setNickname(String nickname) {
+    public void updateUItoGameStarting(int gameID, String nickname) {
+
         this.nickname = nickname;
+
+        gameStartingView = uiChoice.createGameStartingUI(gameID);
+
+        lobbyView.stop();
+        //lobbyView.deleteObservers();
+
+        uiState = UI.GAME_STARTING;
+
+        executorService.execute(gameStartingView);
+
     }
+
+
+
+    @Override
+    public void updateUItoSetup() {
+
+        setupView = uiChoice.createSetupUI();
+
+        switch (uiState) {
+            case LOBBY -> {
+                lobbyView.stop();
+                //lobbyView.deleteObservers();
+            }
+            case GAME_STARTING -> gameStartingView.stop();
+        }
+
+        uiState = UI.SETUP;
+
+        executorService.execute(setupView);
+
+    }
+
+
+
+
 
     @Override
     public String getNickname() {
         return nickname;
     }
 
-    @Override
-    public void updateView(GameStatus gameStatus, PlayersConnectedStatus playersConnectedStatus) {
-        switch (gameStatus) {
-            case SETUP -> {
-                lobbyView.stop();
-                lobbyView.deleteObservers();
-                currentGameView = uiChoice.createSetupUI(playersConnectedStatus);
-            }
-            case GAMEPLAY -> {
-                currentGameView.stop();
-                currentGameView = uiChoice.createGameplayUI();
-            }
-        }
-        currentGameView.run();
-    }
-
-    @Override
-    public void updatePlayersConnectedStatus(PlayersConnectedStatus playersConnectedStatus) {
-        currentGameView.setPlayersConnectedStatus(playersConnectedStatus);
-    }
 
 
-    @Override
-    public void updateNetworkProtocol(NetworkProtocol networkProtocol) {
-        try {
-            server.updateNetworkProtocol(this, networkProtocol);
-        } catch (RemoteException e) {
-            System.err.println("Error while updating the server");
-        }
-    }
+
+
+
     @Override
     public void updateGameToAccess(int gameID, String nickname) {
         try {
@@ -259,8 +277,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     @Override
     public void run() {
 
+        uiState = UI.LOBBY;
         lobbyView.run();
 
+
     }
+
 
 }

@@ -10,7 +10,7 @@ public interface GameUI {
 
     void setPlayersConnectedStatus(PlayersConnectedStatus playersConnectedStatus);
 
-    void run();
+    //void run();
 
     void stop();
 }

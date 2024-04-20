@@ -33,10 +33,10 @@ public class PointsGiver extends PlayableSide {
     public String handCardToString(Symbol kingdom) {
         StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(this, kingdom));
         if (getTopLeftCorner().getSymbol() != Symbol.EMPTY){
-            outString.replace(38, 41, DefaultValue.ANSI_RESET + getPoints() + "│p" + kingdom.getColor());
+            outString.replace(39, 40, DefaultValue.ANSI_RESET + getPoints() + kingdom.getColor());
         }
         else{
-            outString.replace(24, 27, DefaultValue.ANSI_RESET + getPoints() + "│p" + kingdom.getColor());
+            outString.replace(25, 26, DefaultValue.ANSI_RESET + getPoints() + kingdom.getColor());
         }
         return outString.toString();
     }

@@ -2,6 +2,7 @@ package ingsw.codex_naturalis.model.cards.initialResourceGold.front;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ingsw.codex_naturalis.model.DefaultValue;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.enumerations.Symbol;
@@ -27,14 +28,21 @@ public class PointsGiverForObject extends Needy {
     }
 
     //-------------------------------------------------------------------------------------------
-    @Override
-    public String handCardToString(Symbol kingdom) {
-        return null;
-    }
-
 
     @Override
     protected void gainPoints(PlayerArea playerArea){
         playerArea.setPoints(playerArea.getPoints() + getPoints() * playerArea.getNumOfSymbol(object));
+    }
+
+    @Override
+    public String handCardToString(Symbol kingdom) {
+        StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(this, kingdom));
+        if (this.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
+            outString.replace(38, 41, DefaultValue.ANSI_RESET + this.getPoints() + "│" + object.getColoredChar() + kingdom.getColor());
+        }
+        else{
+            outString.replace(24, 27, DefaultValue.ANSI_RESET + this.getPoints() + "│" + object.getColoredChar() + kingdom.getColor());
+        }
+        return this.addRequirementsToHandCardString(outString.toString(), kingdom);
     }
 }

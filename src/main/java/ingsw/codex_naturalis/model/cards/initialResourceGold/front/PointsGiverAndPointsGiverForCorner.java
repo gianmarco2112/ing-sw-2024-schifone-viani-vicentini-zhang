@@ -32,7 +32,7 @@ public class PointsGiverAndPointsGiverForCorner extends Needy {
 
     @Override
     public String handCardToString(Symbol kingdom) {
-        return strategy.handCardToString(kingdom);
+        return strategy.handCardToString(kingdom, this);
     }
 
     @Override

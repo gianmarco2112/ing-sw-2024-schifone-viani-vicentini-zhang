@@ -2,13 +2,13 @@ package ingsw.codex_naturalis.model.cards.initialResourceGold.front;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ingsw.codex_naturalis.model.DefaultValue;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.enumerations.Symbol;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Needy extends PointsGiver{
 
@@ -86,5 +86,59 @@ public abstract class Needy extends PointsGiver{
             return false;
         }
         return true;
+    }
+
+    // Requires a string formatted as in DefaultValue
+    public String addRequirementsToHandCardString(String cardString, Symbol kingdom){
+        StringBuilder lineBuilder = new StringBuilder();
+        List<String> lines = Arrays.asList(cardString.split("\n"));
+        if (this.getRequirements().size() == 1){
+            // For the symbol
+            lineBuilder = new StringBuilder(lines.get(3));
+            lineBuilder.replace(6, 7, this.getRequirements().keySet().iterator().next().getColoredChar() + kingdom.getColor());
+            lines.set(3, lineBuilder.toString());
+            // For the value
+            lineBuilder = new StringBuilder(lines.get(4));
+            if (this.getBottomLeftCorner().isCovered() || this.getBottomLeftCorner().getSymbol() == Symbol.EMPTY){
+                lineBuilder.replace(6, 7,  this.getRequirements().keySet().iterator().next().getColor() +
+                        this.getRequirements().get(this.getRequirements().keySet().iterator().next()) + kingdom.getColor());
+            }
+            else{
+                lineBuilder.replace(20, 21,  this.getRequirements().keySet().iterator().next().getColor() +
+                        this.getRequirements().get(this.getRequirements().keySet().iterator().next()) + kingdom.getColor());
+            }
+            lines.set(4, lineBuilder.toString());
+        }else if(this.getRequirements().size() == 2){
+            // For the symbols
+            lineBuilder = new StringBuilder(lines.get(3));
+            Iterator<Symbol> iterator = this.getRequirements().keySet().iterator();
+            lineBuilder.replace(5, 8,
+                    iterator.next().getColoredChar() + kingdom.getColor() + "│" +
+                        iterator.next().getColoredChar() + kingdom.getColor());
+            lines.set(3, lineBuilder.toString());
+
+            // For the values
+            lineBuilder = new StringBuilder(lines.get(4));
+            iterator = this.getRequirements().keySet().iterator();
+            Symbol keyValue = iterator.next();
+
+            //this.getRequirements().entrySet().get(0);
+            if (this.getBottomLeftCorner().isCovered() || this.getBottomLeftCorner().getSymbol() == Symbol.EMPTY){
+                lineBuilder.replace(5, 7,  keyValue.getColor() +
+                        this.getRequirements().get(keyValue) + kingdom.getColor() + "│");
+                keyValue = iterator.next();
+                lineBuilder.replace(17, 18,  keyValue.getColor() +
+                        this.getRequirements().get(keyValue) + kingdom.getColor());
+            }
+            else{
+                lineBuilder.replace(19, 21,  keyValue.getColor() +
+                        this.getRequirements().get(keyValue) + kingdom.getColor() + "│");
+                keyValue = iterator.next();
+                lineBuilder.replace(31, 32,  keyValue.getColor() +
+                        this.getRequirements().get(keyValue) + kingdom.getColor());
+            }
+            lines.set(4, lineBuilder.toString());
+        }
+        return String.join("\n", lines);
     }
 }

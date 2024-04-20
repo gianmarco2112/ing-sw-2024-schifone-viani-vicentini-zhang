@@ -16,7 +16,7 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAn
 })
 public interface Strategy {
 
-    String handCardToString(Symbol kingdom);
+    String handCardToString(Symbol kingdom, PointsGiverAndPointsGiverForCorner cardSide);
     void gainPoints(PlayerArea playerArea, PointsGiverAndPointsGiverForCorner playedCard);
 
 }

@@ -4,6 +4,7 @@ import ingsw.codex_naturalis.enumerations.PlayersConnectedStatus;
 import ingsw.codex_naturalis.events.gameplayPhase.*;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 
 import java.util.*;
@@ -296,7 +297,37 @@ public class GameplayTextualUI extends GameplayUI {
     }
 
     public void setPlayersConnectedStatus(PlayersConnectedStatus playersConnectedStatus) {
+    }
 
+    public String getPlayerAreaToString(){
+        return null;
+    }
+
+
+    public static String getHandCardsToString(List<PlayableCard> hand){
+        List<List<String>> cardsFrontsAsStrings = new ArrayList<>(new ArrayList<>());
+        List<List<String>> cardsBackssAsStrings = new ArrayList<>(new ArrayList<>());
+        StringBuilder outString = new StringBuilder();
+
+        for (PlayableCard card : hand){
+            cardsFrontsAsStrings.add(Arrays.asList(card.getFront().handCardToString(card.getKingdom()).split("\n")));
+            cardsBackssAsStrings.add(Arrays.asList(card.getBack().handCardToString(card.getKingdom()).split("\n")));
+        }
+
+        for (int i = 0; i < cardsFrontsAsStrings.getFirst().size(); i++) {
+            for (int j = 0; j < cardsFrontsAsStrings.size(); j++) {
+                outString.append(cardsFrontsAsStrings.get(j).get(i));
+            }
+            outString.append("\n");
+        }
+        for (int i = 0; i < cardsBackssAsStrings.getFirst().size(); i++) {
+            for (int j = 0; j < cardsBackssAsStrings.size(); j++) {
+                outString.append(cardsBackssAsStrings.get(j).get(i));
+            }
+            outString.append("\n");
+        }
+
+        return outString.toString();
     }
 
 }

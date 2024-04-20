@@ -107,9 +107,17 @@ public class CardTUIRappresentation {
         List<PlayableCard> card = new ArrayList<>();
         resourceCardsDeck.shuffle();
         goldCardsDeck.shuffle();
+        initialCardsDeck.shuffle();
+        card.add(resourceCardsDeck.drawACard("test"));
+        card.add(resourceCardsDeck.drawACard("test"));
         card.add(resourceCardsDeck.drawACard("test"));
         card.add(resourceCardsDeck.drawACard("test"));
         card.add(goldCardsDeck.drawACard("test"));
+        card.add(goldCardsDeck.drawACard("test"));
+        card.add(goldCardsDeck.drawACard("test"));
+        card.add(goldCardsDeck.drawACard("test"));
+        card.add(initialCardsDeck.drawACard("test"));
+        card.add(initialCardsDeck.drawACard("test"));
         System.out.println(GameplayTextualUI.getHandCardsToString(card));
     }
 }

@@ -27,149 +27,147 @@ public class DefaultValue {
 
         if (tl_is_covered && tr_is_covered && bl_is_covered && br_is_covered){
             cardTemplate =
-                    "╭───────────╮\n" +
-                    "│           │\n" +
-                    "│           │\n" +
-                    "│           │\n" +
-                    "│           │\n" +
-                    "╰───────────╯";
+                    kingdom.getColor() + "╭───────────╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰───────────╯" + ANSI_RESET;
         } else if (!tl_is_covered && tr_is_covered && bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭──┬────────╮\n" +
-                    "│  │        │\n" +
-                    "├──╯        │\n" +
-                    "│           │\n" +
-                    "│           │\n" +
-                    "╰───────────╯";
+                    kingdom.getColor() + "╭──┬────────╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╯        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰───────────╯" + ANSI_RESET;
         } else if (tl_is_covered && !tr_is_covered && bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭────────┬──╮\n" +
-                    "│        │  │\n" +
-                    "│        ╰──┤\n" +
-                    "│           │\n" +
-                    "│           │\n" +
-                    "╰───────────╯";
+                    kingdom.getColor() + "╭────────┬──╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        ╰──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰───────────╯" + ANSI_RESET;
         } else if (!tl_is_covered && !tr_is_covered && bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭──┬─────┬──╮\n" +
-                    "│  │     │  │\n" +
-                    "├──╯     ╰──┤\n" +
-                    "│           │\n" +
-                    "│           │\n" +
-                    "╰───────────╯";
+                    kingdom.getColor() + "╭──┬─────┬──╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │     │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╯     ╰──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰───────────╯" + ANSI_RESET;
         } else if (tl_is_covered && tr_is_covered && !bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭───────────╮\n" +
-                    "│           │\n" +
-                    "│           │\n" +
-                    "├──╮        │\n" +
-                    "│  │        │\n" +
-                    "╰──┴────────╯";
+                    kingdom.getColor() + "╭───────────╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╮        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰──┴────────╯" + ANSI_RESET;
         } else if (!tl_is_covered && tr_is_covered && !bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭──┬────────╮\n" +
-                    "│  │        │\n" +
-                    "├──╯        │\n" +
-                    "├──╮        │\n" +
-                    "│  │        │\n" +
-                    "╰──┴────────╯";
+                    kingdom.getColor() + "╭──┬────────╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╯        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╮        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰──┴────────╯" + ANSI_RESET;
         } else if (tl_is_covered && !tr_is_covered && !bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭────────┬──╮\n" +
-                    "│        │  │\n" +
-                    "│        ╰──┤\n" +
-                    "├──╮        │\n" +
-                    "│  │        │\n" +
-                    "╰──┴────────╯";
+                    kingdom.getColor() + "╭────────┬──╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        ╰──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╮        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰──┴────────╯" + ANSI_RESET;
         } else if (!tl_is_covered && !tr_is_covered && !bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭──┬─────┬──╮\n" +
-                    "│  │     │  │\n" +
-                    "├──╯     ╰──┤\n" +
-                    "├──╮        │\n" +
-                    "│  │        │\n" +
-                    "╰──┴────────╯";
+                    kingdom.getColor() + "╭──┬─────┬──╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │     │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╯     ╰──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╮        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰──┴────────╯" + ANSI_RESET;
         } else if (tl_is_covered && tr_is_covered && bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭───────────╮\n" +
-                    "│           │\n" +
-                    "│           │\n" +
-                    "│        ╭──┤\n" +
-                    "│        │  │\n" +
-                    "╰────────┴──╯";
+                    kingdom.getColor() + "╭───────────╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        ╭──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰────────┴──╯" + ANSI_RESET;
         } else if (!tl_is_covered && tr_is_covered && bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭──┬────────╮\n" +
-                    "│  │        │\n" +
-                    "├──╯        │\n" +
-                    "│        ╭──┤\n" +
-                    "│        │  │\n" +
-                    "╰────────┴──╯";
+                    kingdom.getColor() + "╭──┬────────╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╯        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        ╭──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰────────┴──╯" + ANSI_RESET;
         } else if (tl_is_covered && !tr_is_covered && bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭────────┬──╮\n" +
-                    "│        │  │\n" +
-                    "│        ╰──┤\n" +
-                    "│        ╭──┤\n" +
-                    "│        │  │\n" +
-                    "╰────────┴──╯";
+                    kingdom.getColor() + "╭────────┬──╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        ╰──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        ╭──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰────────┴──╯" + ANSI_RESET;
         } else if (!tl_is_covered && !tr_is_covered && bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭──┬─────┬──╮\n" +
-                    "│  │     │  │\n" +
-                    "├──╯     ╰──┤\n" +
-                    "│        ╭──┤\n" +
-                    "│        │  │\n" +
-                    "╰────────┴──╯";
+                    kingdom.getColor() + "╭──┬─────┬──╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │     │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╯     ╰──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        ╭──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰────────┴──╯" + ANSI_RESET;
         } else if (tl_is_covered && tr_is_covered && !bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭───────────╮\n" +
-                    "│           │\n" +
-                    "│           │\n" +
-                    "├──╮     ╭──┤\n" +
-                    "│  │     │  │\n" +
-                    "╰──┴─────┴──╯";
+                    kingdom.getColor() + "╭───────────╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│           │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╮     ╭──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │     │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰──┴─────┴──╯" + ANSI_RESET;
         } else if (!tl_is_covered && tr_is_covered && !bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭──┬────────╮\n" +
-                    "│  │        │\n" +
-                    "├──╯        │\n" +
-                    "├──╮     ╭──┤\n" +
-                    "│  │     │  │\n" +
-                    "╰──┴─────┴──╯";
+                    kingdom.getColor() + "╭──┬────────╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╯        │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╮     ╭──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │     │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰──┴─────┴──╯" + ANSI_RESET;
         } else if (tl_is_covered && !tr_is_covered && !bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭────────┬──╮\n" +
-                    "│        │  │\n" +
-                    "│        ╰──┤\n" +
-                    "├──╮     ╭──┤\n" +
-                    "│  │     │  │\n" +
-                    "╰──┴─────┴──╯";
+                    kingdom.getColor() + "╭────────┬──╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│        ╰──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╮     ╭──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │     │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰──┴─────┴──╯" + ANSI_RESET;
         } else if (!tl_is_covered && !tr_is_covered && !bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭──┬─────┬──╮\n" +
-                    "│  │     │  │\n" +
-                    "├──╯     ╰──┤\n" +
-                    "├──╮     ╭──┤\n" +
-                    "│  │     │  │\n" +
-                    "╰──┴─────┴──╯";
+                    kingdom.getColor() + "╭──┬─────┬──╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │     │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╯     ╰──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├──╮     ╭──┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│  │     │  │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰──┴─────┴──╯" + ANSI_RESET;
         }
         StringBuilder cardTemplateBuilder = new StringBuilder(cardTemplate);
 
         if (side.getBottomRightCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(67, 68, side.getBottomRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
+            cardTemplateBuilder.replace(108, 109, side.getBottomRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getBottomLeftCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(57, 58, side.getBottomLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
+            cardTemplateBuilder.replace(98, 99, side.getBottomLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getTopRightCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(25, 26, side.getTopRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
+            cardTemplateBuilder.replace(39, 40, side.getTopRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(15, 16, side.getTopLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
+            cardTemplateBuilder.replace(29, 30, side.getTopLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
-        cardTemplateBuilder.insert(0, kingdom.getColor());
-        cardTemplateBuilder.append(DefaultValue.ANSI_RESET);
 
         cardTemplate = cardTemplateBuilder.toString();
 
@@ -185,134 +183,131 @@ public class DefaultValue {
 
         if (tl_is_covered && tr_is_covered && bl_is_covered && br_is_covered){
             cardTemplate =
-                    "╭───╮\n" +
-                    "│   │\n" +
-                    "│   │\n" +
-                    "│   │\n" +
-                    "╰───╯";
-
+                    kingdom.getColor() + "╭───╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│   │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│   │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│   │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰───╯" + ANSI_RESET;
         } else if (!tl_is_covered && tr_is_covered && bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭─┬─╮\n" +
-                    "│ │ │\n" +
-                    "├─┘ │\n" +
-                    "│   │\n" +
-                    "╰───╯";
+                    kingdom.getColor() + "╭─┬─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├─┘ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│   │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰───╯" + ANSI_RESET;
         } else if (tl_is_covered && !tr_is_covered && bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭─┬─╮\n" +
-                    "│ │ │\n" +
-                    "│ └─┤\n" +
-                    "│   │\n" +
-                    "╰───╯";
+                    kingdom.getColor() + "╭─┬─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ └─┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│   │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰───╯" + ANSI_RESET;
         } else if (!tl_is_covered && !tr_is_covered && bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭─╥─╮\n" +
-                    "│ ║ │\n" +
-                    "├─╨─┤\n" +
-                    "│   │\n" +
-                    "╰───╯";
+                    kingdom.getColor() + "╭─╥─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ ║ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├─╨─┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│   │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰───╯" + ANSI_RESET;
         } else if (tl_is_covered && tr_is_covered && !bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭───╮\n" +
-                    "│   │\n" +
-                    "├─┐ │\n" +
-                    "│ │ │\n" +
-                    "╰─┴─╯";
+                    kingdom.getColor() + "╭───╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│   │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├─┐ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─┴─╯" + ANSI_RESET;
         } else if (!tl_is_covered && tr_is_covered && !bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭─┬─╮\n" +
-                    "│ │ │\n" +
-                    "╞═╡ │\n" +
-                    "│ │ │\n" +
-                    "╰─┴─╯";
+                    kingdom.getColor() + "╭─┬─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╞═╡ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─┴─╯" + ANSI_RESET;
         } else if (tl_is_covered && !tr_is_covered && !bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭─┬─╮\n" +
-                    "│ │ │\n" +
-                    "├─▞─┤\n" +
-                    "│ │ │\n" +
-                    "╰─┴─╯";
+                    kingdom.getColor() + "╭─┬─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├─▞─┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─┴─╯" + ANSI_RESET;
         } else if (!tl_is_covered && !tr_is_covered && !bl_is_covered && br_is_covered) {
             cardTemplate =
-                    "╭─╥─╮\n" +
-                    "│ ║ │\n" +
-                    "╞═╃─┤\n" +
-                    "│ │ │\n" +
-                    "╰─┴─╯";
+                    kingdom.getColor() + "╭─╥─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ ║ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╞═╃─┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─┴─╯" + ANSI_RESET;
         } else if (tl_is_covered && tr_is_covered && bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭───╮\n" +
-                    "│   │\n" +
-                    "│ ┌─┤\n" +
-                    "│ │ │\n" +
-                    "╰─┴─╯";
+                    kingdom.getColor() + "╭───╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│   │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ ┌─┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─┴─╯" + ANSI_RESET;
         } else if (!tl_is_covered && tr_is_covered && bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭─┬─╮\n" +
-                    "│ │ │\n" +
-                    "├─▚─┤\n" +
-                    "│ │ │\n" +
-                    "╰─┴─╯";
+                    kingdom.getColor() + "╭─┬─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├─▚─┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─┴─╯" + ANSI_RESET;
         } else if (tl_is_covered && !tr_is_covered && bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭─┬─╮\n" +
-                    "│ │ │\n" +
-                    "│ ╞═╡\n" +
-                    "│ │ │\n" +
-                    "╰─┴─╯";
+                    kingdom.getColor() + "╭─┬─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ ╞═╡" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─┴─╯" + ANSI_RESET;
         } else if (!tl_is_covered && !tr_is_covered && bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭─╥─╮\n" +
-                    "│ ║ │\n" +
-                    "├─╄═╡\n" +
-                    "│ │ │\n" +
-                    "╰─┴─╯";
+                    kingdom.getColor() + "╭─╥─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ ║ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├─╄═╡" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─┴─╯" + ANSI_RESET;
         } else if (tl_is_covered && tr_is_covered && !bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭───╮\n" +
-                    "│   │\n" +
-                    "├─╥─┤\n" +
-                    "│ ║ │\n" +
-                    "╰─╨─╯";
+                    kingdom.getColor() + "╭───╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│   │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├─╥─┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ ║ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─╨─╯" + ANSI_RESET;
         } else if (!tl_is_covered && tr_is_covered && !bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭─┬─╮\n" +
-                    "│ │ │\n" +
-                    "╞═╅─┤\n" +
-                    "│ ║ │\n" +
-                    "╰─╨─╯";
+                    kingdom.getColor() + "╭─┬─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╞═╅─┤" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ ║ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─╨─╯" + ANSI_RESET;
         } else if (tl_is_covered && !tr_is_covered && !bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭─┬─╮\n" +
-                    "│ │ │\n" +
-                    "├─╆═╡\n" +
-                    "│ ║ │\n" +
-                    "╰─╨─╯";
+                    kingdom.getColor() + "╭─┬─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ │ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "├─╆═╡" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ ║ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─╨─╯" + ANSI_RESET;
         } else if (!tl_is_covered && !tr_is_covered && !bl_is_covered && !br_is_covered) {
             cardTemplate =
-                    "╭─╥─╮\n" +
-                    "│ ║ │\n" +
-                    "╞═╬═╡\n" +
-                    "│ ║ │\n" +
-                    "╰─╨─╯";
+                    kingdom.getColor() + "╭─╥─╮" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ ║ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╞═╬═╡" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "│ ║ │" + ANSI_RESET + "\n" +
+                    kingdom.getColor() + "╰─╨─╯" + ANSI_RESET;
         }
         StringBuilder cardTemplateBuilder = new StringBuilder(cardTemplate);
 
         if (side.getBottomRightCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(21, 22, side.getBottomRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
+            cardTemplateBuilder.replace(53, 54, side.getBottomRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getBottomLeftCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(19, 20, side.getBottomLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
+            cardTemplateBuilder.replace(51, 52, side.getBottomLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getTopRightCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(9, 10, side.getTopRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
+            cardTemplateBuilder.replace(23, 24, side.getTopRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         if (side.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
-            cardTemplateBuilder.replace(7, 8, side.getTopLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
+            cardTemplateBuilder.replace(21, 22, side.getTopLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
-        cardTemplateBuilder.insert(0, kingdom.getColor());
-        cardTemplateBuilder.append(DefaultValue.ANSI_RESET);
         cardTemplate = cardTemplateBuilder.toString();
 
         return cardTemplate;

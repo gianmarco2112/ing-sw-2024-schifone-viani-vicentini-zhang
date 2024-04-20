@@ -6,6 +6,7 @@ import ingsw.codex_naturalis.model.Deck;
 import ingsw.codex_naturalis.model.DefaultValue;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
+import ingsw.codex_naturalis.view.gameplayPhase.GameplayTextualUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -58,23 +59,23 @@ public class CardTUIRappresentation {
         PlayableCard card;
         for (int i = 0; i < 40; i++) {
             card = resourceCardsDeck.drawACard("test");
-            System.out.println(card.getFront().handCardToString(card.getKingdom()));
+            //System.out.println(card.getFront().handCardToString(card.getKingdom()));
             System.out.println(card.getBack().handCardToString(card.getKingdom()));
-            System.out.println(card.getFront().playerAreaCardToString(card.getKingdom()));
+            //System.out.println(card.getFront().playerAreaCardToString(card.getKingdom()));
             System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
         }
         for (int i = 0; i < 6; i++) {
             card = initialCardsDeck.drawACard("test");
-            System.out.println(card.getFront().handCardToString(card.getKingdom()));
+            //System.out.println(card.getFront().handCardToString(card.getKingdom()));
             System.out.println(card.getBack().handCardToString(card.getKingdom()));
-            System.out.println(card.getFront().playerAreaCardToString(card.getKingdom()));
+            //System.out.println(card.getFront().playerAreaCardToString(card.getKingdom()));
             System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
         }
         for (int i = 0; i < 40; i++) {
             card = goldCardsDeck.drawACard("test");
-            System.out.println(card.getFront().handCardToString(card.getKingdom()));
+            //System.out.println(card.getFront().handCardToString(card.getKingdom()));
             System.out.println(card.getBack().handCardToString(card.getKingdom()));
-            System.out.println(card.getFront().playerAreaCardToString(card.getKingdom()));
+            //System.out.println(card.getFront().playerAreaCardToString(card.getKingdom()));
             System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
         }
     }
@@ -84,7 +85,9 @@ public class CardTUIRappresentation {
         PlayableCard card;
         for (int i = 0; i < 6; i++) {
             card = initialCardsDeck.drawACard("test");
+            System.out.println(DefaultValue.getTUIHandCardSideTemplate(card.getFront(), card.getKingdom()));
             System.out.println(DefaultValue.getTUIHandCardSideTemplate(card.getBack(), card.getKingdom()));
+            System.out.println(DefaultValue.getTUIPlayerAreaCardSideTemplate(card.getFront(), card.getKingdom()));
             System.out.println(DefaultValue.getTUIPlayerAreaCardSideTemplate(card.getBack(), card.getKingdom()));
         }
         for (int i = 0; i < 40; i++) {
@@ -97,5 +100,16 @@ public class CardTUIRappresentation {
             System.out.println(DefaultValue.getTUIHandCardSideTemplate(card.getBack(), card.getKingdom()));
             System.out.println(DefaultValue.getTUIPlayerAreaCardSideTemplate(card.getBack(), card.getKingdom()));
         }
+    }
+
+    @Test
+    void getHandCadsToStringTest(){
+        List<PlayableCard> card = new ArrayList<>();
+        resourceCardsDeck.shuffle();
+        goldCardsDeck.shuffle();
+        card.add(resourceCardsDeck.drawACard("test"));
+        card.add(resourceCardsDeck.drawACard("test"));
+        card.add(goldCardsDeck.drawACard("test"));
+        System.out.println(GameplayTextualUI.getHandCardsToString(card));
     }
 }

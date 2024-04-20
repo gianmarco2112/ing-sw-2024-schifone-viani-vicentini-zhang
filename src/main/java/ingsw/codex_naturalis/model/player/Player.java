@@ -146,6 +146,7 @@ public class Player extends Observable<Event> {
     public List<PlayableCard> getHand(){
         return new ArrayList<>(hand);
     }
+
     public void setHand(List<PlayableCard> hand){
         this.hand = hand;
         notifyObservers(Event.HAND_CHANGED, nickname);

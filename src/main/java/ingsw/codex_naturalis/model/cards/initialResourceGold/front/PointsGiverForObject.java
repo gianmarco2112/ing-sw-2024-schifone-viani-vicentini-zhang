@@ -38,10 +38,10 @@ public class PointsGiverForObject extends Needy {
     public String handCardToString(Symbol kingdom) {
         StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(this, kingdom));
         if (this.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
-            outString.replace(38, 41, DefaultValue.ANSI_RESET + this.getPoints() + "│" + object.getColoredChar() + kingdom.getColor());
+            outString.replace(47, 50, DefaultValue.ANSI_RESET + this.getPoints() + kingdom.getColor() + "│" + object.getColoredChar() + kingdom.getColor());
         }
         else{
-            outString.replace(24, 27, DefaultValue.ANSI_RESET + this.getPoints() + "│" + object.getColoredChar() + kingdom.getColor());
+            outString.replace(33, 36, DefaultValue.ANSI_RESET + this.getPoints() + kingdom.getColor() + "│" + object.getColoredChar() + kingdom.getColor());
         }
         return this.addRequirementsToHandCardString(outString.toString(), kingdom);
     }

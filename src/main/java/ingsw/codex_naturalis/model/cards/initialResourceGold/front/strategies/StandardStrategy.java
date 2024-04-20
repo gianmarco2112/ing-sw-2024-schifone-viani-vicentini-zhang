@@ -16,10 +16,10 @@ public class StandardStrategy implements Strategy {
     public String handCardToString(Symbol kingdom, PointsGiverAndPointsGiverForCorner cardSide) {
         StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(cardSide, kingdom));
         if (cardSide.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
-            outString.replace(39, 40, DefaultValue.ANSI_RESET + cardSide.getPoints() + kingdom.getColor());
+            outString.replace(48, 49, DefaultValue.ANSI_RESET + cardSide.getPoints() + kingdom.getColor());
         }
         else{
-            outString.replace(25, 26, DefaultValue.ANSI_RESET + cardSide.getPoints() + kingdom.getColor());
+            outString.replace(34, 35, DefaultValue.ANSI_RESET + cardSide.getPoints() + kingdom.getColor());
         }
         return cardSide.addRequirementsToHandCardString(outString.toString(), kingdom);
     }

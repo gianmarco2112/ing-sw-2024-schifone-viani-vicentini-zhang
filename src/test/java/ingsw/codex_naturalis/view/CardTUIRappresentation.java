@@ -60,23 +60,23 @@ public class CardTUIRappresentation {
         for (int i = 0; i < 40; i++) {
             card = resourceCardsDeck.drawACard("test");
             System.out.println(card.getFront().handCardToString(card.getKingdom()));
-            //System.out.println(card.getBack().handCardToString(card.getKingdom()));
+            System.out.println(card.getBack().handCardToString(card.getKingdom()));
             System.out.println(card.getFront().playerAreaCardToString(card.getKingdom()));
-            //System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
+            System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
         }
         for (int i = 0; i < 6; i++) {
             card = initialCardsDeck.drawACard("test");
-            //System.out.println(card.getFront().handCardToString(card.getKingdom()));
-            //System.out.println(card.getBack().handCardToString(card.getKingdom()));
-            //System.out.println(card.getFront().playerAreaCardToString(card.getKingdom()));
-            //System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
+            System.out.println(card.getFront().handCardToString(card.getKingdom()));
+            System.out.println(card.getBack().handCardToString(card.getKingdom()));
+            System.out.println(card.getFront().playerAreaCardToString(card.getKingdom()));
+            System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
         }
         for (int i = 0; i < 40; i++) {
             card = goldCardsDeck.drawACard("test");
-            //System.out.println(card.getFront().handCardToString(card.getKingdom()));
-            //System.out.println(card.getBack().handCardToString(card.getKingdom()));
-            //System.out.println(card.getFront().playerAreaCardToString(card.getKingdom()));
-            //System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
+            System.out.println(card.getFront().handCardToString(card.getKingdom()));
+            System.out.println(card.getBack().handCardToString(card.getKingdom()));
+            System.out.println(card.getFront().playerAreaCardToString(card.getKingdom()));
+            System.out.println(card.getBack().playerAreaCardToString(card.getKingdom()));
         }
     }
 

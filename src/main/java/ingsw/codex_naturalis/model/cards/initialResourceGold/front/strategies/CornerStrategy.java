@@ -49,10 +49,10 @@ public class CornerStrategy implements Strategy {
     public String handCardToString(Symbol kingdom, PointsGiverAndPointsGiverForCorner cardSide) {
         StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(cardSide, kingdom));
         if (cardSide.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
-            outString.replace(38, 41, DefaultValue.ANSI_RESET + cardSide.getPoints() + "│C" + kingdom.getColor());
+            outString.replace(47, 50, DefaultValue.ANSI_RESET + cardSide.getPoints() + kingdom.getColor() + "│" + DefaultValue.ANSI_RESET + "C" + kingdom.getColor());
         }
         else{
-            outString.replace(24, 27, DefaultValue.ANSI_RESET + cardSide.getPoints() + "│C" + kingdom.getColor());
+            outString.replace(33, 36, DefaultValue.ANSI_RESET + cardSide.getPoints() + kingdom.getColor() + "│" + DefaultValue.ANSI_RESET + "C" + kingdom.getColor());
         }
         return cardSide.addRequirementsToHandCardString(outString.toString(), kingdom);
     }

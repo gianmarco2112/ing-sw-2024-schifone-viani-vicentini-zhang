@@ -95,24 +95,25 @@ public abstract class Needy extends PointsGiver{
         if (this.getRequirements().size() == 1){
             // For the symbol
             lineBuilder = new StringBuilder(lines.get(3));
-            lineBuilder.replace(6, 7, this.getRequirements().keySet().iterator().next().getColoredChar() + kingdom.getColor());
+            lineBuilder.replace(11, 12, this.getRequirements().keySet().iterator().next().getColoredChar() + kingdom.getColor());
             lines.set(3, lineBuilder.toString());
             // For the value
             lineBuilder = new StringBuilder(lines.get(4));
             if (this.getBottomLeftCorner().isCovered() || this.getBottomLeftCorner().getSymbol() == Symbol.EMPTY){
-                lineBuilder.replace(6, 7,  this.getRequirements().keySet().iterator().next().getColor() +
+                lineBuilder.replace(11, 12,  this.getRequirements().keySet().iterator().next().getColor() +
                         this.getRequirements().get(this.getRequirements().keySet().iterator().next()) + kingdom.getColor());
             }
             else{
-                lineBuilder.replace(20, 21,  this.getRequirements().keySet().iterator().next().getColor() +
+                lineBuilder.replace(25, 26,  this.getRequirements().keySet().iterator().next().getColor() +
                         this.getRequirements().get(this.getRequirements().keySet().iterator().next()) + kingdom.getColor());
             }
             lines.set(4, lineBuilder.toString());
+
         }else if(this.getRequirements().size() == 2){
             // For the symbols
             lineBuilder = new StringBuilder(lines.get(3));
             Iterator<Symbol> iterator = this.getRequirements().keySet().iterator();
-            lineBuilder.replace(5, 8,
+            lineBuilder.replace(10, 13,
                     iterator.next().getColoredChar() + kingdom.getColor() + "│" +
                         iterator.next().getColoredChar() + kingdom.getColor());
             lines.set(3, lineBuilder.toString());
@@ -122,19 +123,18 @@ public abstract class Needy extends PointsGiver{
             iterator = this.getRequirements().keySet().iterator();
             Symbol keyValue = iterator.next();
 
-            //this.getRequirements().entrySet().get(0);
             if (this.getBottomLeftCorner().isCovered() || this.getBottomLeftCorner().getSymbol() == Symbol.EMPTY){
-                lineBuilder.replace(5, 7,  keyValue.getColor() +
+                lineBuilder.replace(10, 12,  keyValue.getColor() +
                         this.getRequirements().get(keyValue) + kingdom.getColor() + "│");
                 keyValue = iterator.next();
-                lineBuilder.replace(17, 18,  keyValue.getColor() +
+                lineBuilder.replace(22, 23,  keyValue.getColor() +
                         this.getRequirements().get(keyValue) + kingdom.getColor());
             }
             else{
-                lineBuilder.replace(19, 21,  keyValue.getColor() +
+                lineBuilder.replace(24, 26,  keyValue.getColor() +
                         this.getRequirements().get(keyValue) + kingdom.getColor() + "│");
                 keyValue = iterator.next();
-                lineBuilder.replace(31, 32,  keyValue.getColor() +
+                lineBuilder.replace(36, 37,  keyValue.getColor() +
                         this.getRequirements().get(keyValue) + kingdom.getColor());
             }
             lines.set(4, lineBuilder.toString());

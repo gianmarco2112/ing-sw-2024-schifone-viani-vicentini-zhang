@@ -48,8 +48,8 @@ public class ClientSkeleton implements Client {
 
     private void initMessageProtocol() {
 
-        messageProtocol.put(MessageFromClient.GAME_TO_ACCESS, this::receiveGameToAccess);
-        messageProtocol.put(MessageFromClient.NEW_GAME, this::receiveNewGame);
+        messageProtocol.put(MessageFromClient.GAME_TO_ACCESS_UPDATE, this::receiveUpdateGameToAccess);
+        messageProtocol.put(MessageFromClient.NEW_GAME_UPDATE, this::receiveUpdateNewGame);
 
     }
 
@@ -141,7 +141,7 @@ public class ClientSkeleton implements Client {
     }
 
 
-    private void receiveGameToAccess(){
+    private void receiveUpdateGameToAccess(){
         try {
             int gameID = parseInt(reader.readLine());
             String nickname = reader.readLine();
@@ -151,7 +151,7 @@ public class ClientSkeleton implements Client {
         }
     }
 
-    private void receiveNewGame() {
+    private void receiveUpdateNewGame() {
         try {
         int numOfPlayers = parseInt(reader.readLine());
         String nickname = reader.readLine();

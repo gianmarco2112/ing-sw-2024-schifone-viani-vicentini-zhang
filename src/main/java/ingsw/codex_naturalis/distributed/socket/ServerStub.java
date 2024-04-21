@@ -81,7 +81,7 @@ public class ServerStub implements Server {
     @Override
     public void updateGameToAccess(Client client, int gameID, String nickname) throws RemoteException {
         try {
-            writer.println(objectMapper.writeValueAsString(MessageFromClient.GAME_TO_ACCESS));
+            writer.println(objectMapper.writeValueAsString(MessageFromClient.GAME_TO_ACCESS_UPDATE));
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
@@ -93,7 +93,7 @@ public class ServerStub implements Server {
     @Override
     public void updateNewGame(Client client, int numOfPlayers, String nickname) throws RemoteException {
         try {
-            writer.println(objectMapper.writeValueAsString(MessageFromClient.NEW_GAME));
+            writer.println(objectMapper.writeValueAsString(MessageFromClient.NEW_GAME_UPDATE));
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }

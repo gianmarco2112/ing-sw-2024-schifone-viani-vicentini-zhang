@@ -13,6 +13,9 @@ import static java.lang.Integer.parseInt;
 
 public class ClientSkeleton implements Client {
 
+
+
+
     private BufferedReader reader;
     private PrintWriter writer;
 
@@ -62,6 +65,7 @@ public class ClientSkeleton implements Client {
     public void updateUI(UI ui) throws RemoteException {
 
         switch (ui) {
+            case GAME_STARTING -> writer.println("GameStarting");
             case SETUP -> writer.println("Setup");
         }
 

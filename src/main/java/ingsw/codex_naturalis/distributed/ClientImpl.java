@@ -43,7 +43,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     private SetupUI setupView;
     private GameplayUI gameplayView;
 
-    private  Server server;
+    private Server server;
 
 
     public ClientImpl(Server server) throws RemoteException{

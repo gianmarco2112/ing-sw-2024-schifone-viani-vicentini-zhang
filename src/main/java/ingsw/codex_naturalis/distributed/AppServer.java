@@ -38,11 +38,11 @@ public class AppServer {
                 Socket socket = serverSocket.accept();
                 executorService.submit(() -> {
                     try {
-                        ClientSkeleton clientSkeleton = new ClientSkeleton(socket);
+                        ClientSkeleton clientSkeleton = new ClientSkeleton(socket, server);
                         server.register(clientSkeleton);
                         while (true) {
                             try {
-                                clientSkeleton.receive(server);
+                                clientSkeleton.receive();
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }

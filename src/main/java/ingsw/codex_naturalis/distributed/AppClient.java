@@ -39,7 +39,7 @@ public class AppClient {
                 new Thread(() -> {
                     while(true) {
                         try {
-                            serverStub.receive(client);
+                            serverStub.receive();
                         } catch (IOException e) {
                             System.err.println("Error: won't receive from server");
                             try {

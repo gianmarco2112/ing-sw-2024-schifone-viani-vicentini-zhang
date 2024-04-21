@@ -1,25 +1,35 @@
 package ingsw.codex_naturalis.distributed.socket;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ingsw.codex_naturalis.distributed.MessageFromClient;
+import ingsw.codex_naturalis.distributed.MessageFromServer;
 import ingsw.codex_naturalis.distributed.Client;
-import ingsw.codex_naturalis.distributed.ClientImpl;
 import ingsw.codex_naturalis.distributed.Server;
 import ingsw.codex_naturalis.view.UI;
 
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 
 public class ClientSkeleton implements Client {
 
+    private final Server server;
 
+    private final Map<MessageFromClient, Runnable> messageProtocol = new HashMap<>();
 
+    ObjectMapper objectMapper = new ObjectMapper();
 
-    private BufferedReader reader;
-    private PrintWriter writer;
+    private final BufferedReader reader;
+    private final PrintWriter writer;
 
-    public ClientSkeleton(Socket socket) throws RemoteException{
+    public ClientSkeleton(Socket socket, Server server) throws RemoteException{
+
+        this.server = server;
 
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
@@ -31,13 +41,27 @@ public class ClientSkeleton implements Client {
         } catch (IOException e) {
             throw new RemoteException("Error while creating the client skeleton");
         }
+
+        initMessageProtocol();
+
+    }
+
+    private void initMessageProtocol() {
+
+        messageProtocol.put(MessageFromClient.GAME_TO_ACCESS, this::receiveGameToAccess);
+        messageProtocol.put(MessageFromClient.NEW_GAME, this::receiveNewGame);
+
     }
 
 
     @Override
     public void updateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
 
-        writer.println("GamesSpecs");
+        try {
+            writer.println(objectMapper.writeValueAsString(MessageFromServer.LOBBY_UI_GAMES_SPECS_UPDATE));
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
         writer.println(jsonGamesSpecs);
         writer.flush();
 
@@ -46,7 +70,11 @@ public class ClientSkeleton implements Client {
     @Override
     public void reportLobbyUIError(String error) throws RemoteException {
 
-        writer.println("Error");
+        try {
+            writer.println(objectMapper.writeValueAsString(MessageFromServer.LOBBY_UI_ERROR_REPORT));
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
         writer.println(error);
         writer.flush();
 
@@ -55,8 +83,13 @@ public class ClientSkeleton implements Client {
     @Override
     public void updateGameStartingUIGameID(int gameID) throws RemoteException {
 
-        writer.println("GameID");
+        try {
+            writer.println(objectMapper.writeValueAsString(MessageFromServer.GAME_STARTING_UI_GAME_ID_UPDATE));
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
         writer.println(gameID);
+        writer.flush();
 
     }
 
@@ -64,9 +97,26 @@ public class ClientSkeleton implements Client {
     @Override
     public void updateUI(UI ui) throws RemoteException {
 
+        try {
+            writer.println(objectMapper.writeValueAsString(MessageFromServer.UI_UPDATE));
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
         switch (ui) {
-            case GAME_STARTING -> writer.println("GameStarting");
-            case SETUP -> writer.println("Setup");
+            case GAME_STARTING -> {
+                try {
+                    writer.println(objectMapper.writeValueAsString(UI.GAME_STARTING));
+                } catch (JsonProcessingException e) {
+                    System.err.println("Error while processing json");
+                }
+            }
+            case SETUP -> {
+                try {
+                    writer.println(objectMapper.writeValueAsString(UI.SETUP));
+                } catch (JsonProcessingException e) {
+                    System.err.println("Error while processing json");
+                }
+            }
         }
 
         writer.flush();
@@ -74,7 +124,7 @@ public class ClientSkeleton implements Client {
     }
 
 
-    public void receive(Server server) throws IOException {
+    public void receive() throws IOException {
 
         String read;
         try {
@@ -83,18 +133,31 @@ public class ClientSkeleton implements Client {
             throw new RemoteException("Error while reading from the buffered reader");
         }
 
-        switch (read) {
-            case "ExistingGame" -> {
-                int gameID = parseInt(reader.readLine());
-                String nickname = reader.readLine();
-                server.updateGameToAccess(this, gameID, nickname);
-            }
-            case "NewGame" -> {
-                int numOfPlayers = parseInt(reader.readLine());
-                String nickname = reader.readLine();
-                server.updateNewGame(this, numOfPlayers, nickname);
-            }
-        }
+        MessageFromClient message = objectMapper.readValue(read, MessageFromClient.class);
 
+        Runnable runnable = messageProtocol.get(message);
+        runnable.run();
+
+    }
+
+
+    private void receiveGameToAccess(){
+        try {
+            int gameID = parseInt(reader.readLine());
+            String nickname = reader.readLine();
+            server.updateGameToAccess(this, gameID, nickname);
+        } catch (IOException e) {
+            System.err.println("Error while receiving from client");
+        }
+    }
+
+    private void receiveNewGame() {
+        try {
+        int numOfPlayers = parseInt(reader.readLine());
+        String nickname = reader.readLine();
+        server.updateNewGame(this, numOfPlayers, nickname);
+        } catch (IOException e) {
+            System.err.println("Error while receiving from client");
+        }
     }
 }

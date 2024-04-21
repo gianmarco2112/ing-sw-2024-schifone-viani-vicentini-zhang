@@ -1,11 +1,8 @@
 package ingsw.codex_naturalis.distributed.socket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
-import ingsw.codex_naturalis.distributed.ServerImpl;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
@@ -13,12 +10,12 @@ import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
+import ingsw.codex_naturalis.view.UI;
 import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
 
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -120,7 +117,7 @@ public class ServerStub implements Server {
 
 
 
-    public void receive(Client client) throws RemoteException {
+    public void receive(Client client) throws IOException {
 
         String read;
 
@@ -140,23 +137,24 @@ public class ServerStub implements Server {
                 }
                 client.updateLobbyUIGameSpecs(jsonGamesSpecs);
             }
+            case "Error" -> {
+                String error = reader.readLine();
+                client.reportLobbyUIError(error);
+            }
             case "GameStarting" -> {
+                client.updateUI(UI.GAME_STARTING);
+            }
+            case "GameID" -> {
                 int gameID = 0;
                 try {
                     gameID = parseInt(reader.readLine());
                 } catch (IOException e) {
                     throw new RemoteException();
                 }
-                String nickname = null;
-                try {
-                    nickname = reader.readLine();
-                } catch (IOException e) {
-                    throw new RemoteException();
-                }
-                client.updateUItoGameStarting(gameID, nickname);
+                client.updateGameStartingUIGameID(gameID);
             }
             case "Setup" -> {
-                client.updateUItoSetup();
+                client.updateUI(UI.SETUP);
             }
         }
 

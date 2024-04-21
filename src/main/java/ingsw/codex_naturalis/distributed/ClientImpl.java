@@ -1,11 +1,15 @@
 package ingsw.codex_naturalis.distributed;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayObserver;
 import ingsw.codex_naturalis.controller.setupPhase.SetupObserver;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
+import ingsw.codex_naturalis.view.UI;
 import ingsw.codex_naturalis.view.gameStartingPhase.GameStartingUI;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
@@ -26,16 +30,9 @@ import java.util.concurrent.Executors;
 
 public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObserver, SetupObserver, GameplayObserver, Runnable {
 
-    private enum UI {
-        LOBBY,
-        GAME_STARTING,
-        SETUP,
-        GAMEPLAY
-    }
+    ObjectMapper objectMapper = new ObjectMapper();
 
     private final ExecutorService executorService = Executors.newCachedThreadPool();
-
-    private String nickname;
 
     private  UIChoice uiChoice;
 
@@ -54,16 +51,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
         initClientImpl(server);
     }
 
-    public ClientImpl(Server server, int port) throws RemoteException {
-        super(port);
-        initClientImpl(server);
-    }
-
-    public ClientImpl(Server server, int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
-        super(port, csf, ssf);
-        initClientImpl(server);
-    }
-
     private void initClientImpl(Server server) throws RemoteException{
 
         uiChoice = askUIChoice();
@@ -78,107 +65,110 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
 
     private UIChoice askUIChoice() {
+
         Scanner s = new Scanner(System.in);
-        String ANSI_RESET = "\u001B[0m";
-        String ANSI_RED = "\u001B[31m";
-        String ANSI_BLUE = "\u001B[34m";
-        String ANSI_PURPLE = "\u001B[35m";
-        String ANSI_GREEN = "\u001B[32m";
-        String[] colors = {ANSI_RED, ANSI_GREEN, ANSI_BLUE, ANSI_PURPLE};
+
+        System.out.print("\n\nWelcome to ");
+
+        //red, green, blue, purple
+        String[] colors = {"\u001B[31m", "\u001B[32m", "\u001B[34m", "\u001B[35m"};
         String text = "Codex Naturalis!";
-        System.out.print("Welcome to ");
+
+        //print fancy codex naturalis text
         for (int i = 0; i < text.length(); i++) {
             int colorIndex = i % colors.length;
             String color = colors[colorIndex];
             System.out.print(color + text.charAt(i));
         }
-        System.out.println(ANSI_RESET);
-        System.out.println();
-        System.out.println("Please choose your preferred user interface (UI) option:");
-        Map<Integer, UIChoice> uiChoices = new LinkedHashMap<>();
-        for (int key = 0; key < UIChoice.values().length; key++) {
-            uiChoices.put(key+1, UIChoice.values()[key]);
-        }
-        for (Map.Entry<Integer, UIChoice> entry : uiChoices.entrySet()) {
-            System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
-        }
 
+        //color reset
+        System.out.println("\u001B[0m");
+
+        System.out.println("""
+                
+                --------------------------------------------------------
+                Please choose your preferred user interface (UI) option:
+                
+                (1) Textual User interface - TUI
+                (2) Graphical User Interface - GUI
+                --------------------------------------------------------
+                                
+                
+                """);
+
+        Map<Integer, UIChoice> uiChoices = new LinkedHashMap<>();
+
+        int option;
         while (true) {
-            String input = s.next();
             try{
-                Integer number = Integer.parseInt(input);
-                if (uiChoices.containsKey(number))
-                    if (uiChoices.get(number) == UIChoice.GUI)
-                        System.err.println("We're working on it, please choose an other option.");
-                    else
-                        return uiChoices.get(number);
-                else
-                    System.err.println("This is not a command: " + number);
-            } catch (NumberFormatException e) {
-                System.err.println("This is not a command: "+ input);
+                option = s.nextInt();
+                switch (option) {
+                    case 1 -> { return UIChoice.TUI; }
+                    case 2 -> { System.err.println("We're working on it, please choose an other option."); }
+                    default -> System.err.println("Invalid option");
+                }
+            } catch (InputMismatchException e) {
+                System.err.println("Invalid option");
             }
         }
-    }
-
-
-
-
-    @Override
-    public void updateLobbyUIGameSpecs(String jsonGamesSpecs) {
-        lobbyView.updateGamesSpecs(jsonGamesSpecs);
-    }
-
-    @Override
-    public void reportError(String error) throws RemoteException {
-        System.err.println(error);
-    }
-
-    @Override
-    public void updateUItoGameStarting(int gameID, String nickname) {
-
-        this.nickname = nickname;
-
-        gameStartingView = uiChoice.createGameStartingUI(gameID);
-
-        lobbyView.stop();
-        //lobbyView.deleteObservers();
-
-        uiState = UI.GAME_STARTING;
-
-        executorService.execute(gameStartingView);
 
     }
 
 
 
     @Override
-    public void updateUItoSetup() {
-
-        setupView = uiChoice.createSetupUI();
-
-        switch (uiState) {
-            case LOBBY -> {
+    public void updateUI(UI ui) throws RemoteException {
+        switch (ui) {
+            case GAME_STARTING -> {
+                gameStartingView = uiChoice.createGameStartingUI();
                 lobbyView.stop();
                 //lobbyView.deleteObservers();
+                uiState = UI.GAME_STARTING;
+                executorService.execute(gameStartingView);
             }
-            case GAME_STARTING -> gameStartingView.stop();
+            case UI.SETUP -> {
+                setupView = uiChoice.createSetupUI();
+                setupView.addObserver(this);
+                switch (uiState) {
+                    case LOBBY -> {
+                        lobbyView.stop();
+                        //lobbyView.deleteObservers();
+                    }
+                    case GAME_STARTING -> gameStartingView.stop();
+                }
+                uiState = UI.SETUP;
+                executorService.execute(setupView);
+            }
         }
-
-        uiState = UI.SETUP;
-
-        executorService.execute(setupView);
-
     }
-
-
-
-
 
     @Override
-    public String getNickname() {
-        return nickname;
+    public void updateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
+
+        List<ServerImpl.GameSpecs> gamesSpecs = new ArrayList<>();
+
+        try {
+            gamesSpecs = objectMapper.readValue(jsonGamesSpecs, new TypeReference<List<ServerImpl.GameSpecs>>(){});
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json value");
+            return;
+        }
+
+        lobbyView.updateGamesSpecs(gamesSpecs);
+
     }
 
+    @Override
+    public void reportLobbyUIError(String error) throws RemoteException {
+        lobbyView.reportError(error);
+    }
+
+    @Override
+    public void updateGameStartingUIGameID(int gameID) throws RemoteException {
+
+        gameStartingView.updateGameID(gameID);
+
+    }
 
 
 
@@ -279,7 +269,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
         uiState = UI.LOBBY;
         lobbyView.run();
-
 
     }
 

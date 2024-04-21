@@ -3,7 +3,6 @@ package ingsw.codex_naturalis.view.lobbyPhase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ingsw.codex_naturalis.events.lobbyPhase.GameAccess;
 import ingsw.codex_naturalis.distributed.ServerImpl;
 import ingsw.codex_naturalis.exceptions.*;
 
@@ -11,105 +10,139 @@ import java.util.*;
 
 public class LobbyTextualUI extends LobbyUI {
 
-    private boolean running;
-
     private final Scanner s = new Scanner(System.in);
 
-    Map<Integer, ServerImpl.GameSpecs>  gameSpecsMap = new LinkedHashMap<>();
 
-    private boolean askingWhichGameToAccess = false;
-
-
-    public LobbyTextualUI(){
-        running = true;
+    private enum State {
+        RUNNING,
+        ASKING_WHICH_GAME_TO_ACCESS,
+        WAITING_FOR_UPDATE,
+        STOPPING_THE_VIEW
     }
 
+    private State state = State.RUNNING;
+
+    private final Object lock = new Object();
+
+    private Map<Integer, ServerImpl.GameSpecs>  gameSpecsMap = new LinkedHashMap<>();
+
+
+
+
+    private State getState() {
+        synchronized (lock) {
+            return state;
+        }
+    }
+
+    private void setState(State state) {
+        synchronized (lock) {
+            this.state = state;
+            lock.notifyAll();
+        }
+    }
 
 
     @Override
     public void run() {
 
-        gameAccess();
+        while (true) {
+            while (getState() == State.WAITING_FOR_UPDATE) {
+                synchronized (lock) {
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        System.err.println("Error while waiting for server update");
+                    }
+                }
+            }
+
+            if (getState() == State.STOPPING_THE_VIEW)
+                return;
+
+            askGameAccessOption();
+            getGameAccessOption();
+
+        }
 
     }
 
 
+    private void printErrInvalidOption(){
+        System.err.println("Invalid option");
+    }
 
-    private void gameAccess() {
 
-        while (running) {
-            int option = askGameAccess();
+    private void askGameAccessOption() {
+
+        System.out.println("""
+                
+                
+                ----------------------------------------
+                Please choose an option for game access:
+                
+                (1) Create a new game
+                (2) Access an existing game
+                ----------------------------------------
+                
+                
+                """);
+
+    }
+    private void getGameAccessOption() {
+
+        try {
+            int option = s.nextInt();
             switch (option) {
                 case 1 -> newGameAccess();
                 case 2 -> existingGameAccess();
-                default -> System.err.println("Invalid option");
+                default -> {
+                    printErrInvalidOption();
+                    getGameAccessOption();
+                }
             }
-        }
-
-    }
-
-    private <Event extends Enum<Event>> void printOptions(Class<Event> event){
-        for (int i = 0; i < event.getEnumConstants().length; i++) {
-            System.out.println(i+1 + " - " + event.getEnumConstants()[i]);
-        }
-    }
-
-    private int askGameAccess() {
-
-        while (true) {
-            System.out.println("\n--------------------");
-            System.out.println("Please choose an option for game access: ");
-            printOptions(GameAccess.class);
-            System.out.println("--------------------");
-            String input = s.next();
-            try{
-                return Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.err.println("Invalid option");
-            }
+        } catch (InputMismatchException e) {
+            printErrInvalidOption();
         }
 
     }
 
     private void newGameAccess() {
 
-        int numOfPlayers = askNumOfPlayers();
+        askNumOfPlayers();
+        int numOfPlayers = getNumOfPlayers();
         if (numOfPlayers == 0)
-            gameAccess();
+            return;
 
-        String nickname = askNickname();
+        askNickname();
+        String nickname = getNickname();
         if (nickname.equals("/"))
-            newGameAccess();
+            return;
 
         notifyNewGame(numOfPlayers, nickname);
+        setState(State.WAITING_FOR_UPDATE);
 
     }
-    private void existingGameAccess() {
-        int gameID = 0;
-        try {
-            gameID = askWhichGameToAccess();
-            askingWhichGameToAccess = false;
-            if (gameID == 0)
-                gameAccess();
-        } catch (NoExistingGamesAvailable e){
-            System.err.println(e.getMessage());
-            gameAccess();
-        }
-        String nickname = askNickname();
-        if (nickname.equals("/"))
-            existingGameAccess();
+    private void askNumOfPlayers() {
 
-        notifyGameToAccess(gameID, nickname);
+        System.out.println("""
+                
+                
+                --------------------------------------------------------------------
+                Please specify the number of players for the game   (Min: 2, Max: 4)
+                
+                (/) Back
+                --------------------------------------------------------------------
+                
+                
+                """);
 
     }
-    private int askNumOfPlayers() {
+    private int getNumOfPlayers() {
 
+        String input;
         while (true) {
-            System.out.println("\n--------------------");
-            System.out.println("Please specify the number of players for the game   (Min: 2, Max: 4)");
-            System.out.println("/ - Back");
-            System.out.println("--------------------");
-            String input = s.next();
+            input = s.next();
             if (input.equals("/"))
                 return 0;
             try {
@@ -121,45 +154,64 @@ public class LobbyTextualUI extends LobbyUI {
                 else
                     return numOfPlayers;
             } catch (NumberFormatException e) {
-                System.err.println("Invalid option");
+                printErrInvalidOption();
             }
         }
 
     }
-    private void printGamesToAccess(Map<Integer, ServerImpl.GameSpecs>  gameSpecsMap) {
 
-        System.out.println("\n--------------------");
-        System.out.println("Which game do you want to access?");
-        System.out.println("/ - Back");
+    private void existingGameAccess() {
+
+        try {
+            askGameToAccess();
+        } catch (NoExistingGamesAvailable e) {
+            System.err.println(e.getMessage());
+            return;
+        }
+
+        int gameID = getGameToAccess();
+        setState(State.RUNNING);
+        if (gameID == 0)
+            return;
+
+        askNickname();
+        String nickname = getNickname();
+        if (nickname.equals("/"))
+            return;
+
+        notifyGameToAccess(gameID, nickname);
+        setState(State.WAITING_FOR_UPDATE);
+
+    }
+    private void askGameToAccess() throws NoExistingGamesAvailable{
+
+        if (gameSpecsMap.isEmpty())
+            throw new NoExistingGamesAvailable();
+        
+        System.out.println("""
+                
+                
+                ---------------------------------
+                Which game do you want to access?
+                
+                (/) Back
+                """);
         for (Map.Entry<Integer, ServerImpl.GameSpecs> entry : gameSpecsMap.entrySet()) {
             System.out.println(entry.getKey() + " - "
                     + "Game ID: " + entry.getValue().ID()
                     + "    Current number of players connected: " + entry.getValue().currentNumOfPlayers()
                     + "    Max number of players: " + entry.getValue().maxNumOfPlayers());
         }
-        System.out.println("--------------------");
+        System.out.println("---------------------------------\n\n");
 
     }
+    private int getGameToAccess() {
 
-
-
-    private int askWhichGameToAccess() throws NoExistingGamesAvailable {
-
-        if (gameSpecsMap.isEmpty())
-            throw new NoExistingGamesAvailable();
-
-        printGamesToAccess(gameSpecsMap);
-
-        askingWhichGameToAccess = true;
+        setState(State.ASKING_WHICH_GAME_TO_ACCESS);
+        String input;
 
         while (true) {
-
-            String input = null;
-            if (s.hasNext())
-                input = s.next();
-            else
-                printGamesToAccess(gameSpecsMap);
-
+            input = s.next();
             if (input.equals("/"))
                 return 0;
 
@@ -168,19 +220,32 @@ public class LobbyTextualUI extends LobbyUI {
                 if (gameSpecsMap.containsKey(number))
                     return gameSpecsMap.get(number).ID();
                 else
-                    System.err.println("Invalid option");
+                    printErrInvalidOption();
             } catch (NumberFormatException e) {
-                System.err.println("Invalid option");
+                printErrInvalidOption();
             }
         }
 
     }
-    private String askNickname()  {
+
+    private void askNickname() {
+
+        System.out.println("""
+                
+                
+                --------------------
+                Choose your nickname
+                
+                (/) Back
+                --------------------
+                
+                
+                """);
+
+    }
+    private String getNickname()  {
 
         while (true) {
-            System.out.println("\n--------------------");
-            System.out.println("Choose your nickname");
-            System.out.println("--------------------");
             String input = s.next();
             if (input.length() > 20)
                 System.err.println("Too many characters!");
@@ -194,34 +259,30 @@ public class LobbyTextualUI extends LobbyUI {
 
 
     @Override
-    public void updateGamesSpecs(String jsonGamesSpecs){
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        List<ServerImpl.GameSpecs> gamesSpecs = new ArrayList<>();
-
-        try {
-            gamesSpecs = objectMapper.readValue(jsonGamesSpecs, new TypeReference<List<ServerImpl.GameSpecs>>(){});
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    public void updateGamesSpecs(List<ServerImpl.GameSpecs> gamesSpecs){
 
         for (int key = 0; key < gamesSpecs.size(); key++)
             gameSpecsMap.put(key+1, gamesSpecs.get(key));
 
-        if (askingWhichGameToAccess) {
+        if (getState() == State.ASKING_WHICH_GAME_TO_ACCESS) {
             gameSpecsMap.clear();
             for (int key = 0; key < gamesSpecs.size(); key++)
                 gameSpecsMap.put(key+1, gamesSpecs.get(key));
 
-            printGamesToAccess(gameSpecsMap);
+            askGameToAccess();
         }
+    }
+
+    @Override
+    public void reportError(String error) {
+        System.err.println(error);
+        setState(State.RUNNING);
     }
 
 
     @Override
     public void stop() {
-        running = false;
+        setState(State.STOPPING_THE_VIEW);
     }
 
 

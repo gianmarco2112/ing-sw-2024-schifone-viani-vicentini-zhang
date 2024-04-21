@@ -10,6 +10,7 @@ import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.player.Player;
+import ingsw.codex_naturalis.view.UI;
 import ingsw.codex_naturalis.view.gameplayPhase.Observer;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
@@ -23,22 +24,36 @@ import java.util.concurrent.Executors;
 
 public class ServerImpl implements Server, Observer<Game, Event> {
 
+    public static class NicknameMap {
+        private Map<Client, String> clientToNicknameMap = new HashMap<>();
+        private Map<String, Client> nicknameToClientMap = new HashMap<>();
+
+        public void addClient(Client client, String nickname) {
+            clientToNicknameMap.put(client, nickname);
+            nicknameToClientMap.put(nickname, client);
+        }
+
+        public String getNickname(Client client) {
+            return clientToNicknameMap.get(client);
+        }
+
+        public Client getClient(String nickname) {
+            return nicknameToClientMap.get(nickname);
+        }
+    }
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public record GameSpecs(int ID, int currentNumOfPlayers, int maxNumOfPlayers) {}
 
     private final List<Client> newClients = new ArrayList<>();
 
+    private final NicknameMap nicknameMap = new NicknameMap();
+
     private final List<GameManagement<SetupController>> startingGames = new ArrayList<>();
     private final List<GameManagement<SetupController>> setupGames = new ArrayList<>();
     private final List<GameManagement<GameplayController>> gameplayGames = new ArrayList<>();
 
-
-
-
-    private final List<SetupController> setupControllersOfStartingGames = new ArrayList<>();
-    private final List<SetupController> setupControllers = new ArrayList<>();
-    private final List<GameplayController> gameplayControllers = new ArrayList<>();
 
     ExecutorService executorService = Executors.newCachedThreadPool();
 
@@ -99,7 +114,7 @@ public class ServerImpl implements Server, Observer<Game, Event> {
     private void reportErrorToClient(Client client, String error){
         executorService.submit(() -> {
             try {
-                client.reportError(error);
+                client.reportLobbyUIError(error);
             } catch (RemoteException e) {
                 System.err.println("Error while updating client");
             }
@@ -121,20 +136,26 @@ public class ServerImpl implements Server, Observer<Game, Event> {
                     newClients.remove(client);
                 }
 
+
+                if (gameManagement.getModel().getNumOfPlayers() > gameManagement.getModel().getPlayerOrder().size())
                 try {
-                    client.updateUItoGameStarting(gameID, nickname);
+                    client.updateUI(UI.GAME_STARTING);
+                    client.updateGameStartingUIGameID(gameID);
+                    nicknameMap.addClient(client, nickname);
                 } catch (RemoteException e) {
                     System.err.println("Error while trying to update client's UI to Game Starting");
                 }
 
-                if (gameManagement.getModel().getNumOfPlayers() == gameManagement.getModel().getPlayerOrder().size()) {
+                else {
+                    nicknameMap.addClient(client, nickname);
                     startingGames.remove(gameManagement);
                     synchronized (setupGames) {
                         setupGames.add(gameManagement);
                         List<Client> clients = gameManagement.getViews();
                         for (Client c : clients) {
                             try {
-                                c.updateUItoSetup();
+                                c.updateUI(UI.SETUP);
+                                //c.updateUItoSetup();
                             } catch (RemoteException e) {
                                 System.err.println("Error while trying to update client's UI to Setup");
                             }
@@ -174,7 +195,8 @@ public class ServerImpl implements Server, Observer<Game, Event> {
         }
 
         try {
-            client.updateUItoGameStarting(gameID, nickname);
+            client.updateUI(UI.GAME_STARTING);
+            client.updateGameStartingUIGameID(gameID);
         } catch (RemoteException e) {
             System.err.println("Error while trying to update client's UI to Game Starting");
         }
@@ -183,6 +205,8 @@ public class ServerImpl implements Server, Observer<Game, Event> {
             newClients.remove(client);
             updateClientLobbyUIGameSpecs(newClients);
         }
+
+        nicknameMap.addClient(client, nickname);
 
     }
 

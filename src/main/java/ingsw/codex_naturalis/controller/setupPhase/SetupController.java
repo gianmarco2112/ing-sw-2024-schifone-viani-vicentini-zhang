@@ -64,7 +64,7 @@ public class SetupController {
     }
 
     public void updateInitialCard(Client client, InitialCardEvent initialCardEvent) {
-        Player player = null;
+        /*Player player = null;
         try {
             player = getPlayerByNickname(client.getNickname());
         } catch (RemoteException e) {
@@ -73,11 +73,11 @@ public class SetupController {
         switch (initialCardEvent) {
             case FLIP -> player.getInitialCard().flip("");
             case PLAY -> player.playInitialCard();
-        }
+        }*/
     }
 
     public void updateColor(Client client, Color color) {
-        readyClients++;
+        /*readyClients++;
         Player player = null;
         try {
             player = getPlayerByNickname(client.getNickname());
@@ -89,7 +89,7 @@ public class SetupController {
             model.setupHands();
             model.setupCommonObjectiveCards();
             readyClients = 0;
-        }
+        }*/
     }
 
 }

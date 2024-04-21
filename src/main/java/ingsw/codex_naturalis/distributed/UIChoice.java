@@ -12,14 +12,14 @@ import ingsw.codex_naturalis.view.setupPhase.SetupUI;
 
 public enum UIChoice {
 
-    TUI("Textual User interface (TUI)") {
+    TUI {
 
         public LobbyUI createLobbyUI(){
             return new LobbyTextualUI();
         }
 
-        public GameStartingUI createGameStartingUI(int gameID){
-            return new GameStartingTextualUI(gameID);
+        public GameStartingUI createGameStartingUI(){
+            return new GameStartingTextualUI();
         }
 
         public SetupUI createSetupUI(){
@@ -34,15 +34,15 @@ public enum UIChoice {
 
 
 
-    GUI("Graphical User Interface (GUI)"){
+    GUI{
 
         public LobbyUI createLobbyUI(){
             //TO FIX
             return new LobbyTextualUI();
         }
 
-        public GameStartingUI createGameStartingUI(int gameID){
-            return new GameStartingTextualUI(gameID);
+        public GameStartingUI createGameStartingUI(){
+            return new GameStartingTextualUI();
         }
 
         public SetupUI createSetupUI(){
@@ -60,20 +60,8 @@ public enum UIChoice {
 
 
 
-    private final String description;
-
-    UIChoice(String description){
-        this.description = description;
-    }
-
-    public String getDescription(){
-        return description;
-    }
-
-
-
     public abstract LobbyUI createLobbyUI();
-    public abstract GameStartingUI createGameStartingUI(int gameID);
+    public abstract GameStartingUI createGameStartingUI();
     public abstract SetupUI createSetupUI();
     public abstract GameplayUI createGameplayUI();
 }

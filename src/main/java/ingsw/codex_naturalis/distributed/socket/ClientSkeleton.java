@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.distributed.socket;
 
 import ingsw.codex_naturalis.distributed.Client;
+import ingsw.codex_naturalis.distributed.ClientImpl;
 import ingsw.codex_naturalis.distributed.Server;
+import ingsw.codex_naturalis.view.UI;
 
 import java.io.*;
 import java.net.Socket;
@@ -29,8 +31,6 @@ public class ClientSkeleton implements Client {
     }
 
 
-
-
     @Override
     public void updateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
 
@@ -41,7 +41,7 @@ public class ClientSkeleton implements Client {
     }
 
     @Override
-    public void reportError(String error) throws RemoteException {
+    public void reportLobbyUIError(String error) throws RemoteException {
 
         writer.println("Error");
         writer.println(error);
@@ -50,29 +50,24 @@ public class ClientSkeleton implements Client {
     }
 
     @Override
-    public void updateUItoGameStarting(int gameID, String nickname) throws RemoteException {
+    public void updateGameStartingUIGameID(int gameID) throws RemoteException {
 
-        writer.println("GameStarting");
+        writer.println("GameID");
         writer.println(gameID);
-        writer.println(nickname);
+
+    }
+
+
+    @Override
+    public void updateUI(UI ui) throws RemoteException {
+
+        switch (ui) {
+            case SETUP -> writer.println("Setup");
+        }
+
         writer.flush();
 
     }
-
-    @Override
-    public void updateUItoSetup() throws RemoteException {
-
-        writer.println("Setup");
-        writer.flush();
-
-    }
-
-    @Override
-    public String getNickname() throws RemoteException {
-        return null;
-    }
-
-
 
 
     public void receive(Server server) throws IOException {

@@ -1,16 +1,54 @@
 package ingsw.codex_naturalis.view.gameStartingPhase;
 
+import ingsw.codex_naturalis.view.lobbyPhase.LobbyTextualUI;
+
 public class GameStartingTextualUI extends GameStartingUI{
 
-    public GameStartingTextualUI(int gameID) {
-        super(gameID);
+    private enum State {
+        RUNNING,
+        WAITING_FOR_UPDATE,
+        STOPPING_THE_VIEW
+    }
+
+    private GameStartingTextualUI.State state = State.WAITING_FOR_UPDATE;
+
+    private final Object lock = new Object();
+
+    private int gameID;
+
+
+
+    private GameStartingTextualUI.State getState() {
+        synchronized (lock) {
+            return state;
+        }
+    }
+
+    private void setState(GameStartingTextualUI.State state) {
+        synchronized (lock) {
+            this.state = state;
+            lock.notifyAll();
+        }
     }
 
     @Override
     public void run() {
 
-        while (isRunning()){
-            System.out.println("\nGameID: " + getGameID());
+        while (true) {
+            while (getState() == GameStartingTextualUI.State.WAITING_FOR_UPDATE) {
+                synchronized (lock) {
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        System.err.println("Error while waiting for server update");
+                    }
+                }
+            }
+
+            if (getState() == GameStartingTextualUI.State.STOPPING_THE_VIEW)
+                return;
+
+            System.out.println("\nGameID: " + gameID);
             System.out.println("Waiting for players...");
             try {
                 Thread.sleep(2500);
@@ -19,5 +57,16 @@ public class GameStartingTextualUI extends GameStartingUI{
             }
         }
 
+    }
+
+    @Override
+    public void updateGameID(int gameID) {
+        this.gameID = gameID;
+        setState(State.RUNNING);
+    }
+
+    @Override
+    public void stop() {
+        setState(State.STOPPING_THE_VIEW);
     }
 }

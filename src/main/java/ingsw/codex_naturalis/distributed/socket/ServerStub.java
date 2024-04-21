@@ -2,8 +2,6 @@ package ingsw.codex_naturalis.distributed.socket;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ingsw.codex_naturalis.distributed.MessageFromClient;
-import ingsw.codex_naturalis.distributed.MessageFromServer;
 import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
 import ingsw.codex_naturalis.enumerations.Color;

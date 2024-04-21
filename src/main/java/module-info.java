@@ -44,4 +44,6 @@ module ingsw.codex_naturalis {
     opens ingsw.codex_naturalis.enumerations to javafx.fxml;
     exports ingsw.codex_naturalis.distributed;
     opens ingsw.codex_naturalis.distributed to javafx.fxml;
+    exports ingsw.codex_naturalis.distributed.socket;
+    opens ingsw.codex_naturalis.distributed.socket to javafx.fxml;
 }

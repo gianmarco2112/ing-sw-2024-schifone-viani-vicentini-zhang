@@ -11,7 +11,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class Card extends Observable<Event> {
+public abstract class Card extends Observable {
 
     private final String cardID;
     public boolean showingFront;

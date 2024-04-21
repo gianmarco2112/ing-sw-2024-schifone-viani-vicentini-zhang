@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * The player area
  */
-public class PlayerArea extends Observable<Event> {
+public class PlayerArea extends Observable {
 
     public record Immutable(Map<List<Integer>,PlayableCard.Immutable> area,
                             Map<ExtremeCoordinate, Integer> extremeCoordinates,
@@ -208,7 +208,7 @@ public class PlayerArea extends Observable<Event> {
 
         area.put(new ArrayList<>(List.of(0,0)), initialCard);
 
-        notifyObservers(Event.INITIAL_CARD_PLAYED, nickname);
+        //notifyObservers(Event.INITIAL_CARD_PLAYED, nickname);
     }
     /**
      * Places the given card on the given coordinates and adjusts the max coordinates
@@ -229,7 +229,7 @@ public class PlayerArea extends Observable<Event> {
 
         card.play(this, x, y);
 
-        notifyObservers(Event.PLAYER_AREA_CHANGED, nickname);
+        //notifyObservers(Event.PLAYER_AREA_CHANGED, nickname);
     }
     /**
      * Method to get the coordinates of a card

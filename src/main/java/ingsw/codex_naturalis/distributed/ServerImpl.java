@@ -8,6 +8,7 @@ import ingsw.codex_naturalis.controller.gameplayPhase.GameplayController;
 import ingsw.codex_naturalis.controller.setupPhase.SetupController;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.view.UI;
@@ -22,7 +23,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ServerImpl implements Server, Observer<Game, Event> {
+public class ServerImpl implements Server, Observer {
 
     public static class NicknameMap {
         private Map<Client, String> clientToNicknameMap = new HashMap<>();
@@ -111,7 +112,7 @@ public class ServerImpl implements Server, Observer<Game, Event> {
     }
 
 
-    private void reportErrorToClient(Client client, String error){
+    private void reportLobbyUIErrorToClient(Client client, String error){
         executorService.submit(() -> {
             try {
                 client.reportLobbyUIError(error);
@@ -155,7 +156,6 @@ public class ServerImpl implements Server, Observer<Game, Event> {
                         for (Client c : clients) {
                             try {
                                 c.updateUI(UI.SETUP);
-                                //c.updateUItoSetup();
                             } catch (RemoteException e) {
                                 System.err.println("Error while trying to update client's UI to Setup");
                             }
@@ -164,7 +164,7 @@ public class ServerImpl implements Server, Observer<Game, Event> {
                 }
 
             } catch (NotReachableGameException | NicknameAlreadyExistsException | MaxNumOfPlayersInException e) {
-                reportErrorToClient(client, e.getMessage());
+                reportLobbyUIErrorToClient(client, e.getMessage());
             }
         }
     }
@@ -185,6 +185,7 @@ public class ServerImpl implements Server, Observer<Game, Event> {
 
         int gameID = createGameID();
         Game game = new Game(gameID, numOfPlayers);
+        game.addObserver(this);
         Player player = new Player(nickname);
         game.addPlayer(player);
 
@@ -213,23 +214,20 @@ public class ServerImpl implements Server, Observer<Game, Event> {
 
 
 
-    private SetupController findSetupControllerByClient(Client client) throws NoControllerFoundException{
+    private SetupController findSetupControllerByClient(Client client) {
 
         for (GameManagement<SetupController> gameManagement : setupGames){
             if (gameManagement.getViews().contains(client))
                 return gameManagement.getController();
         }
-        throw new NoControllerFoundException();
+
+        return null;
 
     }
 
     @Override
     public void updateReady(Client client) {
-        try {
-            findSetupControllerByClient(client).updateReady(client);
-        } catch (NoControllerFoundException e) {
-            reportErrorToClient(client, e.getMessage());
-        }
+        findSetupControllerByClient(client).updateReady(nicknameMap.getNickname(client));
     }
 
     @Override
@@ -272,6 +270,43 @@ public class ServerImpl implements Server, Observer<Game, Event> {
     @Override
     public void update(Game o, Event arg, String playerWhoUpdated) {
 
+        List<Client> clients = findClientsFromGame(o);
+
+        switch (arg) {
+            case SETUP_1 -> setup1(clients, o);
+        }
+
+    }
+
+    private void setup1(List<Client> clients, Game game) {
+
+        PlayableCard.Immutable topResourceCard = game.getResourceCardsDeck().getFirstCard().getImmutablePlayableCard();
+        PlayableCard.Immutable topGoldCard = game.getGoldCardsDeck().getFirstCard().getImmutablePlayableCard();
+        List<PlayableCard.Immutable> revealedResourceCards = game.getImmutableRevealedResourceCards();
+        List<PlayableCard.Immutable> revealedGoldCards = game.getImmutableRevealedGoldCards();
+
+        executorService.submit(() -> {
+            for (Client client : clients) {
+                PlayableCard.Immutable initialCard = game.getPlayerByNickname(nicknameMap.getNickname(client)).getInitialCard().getImmutablePlayableCard();
+                try {
+                    System.out.println("TESTING\n" + initialCard.handCard());
+                    client.updateSetup1(initialCard, topResourceCard, topGoldCard, revealedResourceCards, revealedGoldCards);
+                } catch (RemoteException e) {
+                    System.err.println("Error while updating client");
+                }
+            }
+        });
+
+    }
+
+    private List<Client> findClientsFromGame(Game game) {
+
+        for (GameManagement<SetupController> gameManagement : setupGames){
+            if (gameManagement.getModel().equals(game))
+                return gameManagement.getViews();
+        }
+
+        return null;
 
     }
 }

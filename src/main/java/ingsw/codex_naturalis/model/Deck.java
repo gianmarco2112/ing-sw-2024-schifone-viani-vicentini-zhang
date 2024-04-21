@@ -7,7 +7,7 @@ import ingsw.codex_naturalis.model.observerObservable.Observable;
 import java.util.Collections;
 import java.util.List;
 
-public class Deck <T extends Card> extends Observable<Event>{
+public class Deck <T extends Card> extends Observable{
 
     private final List<T> cards;
 
@@ -23,7 +23,7 @@ public class Deck <T extends Card> extends Observable<Event>{
 
     public T drawACard(String nickname){
         T card = cards.removeFirst();
-        notifyObservers(Event.DECK_CHANGED, nickname);
+        //notifyObservers(Event.DECK_CHANGED, nickname);
         return card;
     }
 

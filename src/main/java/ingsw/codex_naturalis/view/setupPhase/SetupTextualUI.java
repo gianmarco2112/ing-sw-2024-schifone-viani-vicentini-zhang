@@ -1,10 +1,9 @@
 package ingsw.codex_naturalis.view.setupPhase;
 
 import ingsw.codex_naturalis.enumerations.Color;
-import ingsw.codex_naturalis.enumerations.PlayersConnectedStatus;
 import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.model.Game;
-import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 
 import java.io.IOException;
@@ -12,29 +11,42 @@ import java.util.*;
 
 public class SetupTextualUI extends SetupUI {
 
-    private boolean running;
-
     private final Scanner s = new Scanner(System.in);
 
 
-
-
-
-    public SetupTextualUI(){
-        running = true;
+    private enum State {
+        RUNNING,
+        WAITING_FOR_UPDATE,
+        STOPPING_THE_VIEW
     }
 
+    private SetupTextualUI.State state = SetupTextualUI.State.RUNNING;
+
+    private final Object lock = new Object();
 
 
 
 
 
+    private SetupTextualUI.State getState() {
+        synchronized (lock) {
+            return state;
+        }
+    }
+
+    private void setState(SetupTextualUI.State state) {
+        synchronized (lock) {
+            this.state = state;
+            lock.notifyAll();
+        }
+    }
 
     @Override
     public void run() {
 
         //the players tells when he's ready to play
         ready();
+        waitForUpdate();
 
         //the player plays the initial card
         playingInitialCard();
@@ -48,6 +60,17 @@ public class SetupTextualUI extends SetupUI {
     }
 
 
+    private void waitForUpdate() {
+        while (getState() == SetupTextualUI.State.WAITING_FOR_UPDATE) {
+            synchronized (lock) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    System.err.println("Error while waiting for server update");
+                }
+            }
+        }
+    }
 
 
     private void ready() {
@@ -58,6 +81,8 @@ public class SetupTextualUI extends SetupUI {
             System.in.read();
         } catch (IOException e) { }
         notifyReady();
+        System.out.println("You are ready to play. Please wait for the other players to be ready");
+        setState(State.WAITING_FOR_UPDATE);
 
     }
 
@@ -167,24 +192,33 @@ public class SetupTextualUI extends SetupUI {
 
 
 
-
-
-
-
     @Override
     public void stop() {
-        running = false;
+        setState(State.STOPPING_THE_VIEW);
     }
 
+    @Override
+    public void updateSetup1(PlayableCard.Immutable initialCard, PlayableCard.Immutable topResourceCard, PlayableCard.Immutable topGoldCard, List<PlayableCard.Immutable> revealedResourceCards, List<PlayableCard.Immutable> revealedGoldCards) {
+        System.out.println("\nResource cards deck\n" + topResourceCard.handCard());
+        System.out.println("\nRevealed resource cards");
+        for (PlayableCard.Immutable card : revealedResourceCards)
+            System.out.println(card.handCard());
 
+        System.out.println("\nGold cards deck\n" + topGoldCard.handCard());
+        System.out.println("\nRevealed gold cards");
+        for (PlayableCard.Immutable card : revealedGoldCards)
+            System.out.println(card.handCard());
 
+        System.out.println("\nYour initial card\n" + initialCard.handCard());
 
+        setState(State.RUNNING);
+    }
 
 
     public void update(Game.Immutable o, Event arg, String nickname, String playerWhoUpdated) {
         switch (arg) {
-            case CARDS_SETUP -> showCardsSetup(o);
-            case INITIAL_CARDS_SETUP -> showInitialCardsSetup(o);
+            //case RESOURCE_AND_GOLD_DECKS_SETUP_1 -> showCardsSetup(o);
+            case SETUP_1 -> showInitialCardsSetup(o);
             case COLOR_SETUP -> showColorSetup();
         }
     }

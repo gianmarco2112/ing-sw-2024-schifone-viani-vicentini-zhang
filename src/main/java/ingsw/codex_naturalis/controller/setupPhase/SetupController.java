@@ -7,7 +7,6 @@ import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +14,12 @@ public class SetupController {
 
     private final Game model;
     private final List<Client> views = new ArrayList<>();
-    private int readyClients;
+    private int readyPlayers = 0;
 
     //--------------------------------------------------------------------------------------
     public SetupController(Game model, Client view) {
         this.model = model;
         this.views.add(view);
-        readyClients = 0;
     }
 
 
@@ -29,37 +27,13 @@ public class SetupController {
         return model;
     }
 
-    public List<Client> getViews() {
-        return views;
-    }
 
-    public void addView(Client view){
-        this.views.add(view);
-    }
-
-    public void removeView(Client view) {
-        this.views.remove(view);
-    }
-
-
-    private Player getPlayerByNickname(String nickname) throws NoSuchNicknameException {
-
-        List<Player> playerOrder = model.getPlayerOrder();
-        for (Player player : playerOrder) {
-            if (player.getNickname().equals(nickname))
-                return player;
-        }
-        throw new NoSuchNicknameException();
-
-    }
-
-
-    public void updateReady(Client client){
-        readyClients++;
-        if (readyClients == model.getNumOfPlayers()) {
+    public void updateReady(String nickname){
+        readyPlayers++;
+        if (readyPlayers == model.getNumOfPlayers()) {
             model.setupResourceAndGoldCards();
             model.dealInitialCards();
-            readyClients = 0;
+            readyPlayers = 0;
         }
     }
 

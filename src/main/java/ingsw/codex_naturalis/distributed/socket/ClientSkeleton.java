@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.view.UI;
 
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.Integer.parseInt;
@@ -48,6 +50,7 @@ public class ClientSkeleton implements Client {
 
         messageProtocol.put(MessageFromClient.GAME_TO_ACCESS_UPDATE, this::receiveUpdateGameToAccess);
         messageProtocol.put(MessageFromClient.NEW_GAME_UPDATE, this::receiveUpdateNewGame);
+        messageProtocol.put(MessageFromClient.READY_UPDATE, this::receiveUpdateReady);
 
     }
 
@@ -70,11 +73,11 @@ public class ClientSkeleton implements Client {
 
         try {
             writer.println(objectMapper.writeValueAsString(MessageFromServer.LOBBY_UI_ERROR_REPORT));
+            writer.println(error);
+            writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
-        writer.println(error);
-        writer.flush();
 
     }
 
@@ -83,11 +86,28 @@ public class ClientSkeleton implements Client {
 
         try {
             writer.println(objectMapper.writeValueAsString(MessageFromServer.GAME_STARTING_UI_GAME_ID_UPDATE));
+            writer.println(gameID);
+            writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
-        writer.println(gameID);
-        writer.flush();
+
+    }
+
+    @Override
+    public void updateSetup1(PlayableCard.Immutable initialCard, PlayableCard.Immutable topResourceCard, PlayableCard.Immutable topGoldCard, List<PlayableCard.Immutable> revealedResourceCards, List<PlayableCard.Immutable> revealedGoldCards) {
+
+        try {
+            writer.println(objectMapper.writeValueAsString(MessageFromServer.SETUP_1_UPDATE));
+            writer.println(objectMapper.writeValueAsString(initialCard));
+            writer.println(objectMapper.writeValueAsString(topResourceCard));
+            writer.println(objectMapper.writeValueAsString(topGoldCard));
+            writer.println(objectMapper.writeValueAsString(revealedResourceCards));
+            writer.println(objectMapper.writeValueAsString(revealedGoldCards));
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
 
     }
 
@@ -155,6 +175,14 @@ public class ClientSkeleton implements Client {
         String nickname = reader.readLine();
         server.updateNewGame(this, numOfPlayers, nickname);
         } catch (IOException e) {
+            System.err.println("Error while receiving from client");
+        }
+    }
+
+    private void receiveUpdateReady() {
+        try {
+            server.updateReady(this);
+        } catch (RemoteException e) {
             System.err.println("Error while receiving from client");
         }
     }

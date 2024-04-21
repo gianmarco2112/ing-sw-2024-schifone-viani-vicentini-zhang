@@ -14,7 +14,7 @@ import java.util.*;
 /**
  * Player class
  */
-public class Player extends Observable<Event> {
+public class Player extends Observable {
 
     public record Immutable(String nickname, Color color, TurnStatus turnStatus,
                             PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> hand,
@@ -124,7 +124,7 @@ public class Player extends Observable<Event> {
     }
     public void setTurnStatus(TurnStatus turnStatus) {
         this.turnStatus = turnStatus;
-        notifyObservers(Event.TURN_STATUS_CHANGED, nickname);
+        //notifyObservers(Event.TURN_STATUS_CHANGED, nickname);
     }
 
     public PlayerArea getPlayerArea(){
@@ -136,7 +136,7 @@ public class Player extends Observable<Event> {
     }
     public void setColor(Color color) {
         this.color = color;
-        notifyObservers(Event.COLOR_SETUP, "");
+        //notifyObservers(Event.COLOR_SETUP, "");
     }
 
     public String getNickname() {
@@ -149,7 +149,7 @@ public class Player extends Observable<Event> {
 
     public void setHand(List<PlayableCard> hand){
         this.hand = hand;
-        notifyObservers(Event.HAND_CHANGED, nickname);
+        //notifyObservers(Event.HAND_CHANGED, nickname);
     }
 
     public void setupHand(List<PlayableCard> hand){

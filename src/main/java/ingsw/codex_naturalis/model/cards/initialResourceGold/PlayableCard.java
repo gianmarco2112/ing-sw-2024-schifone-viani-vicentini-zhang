@@ -92,7 +92,7 @@ public class PlayableCard extends Card {
         else{
             showBack();
         }
-        notifyObservers(Event.HAND_CHANGED, nickname);
+        //notifyObservers(Event.HAND_CHANGED, nickname);
     }
 
     private void showFront() {

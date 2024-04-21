@@ -1,10 +1,12 @@
 package ingsw.codex_naturalis.view.gameplayPhase;
 
+import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.observerObservable.Observable;
 
 
-public interface Observer<ObjectToObserve extends Observable<Event>, Event extends Enum<Event>> {
+public interface Observer {
 
-    void update(ObjectToObserve o, Event arg, String playerWhoUpdated);
+    void update(Game o, Event arg, String playerWhoUpdated);
 
 }

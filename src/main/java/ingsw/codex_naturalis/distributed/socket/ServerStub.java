@@ -1,9 +1,11 @@
 package ingsw.codex_naturalis.distributed.socket;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
+import ingsw.codex_naturalis.distributed.ServerImpl;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
@@ -11,6 +13,7 @@ import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.view.UI;
 import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
 
@@ -51,6 +54,7 @@ public class ServerStub implements Server {
         messageProtocol.put(MessageFromServer.LOBBY_UI_ERROR_REPORT, this::receiveReportLobbyUIError);
         messageProtocol.put(MessageFromServer.UI_UPDATE, this::receiveUpdateUI);
         messageProtocol.put(MessageFromServer.GAME_STARTING_UI_GAME_ID_UPDATE, this::receiveUpdateGameStartingGameID);
+        messageProtocol.put(MessageFromServer.SETUP_1_UPDATE, this::receiveUpdateSetup1);
     }
 
     @Override
@@ -80,24 +84,24 @@ public class ServerStub implements Server {
     public void updateGameToAccess(Client client, int gameID, String nickname) throws RemoteException {
         try {
             writer.println(objectMapper.writeValueAsString(MessageFromClient.GAME_TO_ACCESS_UPDATE));
+            writer.println(gameID);
+            writer.println(nickname);
+            writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
-        writer.println(gameID);
-        writer.println(nickname);
-        writer.flush();
     }
 
     @Override
     public void updateNewGame(Client client, int numOfPlayers, String nickname) throws RemoteException {
         try {
             writer.println(objectMapper.writeValueAsString(MessageFromClient.NEW_GAME_UPDATE));
+            writer.println(numOfPlayers);
+            writer.println(nickname);
+            writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
-        writer.println(numOfPlayers);
-        writer.println(nickname);
-        writer.flush();
     }
 
 
@@ -106,6 +110,13 @@ public class ServerStub implements Server {
 
     @Override
     public void updateReady(Client client) throws RemoteException {
+
+        try {
+            writer.println(objectMapper.writeValueAsString(MessageFromClient.READY_UPDATE));
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
 
     }
 
@@ -192,6 +203,30 @@ public class ServerStub implements Server {
         try {
             int gameID = parseInt(reader.readLine());
             client.updateGameStartingUIGameID(gameID);
+        } catch (IOException e) {
+            System.err.println("Error while receiving from server");
+        }
+    }
+
+    private void receiveUpdateSetup1() {
+        try {
+            String jsonInitialCard = reader.readLine();
+            PlayableCard.Immutable initialCard = objectMapper.readValue(jsonInitialCard, PlayableCard.Immutable.class);
+
+            String jsonTopResourceCard = reader.readLine();
+            PlayableCard.Immutable topResourceCard = objectMapper.readValue(jsonTopResourceCard, PlayableCard.Immutable.class);
+
+            String jsonTopGoldCard = reader.readLine();
+            PlayableCard.Immutable topGoldCard = objectMapper.readValue(jsonTopGoldCard, PlayableCard.Immutable.class);
+
+            String jsonRevealedResourceCard = reader.readLine();
+            List<PlayableCard.Immutable> revealedResourceCards = objectMapper.readValue(jsonRevealedResourceCard, new TypeReference<List<PlayableCard.Immutable>>(){});
+
+            String jsonRevealedGoldCard = reader.readLine();
+            List<PlayableCard.Immutable> revealedGoldCards = objectMapper.readValue(jsonRevealedGoldCard, new TypeReference<List<PlayableCard.Immutable>>(){});
+
+            client.updateSetup1(initialCard, topResourceCard, topGoldCard, revealedResourceCards, revealedGoldCards);
+
         } catch (IOException e) {
             System.err.println("Error while receiving from server");
         }

@@ -1,19 +1,20 @@
 package ingsw.codex_naturalis.model.observerObservable;
 
+import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.view.gameplayPhase.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Observable<Event extends Enum<Event>> {
+public class Observable {
 
-    private final List<Observer<Observable<Event>, Event>> obs;
+    private final List<Observer> obs;
 
     public Observable() {
         obs = new ArrayList<>();
     }
 
-    public synchronized void addObserver(Observer<Observable<Event>, Event> o) {
+    public synchronized void addObserver(Observer o) {
         if (o == null)
             throw new NullPointerException();
         if (!obs.contains(o)) {
@@ -21,15 +22,15 @@ public class Observable<Event extends Enum<Event>> {
         }
     }
 
-    public synchronized void deleteObserver(Observer<Observable<Event>, Event> o) {
+    public synchronized void deleteObserver(Observer o) {
         obs.remove(o);
     }
 
 
 
-    public void notifyObservers(Event arg, String playerWhoUpdated) {
-        for (Observer<Observable<Event>, Event> o : obs) {
-            o.update(this, arg, playerWhoUpdated);
+    public void notifyObservers(Game game, Event arg, String playerWhoUpdated) {
+        for (Observer o : obs) {
+            o.update(game, arg, playerWhoUpdated);
         }
     }
 }

@@ -9,6 +9,7 @@ import ingsw.codex_naturalis.controller.gameplayPhase.GameplayObserver;
 import ingsw.codex_naturalis.controller.setupPhase.SetupObserver;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.view.UI;
 import ingsw.codex_naturalis.view.gameStartingPhase.GameStartingUI;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
@@ -116,6 +117,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
 
 
+    //client
     @Override
     public void updateUI(UI ui) throws RemoteException {
         switch (ui) {
@@ -142,6 +144,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
         }
     }
 
+    //client
     @Override
     public void updateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
 
@@ -158,11 +161,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
     }
 
+    //client
     @Override
     public void reportLobbyUIError(String error) throws RemoteException {
         lobbyView.reportError(error);
     }
 
+    //client
     @Override
     public void updateGameStartingUIGameID(int gameID) throws RemoteException {
 
@@ -170,10 +175,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
     }
 
+    //client
+    @Override
+    public void updateSetup1(PlayableCard.Immutable initialCard, PlayableCard.Immutable topResourceCard, PlayableCard.Immutable topGoldCard, List<PlayableCard.Immutable> revealedResourceCards, List<PlayableCard.Immutable> revealedGoldCards) {
+        setupView.updateSetup1(initialCard, topResourceCard, topGoldCard, revealedResourceCards, revealedGoldCards);
+    }
 
 
-
-
+    //lobby observer
     @Override
     public void updateGameToAccess(int gameID, String nickname) {
         try {
@@ -182,6 +191,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
             System.err.println("Error while updating the server");
         }
     }
+
+    //lobby observer
     @Override
     public void updateNewGame(int numOfPlayers, String nickname) {
         try {
@@ -193,7 +204,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
 
 
-
+    //setup observer
     @Override
     public void updateReady() {
         try {

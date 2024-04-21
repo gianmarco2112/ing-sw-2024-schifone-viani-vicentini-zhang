@@ -7,14 +7,12 @@ import ingsw.codex_naturalis.exceptions.MaxNumOfPlayersInException;
 import ingsw.codex_naturalis.exceptions.NicknameAlreadyExistsException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.enumerations.GameStatus;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.observerObservable.Observable;
 import ingsw.codex_naturalis.model.player.Player;
-import ingsw.codex_naturalis.model.player.PlayerArea;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +23,7 @@ import java.util.*;
 /**
  * Game class
  */
-public class Game extends Observable<Event> {
+public class Game extends Observable {
 
     public record Immutable(int gameID, GameStatus gameStatus, List<String> playerOrder,
                             String currentPlayer, List<Player.ImmutableHidden> hiddenPlayers,
@@ -49,13 +47,9 @@ public class Game extends Observable<Event> {
                 playerReceiver = player.getImmutablePlayer();
         }
 
-        List<PlayableCard.Immutable> immutableRevealedResourceCards = new ArrayList<>();
-        for (PlayableCard card : revealedResourceCards)
-            immutableRevealedResourceCards.add(card.getImmutablePlayableCard());
+        List<PlayableCard.Immutable> immutableRevealedResourceCards = getImmutableRevealedResourceCards();
 
-        List<PlayableCard.Immutable> immutableRevealedGoldCards = new ArrayList<>();
-        for (PlayableCard card : revealedGoldCards)
-            immutableRevealedGoldCards.add(card.getImmutablePlayableCard());
+        List<PlayableCard.Immutable> immutableRevealedGoldCards = getImmutableRevealedGoldCards();
 
         List<ObjectiveCard.Immutable> immutableCommonObjectiveCards = new ArrayList<>();
         for (ObjectiveCard card : commonObjectiveCards)
@@ -67,6 +61,20 @@ public class Game extends Observable<Event> {
                 getGoldCardsDeck().getFirstCard().getImmutablePlayableCard(), immutableRevealedResourceCards,
                 immutableRevealedGoldCards, immutableCommonObjectiveCards, chat);
 
+    }
+
+    public List<PlayableCard.Immutable> getImmutableRevealedResourceCards() {
+        List<PlayableCard.Immutable> immutableRevealedResourceCards = new ArrayList<>();
+        for (PlayableCard card : revealedResourceCards)
+            immutableRevealedResourceCards.add(card.getImmutablePlayableCard());
+        return immutableRevealedResourceCards;
+    }
+
+    public List<PlayableCard.Immutable> getImmutableRevealedGoldCards() {
+        List<PlayableCard.Immutable> immutableRevealedGoldCards = new ArrayList<>();
+        for (PlayableCard card : revealedGoldCards)
+            immutableRevealedGoldCards.add(card.getImmutablePlayableCard());
+        return immutableRevealedGoldCards;
     }
 
 
@@ -146,6 +154,7 @@ public class Game extends Observable<Event> {
      * Constructor
      */
     public Game(int gameID, int numOfPlayers) {
+
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
@@ -187,7 +196,7 @@ public class Game extends Observable<Event> {
     }
     public void setGameStatus(GameStatus gameStatus, String nickname){
         this.gameStatus = gameStatus;
-        notifyObservers(Event.GAME_STATUS_CHANGED, nickname);
+        notifyObservers(this, Event.GAME_STATUS_CHANGED, nickname);
     }
 
     public int getNumOfPlayers() {
@@ -201,12 +210,19 @@ public class Game extends Observable<Event> {
         this.playerOrder = playerOrder;
     }
 
+    public Player getPlayerByNickname(String nickname){
+        for (Player player : playerOrder)
+            if (player.getNickname().equals(nickname))
+                return player;
+        return null;
+    }
+
     public Player getCurrentPlayer(){
         return currentPlayer;
     }
     public void setCurrentPlayer(Player currentPlayer, String nickname){
         this.currentPlayer = currentPlayer;
-        notifyObservers(Event.TURN_CHANGED, nickname);
+        notifyObservers(this, Event.TURN_CHANGED, nickname);
     }
 
     public List<Message> getChat() {
@@ -214,7 +230,7 @@ public class Game extends Observable<Event> {
     }
     public void setMessages(List<Message> messages, String nickname){
         this.chat = messages;
-        notifyObservers(Event.MESSAGE_SENT, nickname);
+        notifyObservers(this, Event.MESSAGE_SENT, nickname);
     }
 
     public List<ObjectiveCard> getCommonObjectiveCards(){
@@ -245,7 +261,7 @@ public class Game extends Observable<Event> {
     }
     public void setRevealedResourceCards(List<PlayableCard> revealedResourceCards, String nickname){
         this.revealedResourceCards = revealedResourceCards;
-        notifyObservers(Event.REVEALED_RESOURCE_CARDS_CHANGED, nickname);
+        notifyObservers(this, Event.REVEALED_RESOURCE_CARDS_CHANGED, nickname);
     }
 
     public List<PlayableCard> getRevealedGoldCards() {
@@ -253,7 +269,7 @@ public class Game extends Observable<Event> {
     }
     public void setRevealedGoldCards(List<PlayableCard> revealedGoldCards, String nickname){
         this.revealedGoldCards = revealedGoldCards;
-        notifyObservers(Event.REVEALED_GOLD_CARDS_CHANGED, nickname);
+        notifyObservers(this, Event.REVEALED_GOLD_CARDS_CHANGED, nickname);
     }
 
     /**
@@ -270,7 +286,7 @@ public class Game extends Observable<Event> {
             }
         }
         playerOrder.add(player);
-        notifyObservers(Event.PLAYER, player.getNickname());
+        notifyObservers(this, Event.PLAYER, player.getNickname());
     }
 
 
@@ -291,7 +307,6 @@ public class Game extends Observable<Event> {
             card.flip("");
         }
 
-        notifyObservers(Event.CARDS_SETUP, "");
     }
 
     /**
@@ -303,7 +318,7 @@ public class Game extends Observable<Event> {
             player.setInitialCard(initialCardsDeck.drawACard(""));
         }
 
-        notifyObservers(Event.INITIAL_CARDS_SETUP, "");
+        notifyObservers(this, Event.SETUP_1, "");
     }
 
     public void setupHands() {
@@ -316,7 +331,7 @@ public class Game extends Observable<Event> {
             player.setupHand(hand);
         }
 
-        notifyObservers(Event.HANDS_SETUP, "");
+        notifyObservers(this, Event.HANDS_SETUP, "");
     }
 
     public void setupCommonObjectiveCards(){

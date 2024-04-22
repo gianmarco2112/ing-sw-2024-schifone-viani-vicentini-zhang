@@ -7,7 +7,7 @@ import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
-import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
+import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

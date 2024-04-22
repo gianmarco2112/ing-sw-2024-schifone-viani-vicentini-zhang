@@ -17,13 +17,11 @@ import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.view.lobbyPhase.LobbyUI;
-import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
+import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 import ingsw.codex_naturalis.view.setupPhase.ObjectiveCardChoice;
 import ingsw.codex_naturalis.view.setupPhase.SetupUI;
 
 import java.rmi.RemoteException;
-import java.rmi.server.RMIClientSocketFactory;
-import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -148,10 +146,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     @Override
     public void updateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
 
-        List<ServerImpl.GameSpecs> gamesSpecs = new ArrayList<>();
+        List<GameSpecs> gamesSpecs = new ArrayList<>();
 
         try {
-            gamesSpecs = objectMapper.readValue(jsonGamesSpecs, new TypeReference<List<ServerImpl.GameSpecs>>(){});
+            gamesSpecs = objectMapper.readValue(jsonGamesSpecs, new TypeReference<List<GameSpecs>>(){});
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json value");
             return;

@@ -297,14 +297,14 @@ public class Game extends Observable {
         this.revealedResourceCards.add(resourceCardsDeck.drawACard(""));
         this.revealedResourceCards.add(resourceCardsDeck.drawACard(""));
         for (PlayableCard card : revealedResourceCards){
-            card.flip("");
+            card.flip();
         }
 
         goldCardsDeck.shuffle();
         this.revealedGoldCards.add(goldCardsDeck.drawACard(""));
         this.revealedGoldCards.add(goldCardsDeck.drawACard(""));
         for (PlayableCard card : revealedGoldCards){
-            card.flip("");
+            card.flip();
         }
 
     }

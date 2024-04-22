@@ -95,6 +95,11 @@ public class Player extends Observable {
 
 
 
+    public void flip(PlayableCard cardToFlip) {
+        cardToFlip.flip();
+        //notifyObservers(this, Event.INITIAL_CARD_FLIPPED, nickname);
+    }
+
     /**
      * Initial card getter
      * @return Initial card
@@ -113,10 +118,8 @@ public class Player extends Observable {
      * Method to play the initial card
      */
     public void playInitialCard(){
-
-        playerArea.setInitialCard(initialCard, nickname);
+        playerArea.setInitialCard(initialCard);
         initialCard = null;
-
     }
 
     public TurnStatus getTurnStatus() {
@@ -155,6 +158,8 @@ public class Player extends Observable {
     public void setupHand(List<PlayableCard> hand){
         this.hand = hand;
     }
+
+
 
 
 

@@ -1,9 +1,6 @@
 package ingsw.codex_naturalis.view.lobbyPhase;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import ingsw.codex_naturalis.distributed.ServerImpl;
+import ingsw.codex_naturalis.distributed.GameSpecs;
 import ingsw.codex_naturalis.exceptions.*;
 
 import java.util.*;
@@ -24,7 +21,7 @@ public class LobbyTextualUI extends LobbyUI {
 
     private final Object lock = new Object();
 
-    private Map<Integer, ServerImpl.GameSpecs>  gameSpecsMap = new LinkedHashMap<>();
+    private Map<Integer, GameSpecs>  gameSpecsMap = new LinkedHashMap<>();
 
 
 
@@ -196,7 +193,7 @@ public class LobbyTextualUI extends LobbyUI {
                 
                 (/) Back
                 """);
-        for (Map.Entry<Integer, ServerImpl.GameSpecs> entry : gameSpecsMap.entrySet()) {
+        for (Map.Entry<Integer, GameSpecs> entry : gameSpecsMap.entrySet()) {
             System.out.println(entry.getKey() + " - "
                     + "Game ID: " + entry.getValue().ID()
                     + "    Current number of players connected: " + entry.getValue().currentNumOfPlayers()
@@ -259,7 +256,7 @@ public class LobbyTextualUI extends LobbyUI {
 
 
     @Override
-    public void updateGamesSpecs(List<ServerImpl.GameSpecs> gamesSpecs){
+    public void updateGamesSpecs(List<GameSpecs> gamesSpecs){
 
         for (int key = 0; key < gamesSpecs.size(); key++)
             gameSpecsMap.put(key+1, gamesSpecs.get(key));

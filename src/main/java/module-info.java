@@ -32,6 +32,7 @@ module ingsw.codex_naturalis {
 
     exports ingsw.codex_naturalis;
 
+    exports ingsw.codex_naturalis.events.setupPhase;
     exports ingsw.codex_naturalis.view;
     exports ingsw.codex_naturalis.exceptions;
     exports ingsw.codex_naturalis.model.observerObservable to com.fasterxml.jackson.databind;

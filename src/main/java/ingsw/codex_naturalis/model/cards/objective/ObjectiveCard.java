@@ -77,7 +77,7 @@ public abstract class ObjectiveCard extends Card {
         return points;
     }
 
-    public void flip(String nickname){
+    public void flip(){
         showingFront = !showingFront;
     }
 

@@ -240,7 +240,7 @@ public class GameplayController {
         PlayableCard drawnCard = null;
         drawnCard = model.getResourceCardsDeck().drawACard("client.getNickname()");
 
-        drawnCard.flip("client.getNickname()");
+        drawnCard.flip();
 
         return drawnCard;
 
@@ -256,7 +256,7 @@ public class GameplayController {
 
         PlayableCard drawnCard = null;
         drawnCard = model.getGoldCardsDeck().drawACard("client.getNickname()");
-        drawnCard.flip("client.getNickname()");
+        drawnCard.flip();
 
         return drawnCard;
     }
@@ -281,7 +281,7 @@ public class GameplayController {
         PlayableCard cardToReveal = null;
         if (!model.getResourceCardsDeck().isEmpty()) {
             cardToReveal = model.getResourceCardsDeck().drawACard("client.getNickname()");
-            cardToReveal.flip("client.getNickname()");
+            cardToReveal.flip();
         }
         revealedResourceCards.set(eventToHandIndex.get(drawCard), cardToReveal);
         model.setRevealedResourceCards(revealedResourceCards, "client.getNickname()");
@@ -310,7 +310,7 @@ public class GameplayController {
         if (!model.getGoldCardsDeck().isEmpty()) {
             try {
                 cardToReveal = model.getGoldCardsDeck().drawACard("client.getNickname()");
-                cardToReveal.flip("client.getNickname()");
+                cardToReveal.flip();
             } catch (EmptyDeckException e){
                 System.err.println("The gold cards deck is now empty!");
             }

@@ -32,6 +32,6 @@ public abstract class Card extends Observable {
         return showingFront;
     }
 
-    public abstract void flip(String nickname);
+    public abstract void flip();
 
 }

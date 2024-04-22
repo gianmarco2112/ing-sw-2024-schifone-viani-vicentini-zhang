@@ -85,14 +85,13 @@ public class PlayableCard extends Card {
 
 
     @Override
-    public void flip(String nickname){
+    public void flip(){
         if(!showingFront){
             showFront();
         }
         else{
             showBack();
         }
-        //notifyObservers(Event.HAND_CHANGED, nickname);
     }
 
     private void showFront() {

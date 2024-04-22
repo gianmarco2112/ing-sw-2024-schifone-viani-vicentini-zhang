@@ -16,7 +16,7 @@ import ingsw.codex_naturalis.view.gameplayPhase.Observer;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
-import ingsw.codex_naturalis.view.setupPhase.InitialCardEvent;
+import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 
 import java.rmi.RemoteException;
 import java.util.*;
@@ -25,33 +25,87 @@ import java.util.concurrent.Executors;
 
 public class ServerImpl implements Server, Observer {
 
-    public static class NicknameMap {
+    private static class GameManagement <Controller>{
+        private final Game model;
+        private final Controller controller;
+        private final List<Client> views;
+
+        private NicknameMap nicknameMap = new NicknameMap();
+
+        private GameManagement(Game model, Controller controller, List<Client> views){
+            this.model = model;
+            this.controller = controller;
+            this.views = views;
+        }
+
+
+        private Game getModel() {
+            return model;
+        }
+
+        private Controller getController() {
+            return controller;
+        }
+
+        private List<Client> getViews() {
+            return views;
+        }
+
+        private void addView(Client view){
+            this.views.add(view);
+        }
+    }
+
+    private static class LobbyAndStartingGameManagement {
+        private final Game model;
+        private final List<Client> views = new ArrayList<>();
+
+        private final NicknameMap nicknameMap = new NicknameMap();
+
+        private LobbyAndStartingGameManagement(Game model, Client view){
+            this.model = model;
+            this.views.add(view);
+        }
+
+        private Game getModel(){
+            return model;
+        }
+
+        private List<Client> getViews() {
+            return views;
+        }
+
+        private void addView(Client view){
+            this.views.add(view);
+        }
+    }
+
+    private static class NicknameMap {
         private Map<Client, String> clientToNicknameMap = new HashMap<>();
         private Map<String, Client> nicknameToClientMap = new HashMap<>();
 
-        public void addClient(Client client, String nickname) {
+        private void addClient(Client client, String nickname) {
             clientToNicknameMap.put(client, nickname);
             nicknameToClientMap.put(nickname, client);
         }
 
-        public String getNickname(Client client) {
+        private String getNickname(Client client) {
             return clientToNicknameMap.get(client);
         }
 
-        public Client getClient(String nickname) {
+        private Client getClient(String nickname) {
             return nicknameToClientMap.get(nickname);
         }
     }
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public record GameSpecs(int ID, int currentNumOfPlayers, int maxNumOfPlayers) {}
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final List<Client> newClients = new ArrayList<>();
 
-    private final NicknameMap nicknameMap = new NicknameMap();
-
-    private final List<GameManagement<SetupController>> startingGames = new ArrayList<>();
+    private final List<LobbyAndStartingGameManagement> lobbyAndStartingGames = new ArrayList<>();
+    //private final List<GameManagement<SetupController>> startingGames = new ArrayList<>();
     private final List<GameManagement<SetupController>> setupGames = new ArrayList<>();
     private final List<GameManagement<GameplayController>> gameplayGames = new ArrayList<>();
 
@@ -86,10 +140,10 @@ public class ServerImpl implements Server, Observer {
         }
 
     }
-    private List<ServerImpl.GameSpecs> getGamesSpecs() {
+    private List<GameSpecs> getGamesSpecs() {
 
-        List<ServerImpl.GameSpecs> gamesSpecs = new ArrayList<>();
-        for (GameManagement<SetupController> gameManagement : startingGames) {
+        List<GameSpecs> gamesSpecs = new ArrayList<>();
+        for (LobbyAndStartingGameManagement gameManagement : lobbyAndStartingGames) {
             int gameID = gameManagement.getModel().getGameID();
             int numOfPlayers = gameManagement.getModel().getNumOfPlayers();
             int currentNumOfPlayers = gameManagement.getModel().getPlayerOrder().size();
@@ -103,8 +157,8 @@ public class ServerImpl implements Server, Observer {
 
 
 
-    private GameManagement<SetupController> getGameManagementFromGameID(int gameID) throws NotReachableGameException{
-        for (GameManagement<SetupController> game : startingGames) {
+    private LobbyAndStartingGameManagement getLobbyAndStartingGameManagementFromGameID(int gameID) throws NotReachableGameException{
+        for (LobbyAndStartingGameManagement game : lobbyAndStartingGames) {
             if (gameID == game.getModel().getGameID())
                 return game;
         }
@@ -126,30 +180,33 @@ public class ServerImpl implements Server, Observer {
     @Override
     public void updateGameToAccess(Client client, int gameID, String nickname) throws NicknameAlreadyExistsException, MaxNumOfPlayersInException, NotReachableGameException{
 
-        synchronized (startingGames) {
+        synchronized (lobbyAndStartingGames) {
             try {
 
-                GameManagement<SetupController> gameManagement = getGameManagementFromGameID(gameID);
-                gameManagement.getModel().addPlayer(new Player(nickname));
-                gameManagement.addView(client);
+                LobbyAndStartingGameManagement lobbyAndStartingGameManagement = getLobbyAndStartingGameManagementFromGameID(gameID);
+                lobbyAndStartingGameManagement.getModel().addPlayer(new Player(nickname));
+                lobbyAndStartingGameManagement.addView(client);
+                lobbyAndStartingGameManagement.nicknameMap.addClient(client, nickname);
 
                 synchronized (newClients) {
                     newClients.remove(client);
                 }
 
-
-                if (gameManagement.getModel().getNumOfPlayers() > gameManagement.getModel().getPlayerOrder().size())
+                if (lobbyAndStartingGameManagement.getModel().getNumOfPlayers() > lobbyAndStartingGameManagement.getModel().getPlayerOrder().size())
                 try {
                     client.updateUI(UI.GAME_STARTING);
                     client.updateGameStartingUIGameID(gameID);
-                    nicknameMap.addClient(client, nickname);
                 } catch (RemoteException e) {
                     System.err.println("Error while trying to update client's UI to Game Starting");
                 }
 
                 else {
-                    nicknameMap.addClient(client, nickname);
-                    startingGames.remove(gameManagement);
+                    lobbyAndStartingGames.remove(lobbyAndStartingGameManagement);
+                    SetupController setupController = new SetupController(lobbyAndStartingGameManagement.getModel(), lobbyAndStartingGameManagement.getViews());
+                    Game model = lobbyAndStartingGameManagement.getModel();
+                    List<Client> views = lobbyAndStartingGameManagement.getViews();
+                    GameManagement<SetupController> gameManagement = new GameManagement<>(model, setupController, views);
+                    gameManagement.nicknameMap = lobbyAndStartingGameManagement.nicknameMap;
                     synchronized (setupGames) {
                         setupGames.add(gameManagement);
                         List<Client> clients = gameManagement.getViews();
@@ -172,7 +229,7 @@ public class ServerImpl implements Server, Observer {
     private int createGameID(){
         int gameID;
         List<Integer> gameIDs = new ArrayList<>();
-        for (GameManagement<SetupController> gameManagement : startingGames)
+        for (LobbyAndStartingGameManagement gameManagement : lobbyAndStartingGames)
             gameIDs.add(gameManagement.getModel().getGameID());
         do {
             gameID = new Random().nextInt(100) + 1;
@@ -189,10 +246,11 @@ public class ServerImpl implements Server, Observer {
         Player player = new Player(nickname);
         game.addPlayer(player);
 
-        SetupController setupController = new SetupController(game, client);
+        LobbyAndStartingGameManagement lobbyAndStartingGameManagement = new LobbyAndStartingGameManagement(game, client);
+        lobbyAndStartingGameManagement.nicknameMap.addClient(client, nickname);
 
-        synchronized (startingGames) {
-            startingGames.add(new GameManagement<>(game, setupController, client));
+        synchronized (lobbyAndStartingGames) {
+            lobbyAndStartingGames.add(lobbyAndStartingGameManagement);
         }
 
         try {
@@ -207,37 +265,51 @@ public class ServerImpl implements Server, Observer {
             updateClientLobbyUIGameSpecs(newClients);
         }
 
-        nicknameMap.addClient(client, nickname);
-
     }
 
 
 
 
-    private SetupController findSetupControllerByClient(Client client) {
 
+    private GameManagement<SetupController> findGameManagementByClient(Client client){
+        synchronized (setupGames) {
+            for (GameManagement<SetupController> gameManagement : setupGames) {
+                if (gameManagement.getViews().contains(client))
+                    return gameManagement;
+            }
+        }
+        return null;
+    }
+
+    private GameManagement<SetupController> findGameManagementByGame(Game game){
         for (GameManagement<SetupController> gameManagement : setupGames){
-            if (gameManagement.getViews().contains(client))
-                return gameManagement.getController();
+            if (gameManagement.getModel().equals(game))
+                return gameManagement;
         }
 
         return null;
-
     }
 
     @Override
     public void updateReady(Client client) {
-        findSetupControllerByClient(client).updateReady(nicknameMap.getNickname(client));
+        executorService.submit( () -> {
+            GameManagement<SetupController> gameManagement = findGameManagementByClient(client);
+            gameManagement.getController().updateReady(gameManagement.nicknameMap.getNickname(client));
+        });
+
     }
 
     @Override
     public void updateInitialCard(Client client, InitialCardEvent initialCardEvent) {
-        findSetupControllerByClient(client).updateInitialCard(client, initialCardEvent);
+        executorService.submit( () -> {
+            GameManagement<SetupController> gameManagement = findGameManagementByClient(client);
+            gameManagement.getController().updateInitialCard(gameManagement.nicknameMap.getNickname(client), initialCardEvent);
+        });
     }
 
     @Override
     public void updateColor(Client client, Color color) {
-        findSetupControllerByClient(client).updateColor(client, color);
+
     }
 
 
@@ -293,27 +365,29 @@ public class ServerImpl implements Server, Observer {
         goldCards.add(topGoldCard);
         goldCards.addAll(revealedGoldCards);
 
-        executorService.submit(() -> {
+        GameManagement<SetupController> gameManagement = findGameManagementByGame(game);
+
             for (Client client : clients) {
-                PlayableCard.Immutable initialCard = game.getPlayerByNickname(nicknameMap.getNickname(client)).getInitialCard().getImmutablePlayableCard();
+                PlayableCard.Immutable initialCard = game.getPlayerByNickname(gameManagement.nicknameMap.getNickname(client)).getInitialCard().getImmutablePlayableCard();
                 try {
                     client.updateSetup1(initialCard, resourceCards, goldCards);
                 } catch (RemoteException e) {
                     System.err.println("Error while updating client");
                 }
             }
-        });
 
     }
 
     private List<Client> findClientsFromGame(Game game) {
 
-        for (GameManagement<SetupController> gameManagement : setupGames){
-            if (gameManagement.getModel().equals(game))
-                return gameManagement.getViews();
+        synchronized (setupGames) {
+            for (GameManagement<SetupController> gameManagement : setupGames) {
+                if (gameManagement.getModel().equals(game))
+                    return gameManagement.getViews();
+            }
         }
-
         return null;
 
     }
+
 }

@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.view.setupPhase;
 
 import ingsw.codex_naturalis.enumerations.Color;
+import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
@@ -18,6 +19,7 @@ public class SetupTextualUI extends SetupUI {
     private enum State {
         RUNNING,
         WAITING_FOR_UPDATE,
+        PLAYING_INITIAL_CARD,
         STOPPING_THE_VIEW
     }
 
@@ -51,6 +53,7 @@ public class SetupTextualUI extends SetupUI {
 
         //the player plays the initial card
         playingInitialCard();
+        waitForUpdate();
 
         //the player chooses a color
         choosingColor();
@@ -60,6 +63,10 @@ public class SetupTextualUI extends SetupUI {
 
     }
 
+
+    private void printErrInvalidOption(){
+        System.err.println("Invalid option");
+    }
 
     private void waitForUpdate() {
         while (getState() == SetupTextualUI.State.WAITING_FOR_UPDATE) {
@@ -91,45 +98,69 @@ public class SetupTextualUI extends SetupUI {
 
         while (true) {
 
-            InitialCardEvent initialCardEvent = askInitialCardEvent();
+            askInitialCardOption();
 
-            switch (initialCardEvent) {
-                case FLIP -> notifyInitialCard(InitialCardEvent.FLIP);
-                case PLAY -> {
+            getInitialCardOption();
+
+            while (getState() == State.PLAYING_INITIAL_CARD) {
+                synchronized (lock) {
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        System.err.println("Error while waiting for server update");
+                    }
+                }
+            }
+
+            if (getState() == State.WAITING_FOR_UPDATE)
+                return;
+
+        }
+
+    }
+
+    private void getInitialCardOption() {
+
+        try {
+            int option = s.nextInt();
+            switch (option) {
+                case 1 -> {
+                    notifyInitialCard(InitialCardEvent.FLIP);
+                    setState(State.PLAYING_INITIAL_CARD);
+                }
+                case 2 -> {
                     notifyInitialCard(InitialCardEvent.PLAY);
-                    return; }
+                    setState(State.WAITING_FOR_UPDATE);
+                }
+                default -> {
+                    printErrInvalidOption();
+                    getInitialCardOption();
+                }
             }
+        } catch (InputMismatchException e) {
+            printErrInvalidOption();
         }
 
     }
-    private InitialCardEvent askInitialCardEvent() {
 
-        Map<Integer, InitialCardEvent> initialCardEventMap = new LinkedHashMap<>();
-        for (int key = 0; key < InitialCardEvent.values().length; key++)
-            initialCardEventMap.put(key+1, InitialCardEvent.values()[key]);
-
-        System.out.println("Please play the initial card on your preferred side");
-        printInitialCardEventCommands(initialCardEventMap);
-
-        while (true) {
-
-            String input = s.next();
-            try{
-                Integer number = Integer.parseInt(input);
-                if (initialCardEventMap.containsKey(number))
-                    return initialCardEventMap.get(number);
-                else
-                    System.err.println("This is not a command: " + number);
-            } catch (NumberFormatException e) {
-                System.err.println("This is not a command: "+ input);
-            }
-
-        }
+    private void askInitialCardOption() {
+        System.out.println("""
+                
+                
+                
+                ---------------------------------------------------
+                Please play the initial card on your preferred side
+                
+                (1) Flip
+                (2) Play
+                ---------------------------------------------------
+                
+                
+                
+                """);
     }
-    private void printInitialCardEventCommands(Map<Integer, InitialCardEvent> initialCardEventMap) {
-        for (Map.Entry<Integer, InitialCardEvent> entry : initialCardEventMap.entrySet())
-            System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
-    }
+
+
 
     private void choosingColor() {
 

@@ -304,25 +304,17 @@ public class GameplayTextualUI extends GameplayUI {
     }
 
 
-    public static String getHandCardsToString(List<PlayableCard> hand){
+    public static String getHandCardsToString(List<PlayableCard.Immutable> hand){
         List<List<String>> cardsFrontsAsStrings = new ArrayList<>(new ArrayList<>());
-        List<List<String>> cardsBackssAsStrings = new ArrayList<>(new ArrayList<>());
         StringBuilder outString = new StringBuilder();
 
-        for (PlayableCard card : hand){
-            cardsFrontsAsStrings.add(Arrays.asList(card.getFront().handCardToString(card.getKingdom()).split("\n")));
-            cardsBackssAsStrings.add(Arrays.asList(card.getBack().handCardToString(card.getKingdom()).split("\n")));
+        for (PlayableCard.Immutable card : hand){
+            cardsFrontsAsStrings.add(Arrays.asList(card.handCard().split("\n")));
         }
 
         for (int i = 0; i < cardsFrontsAsStrings.getFirst().size(); i++) {
             for (int j = 0; j < cardsFrontsAsStrings.size(); j++) {
                 outString.append(cardsFrontsAsStrings.get(j).get(i));
-            }
-            outString.append("\n");
-        }
-        for (int i = 0; i < cardsBackssAsStrings.getFirst().size(); i++) {
-            for (int j = 0; j < cardsBackssAsStrings.size(); j++) {
-                outString.append(cardsBackssAsStrings.get(j).get(i));
             }
             outString.append("\n");
         }

@@ -213,19 +213,13 @@ public class ServerStub implements Server {
             String jsonInitialCard = reader.readLine();
             PlayableCard.Immutable initialCard = objectMapper.readValue(jsonInitialCard, PlayableCard.Immutable.class);
 
-            String jsonTopResourceCard = reader.readLine();
-            PlayableCard.Immutable topResourceCard = objectMapper.readValue(jsonTopResourceCard, PlayableCard.Immutable.class);
+            String jsonResourceCards = reader.readLine();
+            List<PlayableCard.Immutable> resourceCards = objectMapper.readValue(jsonResourceCards, new TypeReference<List<PlayableCard.Immutable>>(){});
 
-            String jsonTopGoldCard = reader.readLine();
-            PlayableCard.Immutable topGoldCard = objectMapper.readValue(jsonTopGoldCard, PlayableCard.Immutable.class);
+            String jsonGoldCards = reader.readLine();
+            List<PlayableCard.Immutable> goldCards = objectMapper.readValue(jsonGoldCards, new TypeReference<List<PlayableCard.Immutable>>(){});
 
-            String jsonRevealedResourceCard = reader.readLine();
-            List<PlayableCard.Immutable> revealedResourceCards = objectMapper.readValue(jsonRevealedResourceCard, new TypeReference<List<PlayableCard.Immutable>>(){});
-
-            String jsonRevealedGoldCard = reader.readLine();
-            List<PlayableCard.Immutable> revealedGoldCards = objectMapper.readValue(jsonRevealedGoldCard, new TypeReference<List<PlayableCard.Immutable>>(){});
-
-            client.updateSetup1(initialCard, topResourceCard, topGoldCard, revealedResourceCards, revealedGoldCards);
+            client.updateSetup1(initialCard, resourceCards, goldCards);
 
         } catch (IOException e) {
             System.err.println("Error while receiving from server");

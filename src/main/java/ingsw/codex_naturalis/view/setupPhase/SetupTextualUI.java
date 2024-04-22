@@ -5,6 +5,7 @@ import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.observerObservable.Event;
+import ingsw.codex_naturalis.view.gameplayPhase.GameplayTextualUI;
 
 import java.io.IOException;
 import java.util.*;
@@ -198,16 +199,12 @@ public class SetupTextualUI extends SetupUI {
     }
 
     @Override
-    public void updateSetup1(PlayableCard.Immutable initialCard, PlayableCard.Immutable topResourceCard, PlayableCard.Immutable topGoldCard, List<PlayableCard.Immutable> revealedResourceCards, List<PlayableCard.Immutable> revealedGoldCards) {
-        System.out.println("\nResource cards deck\n" + topResourceCard.handCard());
-        System.out.println("\nRevealed resource cards");
-        for (PlayableCard.Immutable card : revealedResourceCards)
-            System.out.println(card.handCard());
+    public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
+        System.out.println("\nResource cards");
+        System.out.println(GameplayTextualUI.getHandCardsToString(resourceCards));
 
-        System.out.println("\nGold cards deck\n" + topGoldCard.handCard());
-        System.out.println("\nRevealed gold cards");
-        for (PlayableCard.Immutable card : revealedGoldCards)
-            System.out.println(card.handCard());
+        System.out.println("\nGold cards");
+        System.out.println(GameplayTextualUI.getHandCardsToString(goldCards));
 
         System.out.println("\nYour initial card\n" + initialCard.handCard());
 

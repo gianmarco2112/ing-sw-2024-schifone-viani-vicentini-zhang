@@ -95,15 +95,13 @@ public class ClientSkeleton implements Client {
     }
 
     @Override
-    public void updateSetup1(PlayableCard.Immutable initialCard, PlayableCard.Immutable topResourceCard, PlayableCard.Immutable topGoldCard, List<PlayableCard.Immutable> revealedResourceCards, List<PlayableCard.Immutable> revealedGoldCards) {
+    public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
 
         try {
             writer.println(objectMapper.writeValueAsString(MessageFromServer.SETUP_1_UPDATE));
             writer.println(objectMapper.writeValueAsString(initialCard));
-            writer.println(objectMapper.writeValueAsString(topResourceCard));
-            writer.println(objectMapper.writeValueAsString(topGoldCard));
-            writer.println(objectMapper.writeValueAsString(revealedResourceCards));
-            writer.println(objectMapper.writeValueAsString(revealedGoldCards));
+            writer.println(objectMapper.writeValueAsString(resourceCards));
+            writer.println(objectMapper.writeValueAsString(goldCards));
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");

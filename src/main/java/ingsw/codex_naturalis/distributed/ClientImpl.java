@@ -177,8 +177,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
     //client
     @Override
-    public void updateSetup1(PlayableCard.Immutable initialCard, PlayableCard.Immutable topResourceCard, PlayableCard.Immutable topGoldCard, List<PlayableCard.Immutable> revealedResourceCards, List<PlayableCard.Immutable> revealedGoldCards) {
-        setupView.updateSetup1(initialCard, topResourceCard, topGoldCard, revealedResourceCards, revealedGoldCards);
+    public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
+        setupView.updateSetup1(initialCard, resourceCards, goldCards);
     }
 
 

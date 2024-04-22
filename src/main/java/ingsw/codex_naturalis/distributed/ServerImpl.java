@@ -285,12 +285,19 @@ public class ServerImpl implements Server, Observer {
         List<PlayableCard.Immutable> revealedResourceCards = game.getImmutableRevealedResourceCards();
         List<PlayableCard.Immutable> revealedGoldCards = game.getImmutableRevealedGoldCards();
 
+        List<PlayableCard.Immutable> resourceCards = new ArrayList<>();
+        resourceCards.add(topResourceCard);
+        resourceCards.addAll(revealedResourceCards);
+
+        List<PlayableCard.Immutable> goldCards = new ArrayList<>();
+        goldCards.add(topGoldCard);
+        goldCards.addAll(revealedGoldCards);
+
         executorService.submit(() -> {
             for (Client client : clients) {
                 PlayableCard.Immutable initialCard = game.getPlayerByNickname(nicknameMap.getNickname(client)).getInitialCard().getImmutablePlayableCard();
                 try {
-                    System.out.println("TESTING\n" + initialCard.handCard());
-                    client.updateSetup1(initialCard, topResourceCard, topGoldCard, revealedResourceCards, revealedGoldCards);
+                    client.updateSetup1(initialCard, resourceCards, goldCards);
                 } catch (RemoteException e) {
                     System.err.println("Error while updating client");
                 }

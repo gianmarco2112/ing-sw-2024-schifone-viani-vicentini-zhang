@@ -18,6 +18,6 @@ public interface Client extends Remote {
 
     void updateGameStartingUIGameID(int gameID) throws RemoteException;
 
-    void updateSetup1(PlayableCard.Immutable initialCard, PlayableCard.Immutable topResourceCard, PlayableCard.Immutable topGoldCard, List<PlayableCard.Immutable> revealedResourceCards, List<PlayableCard.Immutable> revealedGoldCards) throws RemoteException;
+    void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) throws RemoteException;
 
 }

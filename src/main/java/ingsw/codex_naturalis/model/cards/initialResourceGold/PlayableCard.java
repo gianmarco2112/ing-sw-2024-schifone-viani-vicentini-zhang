@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.Corner;
-import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.enumerations.Symbol;
@@ -15,14 +14,15 @@ import java.io.Serializable;
 public class PlayableCard extends Card {
 
     public PlayableCard.Immutable getImmutablePlayableCard(){
-        return new PlayableCard.Immutable(getCardID(), showingFront, playerAreaCardToString(kingdom), handCardToString(kingdom));
+        return new PlayableCard.Immutable(getCardID(), showingFront, playerAreaCardToString(kingdom), handCardToString(kingdom),getCurrentPlayableSide());
     }
 
     public PlayableCard.Immutable getImmutableHiddenPlayableCard(){
-        return new PlayableCard.Immutable(getCardID(), false, playerAreaCardToString(kingdom), handCardToString(kingdom));
+        return new PlayableCard.Immutable(getCardID(), false, playerAreaCardToString(kingdom), handCardToString(kingdom), getCurrentPlayableSide());
     }
 
-    public record Immutable(String cardID, boolean showingFront, String description, String handCard) implements Serializable {
+    public record Immutable(String cardID, boolean showingFront, String description, String handCard,
+                            PlayableSide currentPlayableSide) implements Serializable {
         @Serial
         private static final long serialVersionUID = 2L;
     }

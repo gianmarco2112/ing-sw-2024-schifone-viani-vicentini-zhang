@@ -330,9 +330,38 @@ public class GameplayTextualUI extends GameplayUI {
         LinkedHashMap<List<Integer>, List<String>> cardsAsListOfStrings = new LinkedHashMap<>();
         LinkedHashMap<Integer, List<String>> columns = new LinkedHashMap<>();
         StringBuilder outString = new StringBuilder();
+        StringBuilder lineToBePrune = new StringBuilder();
 
         for (Map.Entry<List<Integer>, PlayableCard.Immutable> cardAndCordinates: playerArea.area().entrySet()) {
-            cardsAsListOfStrings.put(cardAndCordinates.getKey(), Arrays.stream(cardAndCordinates.getValue().description().split("\n")).toList());
+
+            cardsAsListOfStrings.put(cardAndCordinates.getKey(), Arrays.asList(cardAndCordinates.getValue().description().split("\n")));
+        }
+
+        for (int i = playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_X); i <= playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_X); i++) {
+            for (int j = playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_Y); j <= playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_Y); j++) {
+                if (playerArea.area().containsKey(List.of(i, j))){
+                    if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopLeftCorner().isCovered() && playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopLeftCorner().getSymbol() != Symbol.COVERED) {
+                        lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).getFirst());
+                        lineToBePrune.replace(10, 12, "  ");
+                        cardsAsListOfStrings.get(List.of(i, j)).set(0, lineToBePrune.toString());
+                        lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(1));
+                        lineToBePrune.replace(5, 7, "  ");
+                        cardsAsListOfStrings.get(List.of(i, j)).set(1, lineToBePrune.toString());
+                    }
+                    if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopRightCorner().isCovered()) {
+                    }
+                    if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getBottomLeftCorner().isCovered() && playerArea.area().get(List.of(i, j)).currentPlayableSide().getBottomLeftCorner().getSymbol() != Symbol.COVERED) {
+//                        lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(3));
+//                        lineToBePrune.replace(5, 7, "  ");
+//                        cardsAsListOfStrings.get(List.of(i, j)).set(3, lineToBePrune.toString());
+//                        lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(4));
+//                        lineToBePrune.replace(5, 7, "  ");
+//                        cardsAsListOfStrings.get(List.of(i, j)).set(4, lineToBePrune.toString());
+                    }
+                    if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getBottomRightCorner().isCovered()) {
+                    }
+                }
+            }
         }
 
         for (int i = playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_X); i >= playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_X); i--) {

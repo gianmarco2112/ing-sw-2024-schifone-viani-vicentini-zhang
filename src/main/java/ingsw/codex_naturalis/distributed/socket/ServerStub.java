@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
-import ingsw.codex_naturalis.distributed.socket.MessageFromClient.GameToAccessUpdate;
-import ingsw.codex_naturalis.distributed.socket.MessageFromClient.MessageFromClient;
-import ingsw.codex_naturalis.distributed.socket.MessageFromClient.NewGameUpdate;
-import ingsw.codex_naturalis.distributed.socket.MessageFromClient.ReadyUpdate;
+import ingsw.codex_naturalis.distributed.socket.MessageFromClient.*;
 import ingsw.codex_naturalis.distributed.socket.MessageFromServer.MessageFromServer;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
@@ -117,7 +114,15 @@ public class ServerStub implements Server {
 
     @Override
     public void updateInitialCard(Client client, InitialCardEvent initialCardEvent) throws RemoteException {
-
+        try {
+            MessageFromClient message = new InitialCardUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(objectMapper.writeValueAsString(initialCardEvent));
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
     }
 
     @Override

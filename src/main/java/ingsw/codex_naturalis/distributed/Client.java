@@ -1,8 +1,8 @@
 package ingsw.codex_naturalis.distributed;
 
 
+import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.view.UI;
 
 import java.rmi.Remote;
@@ -20,4 +20,5 @@ public interface Client extends Remote {
 
     void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) throws RemoteException;
 
+    void updateInitialCardFS(PlayableCard.Immutable initialCard, InitialCardEvent initialCardEvent) throws RemoteException;
 }

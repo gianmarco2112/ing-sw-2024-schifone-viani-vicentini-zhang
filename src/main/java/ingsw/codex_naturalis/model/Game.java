@@ -10,9 +10,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.enumerations.GameStatus;
-import ingsw.codex_naturalis.model.observerObservable.Event;
-import ingsw.codex_naturalis.model.observerObservable.Observable;
+import ingsw.codex_naturalis.model.util.GameEvent;
+import ingsw.codex_naturalis.model.util.GameObservable;
 import ingsw.codex_naturalis.model.player.Player;
+import ingsw.codex_naturalis.model.util.PlayerEvent;
+import ingsw.codex_naturalis.model.util.PlayerObserver;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +25,7 @@ import java.util.*;
 /**
  * Game class
  */
-public class Game extends Observable {
+public class Game extends GameObservable implements PlayerObserver {
 
     public record Immutable(int gameID, GameStatus gameStatus, List<String> playerOrder,
                             String currentPlayer, List<Player.ImmutableHidden> hiddenPlayers,
@@ -196,7 +198,7 @@ public class Game extends Observable {
     }
     public void setGameStatus(GameStatus gameStatus, String nickname){
         this.gameStatus = gameStatus;
-        notifyObservers(this, Event.GAME_STATUS_CHANGED, nickname);
+        notifyObservers(this, GameEvent.GAME_STATUS_CHANGED);
     }
 
     public int getNumOfPlayers() {
@@ -222,7 +224,7 @@ public class Game extends Observable {
     }
     public void setCurrentPlayer(Player currentPlayer, String nickname){
         this.currentPlayer = currentPlayer;
-        notifyObservers(this, Event.TURN_CHANGED, nickname);
+        notifyObservers(this, GameEvent.TURN_CHANGED);
     }
 
     public List<Message> getChat() {
@@ -230,7 +232,6 @@ public class Game extends Observable {
     }
     public void setMessages(List<Message> messages, String nickname){
         this.chat = messages;
-        notifyObservers(this, Event.MESSAGE_SENT, nickname);
     }
 
     public List<ObjectiveCard> getCommonObjectiveCards(){
@@ -261,7 +262,6 @@ public class Game extends Observable {
     }
     public void setRevealedResourceCards(List<PlayableCard> revealedResourceCards, String nickname){
         this.revealedResourceCards = revealedResourceCards;
-        notifyObservers(this, Event.REVEALED_RESOURCE_CARDS_CHANGED, nickname);
     }
 
     public List<PlayableCard> getRevealedGoldCards() {
@@ -269,7 +269,6 @@ public class Game extends Observable {
     }
     public void setRevealedGoldCards(List<PlayableCard> revealedGoldCards, String nickname){
         this.revealedGoldCards = revealedGoldCards;
-        notifyObservers(this, Event.REVEALED_GOLD_CARDS_CHANGED, nickname);
     }
 
     /**
@@ -277,16 +276,16 @@ public class Game extends Observable {
      * @param player Player
      */
     public void addPlayer(Player player) throws NicknameAlreadyExistsException, MaxNumOfPlayersInException {
-        if(playerOrder.size() >= numOfPlayers)
+        if (playerOrder.size() >= numOfPlayers)
             throw new MaxNumOfPlayersInException();
 
-        for(Player p : playerOrder){
+        for (Player p : playerOrder){
             if(player.getNickname().equals(p.getNickname())){
                 throw new NicknameAlreadyExistsException();
             }
         }
         playerOrder.add(player);
-        notifyObservers(this, Event.PLAYER, player.getNickname());
+        player.addObserver(this);
     }
 
 
@@ -318,7 +317,7 @@ public class Game extends Observable {
             player.setInitialCard(initialCardsDeck.drawACard(""));
         }
 
-        notifyObservers(this, Event.SETUP_1, "");
+        notifyObservers(this, GameEvent.SETUP_1);
     }
 
     public void setupHands() {
@@ -331,7 +330,7 @@ public class Game extends Observable {
             player.setupHand(hand);
         }
 
-        notifyObservers(this, Event.HANDS_SETUP, "");
+        //notifyObservers(gameID, GameEvent.HANDS_SETUP);
     }
 
     public void setupCommonObjectiveCards(){
@@ -345,5 +344,11 @@ public class Game extends Observable {
         Collections.shuffle(this.playerOrder);
     }
 
+
+
+    @Override
+    public void update(Player player, PlayerEvent playerEvent) {
+        notifyObservers(this, playerEvent, player);
+    }
 
 }

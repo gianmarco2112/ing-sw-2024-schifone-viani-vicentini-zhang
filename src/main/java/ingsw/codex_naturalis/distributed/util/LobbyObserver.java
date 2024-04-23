@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.distributed;
+package ingsw.codex_naturalis.distributed.util;
 
 public interface LobbyObserver {
 

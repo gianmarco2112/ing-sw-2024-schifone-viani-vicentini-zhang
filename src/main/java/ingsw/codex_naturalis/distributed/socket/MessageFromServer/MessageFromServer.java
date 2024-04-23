@@ -14,7 +14,8 @@ import java.io.BufferedReader;
         @JsonSubTypes.Type(value = LobbyUIErrorReport.class, name = "LobbyUIErrorReport"),
         @JsonSubTypes.Type(value = LobbyUIGamesSpecsUpdate.class, name = "LobbyUIGamesSpecsUpdate"),
         @JsonSubTypes.Type(value = Setup1Update.class, name = "Setup1Update"),
-        @JsonSubTypes.Type(value = UIUpdate.class, name = "UIUpdate")
+        @JsonSubTypes.Type(value = UIUpdate.class, name = "UIUpdate"),
+        @JsonSubTypes.Type(value = InitialCardFSUpdate.class, name = "InitialCardFSUpdate")
 })
 public interface MessageFromServer {
 

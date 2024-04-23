@@ -14,6 +14,7 @@ import java.io.BufferedReader;
         @JsonSubTypes.Type(value = NewGameUpdate.class, name = "NewGameUpdate"),
         @JsonSubTypes.Type(value = GameToAccessUpdate.class, name = "GameToAccessUpdate"),
         @JsonSubTypes.Type(value = ReadyUpdate.class, name = "ReadyUpdate"),
+        @JsonSubTypes.Type(value = InitialCardUpdate.class, name = "InitialCardUpdate")
 })
 public interface MessageFromClient {
 

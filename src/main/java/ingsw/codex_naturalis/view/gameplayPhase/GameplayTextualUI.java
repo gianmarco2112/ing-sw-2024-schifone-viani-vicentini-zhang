@@ -5,8 +5,7 @@ import ingsw.codex_naturalis.events.gameplayPhase.*;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.observerObservable.Event;
-import ingsw.codex_naturalis.model.player.Player;
+import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 
 import java.util.*;
@@ -288,7 +287,7 @@ public class GameplayTextualUI extends GameplayUI {
 
 
 
-    public void update(Game.Immutable o, Event arg, String nickname, String playerWhoUpdated) {
+    public void update(Game.Immutable o, GameEvent arg, String nickname, String playerWhoUpdated) {
         try {
             switch (arg) {
                 //o.player().playerArea().area().get(new ArrayList<>(List.of(0,0)));

@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.distributed;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ingsw.codex_naturalis.distributed.util.LobbyObserver;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayObserver;
@@ -179,6 +180,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
         setupView.updateSetup1(initialCard, resourceCards, goldCards);
     }
+
+    @Override
+    public void updateInitialCardFS(PlayableCard.Immutable initialCard, InitialCardEvent initialCardEvent) {
+        setupView.updateInitialCard(initialCard, initialCardEvent);
+    }
+
+
 
 
     //lobby observer

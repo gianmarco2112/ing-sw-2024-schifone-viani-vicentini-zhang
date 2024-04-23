@@ -1,6 +1,6 @@
 package ingsw.codex_naturalis.view.lobbyPhase;
 
-import ingsw.codex_naturalis.distributed.LobbyObserver;
+import ingsw.codex_naturalis.distributed.util.LobbyObserver;
 
 import java.util.ArrayList;
 import java.util.List;

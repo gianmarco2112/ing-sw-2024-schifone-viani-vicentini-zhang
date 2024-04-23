@@ -1,13 +1,10 @@
 package ingsw.codex_naturalis.model.player;
 
-import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.enumerations.ExtremeCoordinate;
 import ingsw.codex_naturalis.enumerations.Symbol;
-import ingsw.codex_naturalis.model.observerObservable.Event;
-import ingsw.codex_naturalis.model.observerObservable.Observable;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -16,7 +13,7 @@ import java.util.*;
 /**
  * The player area
  */
-public class PlayerArea extends Observable {
+public class PlayerArea {
 
     public record Immutable(Map<List<Integer>,PlayableCard.Immutable> area,
                             Map<ExtremeCoordinate, Integer> extremeCoordinates,
@@ -228,7 +225,7 @@ public class PlayerArea extends Observable {
 
         card.play(this, x, y);
 
-        //notifyObservers(Event.PLAYER_AREA_CHANGED, nickname);
+        //notifyObservers(GameEvent.PLAYER_AREA_CHANGED, nickname);
     }
     /**
      * Method to get the coordinates of a card

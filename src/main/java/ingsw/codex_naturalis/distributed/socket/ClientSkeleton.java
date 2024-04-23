@@ -6,6 +6,7 @@ import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
 import ingsw.codex_naturalis.distributed.socket.MessageFromClient.MessageFromClient;
 import ingsw.codex_naturalis.distributed.socket.MessageFromServer.*;
+import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.view.UI;
 
@@ -104,6 +105,20 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
 
+    }
+
+    @Override
+    public void updateInitialCardFS(PlayableCard.Immutable initialCard, InitialCardEvent initialCardEvent) {
+        try {
+            MessageFromServer message = new InitialCardFSUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(objectMapper.writeValueAsString(initialCard));
+            writer.println(objectMapper.writeValueAsString(initialCardEvent));
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
     }
 
 

@@ -1,11 +1,10 @@
 package ingsw.codex_naturalis.model.player;
 
-import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.enumerations.TurnStatus;
-import ingsw.codex_naturalis.model.observerObservable.Event;
-import ingsw.codex_naturalis.model.observerObservable.Observable;
+import ingsw.codex_naturalis.model.util.PlayerEvent;
+import ingsw.codex_naturalis.model.util.PlayerObservable;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,7 +13,7 @@ import java.util.*;
 /**
  * Player class
  */
-public class Player extends Observable {
+public class Player extends PlayerObservable {
 
     public record Immutable(String nickname, Color color, TurnStatus turnStatus,
                             PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> hand,
@@ -97,7 +96,10 @@ public class Player extends Observable {
 
     public void flip(PlayableCard cardToFlip) {
         cardToFlip.flip();
-        //notifyObservers(this, Event.INITIAL_CARD_FLIPPED, nickname);
+        if (initialCard != null)
+            notifyObservers(this, PlayerEvent.INITIAL_CARD_FLIPPED);
+        else
+            notifyObservers(this, PlayerEvent.HAND_CARD_FLIPPED);
     }
 
     /**
@@ -120,6 +122,7 @@ public class Player extends Observable {
     public void playInitialCard(){
         playerArea.setInitialCard(initialCard);
         initialCard = null;
+        notifyObservers(this, PlayerEvent.INITIAL_CARD_PLAYED);
     }
 
     public TurnStatus getTurnStatus() {
@@ -127,7 +130,7 @@ public class Player extends Observable {
     }
     public void setTurnStatus(TurnStatus turnStatus) {
         this.turnStatus = turnStatus;
-        //notifyObservers(Event.TURN_STATUS_CHANGED, nickname);
+        //notifyObservers(GameEvent.TURN_STATUS_CHANGED, nickname);
     }
 
     public PlayerArea getPlayerArea(){
@@ -139,7 +142,7 @@ public class Player extends Observable {
     }
     public void setColor(Color color) {
         this.color = color;
-        //notifyObservers(Event.COLOR_SETUP, "");
+        //notifyObservers(GameEvent.COLOR_SETUP, "");
     }
 
     public String getNickname() {
@@ -152,7 +155,7 @@ public class Player extends Observable {
 
     public void setHand(List<PlayableCard> hand){
         this.hand = hand;
-        //notifyObservers(Event.HAND_CHANGED, nickname);
+        //notifyObservers(GameEvent.HAND_CHANGED, nickname);
     }
 
     public void setupHand(List<PlayableCard> hand){

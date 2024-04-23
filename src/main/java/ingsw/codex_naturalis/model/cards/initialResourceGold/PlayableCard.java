@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.Corner;
-import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.enumerations.Symbol;

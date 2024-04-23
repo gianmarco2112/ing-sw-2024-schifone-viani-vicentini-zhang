@@ -38,8 +38,8 @@ module ingsw.codex_naturalis {
     exports ingsw.codex_naturalis.events.setupPhase;
     exports ingsw.codex_naturalis.view;
     exports ingsw.codex_naturalis.exceptions;
-    exports ingsw.codex_naturalis.model.observerObservable to com.fasterxml.jackson.databind;
-    opens ingsw.codex_naturalis.model.observerObservable to com.fasterxml.jackson.databind;
+    exports ingsw.codex_naturalis.model.util to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.model.util to com.fasterxml.jackson.databind;
     exports ingsw.codex_naturalis.model.player to com.fasterxml.jackson.databind;
     opens ingsw.codex_naturalis.model.player to com.fasterxml.jackson.databind;
     opens ingsw.codex_naturalis.model.cards to com.fasterxml.jackson.databind;
@@ -51,4 +51,6 @@ module ingsw.codex_naturalis {
     exports ingsw.codex_naturalis.distributed.socket;
     opens ingsw.codex_naturalis.distributed.socket to javafx.fxml;
     opens ingsw.codex_naturalis.distributed.socket.MessageFromClient to javafx.fxml;
+    exports ingsw.codex_naturalis.distributed.util;
+    opens ingsw.codex_naturalis.distributed.util to javafx.fxml;
 }

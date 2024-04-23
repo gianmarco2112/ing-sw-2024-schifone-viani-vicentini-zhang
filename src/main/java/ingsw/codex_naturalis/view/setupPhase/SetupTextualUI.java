@@ -5,7 +5,7 @@ import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.observerObservable.Event;
+import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayTextualUI;
 
 import java.io.IOException;
@@ -26,6 +26,11 @@ public class SetupTextualUI extends SetupUI {
     private SetupTextualUI.State state = SetupTextualUI.State.RUNNING;
 
     private final Object lock = new Object();
+
+
+    private PlayableCard.Immutable initialCard;
+    private List<PlayableCard.Immutable> resourceCards;
+    private List<PlayableCard.Immutable> goldCards;
 
 
 
@@ -232,19 +237,42 @@ public class SetupTextualUI extends SetupUI {
 
     @Override
     public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
-        System.out.println("\nResource cards");
-        System.out.println(GameplayTextualUI.getHandCardsToString(resourceCards));
+        this.initialCard = initialCard;
+        this.resourceCards = resourceCards;
+        this.goldCards = goldCards;
 
-        System.out.println("\nGold cards");
-        System.out.println(GameplayTextualUI.getHandCardsToString(goldCards));
-
+        showResourceAndGoldDecks();
         System.out.println("\nYour initial card\n" + initialCard.handCard());
 
         setState(State.RUNNING);
     }
 
+    @Override
+    public void updateInitialCard(PlayableCard.Immutable initialCard, InitialCardEvent initialCardEvent) {
+        showResourceAndGoldDecks();
+        switch (initialCardEvent) {
+            case FLIP -> {
+                System.out.println("\nYour initial card\n" + initialCard.handCard());
+                setState(State.RUNNING);
+            }
+            case PLAY -> {
+                this.initialCard = initialCard;
+                System.out.println("\nYour play area\n" + initialCard.description());
+                setState(State.WAITING_FOR_UPDATE);
+            }
+        }
+    }
 
-    public void update(Game.Immutable o, Event arg, String nickname, String playerWhoUpdated) {
+    private void showResourceAndGoldDecks() {
+        System.out.println("\nResource cards");
+        System.out.println(GameplayTextualUI.getHandCardsToString(resourceCards));
+
+        System.out.println("\nGold cards");
+        System.out.println(GameplayTextualUI.getHandCardsToString(goldCards));
+    }
+
+
+    public void update(Game.Immutable o, GameEvent arg, String nickname, String playerWhoUpdated) {
         switch (arg) {
             //case RESOURCE_AND_GOLD_DECKS_SETUP_1 -> showCardsSetup(o);
             case SETUP_1 -> showInitialCardsSetup(o);

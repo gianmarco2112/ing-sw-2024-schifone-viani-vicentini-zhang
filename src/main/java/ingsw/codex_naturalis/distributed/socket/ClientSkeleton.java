@@ -4,28 +4,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
+import ingsw.codex_naturalis.distributed.socket.MessageFromClient.MessageFromClient;
+import ingsw.codex_naturalis.distributed.socket.MessageFromServer.*;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.view.UI;
 
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static java.lang.Integer.parseInt;
 
 public class ClientSkeleton implements Client {
 
     private final Server server;
 
-    private final Map<MessageFromClient, Runnable> messageProtocol = new HashMap<>();
-
     ObjectMapper objectMapper = new ObjectMapper();
 
     private final BufferedReader reader;
     private final PrintWriter writer;
+
+
 
     public ClientSkeleton(Socket socket, Server server) throws RemoteException{
 
@@ -42,29 +40,22 @@ public class ClientSkeleton implements Client {
             throw new RemoteException("Error while creating the client skeleton");
         }
 
-        initMessageProtocol();
-
     }
 
-    private void initMessageProtocol() {
-
-        messageProtocol.put(MessageFromClient.GAME_TO_ACCESS_UPDATE, this::receiveUpdateGameToAccess);
-        messageProtocol.put(MessageFromClient.NEW_GAME_UPDATE, this::receiveUpdateNewGame);
-        messageProtocol.put(MessageFromClient.READY_UPDATE, this::receiveUpdateReady);
-
-    }
 
 
     @Override
     public void updateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
 
         try {
-            writer.println(objectMapper.writeValueAsString(MessageFromServer.LOBBY_UI_GAMES_SPECS_UPDATE));
+            MessageFromServer message = new LobbyUIGamesSpecsUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(jsonGamesSpecs);
+            writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
-        writer.println(jsonGamesSpecs);
-        writer.flush();
 
     }
 
@@ -72,7 +63,9 @@ public class ClientSkeleton implements Client {
     public void reportLobbyUIError(String error) throws RemoteException {
 
         try {
-            writer.println(objectMapper.writeValueAsString(MessageFromServer.LOBBY_UI_ERROR_REPORT));
+            MessageFromServer message = new LobbyUIErrorReport();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
             writer.println(error);
             writer.flush();
         } catch (JsonProcessingException e) {
@@ -85,7 +78,9 @@ public class ClientSkeleton implements Client {
     public void updateGameStartingUIGameID(int gameID) throws RemoteException {
 
         try {
-            writer.println(objectMapper.writeValueAsString(MessageFromServer.GAME_STARTING_UI_GAME_ID_UPDATE));
+            MessageFromServer message = new GameStartingUIGameIDUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
             writer.println(gameID);
             writer.flush();
         } catch (JsonProcessingException e) {
@@ -98,7 +93,9 @@ public class ClientSkeleton implements Client {
     public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
 
         try {
-            writer.println(objectMapper.writeValueAsString(MessageFromServer.SETUP_1_UPDATE));
+            MessageFromServer message = new Setup1Update();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
             writer.println(objectMapper.writeValueAsString(initialCard));
             writer.println(objectMapper.writeValueAsString(resourceCards));
             writer.println(objectMapper.writeValueAsString(goldCards));
@@ -114,74 +111,33 @@ public class ClientSkeleton implements Client {
     public void updateUI(UI ui) throws RemoteException {
 
         try {
-            writer.println(objectMapper.writeValueAsString(MessageFromServer.UI_UPDATE));
+            MessageFromServer message = new UIUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            switch (ui) {
+                case GAME_STARTING -> writer.println(objectMapper.writeValueAsString(UI.GAME_STARTING));
+                case SETUP -> writer.println(objectMapper.writeValueAsString(UI.SETUP));
+            }
+            writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
-        switch (ui) {
-            case GAME_STARTING -> {
-                try {
-                    writer.println(objectMapper.writeValueAsString(UI.GAME_STARTING));
-                } catch (JsonProcessingException e) {
-                    System.err.println("Error while processing json");
-                }
-            }
-            case SETUP -> {
-                try {
-                    writer.println(objectMapper.writeValueAsString(UI.SETUP));
-                } catch (JsonProcessingException e) {
-                    System.err.println("Error while processing json");
-                }
-            }
-        }
-
-        writer.flush();
 
     }
 
 
     public void receive() throws IOException {
 
-        String read;
+        String jsonMessage;
         try {
-            read = reader.readLine();
+            jsonMessage = reader.readLine();
         } catch (IOException e) {
             throw new RemoteException("Error while reading from the buffered reader");
         }
 
-        MessageFromClient message = objectMapper.readValue(read, MessageFromClient.class);
-
-        Runnable runnable = messageProtocol.get(message);
-        runnable.run();
+        MessageFromClient message = objectMapper.readValue(jsonMessage, MessageFromClient.class);
+        message.run(this, server, reader);
 
     }
 
-
-    private void receiveUpdateGameToAccess(){
-        try {
-            int gameID = parseInt(reader.readLine());
-            String nickname = reader.readLine();
-            server.updateGameToAccess(this, gameID, nickname);
-        } catch (IOException e) {
-            System.err.println("Error while receiving from client");
-        }
-    }
-
-    private void receiveUpdateNewGame() {
-        try {
-        int numOfPlayers = parseInt(reader.readLine());
-        String nickname = reader.readLine();
-        server.updateNewGame(this, numOfPlayers, nickname);
-        } catch (IOException e) {
-            System.err.println("Error while receiving from client");
-        }
-    }
-
-    private void receiveUpdateReady() {
-        try {
-            server.updateReady(this);
-        } catch (RemoteException e) {
-            System.err.println("Error while receiving from client");
-        }
-    }
 }

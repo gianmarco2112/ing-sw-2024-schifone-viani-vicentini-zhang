@@ -88,8 +88,10 @@ public class LobbyTextualUI extends LobbyUI {
     }
     private void getGameAccessOption() {
 
+        String input;
+        input = s.next();
         try {
-            int option = s.nextInt();
+            int option = Integer.parseInt(input);
             switch (option) {
                 case 1 -> newGameAccess();
                 case 2 -> existingGameAccess();
@@ -98,7 +100,7 @@ public class LobbyTextualUI extends LobbyUI {
                     getGameAccessOption();
                 }
             }
-        } catch (InputMismatchException e) {
+        } catch (NumberFormatException e) {
             printErrInvalidOption();
         }
 

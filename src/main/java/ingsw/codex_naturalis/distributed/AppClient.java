@@ -98,17 +98,18 @@ public class AppClient {
                 
                 """);
 
-        int option;
+        String input;
 
         while (true) {
+            input = s.next();
             try{
-                option = s.nextInt();
+                int option = Integer.parseInt(input);
                 switch (option) {
                     case 1 -> { return NetworkProtocol.RMI; }
                     case 2 -> { return NetworkProtocol.SOCKET; }
                     default -> System.err.println("Invalid option");
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.err.println("Invalid option");
             }
         }

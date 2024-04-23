@@ -121,8 +121,9 @@ public class SetupTextualUI extends SetupUI {
 
     private void getInitialCardOption() {
 
+        String input = s.next();
         try {
-            int option = s.nextInt();
+            int option = Integer.parseInt(input);
             switch (option) {
                 case 1 -> {
                     notifyInitialCard(InitialCardEvent.FLIP);
@@ -137,7 +138,7 @@ public class SetupTextualUI extends SetupUI {
                     getInitialCardOption();
                 }
             }
-        } catch (InputMismatchException e) {
+        } catch (NumberFormatException e) {
             printErrInvalidOption();
         }
 

@@ -97,16 +97,17 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
         Map<Integer, UIChoice> uiChoices = new LinkedHashMap<>();
 
-        int option;
+        String input;
         while (true) {
+            input = s.next();
             try{
-                option = s.nextInt();
+                int option = Integer.parseInt(input);
                 switch (option) {
                     case 1 -> { return UIChoice.TUI; }
                     case 2 -> { System.err.println("We're working on it, please choose an other option."); }
                     default -> System.err.println("Invalid option");
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.err.println("Invalid option");
             }
         }

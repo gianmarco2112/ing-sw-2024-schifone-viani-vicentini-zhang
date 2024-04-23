@@ -8,7 +8,7 @@
       "topLeftCorner": {"symbol": "FUNGI", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "FUNGI", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true}
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true}
     },
     "back": {
       "type": "back",
@@ -27,7 +27,7 @@
       "type": "playableSide",
       "topLeftCorner": {"symbol": "FUNGI", "covered": false},
       "topRightCorner": {"symbol": "FUNGI", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false}
     },
     "back": {
@@ -46,7 +46,7 @@
     "front": {
       "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
-      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "COVERED", "covered": true},
       "bottomLeftCorner": {"symbol": "FUNGI", "covered": false},
       "bottomRightCorner": {"symbol": "FUNGI", "covered": false}
     },
@@ -65,7 +65,7 @@
     "kingdom": "FUNGI",
     "front": {
       "type": "playableSide",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "FUNGI", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "FUNGI", "covered": false}
@@ -85,7 +85,7 @@
     "kingdom": "FUNGI",
     "front": {
       "type": "playableSide",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "QUILL", "covered": false},
       "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
       "bottomRightCorner": {"symbol": "FUNGI", "covered": false}
@@ -107,7 +107,7 @@
       "type": "playableSide",
       "topLeftCorner": {"symbol": "INKWELL", "covered": false},
       "topRightCorner": {"symbol": "FUNGI", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
       "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
     },
     "back": {
@@ -148,7 +148,7 @@
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "FUNGI", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true},
       "points": 1
     },
     "back": {
@@ -167,7 +167,7 @@
     "front": {
       "type": "pointsGiver",
       "topLeftCorner": {"symbol": "FUNGI", "covered": false},
-      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "COVERED", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points": 1
@@ -187,7 +187,7 @@
     "kingdom": "FUNGI",
     "front": {
       "type": "pointsGiver",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "FUNGI", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
@@ -211,7 +211,7 @@
       "topLeftCorner": {"symbol": "PLANT", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true}
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true}
     },
     "back": {
       "type": "back",
@@ -230,7 +230,7 @@
       "type": "playableSide",
       "topLeftCorner": {"symbol": "PLANT", "covered": false},
       "topRightCorner": {"symbol": "PLANT", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false}
     },
     "back": {
@@ -249,7 +249,7 @@
     "front": {
       "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
-      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "COVERED", "covered": true},
       "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
       "bottomRightCorner": {"symbol": "PLANT", "covered": false}
     },
@@ -268,7 +268,7 @@
     "kingdom": "PLANT",
     "front": {
       "type": "playableSide",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "PLANT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "PLANT", "covered": false}
@@ -288,7 +288,7 @@
     "kingdom": "PLANT",
     "front": {
       "type": "playableSide",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
       "bottomLeftCorner": {"symbol": "QUILL", "covered": false},
       "bottomRightCorner": {"symbol": "PLANT", "covered": false}
@@ -310,7 +310,7 @@
       "type": "playableSide",
       "topLeftCorner": {"symbol": "FUNGI", "covered": false},
       "topRightCorner": {"symbol": "PLANT", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
       "bottomRightCorner": {"symbol": "INKWELL", "covered": false}
     },
     "back": {
@@ -329,7 +329,7 @@
     "front": {
       "type": "playableSide",
       "topLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
-      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "COVERED", "covered": true},
       "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
       "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
     },
@@ -351,7 +351,7 @@
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true},
       "points": 1
     },
     "back": {
@@ -371,7 +371,7 @@
       "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
       "bottomRightCorner": {"symbol": "PLANT", "covered": false},
       "points": 1
     },
@@ -390,7 +390,7 @@
     "kingdom": "PLANT",
     "front": {
       "type": "pointsGiver",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "PLANT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
@@ -414,7 +414,7 @@
       "topLeftCorner": {"symbol": "ANIMAL", "covered": false},
       "topRightCorner": {"symbol": "ANIMAL", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true}
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true}
     },
     "back": {
       "type": "back",
@@ -431,7 +431,7 @@
     "kingdom": "ANIMAL",
     "front": {
       "type": "playableSide",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "ANIMAL", "covered": false},
       "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
@@ -452,7 +452,7 @@
     "front": {
       "type": "playableSide",
       "topLeftCorner": {"symbol": "ANIMAL", "covered": false},
-      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "COVERED", "covered": true},
       "bottomLeftCorner": {"symbol": "ANIMAL", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false}
     },
@@ -473,7 +473,7 @@
       "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "ANIMAL", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
       "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
     },
     "back": {
@@ -491,7 +491,7 @@
     "kingdom": "ANIMAL",
     "front": {
       "type": "playableSide",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
       "bottomLeftCorner": {"symbol": "INKWELL", "covered": false},
       "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
@@ -513,7 +513,7 @@
       "type": "playableSide",
       "topLeftCorner": {"symbol": "PLANT", "covered": false},
       "topRightCorner": {"symbol": "ANIMAL", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
       "bottomRightCorner": {"symbol": "MANUSCRIPT", "covered": false}
     },
     "back": {
@@ -532,7 +532,7 @@
     "front": {
       "type": "playableSide",
       "topLeftCorner": {"symbol": "QUILL", "covered": false},
-      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "COVERED", "covered": true},
       "bottomLeftCorner": {"symbol": "ANIMAL", "covered": false},
       "bottomRightCorner": {"symbol": "FUNGI", "covered": false}
     },
@@ -551,7 +551,7 @@
     "kingdom": "ANIMAL",
     "front": {
       "type": "pointsGiver",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "ANIMAL", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
@@ -573,7 +573,7 @@
     "front": {
       "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
-      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "COVERED", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "ANIMAL", "covered": false},
       "points": 1
@@ -596,7 +596,7 @@
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "ANIMAL", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true},
       "points": 1
     },
     "back": {
@@ -617,7 +617,7 @@
       "topLeftCorner": {"symbol": "INSECT", "covered": false},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true}
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true}
     },
     "back": {
       "type": "back",
@@ -634,7 +634,7 @@
     "kingdom": "INSECT",
     "front": {
       "type": "playableSide",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
       "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
       "bottomRightCorner": {"symbol": "INSECT", "covered": false}
@@ -655,7 +655,7 @@
     "front": {
       "type": "playableSide",
       "topLeftCorner": {"symbol": "INSECT", "covered": false},
-      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "COVERED", "covered": true},
       "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false}
     },
@@ -676,7 +676,7 @@
       "type": "playableSide",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
       "bottomRightCorner": {"symbol": "INSECT", "covered": false}
     },
     "back": {
@@ -694,7 +694,7 @@
     "kingdom": "INSECT",
     "front": {
       "type": "playableSide",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "QUILL", "covered": false},
       "bottomLeftCorner": {"symbol": "ANIMAL", "covered": false},
       "bottomRightCorner": {"symbol": "INSECT", "covered": false}
@@ -716,7 +716,7 @@
       "type": "playableSide",
       "topLeftCorner": {"symbol": "MANUSCRIPT", "covered": false},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
       "bottomRightCorner": {"symbol": "FUNGI", "covered": false}
     },
     "back": {
@@ -737,7 +737,7 @@
       "topLeftCorner": {"symbol": "INSECT", "covered": false},
       "topRightCorner": {"symbol": "PLANT", "covered": false},
       "bottomLeftCorner": {"symbol": "INKWELL", "covered": false},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true}
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true}
     },
     "back": {
       "type": "back",
@@ -755,7 +755,7 @@
     "front": {
       "type": "pointsGiver",
       "topLeftCorner": {"symbol": "INSECT", "covered": false},
-      "topRightCorner": {"symbol": "EMPTY", "covered": true},
+      "topRightCorner": {"symbol": "COVERED", "covered": true},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
       "points": 1
@@ -777,7 +777,7 @@
       "type": "pointsGiver",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
       "bottomRightCorner": {"symbol": "INSECT", "covered": false},
       "points": 1
     },
@@ -796,7 +796,7 @@
     "kingdom": "INSECT",
     "front": {
       "type": "pointsGiver",
-      "topLeftCorner": {"symbol": "EMPTY", "covered": true},
+      "topLeftCorner": {"symbol": "COVERED", "covered": true},
       "topRightCorner": {"symbol": "INSECT", "covered": false},
       "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
       "bottomRightCorner": {"symbol": "EMPTY", "covered": false},

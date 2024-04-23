@@ -15,7 +15,8 @@ public enum Symbol {
     QUILL(DefaultValue.WHITE + "Q" + DefaultValue.ANSI_RESET, DefaultValue.WHITE),
     INKWELL(DefaultValue.WHITE + "I" + DefaultValue.ANSI_RESET, DefaultValue.WHITE),
     MANUSCRIPT(DefaultValue.WHITE + "M" + DefaultValue.ANSI_RESET, DefaultValue.WHITE),
-    EMPTY(" ", DefaultValue.WHITE);
+    EMPTY(" ", DefaultValue.WHITE),
+    COVERED(" ", DefaultValue.WHITE);
 
     private final String coloredChar;
     private final String color;

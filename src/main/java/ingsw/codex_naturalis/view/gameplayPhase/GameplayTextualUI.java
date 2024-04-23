@@ -1,6 +1,8 @@
 package ingsw.codex_naturalis.view.gameplayPhase;
 
+import ingsw.codex_naturalis.enumerations.ExtremeCoordinate;
 import ingsw.codex_naturalis.enumerations.PlayersConnectedStatus;
+import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.events.gameplayPhase.*;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
@@ -325,7 +327,33 @@ public class GameplayTextualUI extends GameplayUI {
     }
 
     public static String playerAreaToString(PlayerArea.Immutable playerArea){
-        return null;
-    }
+        LinkedHashMap<List<Integer>, List<String>> cardsAsListOfStrings = new LinkedHashMap<>();
+        LinkedHashMap<Integer, List<String>> columns = new LinkedHashMap<>();
+        StringBuilder outString = new StringBuilder();
 
+        for (Map.Entry<List<Integer>, PlayableCard.Immutable> cardAndCordinates: playerArea.area().entrySet()) {
+            cardsAsListOfStrings.put(cardAndCordinates.getKey(), Arrays.stream(cardAndCordinates.getValue().description().split("\n")).toList());
+        }
+
+        for (int i = playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_X); i >= playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_X); i--) {
+            columns.put(i, new ArrayList<>());
+            for (int j = playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_Y); j >= playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_Y); j--) {
+
+                if (cardsAsListOfStrings.containsKey(List.of(i, j))){
+                    columns.get(i).addAll(cardsAsListOfStrings.get(List.of(i, j)));
+                }
+                else {
+                    columns.get(i).addAll(List.of("     ", "     ", "     ", "     ", "     "));
+                }
+            }
+        }
+
+        for (int j = 0; j < 5*(playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_Y)-playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_Y)+1); j++) {
+            for (int i = playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_X); i <= playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_X); i++) {
+                outString.append(columns.get(i).get(j));
+            }
+            outString.append("\n");
+        }
+        return outString.toString();
+    }
 }

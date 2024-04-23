@@ -36,7 +36,7 @@ public class PlayerArea extends Observable {
 
         Map<List<Integer>, PlayableCard.Immutable> immutableArea = new LinkedHashMap<>();
         for (List<Integer> key : area.keySet()) {
-            immutableArea.replace(key, area.get(key).getImmutablePlayableCard());
+            immutableArea.put(key,area.get(key).getImmutablePlayableCard());
         }
         return new PlayerArea.Immutable(immutableArea, extremeCoordinates, numOfSymbols,
                 objectiveCard.getImmutableObjectiveCard(), points, extraPoints);
@@ -113,6 +113,7 @@ public class PlayerArea extends Observable {
         this.numOfSymbols.put(Symbol.QUILL,0);
         this.numOfSymbols.put(Symbol.INKWELL,0);
         this.numOfSymbols.put(Symbol.EMPTY,0);
+        this.numOfSymbols.put(Symbol.COVERED,0);
     }
 
 

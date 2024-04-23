@@ -176,10 +176,10 @@ public class DefaultValue {
 
     public static String getTUIPlayerAreaCardSideTemplate(PlayableSide side, Symbol kingdom){
         String cardTemplate = "";
-        boolean tl_is_covered = side.getTopLeftCorner().isCovered();
-        boolean tr_is_covered = side.getTopRightCorner().isCovered();
-        boolean bl_is_covered = side.getBottomLeftCorner().isCovered();
-        boolean br_is_covered = side.getBottomRightCorner().isCovered();
+        boolean tl_is_covered = (side.getTopLeftCorner().getSymbol() == Symbol.COVERED);
+        boolean tr_is_covered = (side.getTopRightCorner().getSymbol() == Symbol.COVERED);
+        boolean bl_is_covered = (side.getBottomLeftCorner().getSymbol()  == Symbol.COVERED);
+        boolean br_is_covered = (side.getBottomRightCorner().getSymbol() == Symbol.COVERED);
 
         if (tl_is_covered && tr_is_covered && bl_is_covered && br_is_covered){
             cardTemplate =

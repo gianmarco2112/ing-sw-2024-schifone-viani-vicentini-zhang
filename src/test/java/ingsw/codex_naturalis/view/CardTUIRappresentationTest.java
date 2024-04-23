@@ -125,6 +125,7 @@ public class CardTUIRappresentationTest {
     @Test
     void playerAreaToStringTest(){
         PlayerArea playerArea = new PlayerArea();
+        playerArea.setObjectiveCard(objectiveCardsDeck.drawACard("test"));
         PlayableCard card = initialCardsDeck.drawACard("test");
         card.flip();
         playerArea.setCardOnCoordinates(card,0,0,"test");

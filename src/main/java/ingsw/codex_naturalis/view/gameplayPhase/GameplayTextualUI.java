@@ -6,6 +6,8 @@ import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.observerObservable.Event;
+import ingsw.codex_naturalis.model.player.Player;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 
 import java.util.*;
 
@@ -320,6 +322,10 @@ public class GameplayTextualUI extends GameplayUI {
         }
 
         return outString.toString();
+    }
+
+    public static String playerAreaToString(PlayerArea.Immutable playerArea){
+        return null;
     }
 
 }

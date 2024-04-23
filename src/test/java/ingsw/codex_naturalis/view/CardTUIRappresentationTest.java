@@ -6,6 +6,7 @@ import ingsw.codex_naturalis.model.Deck;
 import ingsw.codex_naturalis.model.DefaultValue;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
+import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayTextualUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardTUIRappresentation {
+public class CardTUIRappresentationTest {
 
     Deck<PlayableCard> initialCardsDeck;
     Deck<PlayableCard> resourceCardsDeck;
@@ -104,20 +105,40 @@ public class CardTUIRappresentation {
 
     @Test
     void getHandCadsToStringTest(){
-        List<PlayableCard> card = new ArrayList<>();
+        List<PlayableCard.Immutable> cards = new ArrayList<>();
         resourceCardsDeck.shuffle();
         goldCardsDeck.shuffle();
         initialCardsDeck.shuffle();
-        card.add(resourceCardsDeck.drawACard("test"));
-        card.add(resourceCardsDeck.drawACard("test"));
-        card.add(resourceCardsDeck.drawACard("test"));
-        card.add(resourceCardsDeck.drawACard("test"));
-        card.add(goldCardsDeck.drawACard("test"));
-        card.add(goldCardsDeck.drawACard("test"));
-        card.add(goldCardsDeck.drawACard("test"));
-        card.add(goldCardsDeck.drawACard("test"));
-        card.add(initialCardsDeck.drawACard("test"));
-        card.add(initialCardsDeck.drawACard("test"));
-        System.out.println(GameplayTextualUI.getHandCardsToString(card));
+        cards.add(resourceCardsDeck.drawACard("test").getImmutablePlayableCard());
+        cards.add(resourceCardsDeck.drawACard("test").getImmutablePlayableCard());
+        cards.add(resourceCardsDeck.drawACard("test").getImmutablePlayableCard());
+        cards.add(resourceCardsDeck.drawACard("test").getImmutablePlayableCard());
+        cards.add(goldCardsDeck.drawACard("test").getImmutablePlayableCard());
+        cards.add(goldCardsDeck.drawACard("test").getImmutablePlayableCard());
+        cards.add(goldCardsDeck.drawACard("test").getImmutablePlayableCard());
+        cards.add(goldCardsDeck.drawACard("test").getImmutablePlayableCard());
+        cards.add(initialCardsDeck.drawACard("test").getImmutablePlayableCard());
+        cards.add(initialCardsDeck.drawACard("test").getImmutablePlayableCard());
+        System.out.println(GameplayTextualUI.getHandCardsToString(cards));
+    }
+
+    @Test
+    void playerAreaToStringTest(){
+        PlayerArea playerArea = new PlayerArea();
+        PlayableCard card = initialCardsDeck.drawACard("test");
+        card.flip();
+        playerArea.setCardOnCoordinates(card,0,0,"test");
+        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),-1,-1,"test");
+        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),1,1,"test");
+        card = resourceCardsDeck.drawACard("test");
+        card.flip();
+        playerArea.setCardOnCoordinates(card,2,0,"test");
+        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),3,1,"test");
+        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),2,2,"test");
+        card = resourceCardsDeck.drawACard("test");
+        card.flip();
+        playerArea.setCardOnCoordinates(card,1,3,"test");
+
+        System.out.println(GameplayTextualUI.playerAreaToString(playerArea.getImmutablePlayerArea()));
     }
 }

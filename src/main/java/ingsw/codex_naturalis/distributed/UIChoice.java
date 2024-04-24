@@ -1,10 +1,12 @@
 package ingsw.codex_naturalis.distributed;
 
 import ingsw.codex_naturalis.enumerations.PlayersConnectedStatus;
+import ingsw.codex_naturalis.view.gameStartingPhase.GameStartingGraphicUI;
 import ingsw.codex_naturalis.view.gameStartingPhase.GameStartingTextualUI;
 import ingsw.codex_naturalis.view.gameStartingPhase.GameStartingUI;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayTextualUI;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
+import ingsw.codex_naturalis.view.lobbyPhase.LobbyGraphicUI;
 import ingsw.codex_naturalis.view.lobbyPhase.LobbyTextualUI;
 import ingsw.codex_naturalis.view.lobbyPhase.LobbyUI;
 import ingsw.codex_naturalis.view.setupPhase.SetupTextualUI;
@@ -37,12 +39,11 @@ public enum UIChoice {
     GUI{
 
         public LobbyUI createLobbyUI(){
-            //TO FIX
-            return new LobbyTextualUI();
+            return new LobbyGraphicUI();
         }
 
-        public GameStartingUI createGameStartingUI(){
-            return new GameStartingTextualUI();
+        public GameStartingGraphicUI createGameStartingUI(){
+            return new GameStartingGraphicUI();
         }
 
         public SetupUI createSetupUI(){

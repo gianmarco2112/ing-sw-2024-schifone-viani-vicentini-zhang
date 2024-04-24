@@ -6,6 +6,7 @@ module ingsw.codex_naturalis {
 
     requires com.fasterxml.jackson.databind;
     requires java.rmi;
+    requires java.desktop;
 
     opens ingsw.codex_naturalis to javafx.fxml;
 

@@ -33,25 +33,25 @@ public class SetupObservable {
 
     public void notifyReady() {
         for (SetupObserver o : obs){
-            o.updateReady();
+            o.ctsRequestUpdateReady();
         }
     }
 
     public void notifyInitialCard(InitialCardEvent initialCardEvent) {
         for (SetupObserver o : obs){
-            o.updateInitialCard(initialCardEvent);
+            o.ctsUpdateInitialCard(initialCardEvent);
         }
     }
 
     public void notifyColor(Color color) {
         for (SetupObserver o : obs){
-            o.updateColor(color);
+            o.ctsUpdateColor(color);
         }
     }
 
     public void notifyObjectiveCardChoice(ObjectiveCardChoice objectiveCardChoice) {
         for (SetupObserver o : obs){
-            o.updateObjectiveCardChoice(objectiveCardChoice);
+            o.ctsUpdateObjectiveCardChoice(objectiveCardChoice);
         }
     }
 

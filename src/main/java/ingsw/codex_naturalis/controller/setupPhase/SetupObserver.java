@@ -6,11 +6,11 @@ import ingsw.codex_naturalis.view.setupPhase.ObjectiveCardChoice;
 
 public interface SetupObserver {
 
-    void updateReady();
+    void ctsRequestUpdateReady();
 
-    void updateInitialCard(InitialCardEvent initialCardEvent);
+    void ctsUpdateInitialCard(InitialCardEvent initialCardEvent);
 
-    void updateColor(Color color);
+    void ctsUpdateColor(Color color);
 
-    void updateObjectiveCardChoice(ObjectiveCardChoice objectiveCardChoice);
+    void ctsUpdateObjectiveCardChoice(ObjectiveCardChoice objectiveCardChoice);
 }

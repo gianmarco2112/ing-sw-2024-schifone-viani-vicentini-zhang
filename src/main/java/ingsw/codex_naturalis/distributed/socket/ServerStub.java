@@ -67,9 +67,9 @@ public class ServerStub implements Server {
 
 
     @Override
-    public void updateGameToAccess(Client client, int gameID, String nickname) throws RemoteException {
+    public void ctsUpdateGameToAccess(Client client, int gameID, String nickname) throws RemoteException {
         try {
-            MessageFromClient message = new GameToAccessUpdate();
+            MessageFromClient message = new CTSGameToAccessUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
             writer.println(gameID);
@@ -81,9 +81,9 @@ public class ServerStub implements Server {
     }
 
     @Override
-    public void updateNewGame(Client client, int numOfPlayers, String nickname) throws RemoteException {
+    public void ctsUpdateNewGame(Client client, int numOfPlayers, String nickname) throws RemoteException {
         try {
-            MessageFromClient message = new NewGameUpdate();
+            MessageFromClient message = new CTSNewGameUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
             writer.println(numOfPlayers);
@@ -99,10 +99,10 @@ public class ServerStub implements Server {
 
 
     @Override
-    public void updateReady(Client client) throws RemoteException {
+    public void ctsUpdateReady(Client client) throws RemoteException {
 
         try {
-            MessageFromClient message = new ReadyUpdate();
+            MessageFromClient message = new CTSReadyUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
             writer.flush();
@@ -113,9 +113,9 @@ public class ServerStub implements Server {
     }
 
     @Override
-    public void updateInitialCard(Client client, InitialCardEvent initialCardEvent) throws RemoteException {
+    public void ctsUpdateInitialCard(Client client, InitialCardEvent initialCardEvent) throws RemoteException {
         try {
-            MessageFromClient message = new InitialCardUpdate();
+            MessageFromClient message = new CTSInitialCardUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
             writer.println(objectMapper.writeValueAsString(initialCardEvent));
@@ -126,27 +126,38 @@ public class ServerStub implements Server {
     }
 
     @Override
-    public void updateColor(Client client, Color color) throws RemoteException {
+    public void ctsUpdateColor(Client client, Color color) throws RemoteException {
+        try {
+            MessageFromClient message = new CTSColorUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(objectMapper.writeValueAsString(color));
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+
+
+
+    @Override
+    public void ctsUpdateFlipCard(Client client, FlipCard flipCard) throws RemoteException {
 
     }
 
     @Override
-    public void updateFlipCard(Client client, FlipCard flipCard) throws RemoteException {
+    public void ctsUpdatePlayCard(Client client, PlayCard playCard, int x, int y) throws NotYourTurnException, RemoteException {
 
     }
 
     @Override
-    public void updatePlayCard(Client client, PlayCard playCard, int x, int y) throws NotYourTurnException, RemoteException {
+    public void ctsUpdateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException, RemoteException {
 
     }
 
     @Override
-    public void updateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException, RemoteException {
-
-    }
-
-    @Override
-    public void updateText(Client client, Message message, String content, List<String> receivers) throws RemoteException {
+    public void ctsUpdateText(Client client, Message message, String content, List<String> receivers) throws RemoteException {
 
     }
 

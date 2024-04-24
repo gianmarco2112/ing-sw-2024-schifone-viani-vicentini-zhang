@@ -38,7 +38,7 @@ public class AppClient {
                         try {
                             serverStub.receive();
                         } catch (IOException e) {
-                            System.err.println("Error: won't receive from server");
+                            System.err.println("Error: won't receive from server\n" + e.getMessage());
                             try {
                                 serverStub.close();
                             } catch (RemoteException ex) {

@@ -6,14 +6,15 @@ import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
 import ingsw.codex_naturalis.distributed.socket.MessageFromClient.MessageFromClient;
 import ingsw.codex_naturalis.distributed.socket.MessageFromServer.*;
+import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.view.UI;
 
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.List;
 
 public class ClientSkeleton implements Client {
 
@@ -46,10 +47,10 @@ public class ClientSkeleton implements Client {
 
 
     @Override
-    public void updateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
+    public void stcUpdateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
 
         try {
-            MessageFromServer message = new LobbyUIGamesSpecsUpdate();
+            MessageFromServer message = new STCLobbyUIGamesSpecsUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
             writer.println(jsonGamesSpecs);
@@ -64,7 +65,7 @@ public class ClientSkeleton implements Client {
     public void reportLobbyUIError(String error) throws RemoteException {
 
         try {
-            MessageFromServer message = new LobbyUIErrorReport();
+            MessageFromServer message = new STCLobbyUIErrorReport();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
             writer.println(error);
@@ -76,10 +77,10 @@ public class ClientSkeleton implements Client {
     }
 
     @Override
-    public void updateGameStartingUIGameID(int gameID) throws RemoteException {
+    public void stcUpdateGameStartingUIGameID(int gameID) throws RemoteException {
 
         try {
-            MessageFromServer message = new GameStartingUIGameIDUpdate();
+            MessageFromServer message = new STCGameStartingUIGameIDUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
             writer.println(gameID);
@@ -91,29 +92,12 @@ public class ClientSkeleton implements Client {
     }
 
     @Override
-    public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
-
+    public void stcUpdateInitialCard(Game.Immutable game, InitialCardEvent initialCardEvent) {
         try {
-            MessageFromServer message = new Setup1Update();
+            MessageFromServer message = new STCInitialCardUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(objectMapper.writeValueAsString(initialCard));
-            writer.println(objectMapper.writeValueAsString(resourceCards));
-            writer.println(objectMapper.writeValueAsString(goldCards));
-            writer.flush();
-        } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
-        }
-
-    }
-
-    @Override
-    public void updateInitialCardFS(PlayableCard.Immutable initialCard, InitialCardEvent initialCardEvent) {
-        try {
-            MessageFromServer message = new InitialCardFSUpdate();
-            String jsonMessage = objectMapper.writeValueAsString(message);
-            writer.println(jsonMessage);
-            writer.println(objectMapper.writeValueAsString(initialCard));
+            writer.println(objectMapper.writeValueAsString(game));
             writer.println(objectMapper.writeValueAsString(initialCardEvent));
             writer.flush();
         } catch (JsonProcessingException e) {
@@ -121,12 +105,52 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    @Override
+    public void stcUpdateColor(Color color) throws RemoteException {
+        try {
+            MessageFromServer message = new STCColorUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(objectMapper.writeValueAsString(color));
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
 
     @Override
-    public void updateUI(UI ui) throws RemoteException {
+    public void reportSetupUIError(String error) {
+        try {
+            MessageFromServer message = new STCSetupUIErrorReport();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(error);
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void stcUpdate(Game.Immutable immGame, GameEvent gameEvent) {
+        try {
+            MessageFromServer message = new STCSetupUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(objectMapper.writeValueAsString(immGame));
+            writer.println(objectMapper.writeValueAsString(gameEvent));
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+
+    @Override
+    public void stcUpdateUI(UI ui) throws RemoteException {
 
         try {
-            MessageFromServer message = new UIUpdate();
+            MessageFromServer message = new STCUIUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
             switch (ui) {

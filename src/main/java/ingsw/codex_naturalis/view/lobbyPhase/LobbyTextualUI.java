@@ -190,7 +190,7 @@ public class LobbyTextualUI extends LobbyUI {
         System.out.println("""
                 
                 
-                ---------------------------------
+                -----------------------------------------------------
                 Which game do you want to access?
                 
                 (/) Back
@@ -201,7 +201,7 @@ public class LobbyTextualUI extends LobbyUI {
                     + "    Current number of players connected: " + entry.getValue().currentNumOfPlayers()
                     + "    Max number of players: " + entry.getValue().maxNumOfPlayers());
         }
-        System.out.println("---------------------------------\n\n");
+        System.out.println("-----------------------------------------------------\n\n");
 
     }
     private int getGameToAccess() {

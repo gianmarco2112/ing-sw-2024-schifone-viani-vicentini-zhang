@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.model.player;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.enumerations.TurnStatus;
+import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.util.PlayerEvent;
 import ingsw.codex_naturalis.model.util.PlayerObservable;
 
@@ -14,6 +15,8 @@ import java.util.*;
  * Player class
  */
 public class Player extends PlayerObservable {
+
+
 
     public record Immutable(String nickname, Color color, TurnStatus turnStatus,
                             PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> hand,
@@ -29,19 +32,30 @@ public class Player extends PlayerObservable {
 
     public Player.Immutable getImmutablePlayer(){
 
+        PlayableCard.Immutable immInitialCard = null;
+        if (initialCard != null)
+            immInitialCard = initialCard.getImmutablePlayableCard();
+
         List<PlayableCard.Immutable> immutableHand = new ArrayList<>();
         for (PlayableCard playableCard : hand)
-            immutableHand.add(playableCard.getImmutablePlayableCard());
-        return new Player.Immutable(nickname, color, turnStatus, initialCard.getImmutablePlayableCard(),
+            if (playableCard != null)
+                immutableHand.add(playableCard.getImmutablePlayableCard());
+
+        return new Player.Immutable(nickname, color, turnStatus, immInitialCard,
                 immutableHand, playerArea.getImmutablePlayerArea());
     }
 
-    public Player.ImmutableHidden getImmutableHiddenPlayer(){
+    public Player.ImmutableHidden getImmutableHiddenPlayer() {
+
+        PlayableCard.Immutable immInitialCard = null;
+        if (initialCard != null)
+            immInitialCard = initialCard.getImmutableHiddenPlayableCard();
 
         List<PlayableCard.Immutable> immutableHiddenHand = new ArrayList<>();
         for (PlayableCard playableCard : hand)
             immutableHiddenHand.add(playableCard.getImmutableHiddenPlayableCard());
-        return new Player.ImmutableHidden(nickname, color, turnStatus, initialCard.getImmutablePlayableCard(),
+
+        return new Player.ImmutableHidden(nickname, color, turnStatus, immInitialCard,
                     immutableHiddenHand, playerArea.getImmutableHiddenPlayerArea());
     }
 
@@ -73,6 +87,8 @@ public class Player extends PlayerObservable {
      */
     private List<PlayableCard> hand;
 
+    private List<ObjectiveCard> secretObjectiveCards;
+
     /**
      * Player area
      */
@@ -90,6 +106,7 @@ public class Player extends PlayerObservable {
         this.initialCard = null;
         this.hand = new ArrayList<>();
         this.turnStatus = TurnStatus.PLAY;
+        this.color = null;
     }
 
 
@@ -142,7 +159,7 @@ public class Player extends PlayerObservable {
     }
     public void setColor(Color color) {
         this.color = color;
-        //notifyObservers(GameEvent.COLOR_SETUP, "");
+        notifyObservers(this, PlayerEvent.COLOR_SETUP);
     }
 
     public String getNickname() {
@@ -160,6 +177,10 @@ public class Player extends PlayerObservable {
 
     public void setupHand(List<PlayableCard> hand){
         this.hand = hand;
+    }
+
+    public void setupSecretObjectiveCards(List<ObjectiveCard> secretObjectiveCards) {
+        this.secretObjectiveCards = secretObjectiveCards;
     }
 
 

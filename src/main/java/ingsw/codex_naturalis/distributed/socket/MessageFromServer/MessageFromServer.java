@@ -10,12 +10,14 @@ import java.io.BufferedReader;
         use = JsonTypeInfo.Id.NAME,
         property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = GameStartingUIGameIDUpdate.class, name = "GameStartingUIGameIDUpdate"),
-        @JsonSubTypes.Type(value = LobbyUIErrorReport.class, name = "LobbyUIErrorReport"),
-        @JsonSubTypes.Type(value = LobbyUIGamesSpecsUpdate.class, name = "LobbyUIGamesSpecsUpdate"),
-        @JsonSubTypes.Type(value = Setup1Update.class, name = "Setup1Update"),
-        @JsonSubTypes.Type(value = UIUpdate.class, name = "UIUpdate"),
-        @JsonSubTypes.Type(value = InitialCardFSUpdate.class, name = "InitialCardFSUpdate")
+        @JsonSubTypes.Type(value = STCGameStartingUIGameIDUpdate.class, name = "STCGameStartingUIGameIDUpdate"),
+        @JsonSubTypes.Type(value = STCLobbyUIErrorReport.class, name = "STCLobbyUIErrorReport"),
+        @JsonSubTypes.Type(value = STCLobbyUIGamesSpecsUpdate.class, name = "STCLobbyUIGamesSpecsUpdate"),
+        @JsonSubTypes.Type(value = STCSetupUpdate.class, name = "STCSetupUpdate"),
+        @JsonSubTypes.Type(value = STCUIUpdate.class, name = "STCUIUpdate"),
+        @JsonSubTypes.Type(value = STCInitialCardUpdate.class, name = "STCInitialCardUpdate"),
+        @JsonSubTypes.Type(value = STCColorUpdate.class, name = "STCColorUpdate"),
+        @JsonSubTypes.Type(value = STCSetupUIErrorReport.class, name = "STCSetupUIErrorReport")
 })
 public interface MessageFromServer {
 

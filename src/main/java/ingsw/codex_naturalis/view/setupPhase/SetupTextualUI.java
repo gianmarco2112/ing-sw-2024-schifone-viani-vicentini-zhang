@@ -2,9 +2,9 @@ package ingsw.codex_naturalis.view.setupPhase;
 
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
-import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayTextualUI;
 
@@ -20,6 +20,7 @@ public class SetupTextualUI extends SetupUI {
         RUNNING,
         WAITING_FOR_UPDATE,
         PLAYING_INITIAL_CARD,
+        CHOOSING_COLOR,
         STOPPING_THE_VIEW
     }
 
@@ -28,11 +29,7 @@ public class SetupTextualUI extends SetupUI {
     private final Object lock = new Object();
 
 
-    private PlayableCard.Immutable initialCard;
-    private List<PlayableCard.Immutable> resourceCards;
-    private List<PlayableCard.Immutable> goldCards;
-
-
+    private Game.Immutable game;
 
 
 
@@ -88,11 +85,18 @@ public class SetupTextualUI extends SetupUI {
 
     private void ready() {
 
+        //clear possible previous inputs
+        try {
+            while (System.in.available() > 0) {
+                System.in.read(new byte[System.in.available()]);
+            }
+        } catch (IOException e){
+            System.err.println("Error [System.in.available]");
+        }
+
         System.out.println();
         System.out.println("Press enter if you're ready to play");
-        try {
-            System.in.read();
-        } catch (IOException e) { }
+        s.nextLine();
         notifyReady();
         System.out.println("You are ready to play. Please wait for the other players to be ready");
         setState(State.WAITING_FOR_UPDATE);
@@ -172,50 +176,71 @@ public class SetupTextualUI extends SetupUI {
 
         while (true) {
 
-            Color color = askColor();
+            askColorOption();
 
-            try {
-                notifyColor(color);
+            getColorOption();
+
+            while (getState() == State.WAITING_FOR_UPDATE) {
+                synchronized (lock) {
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        System.err.println("Error while waiting for server update");
+                    }
+                }
+            }
+
+            if (getState() == State.RUNNING)
                 return;
-            } catch (ColorAlreadyChosenException e) {
-                System.err.println(e.getMessage());
-            }
 
         }
 
     }
-    private Color askColor() {
+    private void askColorOption() {
 
-        while (true) {
+        System.out.println("""
+                
+                
+                
+                ------------------------
+                Please choose your color
+                
+                (1) Red
+                (2) Blue
+                (3) Green
+                (4) Yellow
+                ------------------------
+                
+                
+                
+                """);
 
-            Map<Integer, Color> colorMap = new LinkedHashMap<>();
-            for (int key = 0; key < Color.values().length; key++)
-                colorMap.put(key+1, Color.values()[key]);
+    }
+    private void getColorOption() {
 
-            System.out.println();
-            System.out.println("Please choose your color");
-            printColors(colorMap);
-
-            String input = s.next();
-            try{
-                Integer number = Integer.parseInt(input);
-                if (colorMap.containsKey(number))
-                    return colorMap.get(number);
-                else
-                    System.err.println("This is not a command: " + number);
-            } catch (NumberFormatException e) {
-                System.err.println("This is not a command: "+ input);
+        String input = s.next();
+        try {
+            int option = Integer.parseInt(input);
+            switch (option) {
+                case 1 -> notifyColor(Color.RED);
+                case 2 -> notifyColor(Color.BLUE);
+                case 3 -> notifyColor(Color.GREEN);
+                case 4 -> notifyColor(Color.YELLOW);
+                default -> {
+                    printErrInvalidOption();
+                    getColorOption();
+                }
             }
-
+            setState(State.WAITING_FOR_UPDATE);
+        } catch (NumberFormatException e) {
+            printErrInvalidOption();
         }
 
     }
-    private void printColors(Map<Integer, Color> colorMap) {
 
-        for (Map.Entry<Integer, Color> entry : colorMap.entrySet())
-            System.out.println(entry.getKey() + " - " + entry.getValue().getDescription());
 
-    }
+
+
 
    /* private void choosingObjectiveCard() {
 
@@ -235,60 +260,105 @@ public class SetupTextualUI extends SetupUI {
         setState(State.STOPPING_THE_VIEW);
     }
 
+
+
     @Override
-    public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
-        this.initialCard = initialCard;
-        this.resourceCards = resourceCards;
-        this.goldCards = goldCards;
-
+    public void updateInitialCard(Game.Immutable game, InitialCardEvent initialCardEvent) {
+        this.game = game;
         showResourceAndGoldDecks();
-        System.out.println("\nYour initial card\n" + initialCard.handCard());
-
+        switch (initialCardEvent) {
+            case FLIP -> {
+                System.out.println("\nYour initial card\n" + game.player().initialCard().handCard());
+            }
+            case PLAY -> {
+                System.out.println("\nYour play area");
+                System.out.println("Points: " + game.player().playerArea().points());
+                System.out.println("Resources and objects: " + game.player().playerArea().numOfSymbols().toString());
+                System.out.println(game.player().playerArea().area().get(List.of(0,0)).description());
+            }
+        }
         setState(State.RUNNING);
     }
 
     @Override
-    public void updateInitialCard(PlayableCard.Immutable initialCard, InitialCardEvent initialCardEvent) {
-        showResourceAndGoldDecks();
-        switch (initialCardEvent) {
-            case FLIP -> {
-                System.out.println("\nYour initial card\n" + initialCard.handCard());
-                setState(State.RUNNING);
-            }
-            case PLAY -> {
-                this.initialCard = initialCard;
-                System.out.println("\nYour play area\n" + initialCard.description());
-                setState(State.WAITING_FOR_UPDATE);
-            }
+    public void updateColor(Color color) {
+        System.out.println(color.getColorCode() + "Your chose " + color.getDescription() + "!" + "\u001B[0m");
+        System.out.println("Please wait for the other players to make their choices.\n");
+    }
+
+    @Override
+    public void reportError(String message) {
+        System.err.println(message);
+        setState(State.CHOOSING_COLOR);
+    }
+
+    @Override
+    public void update(Game.Immutable immGame, GameEvent gameEvent) {
+        this.game = immGame;
+        switch (gameEvent) {
+            case SETUP_1 -> showSetup1();
+            case SETUP_2 -> showSetup2();
         }
+    }
+
+    private void showSetup1() {
+
+        showResourceAndGoldDecks();
+        System.out.println("\nYour initial card\n" + game.player().initialCard().handCard());
+
+        setState(State.RUNNING);
+
+    }
+
+    private void showSetup2() {
+
+        showOthersPlayAreas();
+
+        showResourceAndGoldDecks();
+
+        showCommonObjectiveCards();
+
+        showYourPlayArea();
+
+        setState(State.RUNNING);
+
+    }
+
+    private void showOthersPlayAreas(){
+        for (Player.ImmutableHidden player : game.hiddenPlayers()) {
+            Color color = player.color();
+            System.out.println(color.getColorCode() + player.nickname() +"'s play area" + "\u001B[0m");
+            System.out.println("Points: " + player.playerArea().points());
+            System.out.println("Resources and objects: " + player.playerArea().numOfSymbols().toString());
+            System.out.println(player.playerArea().area().get(List.of(0,0)).description());
+        }
+    }
+
+    private void showYourPlayArea(){
+        Color color = game.player().color();
+        System.out.println(color.getColorCode() + "\nYour play area" + "\u001B[0m");
+        System.out.println("Points: " + game.player().playerArea().points());
+        System.out.println("Resources and objects: " + game.player().playerArea().numOfSymbols().toString());
+        System.out.println(game.player().playerArea().area().get(List.of(0,0)).description());
     }
 
     private void showResourceAndGoldDecks() {
-        System.out.println("\nResource cards");
-        System.out.println(GameplayTextualUI.getHandCardsToString(resourceCards));
+        System.out.println("\n\nResource cards");
+        System.out.println(GameplayTextualUI.getHandCardsToString(game.resourceCards()));
 
         System.out.println("\nGold cards");
-        System.out.println(GameplayTextualUI.getHandCardsToString(goldCards));
+        System.out.println(GameplayTextualUI.getHandCardsToString(game.goldCards()));
     }
 
+    private void showCommonObjectiveCards() {
 
-    public void update(Game.Immutable o, GameEvent arg, String nickname, String playerWhoUpdated) {
-        switch (arg) {
-            //case RESOURCE_AND_GOLD_DECKS_SETUP_1 -> showCardsSetup(o);
-            case SETUP_1 -> showInitialCardsSetup(o);
-            case COLOR_SETUP -> showColorSetup();
-        }
-    }
+        System.out.println("\nCommon objective cards");
+        System.out.println(game.commonObjectiveCards().getFirst());
+        System.out.println(game.commonObjectiveCards().getLast());
 
-    private void showColorSetup() {
-    }
-
-    private void showCardsSetup(Game.Immutable o) {
-    }
-
-    private void showInitialCardsSetup(Game.Immutable o) {
-
-
+        /*//da rivedere
+        System.out.println("\nCommon objective cards");
+        System.out.println(GameplayTextualUI.commonObjectiveCardsToString(game.commonObjectiveCards()));*/
 
     }
 

@@ -1,18 +1,21 @@
 package ingsw.codex_naturalis.distributed.socket.MessageFromServer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.distributed.Client;
+import ingsw.codex_naturalis.view.UI;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import static java.lang.Integer.parseInt;
+public class STCUIUpdate implements MessageFromServer{
 
-public class GameStartingUIGameIDUpdate implements MessageFromServer{
     @Override
     public void run(Client client, BufferedReader reader) {
         try {
-            int gameID = parseInt(reader.readLine());
-            client.updateGameStartingUIGameID(gameID);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonUpdateUI = reader.readLine();
+            UI updateUI = objectMapper.readValue(jsonUpdateUI, UI.class);
+            client.stcUpdateUI(updateUI);
         } catch (IOException e) {
             System.err.println("Error while receiving from server");
         }

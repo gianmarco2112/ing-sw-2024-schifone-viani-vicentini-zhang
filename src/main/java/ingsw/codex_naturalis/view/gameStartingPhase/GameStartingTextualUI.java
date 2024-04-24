@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.view.gameStartingPhase;
 
-import ingsw.codex_naturalis.view.lobbyPhase.LobbyTextualUI;
+
+import java.io.IOException;
 
 public class GameStartingTextualUI extends GameStartingUI{
 
@@ -33,7 +34,6 @@ public class GameStartingTextualUI extends GameStartingUI{
 
     @Override
     public void run() {
-
         while (true) {
             while (getState() == GameStartingTextualUI.State.WAITING_FOR_UPDATE) {
                 synchronized (lock) {
@@ -45,8 +45,9 @@ public class GameStartingTextualUI extends GameStartingUI{
                 }
             }
 
-            if (getState() == GameStartingTextualUI.State.STOPPING_THE_VIEW)
+            if (getState() == GameStartingTextualUI.State.STOPPING_THE_VIEW) {
                 return;
+            }
 
             System.out.println("\nGameID: " + gameID);
             System.out.println("Waiting for players...");

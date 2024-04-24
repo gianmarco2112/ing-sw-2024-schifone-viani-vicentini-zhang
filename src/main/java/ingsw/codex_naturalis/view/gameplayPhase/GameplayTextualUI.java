@@ -5,6 +5,7 @@ import ingsw.codex_naturalis.events.gameplayPhase.*;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 
@@ -306,16 +307,34 @@ public class GameplayTextualUI extends GameplayUI {
 
 
     public static String getHandCardsToString(List<PlayableCard.Immutable> hand){
-        List<List<String>> cardsFrontsAsStrings = new ArrayList<>(new ArrayList<>());
+        List<List<String>> cardsAsStrings = new ArrayList<>(new ArrayList<>());
         StringBuilder outString = new StringBuilder();
 
         for (PlayableCard.Immutable card : hand){
-            cardsFrontsAsStrings.add(Arrays.asList(card.handCard().split("\n")));
+            cardsAsStrings.add(Arrays.asList(card.handCard().split("\n")));
         }
 
-        for (int i = 0; i < cardsFrontsAsStrings.getFirst().size(); i++) {
-            for (int j = 0; j < cardsFrontsAsStrings.size(); j++) {
-                outString.append(cardsFrontsAsStrings.get(j).get(i));
+        for (int i = 0; i < cardsAsStrings.getFirst().size(); i++) {
+            for (int j = 0; j < cardsAsStrings.size(); j++) {
+                outString.append(cardsAsStrings.get(j).get(i));
+            }
+            outString.append("\n");
+        }
+
+        return outString.toString();
+    }
+
+    public static String commonObjectiveCardsToString(List<ObjectiveCard.Immutable> cards){
+        List<List<String>> cardsAsStrings = new ArrayList<>(new ArrayList<>());
+        StringBuilder outString = new StringBuilder();
+
+        for (ObjectiveCard.Immutable card : cards){
+            cardsAsStrings.add(Arrays.asList(card.toString().split("\n")));
+        }
+
+        for (int i = 0; i < cardsAsStrings.getFirst().size(); i++) {
+            for (int j = 0; j < cardsAsStrings.size(); j++) {
+                outString.append(cardsAsStrings.get(j).get(i));
             }
             outString.append("\n");
         }

@@ -27,55 +27,88 @@ import java.util.*;
  */
 public class Game extends GameObservable implements PlayerObserver {
 
-    public record Immutable(int gameID, GameStatus gameStatus, List<String> playerOrder,
-                            String currentPlayer, List<Player.ImmutableHidden> hiddenPlayers,
-                            Player.Immutable player, PlayableCard.Immutable topResourceCardDeck,
-                            PlayableCard.Immutable topGoldCardDeck, List<PlayableCard.Immutable> revealedResourceCards,
-                            List<PlayableCard.Immutable> revealedGoldCards, List<ObjectiveCard.Immutable> commonObjectiveCards,
+    public record Immutable(int gameID, GameStatus gameStatus,
+                            List<String> playerOrderNicknames,
+                            String currentPlayerNickname,
+                            List<Player.ImmutableHidden> hiddenPlayers,
+                            Player.Immutable player,
+                            List<PlayableCard.Immutable> resourceCards,
+                            List<PlayableCard.Immutable> goldCards,
+                            List<ObjectiveCard.Immutable> commonObjectiveCards,
                             List<Message> chat) implements Serializable {
         @Serial
         private static final long serialVersionUID = 4L; }
 
     public Game.Immutable getImmutableGame(String playerNicknameReceiver) {
 
-        List<String> playerOrderString = new ArrayList<>();
+        int gameID = this.gameID;
+
+        GameStatus gameStatus = this.gameStatus;
+
+        List<String> playerOrderNicknames = new ArrayList<>();
+
+        String currentPlayerNickname;
+
+        List<Player.ImmutableHidden> immHiddenPlayers = new ArrayList<>();
+
         Player.Immutable playerReceiver = null;
-        List<Player.ImmutableHidden> immutableHiddenPlayers = new ArrayList<>();
+
+        List<PlayableCard.Immutable> immResourceCards = new ArrayList<>();
+
+        List<PlayableCard.Immutable> immGoldCards = new ArrayList<>();
+
+        List<ObjectiveCard.Immutable> immCommonObjectiveCards = new ArrayList<>();
+
         for (Player player : playerOrder) {
-            playerOrderString.add(player.getNickname());
+            playerOrderNicknames.add(player.getNickname());
             if (!player.getNickname().equals(playerNicknameReceiver))
-                immutableHiddenPlayers.add(player.getImmutableHiddenPlayer());
+                immHiddenPlayers.add(player.getImmutableHiddenPlayer());
             else
                 playerReceiver = player.getImmutablePlayer();
         }
+        if (currentPlayer == null) {
+            playerOrderNicknames.clear();
+            playerOrderNicknames.add("");
+            currentPlayerNickname = "";
+        }
+        else
+            currentPlayerNickname = currentPlayer.getNickname();
 
-        List<PlayableCard.Immutable> immutableRevealedResourceCards = getImmutableRevealedResourceCards();
+        if (resourceCardsDeck.getFirstCard() != null)
+            immResourceCards.add(resourceCardsDeck.getFirstCard().getImmutablePlayableCard());
+        for (PlayableCard card : revealedResourceCards)
+            if (card != null)
+                immResourceCards.add(card.getImmutablePlayableCard());
 
-        List<PlayableCard.Immutable> immutableRevealedGoldCards = getImmutableRevealedGoldCards();
+        if (goldCardsDeck.getFirstCard() != null)
+            immGoldCards.add(goldCardsDeck.getFirstCard().getImmutablePlayableCard());
+        for (PlayableCard card : revealedGoldCards)
+            if (card != null)
+                immGoldCards.add(card.getImmutablePlayableCard());
 
-        List<ObjectiveCard.Immutable> immutableCommonObjectiveCards = new ArrayList<>();
         for (ObjectiveCard card : commonObjectiveCards)
-            immutableCommonObjectiveCards.add(card.getImmutableObjectiveCard());
+            if (card != null)
+                immCommonObjectiveCards.add(card.getImmutableObjectiveCard());
 
-        return new Immutable(gameID, gameStatus, playerOrderString,
-                currentPlayer.getNickname(), immutableHiddenPlayers, playerReceiver,
-                getResourceCardsDeck().getFirstCard().getImmutablePlayableCard(),
-                getGoldCardsDeck().getFirstCard().getImmutablePlayableCard(), immutableRevealedResourceCards,
-                immutableRevealedGoldCards, immutableCommonObjectiveCards, chat);
+        return new Immutable(gameID, gameStatus, playerOrderNicknames,
+                currentPlayerNickname, immHiddenPlayers, playerReceiver,
+                immResourceCards, immGoldCards, immCommonObjectiveCards, chat);
 
     }
 
     public List<PlayableCard.Immutable> getImmutableRevealedResourceCards() {
         List<PlayableCard.Immutable> immutableRevealedResourceCards = new ArrayList<>();
         for (PlayableCard card : revealedResourceCards)
-            immutableRevealedResourceCards.add(card.getImmutablePlayableCard());
+            if (card != null)
+                immutableRevealedResourceCards.add(card.getImmutablePlayableCard());
         return immutableRevealedResourceCards;
     }
 
     public List<PlayableCard.Immutable> getImmutableRevealedGoldCards() {
         List<PlayableCard.Immutable> immutableRevealedGoldCards = new ArrayList<>();
         for (PlayableCard card : revealedGoldCards)
-            immutableRevealedGoldCards.add(card.getImmutablePlayableCard());
+            if (card != null)
+                immutableRevealedGoldCards.add(card.getImmutablePlayableCard());
         return immutableRevealedGoldCards;
     }
 
@@ -293,15 +326,15 @@ public class Game extends GameObservable implements PlayerObserver {
 
     public void setupResourceAndGoldCards(){
         resourceCardsDeck.shuffle();
-        this.revealedResourceCards.add(resourceCardsDeck.drawACard(""));
-        this.revealedResourceCards.add(resourceCardsDeck.drawACard(""));
+        this.revealedResourceCards.add(resourceCardsDeck.drawACard());
+        this.revealedResourceCards.add(resourceCardsDeck.drawACard());
         for (PlayableCard card : revealedResourceCards){
             card.flip();
         }
 
         goldCardsDeck.shuffle();
-        this.revealedGoldCards.add(goldCardsDeck.drawACard(""));
-        this.revealedGoldCards.add(goldCardsDeck.drawACard(""));
+        this.revealedGoldCards.add(goldCardsDeck.drawACard());
+        this.revealedGoldCards.add(goldCardsDeck.drawACard());
         for (PlayableCard card : revealedGoldCards){
             card.flip();
         }
@@ -314,7 +347,7 @@ public class Game extends GameObservable implements PlayerObserver {
     public void dealInitialCards(){
         initialCardsDeck.shuffle();
         for (Player player : playerOrder){
-            player.setInitialCard(initialCardsDeck.drawACard(""));
+            player.setInitialCard(initialCardsDeck.drawACard());
         }
 
         notifyObservers(this, GameEvent.SETUP_1);
@@ -324,19 +357,27 @@ public class Game extends GameObservable implements PlayerObserver {
 
         for (Player player : playerOrder) {
             List<PlayableCard> hand = new ArrayList<>();
-            hand.add(resourceCardsDeck.drawACard(""));
-            hand.add(resourceCardsDeck.drawACard(""));
-            hand.add(goldCardsDeck.drawACard(""));
+            hand.add(resourceCardsDeck.drawACard());
+            hand.add(resourceCardsDeck.drawACard());
+            hand.add(goldCardsDeck.drawACard());
             player.setupHand(hand);
         }
-
-        //notifyObservers(gameID, GameEvent.HANDS_SETUP);
     }
 
     public void setupCommonObjectiveCards(){
         objectiveCardsDeck.shuffle();
-        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard(""));
-        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard(""));
+        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());
+        this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());
+    }
+
+    public void setupSecretObjectiveCards(){
+        for (Player player : playerOrder) {
+            List<ObjectiveCard> secretObjectiveCards = new ArrayList<>();
+            secretObjectiveCards.add(objectiveCardsDeck.drawACard());
+            secretObjectiveCards.add(objectiveCardsDeck.drawACard());
+            player.setupSecretObjectiveCards(secretObjectiveCards);
+        }
+        notifyObservers(this, GameEvent.SETUP_2);
     }
 
     @Deprecated

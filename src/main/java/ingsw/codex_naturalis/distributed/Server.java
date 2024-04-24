@@ -18,20 +18,20 @@ public interface Server extends Remote {
     void register(Client client) throws RemoteException;
 
 
-    void updateGameToAccess(Client client, int gameID, String nickname) throws RemoteException;
-    void updateNewGame(Client client, int numOfPlayers, String nickname) throws RemoteException;
+    void ctsUpdateGameToAccess(Client client, int gameID, String nickname) throws RemoteException;
+    void ctsUpdateNewGame(Client client, int numOfPlayers, String nickname) throws RemoteException;
 
 
-    void updateReady(Client client) throws RemoteException;
+    void ctsUpdateReady(Client client) throws RemoteException;
 
-    void updateInitialCard(Client client, InitialCardEvent initialCardEvent) throws RemoteException;
+    void ctsUpdateInitialCard(Client client, InitialCardEvent initialCardEvent) throws RemoteException;
 
-    void updateColor(Client client, Color color) throws RemoteException;
+    void ctsUpdateColor(Client client, Color color) throws RemoteException;
 
 
-    void updateFlipCard(Client client, FlipCard flipCard) throws RemoteException;
-    void updatePlayCard(Client client, PlayCard playCard, int x, int y) throws NotYourTurnException, RemoteException;
-    void updateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException, RemoteException;
-    void updateText(Client client, Message message, String content, List<String> receivers) throws RemoteException;
+    void ctsUpdateFlipCard(Client client, FlipCard flipCard) throws RemoteException;
+    void ctsUpdatePlayCard(Client client, PlayCard playCard, int x, int y) throws NotYourTurnException, RemoteException;
+    void ctsUpdateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException, RemoteException;
+    void ctsUpdateText(Client client, Message message, String content, List<String> receivers) throws RemoteException;
 
 }

@@ -6,7 +6,7 @@ import ingsw.codex_naturalis.model.util.GameObservable;
 import java.util.Collections;
 import java.util.List;
 
-public class Deck <T extends Card> extends GameObservable {
+public class Deck <T extends Card> {
 
     private final List<T> cards;
 
@@ -20,10 +20,8 @@ public class Deck <T extends Card> extends GameObservable {
         Collections.shuffle(cards);
     }
 
-    public T drawACard(String nickname){
-        T card = cards.removeFirst();
-        //notifyObservers(GameEvent.DECK_CHANGED, nickname);
-        return card;
+    public T drawACard(){
+        return cards.removeFirst();
     }
 
     public void discardACard(T cardToDiscard){

@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
-import ingsw.codex_naturalis.distributed.socket.MessageFromServer.*;
 
 import java.io.BufferedReader;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = NewGameUpdate.class, name = "NewGameUpdate"),
-        @JsonSubTypes.Type(value = GameToAccessUpdate.class, name = "GameToAccessUpdate"),
-        @JsonSubTypes.Type(value = ReadyUpdate.class, name = "ReadyUpdate"),
-        @JsonSubTypes.Type(value = InitialCardUpdate.class, name = "InitialCardUpdate")
+        @JsonSubTypes.Type(value = CTSNewGameUpdate.class, name = "CTSNewGameUpdate"),
+        @JsonSubTypes.Type(value = CTSGameToAccessUpdate.class, name = "CTSGameToAccessUpdate"),
+        @JsonSubTypes.Type(value = CTSReadyUpdate.class, name = "CTSReadyUpdate"),
+        @JsonSubTypes.Type(value = CTSInitialCardUpdate.class, name = "CTSInitialCardUpdate"),
+        @JsonSubTypes.Type(value = CTSColorUpdate.class, name = "CTSColorUpdate")
 })
 public interface MessageFromClient {
 

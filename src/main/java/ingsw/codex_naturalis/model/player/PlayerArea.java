@@ -5,6 +5,7 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.enumerations.ExtremeCoordinate;
 import ingsw.codex_naturalis.enumerations.Symbol;
+import ingsw.codex_naturalis.model.cards.objective.SymbolsObjectiveCard;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -31,12 +32,17 @@ public class PlayerArea {
 
     public PlayerArea.Immutable getImmutablePlayerArea(){
 
+        ObjectiveCard.Immutable immObjectiveCard = null;
+        if (objectiveCard != null)
+            immObjectiveCard = objectiveCard.getImmutableObjectiveCard();
+
         Map<List<Integer>, PlayableCard.Immutable> immutableArea = new LinkedHashMap<>();
         for (List<Integer> key : area.keySet()) {
-            immutableArea.replace(key, area.get(key).getImmutablePlayableCard());
+            immutableArea.put(key, area.get(key).getImmutablePlayableCard());
         }
+
         return new PlayerArea.Immutable(immutableArea, extremeCoordinates, numOfSymbols,
-                objectiveCard.getImmutableObjectiveCard(), points, extraPoints);
+                immObjectiveCard, points, extraPoints);
 
     }
 
@@ -44,7 +50,7 @@ public class PlayerArea {
 
         Map<List<Integer>, PlayableCard.Immutable> immutableArea = new LinkedHashMap<>();
         for (List<Integer> key : area.keySet()) {
-            immutableArea.replace(key, area.get(key).getImmutablePlayableCard());
+            immutableArea.put(key, area.get(key).getImmutablePlayableCard());
         }
         return new PlayerArea.ImmutableHidden(immutableArea, extremeCoordinates, numOfSymbols, points);
 
@@ -86,7 +92,7 @@ public class PlayerArea {
      * Constructor
      */
     public PlayerArea(){
-        this.objectiveCard = null;
+        this.objectiveCard = new SymbolsObjectiveCard("aaa", 1, new HashMap<>());
         this.area = new LinkedHashMap<>();
         this.points = 0;
         this.extraPoints = 0;
@@ -192,18 +198,19 @@ public class PlayerArea {
      * @param symbol Symbol
      */
     public void decrNumOfSymbol(Symbol symbol){
-        numOfSymbols.replace(symbol, getNumOfSymbol(symbol)-1);
+        numOfSymbols.put(symbol, getNumOfSymbol(symbol)-1);
     }
     /**
      * Increases by one the count of the given symbol
      * @param symbol Symbol
      */
     public void incrNumOfSymbol(Symbol symbol){
-        numOfSymbols.replace(symbol, getNumOfSymbol(symbol)+1);
+        numOfSymbols.put(symbol, getNumOfSymbol(symbol)+1);
     }
     public void setInitialCard(PlayableCard initialCard) {
 
         area.put(new ArrayList<>(List.of(0,0)), initialCard);
+        initialCard.play(this, 0, 0);
 
     }
     /**

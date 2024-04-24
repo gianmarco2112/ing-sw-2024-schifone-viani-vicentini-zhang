@@ -10,7 +10,8 @@ import ingsw.codex_naturalis.controller.gameplayPhase.GameplayObserver;
 import ingsw.codex_naturalis.controller.setupPhase.SetupObserver;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.view.UI;
 import ingsw.codex_naturalis.view.gameStartingPhase.GameStartingUI;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
@@ -119,7 +120,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
     //client
     @Override
-    public void updateUI(UI ui) throws RemoteException {
+    public void stcUpdateUI(UI ui) throws RemoteException {
         switch (ui) {
             case GAME_STARTING -> {
                 gameStartingView = uiChoice.createGameStartingUI();
@@ -146,7 +147,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
     //client
     @Override
-    public void updateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
+    public void stcUpdateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
 
         List<GameSpecs> gamesSpecs = new ArrayList<>();
 
@@ -169,31 +170,38 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
     //client
     @Override
-    public void updateGameStartingUIGameID(int gameID) throws RemoteException {
+    public void stcUpdateGameStartingUIGameID(int gameID) throws RemoteException {
 
         gameStartingView.updateGameID(gameID);
 
     }
 
-    //client
     @Override
-    public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
-        setupView.updateSetup1(initialCard, resourceCards, goldCards);
+    public void stcUpdateInitialCard(Game.Immutable game, InitialCardEvent initialCardEvent) {
+        setupView.updateInitialCard(game, initialCardEvent);
     }
 
     @Override
-    public void updateInitialCardFS(PlayableCard.Immutable initialCard, InitialCardEvent initialCardEvent) {
-        setupView.updateInitialCard(initialCard, initialCardEvent);
+    public void stcUpdateColor(Color color) throws RemoteException {
+        setupView.updateColor(color);
     }
 
+    @Override
+    public void reportSetupUIError(String message) {
+        setupView.reportError(message);
+    }
 
+    @Override
+    public void stcUpdate(Game.Immutable immGame, GameEvent gameEvent) {
+        setupView.update(immGame, gameEvent);
+    }
 
 
     //lobby observer
     @Override
-    public void updateGameToAccess(int gameID, String nickname) {
+    public void ctsUpdateGameToAccess(int gameID, String nickname) {
         try {
-            server.updateGameToAccess(this, gameID, nickname);
+            server.ctsUpdateGameToAccess(this, gameID, nickname);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
@@ -201,9 +209,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
     //lobby observer
     @Override
-    public void updateNewGame(int numOfPlayers, String nickname) {
+    public void ctsUpdateNewGame(int numOfPlayers, String nickname) {
         try {
-            server.updateNewGame(this, numOfPlayers, nickname);
+            server.ctsUpdateNewGame(this, numOfPlayers, nickname);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
@@ -213,34 +221,34 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
     //setup observer
     @Override
-    public void updateReady() {
+    public void ctsRequestUpdateReady() {
         try {
-            server.updateReady(this);
+            server.ctsUpdateReady(this);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
     }
 
     @Override
-    public void updateInitialCard(InitialCardEvent initialCardEvent) {
+    public void ctsUpdateInitialCard(InitialCardEvent initialCardEvent) {
         try {
-            server.updateInitialCard(this, initialCardEvent);
+            server.ctsUpdateInitialCard(this, initialCardEvent);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
     }
 
     @Override
-    public void updateColor(Color color) {
+    public void ctsUpdateColor(Color color) {
         try {
-            server.updateColor(this, color);
+            server.ctsUpdateColor(this, color);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
     }
 
     @Override
-    public void updateObjectiveCardChoice(ObjectiveCardChoice objectiveCardChoice) {
+    public void ctsUpdateObjectiveCardChoice(ObjectiveCardChoice objectiveCardChoice) {
 
     }
 
@@ -248,7 +256,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     @Override
     public void updateFlipCard(FlipCard flipCard) {
         try {
-            server.updateFlipCard(this, flipCard);
+            server.ctsUpdateFlipCard(this, flipCard);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
@@ -256,7 +264,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     @Override
     public void updatePlayCard(PlayCard playCard, int x, int y) throws NotYourTurnException {
         try {
-            server.updatePlayCard(this, playCard, x, y);
+            server.ctsUpdatePlayCard(this, playCard, x, y);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
@@ -264,7 +272,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     @Override
     public void updateDrawCard(DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException {
         try {
-            server.updateDrawCard(this, drawCard);
+            server.ctsUpdateDrawCard(this, drawCard);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
@@ -272,7 +280,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     @Override
     public void updateText(Message message, String content, List<String> receivers) {
         try {
-            server.updateText(this, message, content, receivers);
+            server.ctsUpdateText(this, message, content, receivers);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }

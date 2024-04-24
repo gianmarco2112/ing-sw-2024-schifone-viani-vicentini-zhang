@@ -9,6 +9,7 @@ import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
 import ingsw.codex_naturalis.view.lobbyPhase.LobbyGraphicUI;
 import ingsw.codex_naturalis.view.lobbyPhase.LobbyTextualUI;
 import ingsw.codex_naturalis.view.lobbyPhase.LobbyUI;
+import ingsw.codex_naturalis.view.setupPhase.SetupGraphicUI;
 import ingsw.codex_naturalis.view.setupPhase.SetupTextualUI;
 import ingsw.codex_naturalis.view.setupPhase.SetupUI;
 
@@ -46,9 +47,8 @@ public enum UIChoice {
             return new GameStartingGraphicUI();
         }
 
-        public SetupUI createSetupUI(){
-            // TO FIX
-            return new SetupTextualUI();
+        public SetupGraphicUI createSetupUI(){
+            return new SetupGraphicUI();
         }
 
         public GameplayUI createGameplayUI() {

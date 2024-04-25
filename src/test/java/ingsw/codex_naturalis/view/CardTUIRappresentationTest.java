@@ -139,6 +139,7 @@ public class CardTUIRappresentationTest {
         card = resourceCardsDeck.drawACard("test");
         card.flip();
         playerArea.setCardOnCoordinates(card,1,3,"test");
+        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),0,4,"test");
 
         System.out.println(GameplayTextualUI.playerAreaToString(playerArea.getImmutablePlayerArea()));
     }

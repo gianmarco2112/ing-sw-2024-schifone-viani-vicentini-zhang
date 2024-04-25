@@ -97,8 +97,7 @@ public class Back extends PlayableSide {
         else{
             outString.replace(37, 38, kingdom.getColoredChar() + kingdom.getColor());
         }
-        outString.insert(0, kingdom.getColor());
-        outString.append(DefaultValue.ANSI_RESET);
+
         return outString.toString();
     }
 }

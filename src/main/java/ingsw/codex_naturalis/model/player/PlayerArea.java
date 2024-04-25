@@ -115,6 +115,7 @@ public class PlayerArea {
         this.numOfSymbols.put(Symbol.QUILL,0);
         this.numOfSymbols.put(Symbol.INKWELL,0);
         this.numOfSymbols.put(Symbol.EMPTY,0);
+        this.numOfSymbols.put(Symbol.COVERED,0);
     }
 
 

@@ -94,8 +94,8 @@
       "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true},
       "permanentResources":["ANIMAL", "INSECT", "PLANT"]
     }
   },
@@ -114,8 +114,8 @@
       "type": "back",
       "topLeftCorner": {"symbol": "EMPTY", "covered": false},
       "topRightCorner": {"symbol": "EMPTY", "covered": false},
-      "bottomLeftCorner": {"symbol": "EMPTY", "covered": true},
-      "bottomRightCorner": {"symbol": "EMPTY", "covered": true},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true},
       "permanentResources":["PLANT", "ANIMAL", "FUNGI"]
     }
   }

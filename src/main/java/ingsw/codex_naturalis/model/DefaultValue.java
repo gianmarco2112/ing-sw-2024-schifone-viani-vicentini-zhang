@@ -176,10 +176,10 @@ public class DefaultValue {
 
     public static String getTUIPlayerAreaCardSideTemplate(PlayableSide side, Symbol kingdom){
         String cardTemplate = "";
-        boolean tl_is_covered = side.getTopLeftCorner().isCovered();
-        boolean tr_is_covered = side.getTopRightCorner().isCovered();
-        boolean bl_is_covered = side.getBottomLeftCorner().isCovered();
-        boolean br_is_covered = side.getBottomRightCorner().isCovered();
+        boolean tl_is_covered = (side.getTopLeftCorner().getSymbol() == Symbol.COVERED);
+        boolean tr_is_covered = (side.getTopRightCorner().getSymbol() == Symbol.COVERED);
+        boolean bl_is_covered = (side.getBottomLeftCorner().getSymbol()  == Symbol.COVERED);
+        boolean br_is_covered = (side.getBottomRightCorner().getSymbol() == Symbol.COVERED);
 
         if (tl_is_covered && tr_is_covered && bl_is_covered && br_is_covered){
             cardTemplate =
@@ -296,16 +296,16 @@ public class DefaultValue {
         }
         StringBuilder cardTemplateBuilder = new StringBuilder(cardTemplate);
 
-        if (side.getBottomRightCorner().getSymbol() != Symbol.EMPTY){
+        if (side.getBottomRightCorner().getSymbol() != Symbol.EMPTY && side.getBottomRightCorner().getSymbol() != Symbol.COVERED){
             cardTemplateBuilder.replace(53, 54, side.getBottomRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
-        if (side.getBottomLeftCorner().getSymbol() != Symbol.EMPTY){
+        if (side.getBottomLeftCorner().getSymbol() != Symbol.EMPTY && side.getBottomLeftCorner().getSymbol() != Symbol.COVERED){
             cardTemplateBuilder.replace(51, 52, side.getBottomLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
-        if (side.getTopRightCorner().getSymbol() != Symbol.EMPTY){
+        if (side.getTopRightCorner().getSymbol() != Symbol.EMPTY && side.getTopRightCorner().getSymbol() != Symbol.COVERED){
             cardTemplateBuilder.replace(23, 24, side.getTopRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
-        if (side.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
+        if (side.getTopLeftCorner().getSymbol() != Symbol.EMPTY && side.getTopLeftCorner().getSymbol() != Symbol.COVERED){
             cardTemplateBuilder.replace(21, 22, side.getTopLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         cardTemplate = cardTemplateBuilder.toString();

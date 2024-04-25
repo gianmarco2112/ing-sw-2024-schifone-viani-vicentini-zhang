@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class PlayableCard extends Card {
 
     public PlayableCard.Immutable getImmutablePlayableCard(){
-        return new PlayableCard.Immutable(getCardID(), showingFront, playerAreaCardToString(kingdom), handCardToString(kingdom));
+        return new PlayableCard.Immutable(getCardID(), showingFront, playerAreaCardToString(kingdom), handCardToString(kingdom),getCurrentPlayableSide());
     }
 
     public PlayableCard.Immutable getImmutableHiddenPlayableCard(){
@@ -22,6 +22,7 @@ public class PlayableCard extends Card {
     }
 
     public record Immutable(String cardID, boolean showingFront, String description, String handCard) {}
+
 
 
 

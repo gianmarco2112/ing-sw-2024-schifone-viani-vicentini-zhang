@@ -235,13 +235,13 @@ public class PlayableCardTest {
         for(int i = 0; i < 3; i++){
             player.getPlayerArea().decrNumOfSymbol(Symbol.QUILL);
         }
-        initialCard.flip("Test");
+        initialCard.flip();
         initialCard.play(player.getPlayerArea());
         assertEquals(4,player.getPlayerArea().getNumOfSymbol(Symbol.QUILL));
     }
     @Test
     void testPlayWithCoordinates(){
-        initialCard.flip("Test");
+        initialCard.flip();
         setInitialCard();
 
         PlayableCard card = insectResourceCard();
@@ -255,11 +255,11 @@ public class PlayableCardTest {
         assertEquals(PlayableCardType.RESOURCE,card.getPlayableCardType());
         assertEquals(Symbol.INSECT,card.getKingdom());
         assertEquals(card.getBack(),card.getCurrentPlayableSide());
-        card.flip("Test");
+        card.flip();
         assertEquals(card.getFront(),card.getCurrentPlayableSide());
         card.setCurrentPlayableSide(card.getBack());
         assertEquals(card.getBack(),card.getCurrentPlayableSide());
-        card.flip("Test");
+        card.flip();
         assertEquals(Symbol.EMPTY,card.getBottomLeftCorner().getSymbol());
         assertEquals(Symbol.EMPTY,card.getBottomRightCorner().getSymbol());
         assertEquals(Symbol.EMPTY,card.getTopLeftCorner().getSymbol());
@@ -279,7 +279,7 @@ public class PlayableCardTest {
         hand.add(animalResourceCard());
         hand.add(goldObjectCard());
 
-        hand.getLast().flip("Test");
+        hand.getLast().flip();
 
         player.getPlayerArea().setCardOnCoordinates(hand.getFirst(),1,1,"Test");
         player.getPlayerArea().setCardOnCoordinates(hand.get(1),2,2,"Test");
@@ -303,7 +303,7 @@ public class PlayableCardTest {
 
         hand.add(goldCornerCard());
 
-        hand.getLast().flip("Test");
+        hand.getLast().flip();
 
         player.getPlayerArea().setCardOnCoordinates(hand.getFirst(),1,1,"Test");
         player.getPlayerArea().setCardOnCoordinates(hand.get(1),2,0,"Test");
@@ -325,7 +325,7 @@ public class PlayableCardTest {
         hand.add(animalResourceCard());
         hand.add(goldStandardCard());
 
-        hand.getLast().flip("Test");
+        hand.getLast().flip();
 
         player.getPlayerArea().setCardOnCoordinates(hand.getFirst(),1,1,"Test");
         player.getPlayerArea().setCardOnCoordinates(hand.get(1),2,0,"Test");

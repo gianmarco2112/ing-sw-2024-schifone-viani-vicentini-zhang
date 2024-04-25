@@ -6,6 +6,7 @@ import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.events.gameplayPhase.*;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.player.Player;
@@ -341,44 +342,104 @@ public class GameplayTextualUI extends GameplayUI {
         for (int i = playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_X); i <= playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_X); i++) {
             for (int j = playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_Y); j <= playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_Y); j++) {
                 if (playerArea.area().containsKey(List.of(i, j))){
+                    Corner tl_corner = playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopLeftCorner();
+                    Corner tr_corner = playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopRightCorner();
+                    Corner bl_corner = playerArea.area().get(List.of(i, j)).currentPlayableSide().getBottomLeftCorner();
+                    Corner br_corner = playerArea.area().get(List.of(i, j)).currentPlayableSide().getBottomRightCorner();
 
-                    // top left angle
-                    if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopLeftCorner().isCovered() && playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopLeftCorner().getSymbol() != Symbol.COVERED) {
+                    // top right corner
+                    if (tr_corner.isCovered() && tr_corner.getSymbol() != Symbol.COVERED) {
+                        lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).getFirst());
+                        lineToBePrune.replace(8, 10, "  ");
+                        cardsAsListOfStrings.get(List.of(i, j)).set(0, lineToBePrune.toString());
+                        lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(1));
+
+                        if (tl_corner.getSymbol() == Symbol.COVERED || tl_corner.getSymbol() == Symbol.EMPTY){
+                            // Case empty-empty
+                            if(tr_corner.getSymbol() == Symbol.EMPTY){
+                                lineToBePrune.replace(8, 10, "  ");
+                            }
+                            // Case empty-symbol
+                            else{
+                                lineToBePrune.replace(8, 24, "  ");
+                            }
+                        }
+                        else{
+                            // Case symbol-empty
+                            if(tr_corner.getSymbol() == Symbol.EMPTY){
+                                lineToBePrune.replace(22, 24, "  ");
+                            }
+                            // Case symbol-symbol
+                            else{
+                                lineToBePrune.replace(22, 38, "  ");
+                            }
+                        }
+                        cardsAsListOfStrings.get(List.of(i, j)).set(1, lineToBePrune.toString());
+                    }
+
+                    // top left corner
+                    if (tl_corner.isCovered() && tl_corner.getSymbol() != Symbol.COVERED) {
                         lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).getFirst());
                         lineToBePrune.replace(5, 7, "  ");
                         cardsAsListOfStrings.get(List.of(i, j)).set(0, lineToBePrune.toString());
-                        if(playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopLeftCorner().getSymbol() == Symbol.EMPTY){
+
+                        if(tl_corner.getSymbol() == Symbol.EMPTY){
                             lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(1));
                             lineToBePrune.replace(5, 7, "  ");
-                            cardsAsListOfStrings.get(List.of(i, j)).set(1, lineToBePrune.toString());
                         }
                         else{
                             lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(1));
                             lineToBePrune.replace(5, 21, "  ");
-                            cardsAsListOfStrings.get(List.of(i, j)).set(1, lineToBePrune.toString());
                         }
-                    }
-                    if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopRightCorner().isCovered()) {
+                        cardsAsListOfStrings.get(List.of(i, j)).set(1, lineToBePrune.toString());
                     }
 
-                    // bottom left angle
-                    if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getBottomLeftCorner().isCovered() && playerArea.area().get(List.of(i, j)).currentPlayableSide().getBottomLeftCorner().getSymbol() != Symbol.COVERED) {
+                    // bottom right corner
+                    if (br_corner.isCovered() && br_corner.getSymbol() != Symbol.COVERED) {
+                        lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(3));
+                        lineToBePrune.replace(8, 10, "  ");
+                        cardsAsListOfStrings.get(List.of(i, j)).set(3, lineToBePrune.toString());
+                        lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(4));
 
-                        if(playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopLeftCorner().getSymbol() == Symbol.EMPTY){
+                        if (bl_corner.getSymbol() == Symbol.COVERED || bl_corner.getSymbol() == Symbol.EMPTY){
+                            // Case empty-empty
+                            if(br_corner.getSymbol() == Symbol.EMPTY){
+                                lineToBePrune.replace(8, 10, "  ");
+                            }
+                            // Case empty-symbol
+                            else{
+                                lineToBePrune.replace(8, 24, "  ");
+                            }
+                        }
+                        else{
+                            // Case symbol-empty
+                            if(br_corner.getSymbol() == Symbol.EMPTY){
+                                lineToBePrune.replace(22, 24, "  ");
+                            }
+                            // Case symbol-symbol
+                            else{
+                                lineToBePrune.replace(22, 38, "  ");
+                            }
+                        }
+                        cardsAsListOfStrings.get(List.of(i, j)).set(4, lineToBePrune.toString());
+                    }
+
+                    // bottom left corner
+                    if (bl_corner.isCovered() && bl_corner.getSymbol() != Symbol.COVERED) {
+
+                        if(bl_corner.getSymbol() == Symbol.EMPTY){
                             lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(3));
                             lineToBePrune.replace(5, 7, "  ");
-                            cardsAsListOfStrings.get(List.of(i, j)).set(3, lineToBePrune.toString());
                         }
                         else{
                             lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(3));
                             lineToBePrune.replace(5, 21, "  ");
-                            cardsAsListOfStrings.get(List.of(i, j)).set(3, lineToBePrune.toString());
+
                         }
+                        cardsAsListOfStrings.get(List.of(i, j)).set(3, lineToBePrune.toString());
                         lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).getLast());
                         lineToBePrune.replace(5, 7, "  ");
                         cardsAsListOfStrings.get(List.of(i, j)).set(4, lineToBePrune.toString());
-                    }
-                    if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getBottomRightCorner().isCovered()) {
                     }
                 }
             }

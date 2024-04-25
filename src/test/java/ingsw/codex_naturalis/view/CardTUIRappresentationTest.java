@@ -125,12 +125,15 @@ public class CardTUIRappresentationTest {
     @Test
     void playerAreaToStringTest(){
         PlayerArea playerArea = new PlayerArea();
+        resourceCardsDeck.shuffle();
         playerArea.setObjectiveCard(objectiveCardsDeck.drawACard("test"));
         PlayableCard card = initialCardsDeck.drawACard("test");
         card.flip();
         playerArea.setCardOnCoordinates(card,0,0,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),-1,-1,"test");
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),1,1,"test");
+        card = resourceCardsDeck.drawACard("test");
+        card.flip();
+        playerArea.setCardOnCoordinates(card,-1,-1,"test");
         card = resourceCardsDeck.drawACard("test");
         card.flip();
         playerArea.setCardOnCoordinates(card,2,0,"test");
@@ -139,7 +142,12 @@ public class CardTUIRappresentationTest {
         card = resourceCardsDeck.drawACard("test");
         card.flip();
         playerArea.setCardOnCoordinates(card,1,3,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),0,4,"test");
+        card = resourceCardsDeck.drawACard("test");
+        card.flip();
+        playerArea.setCardOnCoordinates(card,0,4,"test");
+        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),1,5,"test");
+        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),2,4,"test");
+        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),3,3,"test");
 
         System.out.println(GameplayTextualUI.playerAreaToString(playerArea.getImmutablePlayerArea()));
     }

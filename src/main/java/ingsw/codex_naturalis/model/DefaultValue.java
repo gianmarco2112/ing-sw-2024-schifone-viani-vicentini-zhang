@@ -296,16 +296,16 @@ public class DefaultValue {
         }
         StringBuilder cardTemplateBuilder = new StringBuilder(cardTemplate);
 
-        if (side.getBottomRightCorner().getSymbol() != Symbol.EMPTY){
+        if (side.getBottomRightCorner().getSymbol() != Symbol.EMPTY && side.getBottomRightCorner().getSymbol() != Symbol.COVERED){
             cardTemplateBuilder.replace(53, 54, side.getBottomRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
-        if (side.getBottomLeftCorner().getSymbol() != Symbol.EMPTY){
+        if (side.getBottomLeftCorner().getSymbol() != Symbol.EMPTY && side.getBottomLeftCorner().getSymbol() != Symbol.COVERED){
             cardTemplateBuilder.replace(51, 52, side.getBottomLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
-        if (side.getTopRightCorner().getSymbol() != Symbol.EMPTY){
+        if (side.getTopRightCorner().getSymbol() != Symbol.EMPTY && side.getTopRightCorner().getSymbol() != Symbol.COVERED){
             cardTemplateBuilder.replace(23, 24, side.getTopRightCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
-        if (side.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
+        if (side.getTopLeftCorner().getSymbol() != Symbol.EMPTY && side.getTopLeftCorner().getSymbol() != Symbol.COVERED){
             cardTemplateBuilder.replace(21, 22, side.getTopLeftCorner().getSymbol().getColoredChar() + kingdom.getColor());
         }
         cardTemplate = cardTemplateBuilder.toString();

@@ -106,7 +106,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
                 int option = Integer.parseInt(input);
                 switch (option) {
                     case 1 -> { return UIChoice.TUI; }
-                    case 2 -> { System.err.println("We're working on it, please choose an other option."); }
+                    case 2 -> { return UIChoice.GUI; }
                     default -> System.err.println("Invalid option");
                 }
             } catch (NumberFormatException e) {

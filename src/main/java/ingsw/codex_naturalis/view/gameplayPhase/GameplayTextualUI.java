@@ -329,7 +329,7 @@ public class GameplayTextualUI extends GameplayUI {
         StringBuilder outString = new StringBuilder();
 
         for (ObjectiveCard.Immutable card : cards){
-            cardsAsStrings.add(Arrays.asList(card.toString().split("\n")));
+            cardsAsStrings.add(Arrays.asList(card.card().split("\n")));
         }
 
         for (int i = 0; i < cardsAsStrings.getFirst().size(); i++) {

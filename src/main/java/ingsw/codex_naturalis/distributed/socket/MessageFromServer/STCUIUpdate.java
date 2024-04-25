@@ -14,8 +14,7 @@ public class STCUIUpdate implements MessageFromServer{
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonUpdateUI = reader.readLine();
-            UI updateUI = objectMapper.readValue(jsonUpdateUI, UI.class);
-            client.stcUpdateUI(updateUI);
+            client.stcUpdateUI(jsonUpdateUI);
         } catch (IOException e) {
             System.err.println("Error while receiving from server");
         }

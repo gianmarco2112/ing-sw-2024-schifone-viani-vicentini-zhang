@@ -33,7 +33,7 @@ public class SetupObservable {
 
     public void notifyReady() {
         for (SetupObserver o : obs){
-            o.ctsRequestUpdateReady();
+            o.ctsUpdateReady();
         }
     }
 

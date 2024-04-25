@@ -6,7 +6,7 @@ import ingsw.codex_naturalis.view.setupPhase.ObjectiveCardChoice;
 
 public interface SetupObserver {
 
-    void ctsRequestUpdateReady();
+    void ctsUpdateReady();
 
     void ctsUpdateInitialCard(InitialCardEvent initialCardEvent);
 

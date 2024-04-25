@@ -15,8 +15,7 @@ public class CTSColorUpdate implements MessageFromClient{
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String jsonColor = reader.readLine();
-            Color color = objectMapper.readValue(jsonColor, Color.class);
-            server.ctsUpdateColor(client, color);
+            server.ctsUpdateColor(client, jsonColor);
         } catch (IOException e) {
             System.err.println("Error while processing json");
         }

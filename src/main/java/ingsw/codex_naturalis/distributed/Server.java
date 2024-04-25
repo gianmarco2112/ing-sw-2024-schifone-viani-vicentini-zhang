@@ -1,13 +1,11 @@
 package ingsw.codex_naturalis.distributed;
 
-import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
-import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -24,9 +22,9 @@ public interface Server extends Remote {
 
     void ctsUpdateReady(Client client) throws RemoteException;
 
-    void ctsUpdateInitialCard(Client client, InitialCardEvent initialCardEvent) throws RemoteException;
+    void ctsUpdateInitialCard(Client client, String jsonInitialCardEvent) throws RemoteException;
 
-    void ctsUpdateColor(Client client, Color color) throws RemoteException;
+    void ctsUpdateColor(Client client, String jsonColor) throws RemoteException;
 
 
     void ctsUpdateFlipCard(Client client, FlipCard flipCard) throws RemoteException;

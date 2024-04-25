@@ -18,7 +18,7 @@ public class PlayableCard extends Card {
     }
 
     public PlayableCard.Immutable getImmutableHiddenPlayableCard(){
-        return new PlayableCard.Immutable(getCardID(), false, playerAreaCardToString(kingdom), handCardToString(kingdom));
+        return new PlayableCard.Immutable(getCardID(), false, playerAreaCardToString(kingdom), back.handCardToString(kingdom));
     }
 
     public record Immutable(String cardID, boolean showingFront, String description, String handCard) implements Serializable {

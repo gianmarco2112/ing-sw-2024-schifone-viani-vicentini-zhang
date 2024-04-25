@@ -361,6 +361,8 @@ public class Game extends GameObservable implements PlayerObserver {
             hand.add(resourceCardsDeck.drawACard());
             hand.add(goldCardsDeck.drawACard());
             player.setupHand(hand);
+            for (PlayableCard card : hand)
+                card.flip();
         }
     }
 

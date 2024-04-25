@@ -15,12 +15,10 @@ public class STCSetupUpdate implements MessageFromServer{
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String jsonImmGame = reader.readLine();
-            Game.Immutable immGame = objectMapper.readValue(jsonImmGame, Game.Immutable.class);
 
             String jsonGameEvent = reader.readLine();
-            GameEvent gameEvent = objectMapper.readValue(jsonGameEvent, GameEvent.class);
 
-            client.stcUpdate(immGame, gameEvent);
+            client.stcUpdate(jsonImmGame, jsonGameEvent);
 
         } catch (IOException e) {
             System.err.println("Error while receiving from server");

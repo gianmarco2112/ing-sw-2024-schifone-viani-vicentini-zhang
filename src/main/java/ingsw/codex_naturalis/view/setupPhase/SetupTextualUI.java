@@ -3,7 +3,6 @@ package ingsw.codex_naturalis.view.setupPhase;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 import ingsw.codex_naturalis.model.Game;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayTextualUI;
@@ -312,7 +311,9 @@ public class SetupTextualUI extends SetupUI {
 
     private void showSetup2() {
 
-        showOthersPlayAreas();
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
+
+        showOtherPlayers();
 
         showResourceAndGoldDecks();
 
@@ -320,21 +321,26 @@ public class SetupTextualUI extends SetupUI {
 
         showYourPlayArea();
 
+        showYourHand();
+
         setState(State.RUNNING);
 
     }
 
-    private void showOthersPlayAreas(){
+    private void showOtherPlayers(){
         for (Player.ImmutableHidden player : game.hiddenPlayers()) {
             Color color = player.color();
             System.out.println(color.getColorCode() + player.nickname() +"'s play area" + "\u001B[0m");
             System.out.println("Points: " + player.playerArea().points());
             System.out.println("Resources and objects: " + player.playerArea().numOfSymbols().toString());
             System.out.println(player.playerArea().area().get(List.of(0,0)).description());
+            System.out.println(GameplayTextualUI.getHandCardsToString(player.hand()));
+            System.out.println("--------------------------------------------------------------");
         }
     }
 
     private void showYourPlayArea(){
+        System.out.println("--------------------------------------------------------------");
         Color color = game.player().color();
         System.out.println(color.getColorCode() + "\nYour play area" + "\u001B[0m");
         System.out.println("Points: " + game.player().playerArea().points());
@@ -352,14 +358,13 @@ public class SetupTextualUI extends SetupUI {
 
     private void showCommonObjectiveCards() {
 
-        System.out.println("\nCommon objective cards");
-        System.out.println(game.commonObjectiveCards().getFirst());
-        System.out.println(game.commonObjectiveCards().getLast());
+        System.out.println("\nCommon objective cards\n");
+        System.out.println(GameplayTextualUI.commonObjectiveCardsToString(game.commonObjectiveCards()));
 
-        /*//da rivedere
-        System.out.println("\nCommon objective cards");
-        System.out.println(GameplayTextualUI.commonObjectiveCardsToString(game.commonObjectiveCards()));*/
+    }
 
+    private void showYourHand() {
+        System.out.println(GameplayTextualUI.getHandCardsToString(game.player().hand()));
     }
 
 }

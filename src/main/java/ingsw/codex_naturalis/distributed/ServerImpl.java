@@ -9,8 +9,6 @@ import ingsw.codex_naturalis.controller.gameplayPhase.GameplayController;
 import ingsw.codex_naturalis.controller.setupPhase.SetupController;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.util.PlayerEvent;
@@ -83,8 +81,8 @@ public class ServerImpl implements Server, GameObserver {
     }
 
     private static class NicknameMap {
-        private Map<Client, String> clientToNicknameMap = new HashMap<>();
-        private Map<String, Client> nicknameToClientMap = new HashMap<>();
+        private final Map<Client, String> clientToNicknameMap = new HashMap<>();
+        private final Map<String, Client> nicknameToClientMap = new HashMap<>();
 
         private void addClient(Client client, String nickname) {
             clientToNicknameMap.put(client, nickname);
@@ -107,7 +105,6 @@ public class ServerImpl implements Server, GameObserver {
     private final List<Client> newClients = new ArrayList<>();
 
     private final List<LobbyAndStartingGameManagement> lobbyAndStartingGames = new ArrayList<>();
-    //private final List<GameManagement<SetupController>> startingGames = new ArrayList<>();
     private final List<GameManagement<SetupController>> setupGames = new ArrayList<>();
     private final List<GameManagement<GameplayController>> gameplayGames = new ArrayList<>();
 
@@ -196,9 +193,9 @@ public class ServerImpl implements Server, GameObserver {
 
                 if (lobbyAndStartingGameManagement.getModel().getNumOfPlayers() > lobbyAndStartingGameManagement.getModel().getPlayerOrder().size())
                 try {
-                    client.stcUpdateUI(UI.GAME_STARTING);
+                    client.stcUpdateUI(objectMapper.writeValueAsString(UI.GAME_STARTING));
                     client.stcUpdateGameStartingUIGameID(gameID);
-                } catch (RemoteException e) {
+                } catch (RemoteException | JsonProcessingException e) {
                     System.err.println("Error while trying to update client's UI to Game Starting");
                 }
 
@@ -214,8 +211,8 @@ public class ServerImpl implements Server, GameObserver {
                         List<Client> clients = gameManagement.getViews();
                         for (Client c : clients) {
                             try {
-                                c.stcUpdateUI(UI.SETUP);
-                            } catch (RemoteException e) {
+                                c.stcUpdateUI(objectMapper.writeValueAsString(UI.SETUP));
+                            } catch (RemoteException | JsonProcessingException e) {
                                 System.err.println("Error while trying to update client's UI to Setup");
                             }
                         }
@@ -256,22 +253,15 @@ public class ServerImpl implements Server, GameObserver {
         }
 
         try {
-            client.stcUpdateUI(UI.GAME_STARTING);
+            client.stcUpdateUI(objectMapper.writeValueAsString(UI.GAME_STARTING));
             client.stcUpdateGameStartingUIGameID(gameID);
-        } catch (RemoteException e) {
+        } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while trying to update client's UI to Game Starting");
         }
 
         synchronized (newClients) {
             newClients.remove(client);
-            for (Client c : newClients) {
-                try {
-                    c.stcUpdateLobbyUIGameSpecs(objectMapper.writeValueAsString(getGamesSpecs()));
-                } catch (RemoteException | JsonProcessingException e) {
-                    System.err.println("Error while trying to update client's lobby UI");
-                }
-            }
-            //updateClientLobbyUIGameSpecs(newClients);
+            updateClientLobbyUIGameSpecs(newClients);
         }
 
     }
@@ -302,7 +292,7 @@ public class ServerImpl implements Server, GameObserver {
 
     @Override
     public void ctsUpdateReady(Client client) {
-        executorService.submit( () -> {
+       executorService.submit( () -> {
             GameManagement<SetupController> gameManagement = findGameManagementByClient(client);
             gameManagement.getController().updateReady(gameManagement.nicknameMap.getNickname(client));
         });
@@ -310,19 +300,27 @@ public class ServerImpl implements Server, GameObserver {
     }
 
     @Override
-    public void ctsUpdateInitialCard(Client client, InitialCardEvent initialCardEvent) {
+    public void ctsUpdateInitialCard(Client client, String jsonInitialCardEvent) {
         executorService.submit( () -> {
-            GameManagement<SetupController> gameManagement = findGameManagementByClient(client);
-            gameManagement.getController().updateInitialCard(gameManagement.nicknameMap.getNickname(client), initialCardEvent);
+            try {
+                InitialCardEvent initialCardEvent = objectMapper.readValue(jsonInitialCardEvent, InitialCardEvent.class);
+                GameManagement<SetupController> gameManagement = findGameManagementByClient(client);
+                gameManagement.getController().updateInitialCard(gameManagement.nicknameMap.getNickname(client), initialCardEvent);
+            } catch (JsonProcessingException e){
+                System.err.println("Error while processing json");
+            }
         });
     }
 
     @Override
-    public void ctsUpdateColor(Client client, Color color) {
+    public void ctsUpdateColor(Client client, String jsonColor) {
         executorService.submit( () -> {
-            GameManagement<SetupController> gameManagement = findGameManagementByClient(client);
             try {
+                Color color = objectMapper.readValue(jsonColor, Color.class);
+                GameManagement<SetupController> gameManagement = findGameManagementByClient(client);
                 gameManagement.getController().updateColor(gameManagement.nicknameMap.getNickname(client), color);
+            } catch (JsonProcessingException e) {
+                System.err.println("Error while processing json");
             } catch (ColorAlreadyChosenException e){
                 try {
                     client.reportSetupUIError(e.getMessage());
@@ -368,15 +366,13 @@ public class ServerImpl implements Server, GameObserver {
         for (Client client : clients) {
             Game.Immutable immGame = game.getImmutableGame(gameManagement.nicknameMap.getNickname(client));
             try {
-                client.stcUpdate(immGame, gameEvent);
-            } catch (RemoteException e){
+                client.stcUpdate(objectMapper.writeValueAsString(immGame), objectMapper.writeValueAsString(gameEvent));
+            } catch (RemoteException | JsonProcessingException e){
                 System.err.println("Error while updating client");
             }
         }
 
     }
-
-
 
     @Override
     public void update(Game game, PlayerEvent playerEvent, Player playerWhoUpdated) {
@@ -393,42 +389,13 @@ public class ServerImpl implements Server, GameObserver {
         Client client = gameManagement.nicknameMap.getClient(playerWhoUpdated.getNickname());
         Player player = game.getPlayerByNickname(gameManagement.nicknameMap.getNickname(client));
         try {
-            client.stcUpdateColor(player.getColor());
-        } catch (RemoteException e) {
+            client.stcUpdateColor(objectMapper.writeValueAsString(player.getColor()));
+        } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating client");
         }
 
     }
 
-
-    /*private void setup1(Game game) {
-
-        PlayableCard.Immutable topResourceCard = game.getResourceCardsDeck().getFirstCard().getImmutablePlayableCard();
-        PlayableCard.Immutable topGoldCard = game.getGoldCardsDeck().getFirstCard().getImmutablePlayableCard();
-        List<PlayableCard.Immutable> revealedResourceCards = game.getImmutableRevealedResourceCards();
-        List<PlayableCard.Immutable> revealedGoldCards = game.getImmutableRevealedGoldCards();
-
-        List<PlayableCard.Immutable> resourceCards = new ArrayList<>();
-        resourceCards.add(topResourceCard);
-        resourceCards.addAll(revealedResourceCards);
-
-        List<PlayableCard.Immutable> goldCards = new ArrayList<>();
-        goldCards.add(topGoldCard);
-        goldCards.addAll(revealedGoldCards);
-
-        GameManagement<SetupController> gameManagement = findSetupGameManagementByGame(game);
-        List<Client> clients = gameManagement.getViews();
-
-        *//*for (Client client : clients) {
-            PlayableCard.Immutable initialCard = game.getPlayerByNickname(gameManagement.nicknameMap.getNickname(client)).getInitialCard().getImmutablePlayableCard();
-            try {
-                client.stcUpdateSetup1();
-            } catch (RemoteException e) {
-                System.err.println("Error while updating client");
-            }
-        }*//*
-
-    }*/
     private void initialCardCase(Game game, Player playerWhoUpdated, InitialCardEvent initialCardEvent) {
 
         GameManagement<SetupController> gameManagement = findSetupGameManagementByGame(game);
@@ -438,24 +405,10 @@ public class ServerImpl implements Server, GameObserver {
         }
         Game.Immutable immGame = game.getImmutableGame(playerWhoUpdated.getNickname());
         try {
-            client.stcUpdateInitialCard(immGame, initialCardEvent);
-        } catch (RemoteException e) {
+            client.stcUpdateInitialCard(objectMapper.writeValueAsString(immGame), objectMapper.writeValueAsString(initialCardEvent));
+        } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating client");
         }
     }
 
-
-    /*private void setup2(Game game){
-
-        GameManagement<SetupController> gameManagement = findSetupGameManagementByGame(game);
-        List<Client> clients = gameManagement.getViews();
-        for (Client client : clients) {
-            Game.Immutable immGame = game.getImmutableGame(gameManagement.nicknameMap.getNickname(client));
-            try {
-                client.stcUpdate(immGame, GameEvent.SETUP_2);
-            } catch (RemoteException e){
-                System.err.println("Error while updating client");
-            }
-        }
-    }*/
 }

@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.model.player;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ingsw.codex_naturalis.distributed.util.ListKeyDeserializer;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
@@ -16,14 +18,14 @@ import java.util.*;
  */
 public class PlayerArea {
 
-    public record Immutable(Map<List<Integer>,PlayableCard.Immutable> area,
+    public record Immutable(@JsonDeserialize(keyUsing = ListKeyDeserializer.class)Map<List<Integer>,PlayableCard.Immutable> area,
                             Map<ExtremeCoordinate, Integer> extremeCoordinates,
                             Map<Symbol, Integer> numOfSymbols, ObjectiveCard.Immutable objectiveCard,
                             int points, int extraPoints) implements Serializable {
         @Serial
         private static final long serialVersionUID = 6L; }
 
-    public record ImmutableHidden(Map<List<Integer>,PlayableCard.Immutable> area,
+    public record ImmutableHidden(@JsonDeserialize(keyUsing = ListKeyDeserializer.class)Map<List<Integer>,PlayableCard.Immutable> area,
                             Map<ExtremeCoordinate, Integer> extremeCoordinates,
                             Map<Symbol, Integer> numOfSymbols,
                             int points) implements Serializable {

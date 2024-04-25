@@ -14,8 +14,7 @@ public class STCColorUpdate implements MessageFromServer {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String jsonColor = reader.readLine();
-            Color color  = objectMapper.readValue(jsonColor, Color.class);
-            client.stcUpdateColor(color);
+            client.stcUpdateColor(jsonColor);
         } catch (IOException e) {
             System.err.println("Error while processing json");
         }

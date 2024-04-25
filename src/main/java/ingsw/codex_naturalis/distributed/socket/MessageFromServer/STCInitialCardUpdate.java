@@ -14,10 +14,8 @@ public class STCInitialCardUpdate implements MessageFromServer {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String jsonGame = reader.readLine();
-            Game.Immutable game  = objectMapper.readValue(jsonGame, Game.Immutable.class);
             String jsonInitialCardEvent = reader.readLine();
-            InitialCardEvent initialCardEvent = objectMapper.readValue(jsonInitialCardEvent, InitialCardEvent.class);
-            client.stcUpdateInitialCard(game, initialCardEvent);
+            client.stcUpdateInitialCard(jsonGame, jsonInitialCardEvent);
         } catch (IOException e) {
             System.err.println("Error while processing json");
         }

@@ -6,14 +6,12 @@ import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
 import ingsw.codex_naturalis.distributed.socket.MessageFromClient.*;
 import ingsw.codex_naturalis.distributed.socket.MessageFromServer.MessageFromServer;
-import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
-import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 
 import java.io.*;
 import java.net.Socket;
@@ -113,12 +111,12 @@ public class ServerStub implements Server {
     }
 
     @Override
-    public void ctsUpdateInitialCard(Client client, InitialCardEvent initialCardEvent) throws RemoteException {
+    public void ctsUpdateInitialCard(Client client, String jsonInitialCardEvent) throws RemoteException {
         try {
             MessageFromClient message = new CTSInitialCardUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(objectMapper.writeValueAsString(initialCardEvent));
+            writer.println(jsonInitialCardEvent);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -126,12 +124,12 @@ public class ServerStub implements Server {
     }
 
     @Override
-    public void ctsUpdateColor(Client client, Color color) throws RemoteException {
+    public void ctsUpdateColor(Client client, String jsonColor) throws RemoteException {
         try {
             MessageFromClient message = new CTSColorUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(objectMapper.writeValueAsString(color));
+            writer.println(jsonColor);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");

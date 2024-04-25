@@ -2,8 +2,6 @@ package ingsw.codex_naturalis.distributed.socket.MessageFromServer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.distributed.Client;
-import ingsw.codex_naturalis.model.Game;
-import ingsw.codex_naturalis.model.util.GameEvent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +16,7 @@ public class STCSetupUpdate implements MessageFromServer{
 
             String jsonGameEvent = reader.readLine();
 
-            client.stcUpdate(jsonImmGame, jsonGameEvent);
+            client.stcUpdateSetupUI(jsonImmGame, jsonGameEvent);
 
         } catch (IOException e) {
             System.err.println("Error while receiving from server");

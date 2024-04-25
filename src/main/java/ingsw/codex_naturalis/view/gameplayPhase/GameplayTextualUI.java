@@ -1,13 +1,9 @@
 package ingsw.codex_naturalis.view.gameplayPhase;
 
-import ingsw.codex_naturalis.enumerations.PlayersConnectedStatus;
 import ingsw.codex_naturalis.events.gameplayPhase.*;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.util.GameEvent;
-import ingsw.codex_naturalis.model.player.PlayerArea;
 
 import java.util.*;
 
@@ -15,11 +11,39 @@ import static ingsw.codex_naturalis.events.gameplayPhase.UtilityCommand.CANCEL;
 
 public class GameplayTextualUI extends GameplayUI {
 
-    private boolean running;
-
-    String nickname;
-
     private final Scanner s = new Scanner(System.in);
+
+
+    private enum State {
+        RUNNING,
+        WAITING_FOR_UPDATE,
+        STOPPING_THE_VIEW
+    }
+
+    private GameplayTextualUI.State state = GameplayTextualUI.State.RUNNING;
+
+    private final Object lock = new Object();
+
+
+    private Game.Immutable game;
+
+
+
+    private GameplayTextualUI.State getState() {
+        synchronized (lock) {
+            return state;
+        }
+    }
+
+    private void setState(GameplayTextualUI.State state) {
+        synchronized (lock) {
+            this.state = state;
+            lock.notifyAll();
+        }
+    }
+
+
+
 
     private final Map<Integer, String> playerNicknames = new LinkedHashMap<>();
 
@@ -33,10 +57,6 @@ public class GameplayTextualUI extends GameplayUI {
 
 
     public GameplayTextualUI(String nickname, List<String> playerNicknames){
-
-        running = true;
-
-        this.nickname = nickname;
 
         for (int key = 0; key < playerNicknames.size(); key++) {
             this.playerNicknames.put(key+1, playerNicknames.get(key));
@@ -63,7 +83,7 @@ public class GameplayTextualUI extends GameplayUI {
 
     @Override
     public void run() {
-        while (running) {
+        while (true) {
             Command command = askCommandToPlayer();
             try {
                 switch (command) {
@@ -78,8 +98,9 @@ public class GameplayTextualUI extends GameplayUI {
         }
     }
 
+    @Override
     public void stop() {
-        running = false;
+        setState(State.STOPPING_THE_VIEW);
     }
 
 
@@ -298,52 +319,9 @@ public class GameplayTextualUI extends GameplayUI {
         }
     }
 
-    public void setPlayersConnectedStatus(PlayersConnectedStatus playersConnectedStatus) {
+
+    @Override
+    public void updatePlayerOrder(Game.Immutable immGame) {
+
     }
-
-    public String getPlayerAreaToString(){
-        return null;
-    }
-
-
-    public static String getHandCardsToString(List<PlayableCard.Immutable> hand){
-        List<List<String>> cardsAsStrings = new ArrayList<>(new ArrayList<>());
-        StringBuilder outString = new StringBuilder();
-
-        for (PlayableCard.Immutable card : hand){
-            cardsAsStrings.add(Arrays.asList(card.handCard().split("\n")));
-        }
-
-        for (int i = 0; i < cardsAsStrings.getFirst().size(); i++) {
-            for (int j = 0; j < cardsAsStrings.size(); j++) {
-                outString.append(cardsAsStrings.get(j).get(i));
-            }
-            outString.append("\n");
-        }
-
-        return outString.toString();
-    }
-
-    public static String commonObjectiveCardsToString(List<ObjectiveCard.Immutable> cards){
-        List<List<String>> cardsAsStrings = new ArrayList<>(new ArrayList<>());
-        StringBuilder outString = new StringBuilder();
-
-        for (ObjectiveCard.Immutable card : cards){
-            cardsAsStrings.add(Arrays.asList(card.card().split("\n")));
-        }
-
-        for (int i = 0; i < cardsAsStrings.getFirst().size(); i++) {
-            for (int j = 0; j < cardsAsStrings.size(); j++) {
-                outString.append(cardsAsStrings.get(j).get(i));
-            }
-            outString.append("\n");
-        }
-
-        return outString.toString();
-    }
-
-    public static String playerAreaToString(PlayerArea.Immutable playerArea){
-        return null;
-    }
-
 }

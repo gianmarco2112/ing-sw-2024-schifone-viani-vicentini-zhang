@@ -35,9 +35,7 @@ public class Game extends GameObservable implements PlayerObserver {
                             List<PlayableCard.Immutable> resourceCards,
                             List<PlayableCard.Immutable> goldCards,
                             List<ObjectiveCard.Immutable> commonObjectiveCards,
-                            List<Message> chat) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 4L; }
+                            List<Message> chat) {}
 
     public Game.Immutable getImmutableGame(String playerNicknameReceiver) {
 
@@ -229,7 +227,7 @@ public class Game extends GameObservable implements PlayerObserver {
     public GameStatus getGameStatus() {
         return gameStatus;
     }
-    public void setGameStatus(GameStatus gameStatus, String nickname){
+    public void setGameStatus(GameStatus gameStatus){
         this.gameStatus = gameStatus;
         notifyObservers(this, GameEvent.GAME_STATUS_CHANGED);
     }
@@ -265,17 +263,6 @@ public class Game extends GameObservable implements PlayerObserver {
     }
     public void setMessages(List<Message> messages, String nickname){
         this.chat = messages;
-    }
-
-    public List<ObjectiveCard> getCommonObjectiveCards(){
-        return new ArrayList<>(commonObjectiveCards);
-    }
-    public void setCommonObjectiveCards(List<ObjectiveCard> commonObjectiveCards){
-        this.commonObjectiveCards = commonObjectiveCards;
-    }
-
-    public Deck<PlayableCard> getInitialCardsDeck() {
-        return initialCardsDeck;
     }
 
     public Deck<PlayableCard> getResourceCardsDeck() {
@@ -377,6 +364,8 @@ public class Game extends GameObservable implements PlayerObserver {
             List<ObjectiveCard> secretObjectiveCards = new ArrayList<>();
             secretObjectiveCards.add(objectiveCardsDeck.drawACard());
             secretObjectiveCards.add(objectiveCardsDeck.drawACard());
+            for (ObjectiveCard objectiveCard : secretObjectiveCards)
+                objectiveCard.flip();
             player.setupSecretObjectiveCards(secretObjectiveCards);
         }
         notifyObservers(this, GameEvent.SETUP_2);

@@ -8,22 +8,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public abstract class Card {
 
     private final String cardID;
-    public boolean showingFront;
 
 
     @JsonCreator
     public Card(@JsonProperty("cardID") String cardID){
         this.cardID = cardID;
-        showingFront = false;
     }
 
 
     public String getCardID(){
         return cardID;
-    }
-
-    public boolean isShowingFront() {
-        return showingFront;
     }
 
     public abstract void flip();

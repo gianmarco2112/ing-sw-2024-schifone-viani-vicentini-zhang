@@ -19,16 +19,12 @@ public class Player extends PlayerObservable {
 
 
     public record Immutable(String nickname, Color color, TurnStatus turnStatus,
-                            PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> hand,
-                            PlayerArea.Immutable playerArea) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 5L; }
+                            PlayableCard.Immutable initialCard, List<ObjectiveCard.Immutable> secretObjectiveCards,List<PlayableCard.Immutable> hand,
+                            PlayerArea.Immutable playerArea) {}
 
     public record ImmutableHidden(String nickname, Color color, TurnStatus turnStatus,
                                   PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> hand,
-                            PlayerArea.ImmutableHidden playerArea) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 7L; }
+                            PlayerArea.ImmutableHidden playerArea) {}
 
     public Player.Immutable getImmutablePlayer(){
 
@@ -36,12 +32,17 @@ public class Player extends PlayerObservable {
         if (initialCard != null)
             immInitialCard = initialCard.getImmutablePlayableCard();
 
+        List<ObjectiveCard.Immutable> immSecretObjCards = new ArrayList<>();
+        for (ObjectiveCard card : secretObjectiveCards)
+            if (card != null)
+                immSecretObjCards.add(card.getImmutableObjectiveCard());
+
         List<PlayableCard.Immutable> immutableHand = new ArrayList<>();
         for (PlayableCard playableCard : hand)
             if (playableCard != null)
                 immutableHand.add(playableCard.getImmutablePlayableCard());
 
-        return new Player.Immutable(nickname, color, turnStatus, immInitialCard,
+        return new Player.Immutable(nickname, color, turnStatus, immInitialCard, immSecretObjCards,
                 immutableHand, playerArea.getImmutablePlayerArea());
     }
 
@@ -107,6 +108,7 @@ public class Player extends PlayerObservable {
         this.hand = new ArrayList<>();
         this.turnStatus = TurnStatus.PLAY;
         this.color = null;
+        secretObjectiveCards = new ArrayList<>();
     }
 
 
@@ -140,6 +142,14 @@ public class Player extends PlayerObservable {
         playerArea.setInitialCard(initialCard);
         initialCard = null;
         notifyObservers(this, PlayerEvent.INITIAL_CARD_PLAYED);
+    }
+
+    public List<ObjectiveCard> getSecretObjectiveCards() {
+        return secretObjectiveCards;
+    }
+    public void chooseObjectiveCard(ObjectiveCard objectiveCard) {
+        playerArea.setObjectiveCard(objectiveCard);
+        notifyObservers(this, PlayerEvent.OBJECTIVE_CARD_CHOSEN);
     }
 
     public TurnStatus getTurnStatus() {

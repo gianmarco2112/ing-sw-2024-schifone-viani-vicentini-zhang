@@ -112,6 +112,11 @@ public class SetupGraphicUI extends SetupUI {
 
     }
 
+    @Override
+    public void updateObjectiveCardChoice(Game.Immutable immGame) {
+
+    }
+
     /*@Override
     public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
 

@@ -21,16 +21,13 @@ public class PlayerArea {
     public record Immutable(@JsonDeserialize(keyUsing = ListKeyDeserializer.class)Map<List<Integer>,PlayableCard.Immutable> area,
                             Map<ExtremeCoordinate, Integer> extremeCoordinates,
                             Map<Symbol, Integer> numOfSymbols, ObjectiveCard.Immutable objectiveCard,
-                            int points, int extraPoints) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 6L; }
+                            int points, int extraPoints) {}
 
     public record ImmutableHidden(@JsonDeserialize(keyUsing = ListKeyDeserializer.class)Map<List<Integer>,PlayableCard.Immutable> area,
                             Map<ExtremeCoordinate, Integer> extremeCoordinates,
                             Map<Symbol, Integer> numOfSymbols,
-                            int points) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 8L; }
+                            int points) {}
+
 
     public PlayerArea.Immutable getImmutablePlayerArea(){
 

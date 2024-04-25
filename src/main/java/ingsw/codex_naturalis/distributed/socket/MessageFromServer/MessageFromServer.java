@@ -17,7 +17,8 @@ import java.io.BufferedReader;
         @JsonSubTypes.Type(value = STCUIUpdate.class, name = "STCUIUpdate"),
         @JsonSubTypes.Type(value = STCInitialCardUpdate.class, name = "STCInitialCardUpdate"),
         @JsonSubTypes.Type(value = STCColorUpdate.class, name = "STCColorUpdate"),
-        @JsonSubTypes.Type(value = STCSetupUIErrorReport.class, name = "STCSetupUIErrorReport")
+        @JsonSubTypes.Type(value = STCSetupUIErrorReport.class, name = "STCSetupUIErrorReport"),
+        @JsonSubTypes.Type(value = STCObjectiveCardChoiceUpdate.class, name = "STCObjectiveCardChoiceUpdate"),
 })
 public interface MessageFromServer {
 

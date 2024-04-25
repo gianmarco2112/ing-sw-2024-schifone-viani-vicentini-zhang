@@ -21,10 +21,9 @@ public interface Server extends Remote {
 
 
     void ctsUpdateReady(Client client) throws RemoteException;
-
     void ctsUpdateInitialCard(Client client, String jsonInitialCardEvent) throws RemoteException;
-
     void ctsUpdateColor(Client client, String jsonColor) throws RemoteException;
+    void ctsUpdateObjectiveCardChoice(Client client, String jsonObjectiveCardChoice) throws RemoteException;
 
 
     void ctsUpdateFlipCard(Client client, FlipCard flipCard) throws RemoteException;

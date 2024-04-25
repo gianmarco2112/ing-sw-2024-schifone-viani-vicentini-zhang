@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.view.setupPhase;
 import ingsw.codex_naturalis.controller.setupPhase.SetupObserver;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
+import ingsw.codex_naturalis.events.setupPhase.ObjectiveCardChoice;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -21,10 +21,7 @@ public class PlayableCard extends Card {
         return new PlayableCard.Immutable(getCardID(), false, playerAreaCardToString(kingdom), back.handCardToString(kingdom));
     }
 
-    public record Immutable(String cardID, boolean showingFront, String description, String handCard) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 2L;
-    }
+    public record Immutable(String cardID, boolean showingFront, String description, String handCard) {}
 
 
 
@@ -49,6 +46,8 @@ public class PlayableCard extends Card {
      */
     private PlayableSide currentPlayableSide;
 
+    private boolean showingFront;
+
     //---------------------------------------------------------------------------------
     @JsonCreator
     public PlayableCard(
@@ -63,6 +62,7 @@ public class PlayableCard extends Card {
         this.front = front;
         this.back = back;
         currentPlayableSide = back;
+        showingFront = false;
     }
 
     //---------------------------------------------------------------------------------

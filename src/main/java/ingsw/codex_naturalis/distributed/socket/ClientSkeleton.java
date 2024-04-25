@@ -88,7 +88,7 @@ public class ClientSkeleton implements Client {
     }
 
     @Override
-    public void stcUpdateInitialCard(String jsonImmGame, String jsonInitialCardEvent) {
+    public void stcUpdateSetupUIInitialCard(String jsonImmGame, String jsonInitialCardEvent) {
         try {
             MessageFromServer message = new STCInitialCardUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
@@ -102,7 +102,7 @@ public class ClientSkeleton implements Client {
     }
 
     @Override
-    public void stcUpdateColor(String jsonColor) throws RemoteException {
+    public void stcUpdateSetupUIColor(String jsonColor) throws RemoteException {
         try {
             MessageFromServer message = new STCColorUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
@@ -128,7 +128,7 @@ public class ClientSkeleton implements Client {
     }
 
     @Override
-    public void stcUpdate(String jsonImmGame, String jsonGameEvent) {
+    public void stcUpdateSetupUI(String jsonImmGame, String jsonGameEvent) {
         try {
             MessageFromServer message = new STCSetupUpdate();
             String jsonMessage = objectMapper.writeValueAsString(message);
@@ -139,6 +139,24 @@ public class ClientSkeleton implements Client {
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
+    }
+
+    @Override
+    public void stcUpdateSetupUIObjectiveCardChoice(String jsonImmGame) throws RemoteException {
+        try {
+            MessageFromServer message = new STCObjectiveCardChoiceUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(jsonImmGame);
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void stcUpdateGameplayUIPlayerOrder(String jsonImmGame) throws RemoteException {
+
     }
 
 

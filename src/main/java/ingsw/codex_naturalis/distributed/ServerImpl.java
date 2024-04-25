@@ -7,6 +7,7 @@ import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayController;
 import ingsw.codex_naturalis.controller.setupPhase.SetupController;
+import ingsw.codex_naturalis.events.setupPhase.ObjectiveCardChoice;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.util.GameEvent;
@@ -331,8 +332,18 @@ public class ServerImpl implements Server, GameObserver {
         });
     }
 
-
-
+    @Override
+    public void ctsUpdateObjectiveCardChoice(Client client, String jsonObjectiveCardChoice) throws RemoteException {
+        executorService.submit( () -> {
+            try {
+                ObjectiveCardChoice objectiveCardChoice = objectMapper.readValue(jsonObjectiveCardChoice, ObjectiveCardChoice.class);
+                GameManagement<SetupController> gameManagement = findGameManagementByClient(client);
+                gameManagement.getController().updateObjectiveCard(gameManagement.nicknameMap.getNickname(client), objectiveCardChoice);
+            } catch (JsonProcessingException e){
+                System.err.println("Error while processing json");
+            }
+        });
+    }
 
 
     @Override
@@ -363,10 +374,24 @@ public class ServerImpl implements Server, GameObserver {
 
         GameManagement<SetupController> gameManagement = findSetupGameManagementByGame(game);
         List<Client> clients = gameManagement.getViews();
+
+        if (gameEvent == GameEvent.GAME_STATUS_CHANGED) {
+            for (Client client : clients) {
+                Game.Immutable immGame = game.getImmutableGame(gameManagement.nicknameMap.getNickname(client));
+                try {
+                    client.stcUpdateUI(objectMapper.writeValueAsString(UI.GAMEPLAY));
+                    client.stcUpdateGameplayUIPlayerOrder(objectMapper.writeValueAsString(immGame));
+                } catch (RemoteException | JsonProcessingException e) {
+                    System.err.println("Error while updating client");
+                }
+            }
+            return;
+        }
+
         for (Client client : clients) {
             Game.Immutable immGame = game.getImmutableGame(gameManagement.nicknameMap.getNickname(client));
             try {
-                client.stcUpdate(objectMapper.writeValueAsString(immGame), objectMapper.writeValueAsString(gameEvent));
+                client.stcUpdateSetupUI(objectMapper.writeValueAsString(immGame), objectMapper.writeValueAsString(gameEvent));
             } catch (RemoteException | JsonProcessingException e){
                 System.err.println("Error while updating client");
             }
@@ -380,7 +405,21 @@ public class ServerImpl implements Server, GameObserver {
             case INITIAL_CARD_FLIPPED -> initialCardCase(game, playerWhoUpdated, InitialCardEvent.FLIP);
             case INITIAL_CARD_PLAYED -> initialCardCase(game, playerWhoUpdated, InitialCardEvent.PLAY);
             case COLOR_SETUP -> colorCase(game, playerWhoUpdated);
+            case OBJECTIVE_CARD_CHOSEN -> objectiveCardCase(game, playerWhoUpdated);
         }
+    }
+
+    private void objectiveCardCase(Game game, Player playerWhoUpdated) {
+
+        GameManagement<SetupController> gameManagement = findSetupGameManagementByGame(game);
+        Client client = gameManagement.nicknameMap.getClient(playerWhoUpdated.getNickname());
+        Game.Immutable immGame = game.getImmutableGame(playerWhoUpdated.getNickname());
+        try {
+            client.stcUpdateSetupUIObjectiveCardChoice(objectMapper.writeValueAsString(immGame));
+        } catch (RemoteException | JsonProcessingException e) {
+            System.err.println("Error while updating client");
+        }
+
     }
 
     private void colorCase(Game game, Player playerWhoUpdated) {
@@ -389,7 +428,7 @@ public class ServerImpl implements Server, GameObserver {
         Client client = gameManagement.nicknameMap.getClient(playerWhoUpdated.getNickname());
         Player player = game.getPlayerByNickname(gameManagement.nicknameMap.getNickname(client));
         try {
-            client.stcUpdateColor(objectMapper.writeValueAsString(player.getColor()));
+            client.stcUpdateSetupUIColor(objectMapper.writeValueAsString(player.getColor()));
         } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating client");
         }
@@ -405,7 +444,7 @@ public class ServerImpl implements Server, GameObserver {
         }
         Game.Immutable immGame = game.getImmutableGame(playerWhoUpdated.getNickname());
         try {
-            client.stcUpdateInitialCard(objectMapper.writeValueAsString(immGame), objectMapper.writeValueAsString(initialCardEvent));
+            client.stcUpdateSetupUIInitialCard(objectMapper.writeValueAsString(immGame), objectMapper.writeValueAsString(initialCardEvent));
         } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating client");
         }

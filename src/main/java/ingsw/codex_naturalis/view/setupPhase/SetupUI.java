@@ -21,4 +21,5 @@ public abstract class SetupUI extends SetupObservable implements Runnable {
 
     public abstract void update(Game.Immutable immGame, GameEvent gameEvent);
 
+    public abstract void updateObjectiveCardChoice(Game.Immutable immGame);
 }

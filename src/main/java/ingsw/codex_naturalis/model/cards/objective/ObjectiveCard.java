@@ -34,6 +34,8 @@ import java.util.List;
 })
 public abstract class ObjectiveCard extends Card {
 
+    private boolean showingFront;
+
     public ObjectiveCard.Immutable getImmutableObjectiveCard(){
         return new ObjectiveCard.Immutable(getCardID(), showingFront, cardToString());
     }
@@ -65,6 +67,7 @@ public abstract class ObjectiveCard extends Card {
             @JsonProperty("points") int points){
         super(cardID);
         this.points = points;
+        showingFront = false;
     }
 
 

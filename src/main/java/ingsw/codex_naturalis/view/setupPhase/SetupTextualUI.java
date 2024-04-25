@@ -2,10 +2,11 @@ package ingsw.codex_naturalis.view.setupPhase;
 
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
+import ingsw.codex_naturalis.events.setupPhase.ObjectiveCardChoice;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.util.GameEvent;
-import ingsw.codex_naturalis.view.gameplayPhase.GameplayTextualUI;
+import ingsw.codex_naturalis.view.cardsToString;
 
 import java.io.IOException;
 import java.util.*;
@@ -60,7 +61,9 @@ public class SetupTextualUI extends SetupUI {
         choosingColor();
 
         //the player chooses his objective card
-        //choosingObjectiveCard();
+        choosingObjectiveCard();
+        waitForUpdate();
+        System.out.println("Please wait for the other players to make their choice");
 
     }
 
@@ -126,7 +129,6 @@ public class SetupTextualUI extends SetupUI {
         }
 
     }
-
     private void getInitialCardOption() {
 
         String input = s.next();
@@ -151,7 +153,6 @@ public class SetupTextualUI extends SetupUI {
         }
 
     }
-
     private void askInitialCardOption() {
         System.out.println("""
                 
@@ -168,8 +169,6 @@ public class SetupTextualUI extends SetupUI {
                 
                 """);
     }
-
-
 
     private void choosingColor() {
 
@@ -237,21 +236,47 @@ public class SetupTextualUI extends SetupUI {
 
     }
 
+    private void choosingObjectiveCard() {
 
+        askObjectiveCardOption();
+        getObjectiveCardOption();
 
+    }
+    private void askObjectiveCardOption() {
 
+        System.out.println("""
+                
+                
+                
+                ----------------------------------------
+                Please choose your secret objective card
+                
+                (1) Objective card 1
+                (2) Objective card 2
+                """);
+        System.out.println(cardsToString.listOfObjectiveCardsToString(game.player().secretObjectiveCards()));
+        System.out.println("----------------------------------------");
 
-   /* private void choosingObjectiveCard() {
+    }
+    private void getObjectiveCardOption() {
 
-        while (true) {
-
-            ObjectiveCardChoice objectiveCardChoice = askObjectiveCardChoice();
-            notifyObjectiveCard(objectiveCardChoice);
-            return;
-
+        String input = s.next();
+        try {
+            int option = Integer.parseInt(input);
+            switch (option) {
+                case 1 -> notifyObjectiveCardChoice(ObjectiveCardChoice.CHOICE_1);
+                case 2 -> notifyObjectiveCardChoice(ObjectiveCardChoice.CHOICE_2);
+                default -> {
+                    printErrInvalidOption();
+                    getObjectiveCardOption();
+                }
+            }
+            setState(State.WAITING_FOR_UPDATE);
+        } catch (NumberFormatException e) {
+            printErrInvalidOption();
         }
-    }*/
 
+    }
 
 
     @Override
@@ -300,6 +325,29 @@ public class SetupTextualUI extends SetupUI {
         }
     }
 
+    @Override
+    public void updateObjectiveCardChoice(Game.Immutable immGame) {
+        this.game = immGame;
+
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
+
+        showOtherPlayers();
+
+        showResourceAndGoldDecks();
+
+        showCommonObjectiveCards();
+
+        showYourPlayArea();
+
+        System.out.println(game.player().playerArea().objectiveCard().card());
+
+        showYourHand();
+
+        setState(State.RUNNING);
+    }
+
+
+
     private void showSetup1() {
 
         showResourceAndGoldDecks();
@@ -334,13 +382,13 @@ public class SetupTextualUI extends SetupUI {
             System.out.println("Points: " + player.playerArea().points());
             System.out.println("Resources and objects: " + player.playerArea().numOfSymbols().toString());
             System.out.println(player.playerArea().area().get(List.of(0,0)).description());
-            System.out.println(GameplayTextualUI.getHandCardsToString(player.hand()));
-            System.out.println("--------------------------------------------------------------");
+            System.out.println(cardsToString.listOfPlayableCardsToString(player.hand()));
+            System.out.println("////////////////////////////////////////////////////////////////");
         }
     }
 
     private void showYourPlayArea(){
-        System.out.println("--------------------------------------------------------------");
+        System.out.println("////////////////////////////////////////////////////////////////");
         Color color = game.player().color();
         System.out.println(color.getColorCode() + "\nYour play area" + "\u001B[0m");
         System.out.println("Points: " + game.player().playerArea().points());
@@ -350,21 +398,21 @@ public class SetupTextualUI extends SetupUI {
 
     private void showResourceAndGoldDecks() {
         System.out.println("\n\nResource cards");
-        System.out.println(GameplayTextualUI.getHandCardsToString(game.resourceCards()));
+        System.out.println(cardsToString.listOfPlayableCardsToString(game.resourceCards()));
 
         System.out.println("\nGold cards");
-        System.out.println(GameplayTextualUI.getHandCardsToString(game.goldCards()));
+        System.out.println(cardsToString.listOfPlayableCardsToString(game.goldCards()));
     }
 
     private void showCommonObjectiveCards() {
 
-        System.out.println("\nCommon objective cards\n");
-        System.out.println(GameplayTextualUI.commonObjectiveCardsToString(game.commonObjectiveCards()));
+        System.out.println("\nCommon objective cards");
+        System.out.println(cardsToString.listOfObjectiveCardsToString(game.commonObjectiveCards()));
 
     }
 
     private void showYourHand() {
-        System.out.println(GameplayTextualUI.getHandCardsToString(game.player().hand()));
+        System.out.println(cardsToString.listOfPlayableCardsToString(game.player().hand()));
     }
 
 }

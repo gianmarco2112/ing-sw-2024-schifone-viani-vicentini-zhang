@@ -1,6 +1,6 @@
 package ingsw.codex_naturalis.view.lobbyPhase;
 
-import ingsw.codex_naturalis.distributed.LobbyObserver;
+import ingsw.codex_naturalis.distributed.util.LobbyObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +34,13 @@ public class LobbyObservable {
 
     public void notifyNewGame(int numOfPlayers, String nickname) {
         for (LobbyObserver o : obs){
-            o.updateNewGame(numOfPlayers, nickname);
+            o.ctsUpdateNewGame(numOfPlayers, nickname);
         }
     }
 
     public void notifyGameToAccess(int gameID, String nickname) {
         for (LobbyObserver o : obs){
-            o.updateGameToAccess(gameID, nickname);
+            o.ctsUpdateGameToAccess(gameID, nickname);
         }
     }
 

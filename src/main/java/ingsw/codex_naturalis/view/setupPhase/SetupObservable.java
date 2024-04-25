@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.view.setupPhase;
 import ingsw.codex_naturalis.controller.setupPhase.SetupObserver;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
+import ingsw.codex_naturalis.events.setupPhase.ObjectiveCardChoice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,25 +34,25 @@ public class SetupObservable {
 
     public void notifyReady() {
         for (SetupObserver o : obs){
-            o.updateReady();
+            o.ctsUpdateReady();
         }
     }
 
     public void notifyInitialCard(InitialCardEvent initialCardEvent) {
         for (SetupObserver o : obs){
-            o.updateInitialCard(initialCardEvent);
+            o.ctsUpdateInitialCard(initialCardEvent);
         }
     }
 
     public void notifyColor(Color color) {
         for (SetupObserver o : obs){
-            o.updateColor(color);
+            o.ctsUpdateColor(color);
         }
     }
 
     public void notifyObjectiveCardChoice(ObjectiveCardChoice objectiveCardChoice) {
         for (SetupObserver o : obs){
-            o.updateObjectiveCardChoice(objectiveCardChoice);
+            o.ctsUpdateObjectiveCardChoice(objectiveCardChoice);
         }
     }
 

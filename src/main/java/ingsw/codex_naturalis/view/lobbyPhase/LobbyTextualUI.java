@@ -88,8 +88,10 @@ public class LobbyTextualUI extends LobbyUI {
     }
     private void getGameAccessOption() {
 
+        String input;
+        input = s.next();
         try {
-            int option = s.nextInt();
+            int option = Integer.parseInt(input);
             switch (option) {
                 case 1 -> newGameAccess();
                 case 2 -> existingGameAccess();
@@ -98,7 +100,7 @@ public class LobbyTextualUI extends LobbyUI {
                     getGameAccessOption();
                 }
             }
-        } catch (InputMismatchException e) {
+        } catch (NumberFormatException e) {
             printErrInvalidOption();
         }
 
@@ -188,7 +190,7 @@ public class LobbyTextualUI extends LobbyUI {
         System.out.println("""
                 
                 
-                ---------------------------------
+                -----------------------------------------------------
                 Which game do you want to access?
                 
                 (/) Back
@@ -199,7 +201,7 @@ public class LobbyTextualUI extends LobbyUI {
                     + "    Current number of players connected: " + entry.getValue().currentNumOfPlayers()
                     + "    Max number of players: " + entry.getValue().maxNumOfPlayers());
         }
-        System.out.println("---------------------------------\n\n");
+        System.out.println("-----------------------------------------------------\n\n");
 
     }
     private int getGameToAccess() {

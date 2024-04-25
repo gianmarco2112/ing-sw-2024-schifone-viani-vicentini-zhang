@@ -18,13 +18,9 @@ public class AppServer {
 
         Server server = new ServerImpl();
 
-        new Thread( () -> {
-            startRMIProtocol(server);
-        }).start();
+        new Thread( () -> startRMIProtocol(server)).start();
 
-        new Thread( () -> {
-            startSocketsProtocol(server);
-        }).start();
+        new Thread( () -> startSocketsProtocol(server)).start();
 
     }
 

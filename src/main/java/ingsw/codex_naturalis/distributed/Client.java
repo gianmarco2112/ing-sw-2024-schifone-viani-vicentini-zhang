@@ -1,23 +1,27 @@
 package ingsw.codex_naturalis.distributed;
 
 
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.player.Player;
-import ingsw.codex_naturalis.view.UI;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.List;
 
 public interface Client extends Remote {
 
-    void updateUI(UI ui) throws RemoteException;
+    void stcUpdateUI(String jsonUI) throws RemoteException;
 
-    void updateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException;
+
+    void stcUpdateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException;
     void reportLobbyUIError(String error) throws RemoteException;
 
-    void updateGameStartingUIGameID(int gameID) throws RemoteException;
 
-    void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) throws RemoteException;
+    void stcUpdateGameStartingUIGameID(int gameID) throws RemoteException;
 
+
+    void stcUpdateSetupUIInitialCard(String jsonImmGame, String jsonInitialCardEvent) throws RemoteException;
+    void stcUpdateSetupUIColor(String jsonColor) throws RemoteException;
+    void reportSetupUIError(String message) throws RemoteException;
+    void stcUpdateSetupUI(String jsonImmGame, String jsonGameEvent) throws RemoteException;
+    void stcUpdateSetupUIObjectiveCardChoice(String jsonImmGame) throws RemoteException;
+
+
+    void stcUpdateGameplayUIPlayerOrder(String jsonImmGame) throws RemoteException;
 }

@@ -1,13 +1,13 @@
 package ingsw.codex_naturalis.model.player;
 
-import ingsw.codex_naturalis.model.cards.Card;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ingsw.codex_naturalis.distributed.util.ListKeyDeserializer;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.enumerations.ExtremeCoordinate;
 import ingsw.codex_naturalis.enumerations.Symbol;
-import ingsw.codex_naturalis.model.observerObservable.Event;
-import ingsw.codex_naturalis.model.observerObservable.Observable;
+import ingsw.codex_naturalis.model.cards.objective.SymbolsObjectiveCard;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -16,30 +16,32 @@ import java.util.*;
 /**
  * The player area
  */
-public class PlayerArea extends Observable {
+public class PlayerArea {
 
-    public record Immutable(Map<List<Integer>,PlayableCard.Immutable> area,
+    public record Immutable(@JsonDeserialize(keyUsing = ListKeyDeserializer.class)Map<List<Integer>,PlayableCard.Immutable> area,
                             Map<ExtremeCoordinate, Integer> extremeCoordinates,
                             Map<Symbol, Integer> numOfSymbols, ObjectiveCard.Immutable objectiveCard,
-                            int points, int extraPoints) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 6L; }
+                            int points, int extraPoints) {}
 
-    public record ImmutableHidden(Map<List<Integer>,PlayableCard.Immutable> area,
+    public record ImmutableHidden(@JsonDeserialize(keyUsing = ListKeyDeserializer.class)Map<List<Integer>,PlayableCard.Immutable> area,
                             Map<ExtremeCoordinate, Integer> extremeCoordinates,
                             Map<Symbol, Integer> numOfSymbols,
-                            int points) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 8L; }
+                            int points) {}
+
 
     public PlayerArea.Immutable getImmutablePlayerArea(){
 
+        ObjectiveCard.Immutable immObjectiveCard = null;
+        if (objectiveCard != null)
+            immObjectiveCard = objectiveCard.getImmutableObjectiveCard();
+
         Map<List<Integer>, PlayableCard.Immutable> immutableArea = new LinkedHashMap<>();
         for (List<Integer> key : area.keySet()) {
-            immutableArea.put(key,area.get(key).getImmutablePlayableCard());
+            immutableArea.put(key, area.get(key).getImmutablePlayableCard());
         }
+
         return new PlayerArea.Immutable(immutableArea, extremeCoordinates, numOfSymbols,
-                objectiveCard.getImmutableObjectiveCard(), points, extraPoints);
+                immObjectiveCard, points, extraPoints);
 
     }
 
@@ -47,7 +49,7 @@ public class PlayerArea extends Observable {
 
         Map<List<Integer>, PlayableCard.Immutable> immutableArea = new LinkedHashMap<>();
         for (List<Integer> key : area.keySet()) {
-            immutableArea.replace(key, area.get(key).getImmutablePlayableCard());
+            immutableArea.put(key, area.get(key).getImmutablePlayableCard());
         }
         return new PlayerArea.ImmutableHidden(immutableArea, extremeCoordinates, numOfSymbols, points);
 
@@ -89,7 +91,7 @@ public class PlayerArea extends Observable {
      * Constructor
      */
     public PlayerArea(){
-        this.objectiveCard = null;
+        this.objectiveCard = new SymbolsObjectiveCard("aaa", 1, new HashMap<>());
         this.area = new LinkedHashMap<>();
         this.points = 0;
         this.extraPoints = 0;
@@ -196,18 +198,19 @@ public class PlayerArea extends Observable {
      * @param symbol Symbol
      */
     public void decrNumOfSymbol(Symbol symbol){
-        numOfSymbols.replace(symbol, getNumOfSymbol(symbol)-1);
+        numOfSymbols.put(symbol, getNumOfSymbol(symbol)-1);
     }
     /**
      * Increases by one the count of the given symbol
      * @param symbol Symbol
      */
     public void incrNumOfSymbol(Symbol symbol){
-        numOfSymbols.replace(symbol, getNumOfSymbol(symbol)+1);
+        numOfSymbols.put(symbol, getNumOfSymbol(symbol)+1);
     }
     public void setInitialCard(PlayableCard initialCard) {
 
         area.put(new ArrayList<>(List.of(0,0)), initialCard);
+        initialCard.play(this, 0, 0);
 
     }
     /**
@@ -229,7 +232,7 @@ public class PlayerArea extends Observable {
 
         card.play(this, x, y);
 
-        //notifyObservers(Event.PLAYER_AREA_CHANGED, nickname);
+        //notifyObservers(GameEvent.PLAYER_AREA_CHANGED, nickname);
     }
     /**
      * Method to get the coordinates of a card

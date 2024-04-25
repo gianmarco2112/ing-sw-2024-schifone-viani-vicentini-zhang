@@ -1,11 +1,11 @@
 package ingsw.codex_naturalis.model.player;
 
-import ingsw.codex_naturalis.model.cards.Card;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.enumerations.TurnStatus;
-import ingsw.codex_naturalis.model.observerObservable.Event;
-import ingsw.codex_naturalis.model.observerObservable.Observable;
+import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
+import ingsw.codex_naturalis.model.util.PlayerEvent;
+import ingsw.codex_naturalis.model.util.PlayerObservable;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,35 +14,49 @@ import java.util.*;
 /**
  * Player class
  */
-public class Player extends Observable {
+public class Player extends PlayerObservable {
+
+
 
     public record Immutable(String nickname, Color color, TurnStatus turnStatus,
-                            PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> hand,
-                            PlayerArea.Immutable playerArea) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 5L; }
+                            PlayableCard.Immutable initialCard, List<ObjectiveCard.Immutable> secretObjectiveCards,List<PlayableCard.Immutable> hand,
+                            PlayerArea.Immutable playerArea) {}
 
     public record ImmutableHidden(String nickname, Color color, TurnStatus turnStatus,
                                   PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> hand,
-                            PlayerArea.ImmutableHidden playerArea) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 7L; }
+                            PlayerArea.ImmutableHidden playerArea) {}
 
     public Player.Immutable getImmutablePlayer(){
 
+        PlayableCard.Immutable immInitialCard = null;
+        if (initialCard != null)
+            immInitialCard = initialCard.getImmutablePlayableCard();
+
+        List<ObjectiveCard.Immutable> immSecretObjCards = new ArrayList<>();
+        for (ObjectiveCard card : secretObjectiveCards)
+            if (card != null)
+                immSecretObjCards.add(card.getImmutableObjectiveCard());
+
         List<PlayableCard.Immutable> immutableHand = new ArrayList<>();
         for (PlayableCard playableCard : hand)
-            immutableHand.add(playableCard.getImmutablePlayableCard());
-        return new Player.Immutable(nickname, color, turnStatus, initialCard.getImmutablePlayableCard(),
+            if (playableCard != null)
+                immutableHand.add(playableCard.getImmutablePlayableCard());
+
+        return new Player.Immutable(nickname, color, turnStatus, immInitialCard, immSecretObjCards,
                 immutableHand, playerArea.getImmutablePlayerArea());
     }
 
-    public Player.ImmutableHidden getImmutableHiddenPlayer(){
+    public Player.ImmutableHidden getImmutableHiddenPlayer() {
+
+        PlayableCard.Immutable immInitialCard = null;
+        if (initialCard != null)
+            immInitialCard = initialCard.getImmutableHiddenPlayableCard();
 
         List<PlayableCard.Immutable> immutableHiddenHand = new ArrayList<>();
         for (PlayableCard playableCard : hand)
             immutableHiddenHand.add(playableCard.getImmutableHiddenPlayableCard());
-        return new Player.ImmutableHidden(nickname, color, turnStatus, initialCard.getImmutablePlayableCard(),
+
+        return new Player.ImmutableHidden(nickname, color, turnStatus, immInitialCard,
                     immutableHiddenHand, playerArea.getImmutableHiddenPlayerArea());
     }
 
@@ -74,6 +88,8 @@ public class Player extends Observable {
      */
     private List<PlayableCard> hand;
 
+    private List<ObjectiveCard> secretObjectiveCards;
+
     /**
      * Player area
      */
@@ -91,13 +107,18 @@ public class Player extends Observable {
         this.initialCard = null;
         this.hand = new ArrayList<>();
         this.turnStatus = TurnStatus.PLAY;
+        this.color = null;
+        secretObjectiveCards = new ArrayList<>();
     }
 
 
 
     public void flip(PlayableCard cardToFlip) {
         cardToFlip.flip();
-        //notifyObservers(this, Event.INITIAL_CARD_FLIPPED, nickname);
+        if (initialCard != null)
+            notifyObservers(this, PlayerEvent.INITIAL_CARD_FLIPPED);
+        else
+            notifyObservers(this, PlayerEvent.HAND_CARD_FLIPPED);
     }
 
     /**
@@ -120,6 +141,15 @@ public class Player extends Observable {
     public void playInitialCard(){
         playerArea.setInitialCard(initialCard);
         initialCard = null;
+        notifyObservers(this, PlayerEvent.INITIAL_CARD_PLAYED);
+    }
+
+    public List<ObjectiveCard> getSecretObjectiveCards() {
+        return secretObjectiveCards;
+    }
+    public void chooseObjectiveCard(ObjectiveCard objectiveCard) {
+        playerArea.setObjectiveCard(objectiveCard);
+        notifyObservers(this, PlayerEvent.OBJECTIVE_CARD_CHOSEN);
     }
 
     public TurnStatus getTurnStatus() {
@@ -127,7 +157,7 @@ public class Player extends Observable {
     }
     public void setTurnStatus(TurnStatus turnStatus) {
         this.turnStatus = turnStatus;
-        //notifyObservers(Event.TURN_STATUS_CHANGED, nickname);
+        //notifyObservers(GameEvent.TURN_STATUS_CHANGED, nickname);
     }
 
     public PlayerArea getPlayerArea(){
@@ -139,7 +169,7 @@ public class Player extends Observable {
     }
     public void setColor(Color color) {
         this.color = color;
-        //notifyObservers(Event.COLOR_SETUP, "");
+        notifyObservers(this, PlayerEvent.COLOR_SETUP);
     }
 
     public String getNickname() {
@@ -152,11 +182,15 @@ public class Player extends Observable {
 
     public void setHand(List<PlayableCard> hand){
         this.hand = hand;
-        //notifyObservers(Event.HAND_CHANGED, nickname);
+        //notifyObservers(GameEvent.HAND_CHANGED, nickname);
     }
 
     public void setupHand(List<PlayableCard> hand){
         this.hand = hand;
+    }
+
+    public void setupSecretObjectiveCards(List<ObjectiveCard> secretObjectiveCards) {
+        this.secretObjectiveCards = secretObjectiveCards;
     }
 
 

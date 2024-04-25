@@ -2,12 +2,15 @@ package ingsw.codex_naturalis.controller.setupPhase;
 
 import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.enumerations.Color;
+import ingsw.codex_naturalis.enumerations.GameStatus;
+import ingsw.codex_naturalis.events.setupPhase.ObjectiveCardChoice;
+import ingsw.codex_naturalis.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.player.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SetupController {
@@ -37,7 +40,7 @@ public class SetupController {
         }
     }
 
-    public void updateInitialCard(String nickname, InitialCardEvent initialCardEvent) {
+    public synchronized void updateInitialCard(String nickname, InitialCardEvent initialCardEvent) {
         Player player = model.getPlayerByNickname(nickname);
         PlayableCard initialCard = player.getInitialCard();
         switch (initialCardEvent) {
@@ -47,24 +50,38 @@ public class SetupController {
 
     }
 
-
-
-
-
-    public void updateColor(Client client, Color color) {
-        /*readyClients++;
-        Player player = null;
-        try {
-            player = getPlayerByNickname(client.getNickname());
-        } catch (RemoteException e) {
-            System.err.println("Error while getting nickname");
-        }
-        model.setColorToPlayer(color, player);
-        if (readyClients == model.getNumOfPlayers()) {
+    public synchronized void updateColor(String nickname, Color color) throws ColorAlreadyChosenException{
+        Player player = model.getPlayerByNickname(nickname);
+        for (Player p : model.getPlayerOrder())
+            if (p.getColor() == color)
+                throw new ColorAlreadyChosenException();
+        player.setColor(color);
+        readyPlayers++;
+        if (readyPlayers == model.getNumOfPlayers()) {
             model.setupHands();
             model.setupCommonObjectiveCards();
-            readyClients = 0;
-        }*/
+            model.setupSecretObjectiveCards();
+            readyPlayers = 0;
+        }
     }
 
+    public synchronized void updateObjectiveCard(String nickname, ObjectiveCardChoice objectiveCardChoice) {
+        Player player = model.getPlayerByNickname(nickname);
+        ObjectiveCard objectiveCard;
+        switch (objectiveCardChoice) {
+            case CHOICE_1 -> {
+                objectiveCard = player.getSecretObjectiveCards().removeFirst();
+                model.getObjectiveCardsDeck().discardACard(player.getSecretObjectiveCards().removeFirst());
+            }
+            case CHOICE_2 -> {
+                objectiveCard = player.getSecretObjectiveCards().removeLast();
+                model.getObjectiveCardsDeck().discardACard(player.getSecretObjectiveCards().removeFirst());
+            }
+            default -> { return; }
+        }
+        player.chooseObjectiveCard(objectiveCard);
+        readyPlayers++;
+        if (readyPlayers == model.getPlayerOrder().size())
+            model.setGameStatus(GameStatus.GAMEPLAY);
+    }
 }

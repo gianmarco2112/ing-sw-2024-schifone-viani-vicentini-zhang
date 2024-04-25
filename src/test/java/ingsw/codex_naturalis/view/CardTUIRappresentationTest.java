@@ -7,7 +7,6 @@ import ingsw.codex_naturalis.model.DefaultValue;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.player.PlayerArea;
-import ingsw.codex_naturalis.view.gameplayPhase.GameplayTextualUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -119,7 +118,7 @@ public class CardTUIRappresentationTest {
         cards.add(goldCardsDeck.drawACard("test").getImmutablePlayableCard());
         cards.add(initialCardsDeck.drawACard("test").getImmutablePlayableCard());
         cards.add(initialCardsDeck.drawACard("test").getImmutablePlayableCard());
-        System.out.println(GameplayTextualUI.getHandCardsToString(cards));
+        System.out.println(cardsToString.listOfPlayableCardsToString(cards));
     }
 
     @Test
@@ -162,6 +161,6 @@ public class CardTUIRappresentationTest {
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),2,-2,"test");
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard("test"),3,-3,"test");
 
-        System.out.println(GameplayTextualUI.playerAreaToString(playerArea.getImmutablePlayerArea()));
+        System.out.println(cardsToString.playerAreaToString(playerArea.getImmutablePlayerArea()));
     }
 }

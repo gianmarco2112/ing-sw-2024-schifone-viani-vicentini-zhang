@@ -7,9 +7,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.InputMismatchException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class AppClient {
@@ -41,7 +38,7 @@ public class AppClient {
                         try {
                             serverStub.receive();
                         } catch (IOException e) {
-                            System.err.println("Error: won't receive from server");
+                            System.err.println("Error: won't receive from server\n" + e.getMessage());
                             try {
                                 serverStub.close();
                             } catch (RemoteException ex) {
@@ -98,17 +95,18 @@ public class AppClient {
                 
                 """);
 
-        int option;
+        String input;
 
         while (true) {
+            input = s.next();
             try{
-                option = s.nextInt();
+                int option = Integer.parseInt(input);
                 switch (option) {
                     case 1 -> { return NetworkProtocol.RMI; }
                     case 2 -> { return NetworkProtocol.SOCKET; }
                     default -> System.err.println("Invalid option");
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.err.println("Invalid option");
             }
         }

@@ -3,13 +3,15 @@ package ingsw.codex_naturalis.distributed;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ingsw.codex_naturalis.distributed.util.LobbyObserver;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayObserver;
 import ingsw.codex_naturalis.controller.setupPhase.SetupObserver;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.view.UI;
 import ingsw.codex_naturalis.view.gameStartingPhase.GameStartingUI;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
@@ -18,7 +20,7 @@ import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.view.lobbyPhase.LobbyUI;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
-import ingsw.codex_naturalis.view.setupPhase.ObjectiveCardChoice;
+import ingsw.codex_naturalis.events.setupPhase.ObjectiveCardChoice;
 import ingsw.codex_naturalis.view.setupPhase.SetupUI;
 
 import java.rmi.RemoteException;
@@ -97,16 +99,17 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
         Map<Integer, UIChoice> uiChoices = new LinkedHashMap<>();
 
-        int option;
+        String input;
         while (true) {
+            input = s.next();
             try{
-                option = s.nextInt();
+                int option = Integer.parseInt(input);
                 switch (option) {
                     case 1 -> { return UIChoice.TUI; }
-                    case 2 -> { System.err.println("We're working on it, please choose an other option."); }
+                    case 2 -> { return UIChoice.GUI; }
                     default -> System.err.println("Invalid option");
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.err.println("Invalid option");
             }
         }
@@ -117,8 +120,15 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
     //client
     @Override
-    public void updateUI(UI ui) throws RemoteException {
-        switch (ui) {
+    public void stcUpdateUI(String jsonUI) throws RemoteException {
+        UI updateUI = null;
+        try {
+            updateUI = objectMapper.readValue(jsonUI, UI.class);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+            return;
+        }
+        switch (updateUI) {
             case GAME_STARTING -> {
                 gameStartingView = uiChoice.createGameStartingUI();
                 lobbyView.stop();
@@ -139,12 +149,19 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
                 uiState = UI.SETUP;
                 executorService.execute(setupView);
             }
+            case GAMEPLAY -> {
+                gameplayView = uiChoice.createGameplayUI();
+                gameplayView.addObserver(this);
+                setupView.stop();
+                uiState = UI.GAMEPLAY;
+                executorService.execute(gameplayView);
+            }
         }
     }
 
     //client
     @Override
-    public void updateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
+    public void stcUpdateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
 
         List<GameSpecs> gamesSpecs = new ArrayList<>();
 
@@ -167,24 +184,75 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
     //client
     @Override
-    public void updateGameStartingUIGameID(int gameID) throws RemoteException {
+    public void stcUpdateGameStartingUIGameID(int gameID) throws RemoteException {
 
         gameStartingView.updateGameID(gameID);
 
     }
 
-    //client
     @Override
-    public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
-        setupView.updateSetup1(initialCard, resourceCards, goldCards);
+    public void stcUpdateSetupUIInitialCard(String jsonImmGame, String jsonInitialCardEvent) {
+        try {
+            Game.Immutable game = objectMapper.readValue(jsonImmGame, Game.Immutable.class);
+            InitialCardEvent initialCardEvent = objectMapper.readValue(jsonInitialCardEvent, InitialCardEvent.class);
+            setupView.updateInitialCard(game, initialCardEvent);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void stcUpdateSetupUIColor(String jsonColor) throws RemoteException {
+        try {
+            Color color = objectMapper.readValue(jsonColor, Color.class);
+            setupView.updateColor(color);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void reportSetupUIError(String message) {
+        setupView.reportError(message);
+    }
+
+    @Override
+    public void stcUpdateSetupUI(String jsonImmGame, String jsonGameEvent) {
+        try {
+            Game.Immutable immGame = objectMapper.readValue(jsonImmGame, Game.Immutable.class);
+            GameEvent gameEvent = objectMapper.readValue(jsonGameEvent, GameEvent.class);
+            setupView.update(immGame, gameEvent);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void stcUpdateSetupUIObjectiveCardChoice(String jsonImmGame) throws RemoteException {
+        try {
+            Game.Immutable immGame = objectMapper.readValue(jsonImmGame, Game.Immutable.class);
+            setupView.updateObjectiveCardChoice(immGame);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void stcUpdateGameplayUIPlayerOrder(String jsonImmGame) throws RemoteException {
+        try {
+            Game.Immutable immGame = objectMapper.readValue(jsonImmGame, Game.Immutable.class);
+            gameplayView.updatePlayerOrder(immGame);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
     }
 
 
     //lobby observer
     @Override
-    public void updateGameToAccess(int gameID, String nickname) {
+    public void ctsUpdateGameToAccess(int gameID, String nickname) {
         try {
-            server.updateGameToAccess(this, gameID, nickname);
+            server.ctsUpdateGameToAccess(this, gameID, nickname);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
@@ -192,9 +260,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
     //lobby observer
     @Override
-    public void updateNewGame(int numOfPlayers, String nickname) {
+    public void ctsUpdateNewGame(int numOfPlayers, String nickname) {
         try {
-            server.updateNewGame(this, numOfPlayers, nickname);
+            server.ctsUpdateNewGame(this, numOfPlayers, nickname);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
@@ -202,36 +270,41 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
 
 
-    //setup observer
     @Override
-    public void updateReady() {
+    public void ctsUpdateReady() {
         try {
-            server.updateReady(this);
+            server.ctsUpdateReady(this);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
     }
 
     @Override
-    public void updateInitialCard(InitialCardEvent initialCardEvent) {
+    public void ctsUpdateInitialCard(InitialCardEvent initialCardEvent) {
         try {
-            server.updateInitialCard(this, initialCardEvent);
-        } catch (RemoteException e) {
+            server.ctsUpdateInitialCard(this, objectMapper.writeValueAsString(initialCardEvent));
+        } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating the server");
         }
     }
 
     @Override
-    public void updateColor(Color color) {
+    public void ctsUpdateColor(Color color) {
         try {
-            server.updateColor(this, color);
-        } catch (RemoteException e) {
+            server.ctsUpdateColor(this, objectMapper.writeValueAsString(color));
+        } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating the server");
         }
     }
 
     @Override
-    public void updateObjectiveCardChoice(ObjectiveCardChoice objectiveCardChoice) {
+    public void ctsUpdateObjectiveCardChoice(ObjectiveCardChoice objectiveCardChoice) {
+
+        try {
+            server.ctsUpdateObjectiveCardChoice(this, objectMapper.writeValueAsString(objectiveCardChoice));
+        } catch (RemoteException | JsonProcessingException e) {
+            System.err.println("Error while updating the server");
+        }
 
     }
 
@@ -239,7 +312,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     @Override
     public void updateFlipCard(FlipCard flipCard) {
         try {
-            server.updateFlipCard(this, flipCard);
+            server.ctsUpdateFlipCard(this, flipCard);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
@@ -247,7 +320,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     @Override
     public void updatePlayCard(PlayCard playCard, int x, int y) throws NotYourTurnException {
         try {
-            server.updatePlayCard(this, playCard, x, y);
+            server.ctsUpdatePlayCard(this, playCard, x, y);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
@@ -255,7 +328,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     @Override
     public void updateDrawCard(DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException {
         try {
-            server.updateDrawCard(this, drawCard);
+            server.ctsUpdateDrawCard(this, drawCard);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
@@ -263,7 +336,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     @Override
     public void updateText(Message message, String content, List<String> receivers) {
         try {
-            server.updateText(this, message, content, receivers);
+            server.ctsUpdateText(this, message, content, receivers);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }

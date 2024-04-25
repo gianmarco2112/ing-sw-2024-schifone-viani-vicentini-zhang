@@ -76,7 +76,7 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
             outString = outString + " ";
         }
 
-        outString = outString + bc + "  │\n│           │\n╰───────────╯" + DefaultValue.ANSI_RESET;
+        outString = outString + bc + "  │\n│           │\n" + bc + "╰───────────╯" + DefaultValue.ANSI_RESET;
 
         return outString;
     }

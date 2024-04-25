@@ -315,9 +315,6 @@ public class GameplayTextualUI extends GameplayUI {
     }
 
 
-
-
-
     public void update(Game.Immutable o, GameEvent arg, String nickname, String playerWhoUpdated) {
         try {
             switch (arg) {

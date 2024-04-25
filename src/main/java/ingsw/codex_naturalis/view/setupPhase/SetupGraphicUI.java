@@ -1,6 +1,10 @@
 package ingsw.codex_naturalis.view.setupPhase;
 
+import ingsw.codex_naturalis.enumerations.Color;
+import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
+import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.model.util.GameEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,10 +93,30 @@ public class SetupGraphicUI extends SetupUI {
     }
 
     @Override
+    public void updateInitialCard(Game.Immutable game, InitialCardEvent initialCardEvent) {
+
+    }
+
+    @Override
+    public void updateColor(Color color) {
+
+    }
+
+    @Override
+    public void reportError(String message) {
+
+    }
+
+    @Override
+    public void update(Game.Immutable immGame, GameEvent gameEvent) {
+
+    }
+
+    /*@Override
     public void updateSetup1(PlayableCard.Immutable initialCard, List<PlayableCard.Immutable> resourceCards, List<PlayableCard.Immutable> goldCards) {
 
         setState(SetupGraphicUI.State.RUNNING);
-    }
+    }*/
 
     @Override
     public void run() {

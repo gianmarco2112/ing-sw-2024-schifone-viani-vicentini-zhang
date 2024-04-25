@@ -196,10 +196,6 @@ public class LobbyGraphicUI extends LobbyUI{
         @Override
         public void actionPerformed(ActionEvent e) {
             lobbyFrame.showCreatePanel(selectNumPlayersListener);
-            if(lobbyFrame.numOfPlayers.getSelectedItem()!=null){
-                Integer i = (Integer) lobbyFrame.numOfPlayers.getSelectedItem();
-                numOfPlayers = i.intValue();
-            }
         }
     };
     private final ActionListener joinGameListener = new ActionListener() {
@@ -212,6 +208,10 @@ public class LobbyGraphicUI extends LobbyUI{
         @Override
         public void actionPerformed(ActionEvent e) {
             lobbyFrame.showNicknamePanel(digitNicknameListenerFromNewGame);
+            if(lobbyFrame.numOfPlayers.getSelectedItem()!=null){
+                Integer i = (Integer) lobbyFrame.numOfPlayers.getSelectedItem();
+                numOfPlayers = i.intValue();
+            }
         }
     };
 

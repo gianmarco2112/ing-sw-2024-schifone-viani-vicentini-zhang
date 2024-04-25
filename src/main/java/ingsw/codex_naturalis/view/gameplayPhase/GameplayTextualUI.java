@@ -344,11 +344,9 @@ public class GameplayTextualUI extends GameplayUI {
 
                     // top left angle
                     if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopLeftCorner().isCovered() && playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopLeftCorner().getSymbol() != Symbol.COVERED) {
-
                         lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).getFirst());
                         lineToBePrune.replace(5, 7, "  ");
                         cardsAsListOfStrings.get(List.of(i, j)).set(0, lineToBePrune.toString());
-
                         if(playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopLeftCorner().getSymbol() == Symbol.EMPTY){
                             lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(1));
                             lineToBePrune.replace(5, 7, "  ");
@@ -359,18 +357,26 @@ public class GameplayTextualUI extends GameplayUI {
                             lineToBePrune.replace(5, 21, "  ");
                             cardsAsListOfStrings.get(List.of(i, j)).set(1, lineToBePrune.toString());
                         }
-
-
                     }
                     if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopRightCorner().isCovered()) {
                     }
+
+                    // bottom left angle
                     if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getBottomLeftCorner().isCovered() && playerArea.area().get(List.of(i, j)).currentPlayableSide().getBottomLeftCorner().getSymbol() != Symbol.COVERED) {
-//                        lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(3));
-//                        lineToBePrune.replace(5, 7, "  ");
-//                        cardsAsListOfStrings.get(List.of(i, j)).set(3, lineToBePrune.toString());
-//                        lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(4));
-//                        lineToBePrune.replace(5, 7, "  ");
-//                        cardsAsListOfStrings.get(List.of(i, j)).set(4, lineToBePrune.toString());
+
+                        if(playerArea.area().get(List.of(i, j)).currentPlayableSide().getTopLeftCorner().getSymbol() == Symbol.EMPTY){
+                            lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(3));
+                            lineToBePrune.replace(5, 7, "  ");
+                            cardsAsListOfStrings.get(List.of(i, j)).set(3, lineToBePrune.toString());
+                        }
+                        else{
+                            lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).get(3));
+                            lineToBePrune.replace(5, 21, "  ");
+                            cardsAsListOfStrings.get(List.of(i, j)).set(3, lineToBePrune.toString());
+                        }
+                        lineToBePrune = new StringBuilder(cardsAsListOfStrings.get(List.of(i, j)).getLast());
+                        lineToBePrune.replace(5, 7, "  ");
+                        cardsAsListOfStrings.get(List.of(i, j)).set(4, lineToBePrune.toString());
                     }
                     if (playerArea.area().get(List.of(i, j)).currentPlayableSide().getBottomRightCorner().isCovered()) {
                     }

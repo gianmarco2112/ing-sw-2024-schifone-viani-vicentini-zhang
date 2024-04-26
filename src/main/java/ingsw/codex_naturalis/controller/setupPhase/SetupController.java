@@ -81,7 +81,9 @@ public class SetupController {
         }
         player.chooseObjectiveCard(objectiveCard);
         readyPlayers++;
-        if (readyPlayers == model.getPlayerOrder().size())
+        if (readyPlayers == model.getPlayerOrder().size()) {
+            model.shufflePlayerList();
             model.setGameStatus(GameStatus.GAMEPLAY);
+        }
     }
 }

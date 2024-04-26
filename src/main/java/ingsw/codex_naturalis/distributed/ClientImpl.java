@@ -136,7 +136,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
                 uiState = UI.GAME_STARTING;
                 executorService.execute(gameStartingView);
             }
-            case UI.SETUP -> {
+            case SETUP -> {
                 setupView = uiChoice.createSetupUI();
                 setupView.addObserver(this);
                 switch (uiState) {

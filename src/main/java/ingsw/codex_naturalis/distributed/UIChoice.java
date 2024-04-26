@@ -30,7 +30,7 @@ public enum UIChoice {
         }
 
         public GameplayUI createGameplayUI() {
-            return new GameplayTextualUI("nickname", null);
+            return new GameplayTextualUI();
         }
 
     },
@@ -53,7 +53,7 @@ public enum UIChoice {
 
         public GameplayUI createGameplayUI() {
             // TO FIX
-            return new GameplayTextualUI("nickname", null);
+            return new GameplayTextualUI();
         }
 
     };

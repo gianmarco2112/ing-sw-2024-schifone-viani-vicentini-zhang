@@ -371,9 +371,9 @@ public class Game extends GameObservable implements PlayerObserver {
         notifyObservers(this, GameEvent.SETUP_2);
     }
 
-    @Deprecated
     public void shufflePlayerList(){
         Collections.shuffle(this.playerOrder);
+        currentPlayer = playerOrder.getFirst();
     }
 
 

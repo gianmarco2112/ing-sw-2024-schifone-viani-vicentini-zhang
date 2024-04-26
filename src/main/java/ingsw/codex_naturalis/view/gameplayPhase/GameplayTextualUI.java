@@ -8,7 +8,6 @@ import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.observerObservable.Event;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.player.PlayerArea;
 import ingsw.codex_naturalis.model.util.GameEvent;
@@ -327,9 +326,9 @@ public class GameplayTextualUI extends GameplayUI {
 
     @Override
     public void updatePlayerOrder(Game.Immutable immGame) {
+    }
 
-
-  public static String playerAreaToString(PlayerArea.Immutable playerArea){
+    public static String playerAreaToString(PlayerArea.Immutable playerArea){
         LinkedHashMap<List<Integer>, List<String>> cardsAsListOfStrings = new LinkedHashMap<>();
         LinkedHashMap<Integer, List<String>> columns = new LinkedHashMap<>();
         StringBuilder outString = new StringBuilder();

@@ -14,14 +14,14 @@ import java.io.Serializable;
 public class PlayableCard extends Card {
 
     public PlayableCard.Immutable getImmutablePlayableCard(){
-        return new PlayableCard.Immutable(getCardID(), showingFront, playerAreaCardToString(kingdom), handCardToString(kingdom),getCurrentPlayableSide());
+        return new PlayableCard.Immutable(getCardID(), showingFront, playerAreaCardToString(kingdom), handCardToString(kingdom), getCurrentPlayableSide());
     }
 
     public PlayableCard.Immutable getImmutableHiddenPlayableCard(){
-        return new PlayableCard.Immutable(getCardID(), false, playerAreaCardToString(kingdom), back.handCardToString(kingdom));
+        return new PlayableCard.Immutable(getCardID(), false, playerAreaCardToString(kingdom), back.handCardToString(kingdom), getCurrentPlayableSide());
     }
 
-    public record Immutable(String cardID, boolean showingFront, String description, String handCard) {}
+    public record Immutable(String cardID, boolean showingFront, String description, String handCard, PlayableSide currentPlayableSide) {}
 
 
 

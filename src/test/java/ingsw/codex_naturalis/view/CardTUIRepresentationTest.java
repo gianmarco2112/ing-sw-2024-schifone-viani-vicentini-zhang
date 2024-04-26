@@ -124,17 +124,17 @@ public class CardTUIRepresentationTest {
     @Test
     void playerAreaToStringTest(){
         PlayerArea playerArea = new PlayerArea();
-        resourceCardsDeck.shuffle();
+        //resourceCardsDeck.shuffle();
         // bug con piu' risorse al centro
-        //initialCardsDeck.shuffle();
+        initialCardsDeck.shuffle();
         playerArea.setObjectiveCard(objectiveCardsDeck.drawACard());
         PlayableCard card = initialCardsDeck.drawACard();
-        card.flip();
+        //card.flip();
         playerArea.setCardOnCoordinates(card,0,0,"test");
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),1,1,"test");
         card = resourceCardsDeck.drawACard();
         //card.flip();
-        playerArea.setCardOnCoordinates(card,-1,-1,"test");
+        //playerArea.setCardOnCoordinates(card,-1,-1,"test");
         card = resourceCardsDeck.drawACard();
         //card.flip();
         //playerArea.setCardOnCoordinates(card,2,0,"test");
@@ -149,9 +149,6 @@ public class CardTUIRepresentationTest {
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),1,5,"test");
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),2,6,"test");
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),3,5,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),-2,-2,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),-3,-3,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),1,-1,"test");
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),-1,1,"test");
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),-1,3,"test");
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),4,6,"test");
@@ -159,16 +156,7 @@ public class CardTUIRepresentationTest {
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),5,5,"test");
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),6,4,"test");
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),7,3,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),2,-2,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),3,-3,"test");
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),4,0,"test");
-
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),-4,-4,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),-5,-5,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),4,-4,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),5,-5,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),-1,-3,"test");
-        playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),0,2,"test");
 
         System.out.println(cardsToString.playerAreaToString(playerArea.getImmutablePlayerArea()));
     }

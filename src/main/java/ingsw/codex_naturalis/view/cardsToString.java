@@ -79,7 +79,7 @@ public class cardsToString {
                         if (tl_corner.getSymbol() == Symbol.COVERED || tl_corner.getSymbol() == Symbol.EMPTY){
                             // Case empty-empty
                             if(tr_corner.getSymbol() == Symbol.EMPTY){
-                                lineToBePrune.replace(8, 10, replaceValueForPruning);
+                                lineToBePrune.replace(lineToBePrune.length() - 6, lineToBePrune.length() - 4, replaceValueForPruning);
                             }
                             // Case empty-symbol
                             else{

@@ -174,8 +174,6 @@ public class cardsToString {
                 }
                 else {
                     // spacing
-
-
                     CharsOfXSpacing = 3;
                     if (cardsAsListOfStrings.containsKey(List.of(i-1, j)) && cardsAsListOfStrings.containsKey(List.of(i+1, j))){
                         CharsOfXSpacing = 1;
@@ -183,23 +181,40 @@ public class cardsToString {
 
                     if (cardsAsListOfStrings.containsKey(List.of(i, j+1))){
                         if (!cardsAsListOfStrings.containsKey(List.of(i-1, j)) && !cardsAsListOfStrings.containsKey(List.of(i+1, j))) {
-                            columns.get(i).add("a".repeat(5));
+                            columns.get(i).add(" ".repeat(5));
                         }
                         else {
-                            columns.get(i).add("a".repeat(CharsOfXSpacing));
+                            if (j != playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_Y)) {
+                                columns.get(i).add(" ".repeat(CharsOfXSpacing));
+                            }
+                            else{
+                                columns.get(i).addAll(List.of(" ".repeat(CharsOfXSpacing), " ".repeat(CharsOfXSpacing), " ".repeat(CharsOfXSpacing)));
+                            }
                         }
                     }
-                    else if (cardsAsListOfStrings.containsKey(List.of(i+1, j+1)) && cardsAsListOfStrings.containsKey(List.of(i-1, j+1))){
-                        columns.get(i).addAll(List.of("b","c","d"));
+                    else if ((cardsAsListOfStrings.containsKey(List.of(i+1, j+1)) && cardsAsListOfStrings.containsKey(List.of(i-1, j+1)))
+                            || cardsAsListOfStrings.containsKey(List.of(i-1, j)) || cardsAsListOfStrings.containsKey(List.of(i-1, j+1))){
+                        if (j != playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_Y)) {
+                            columns.get(i).addAll(List.of(" "," "," "));
+                        }
+                        else {
+                            columns.get(i).addAll(List.of(" "," "," ", " ", " "));
+                        }
                     }
                     else{
-                        columns.get(i).addAll(List.of("b".repeat(CharsOfXSpacing),"c".repeat(CharsOfXSpacing),"d".repeat(CharsOfXSpacing)));
+                        if (j != playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_Y)) {
+                            columns.get(i).addAll(List.of(" ".repeat(CharsOfXSpacing)," ".repeat(CharsOfXSpacing)," ".repeat(CharsOfXSpacing)));
+                        }
+                        else{
+                            columns.get(i).addAll(List.of(" ".repeat(CharsOfXSpacing)," ".repeat(CharsOfXSpacing),
+                                    " ".repeat(CharsOfXSpacing), " ".repeat(CharsOfXSpacing), " ".repeat(CharsOfXSpacing)));
+                        }
                     }
                 }
             }
         }
 
-        for (int j = 0; j < 3*(playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_Y)-playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_Y))+3; j++) {
+        for (int j = 0; j < 3*(playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_Y)-playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_Y)+1)+2; j++) {
             for (int i = playerArea.extremeCoordinates().get(ExtremeCoordinate.MIN_X); i <= playerArea.extremeCoordinates().get(ExtremeCoordinate.MAX_X); i++) {
                 outString.append(columns.get(i).get(j));
             }

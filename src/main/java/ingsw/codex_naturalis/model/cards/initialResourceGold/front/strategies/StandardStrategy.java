@@ -15,7 +15,7 @@ public class StandardStrategy implements Strategy {
     @Override
     public String handCardToString(Symbol kingdom, PointsGiverAndPointsGiverForCorner cardSide) {
         StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(cardSide, kingdom));
-        if (cardSide.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
+        if (cardSide.getTopLeftCorner().getSymbol() != Symbol.EMPTY && cardSide.getTopLeftCorner().getSymbol() != Symbol.COVERED){
             outString.replace(48, 49, DefaultValue.ANSI_RESET + cardSide.getPoints() + kingdom.getColor());
         }
         else{

@@ -37,7 +37,7 @@ public class PointsGiverForObject extends Needy {
     @Override
     public String handCardToString(Symbol kingdom) {
         StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(this, kingdom));
-        if (this.getTopLeftCorner().getSymbol() != Symbol.EMPTY){
+        if (this.getTopLeftCorner().getSymbol() != Symbol.EMPTY && this.getTopLeftCorner().getSymbol() != Symbol.COVERED){
             outString.replace(47, 50, DefaultValue.ANSI_RESET + this.getPoints() + kingdom.getColor() + "│" + object.getColoredChar() + kingdom.getColor());
         }
         else{

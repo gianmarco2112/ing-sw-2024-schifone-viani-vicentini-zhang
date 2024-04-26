@@ -52,8 +52,7 @@ public class Back extends PlayableSide {
                     outString.replace(34, 35, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
                 }
             } else if (permanentResources.size() == 3){
-                if (getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY
-                        && getBottomLeftCorner().getSymbol() == Symbol.EMPTY && getBottomRightCorner().getSymbol() == Symbol.EMPTY){
+                if (getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY){
                     outString.replace(80, 81, permanentResources.getLast().getColoredChar() + kingdom.getColor());
                     outString.replace(57, 58, permanentResources.get(1).getColoredChar() + kingdom.getColor());
                     outString.replace(34, 35, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
@@ -87,7 +86,8 @@ public class Back extends PlayableSide {
                 }
             } else if (permanentResources.size() == 3){
                 if (getTopRightCorner().getSymbol() == Symbol.EMPTY && getTopLeftCorner().getSymbol() == Symbol.EMPTY
-                    && getBottomLeftCorner().getSymbol() == Symbol.EMPTY && getBottomRightCorner().getSymbol() == Symbol.EMPTY){
+                    && (getBottomLeftCorner().getSymbol() == Symbol.EMPTY || getBottomLeftCorner().getSymbol() == Symbol.COVERED)
+                    && (getBottomRightCorner().getSymbol() == Symbol.EMPTY || getBottomRightCorner().getSymbol() == Symbol.COVERED )){
                     outString.replace(52, 53, permanentResources.getLast().getColoredChar() + kingdom.getColor());
                     outString.replace(37, 38, permanentResources.get(1).getColoredChar() + kingdom.getColor());
                     outString.replace(22, 23, permanentResources.getFirst().getColoredChar() + kingdom.getColor());
@@ -97,7 +97,6 @@ public class Back extends PlayableSide {
         else{
             outString.replace(37, 38, kingdom.getColoredChar() + kingdom.getColor());
         }
-
         return outString.toString();
     }
 }

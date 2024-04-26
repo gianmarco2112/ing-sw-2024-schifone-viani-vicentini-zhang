@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardTUIRappresentationTest {
+public class CardTUIRepresentationTest {
 
     Deck<PlayableCard> initialCardsDeck;
     Deck<PlayableCard> resourceCardsDeck;
@@ -46,7 +46,7 @@ public class CardTUIRappresentationTest {
     }
 
     @Test
-    void objectiveCardRappresentationTest(){
+    void objectiveCardRepresentationTest(){
         ObjectiveCard card;
         for (int i = 0; i < 16; i++) {
             card = objectiveCardsDeck.drawACard();
@@ -55,7 +55,7 @@ public class CardTUIRappresentationTest {
     }
 
     @Test
-    void playableCardRappresentationTest(){
+    void playableCardRepresentationTest(){
         PlayableCard card;
         for (int i = 0; i < 40; i++) {
             card = resourceCardsDeck.drawACard();

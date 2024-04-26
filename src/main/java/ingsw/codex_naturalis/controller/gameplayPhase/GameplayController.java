@@ -36,7 +36,7 @@ public class GameplayController {
 
     //-----------------------------------------------------------------------------------------
 
-    public void updateFlipCard(String nickname, FlipCardEvent flipCardEvent) {
+    public synchronized void updateFlipCard(String nickname, FlipCardEvent flipCardEvent) {
 
         Player player = model.getPlayerByNickname(nickname);
         switch (flipCardEvent) {
@@ -48,7 +48,7 @@ public class GameplayController {
     }
 
 
-    public void updatePlayCard(String nickname, PlayCardEvent playCardEvent, int x, int y) throws NotYourTurnException, NotYourPlayTurnStatusException, NotPlayableException {
+    public synchronized void updatePlayCard(String nickname, PlayCardEvent playCardEvent, int x, int y) throws NotYourTurnException, NotYourPlayTurnStatusException, NotPlayableException {
 
         Player player = model.getPlayerByNickname(nickname);
 
@@ -102,154 +102,80 @@ public class GameplayController {
 
 
 
-    public void updateDrawCard(Client client, DrawCardEvent drawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException {
-/*
-        try {
-            if (!client.getNickname().equals(model.getCurrentPlayer().getNickname()))
-                throw new NotYourTurnException();
-        } catch (RemoteException e) {
-            System.err.println("Error while getting nickname");
-        }
+    public synchronized void updateDrawCard(String nickname, DrawCardEvent drawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException {
 
-        if (!model.getCurrentPlayer().getTurnStatus().equals(TurnStatus.DRAW))
+        Player player = model.getPlayerByNickname(nickname);
+
+        if (!nickname.equals(model.getCurrentPlayer().getNickname()))
+            throw new NotYourTurnException();
+
+        if (!player.getTurnStatus().equals(TurnStatus.DRAW))
             throw new NotYourDrawTurnStatusException();
 
-        Player player = null;
-        try {
-            player = getPlayerByNickname(client.getNickname());
-        } catch (RemoteException e) {
-            System.err.println("Error while getting nickname");
-        }
-
-        PlayableCard drawnCard = null;
+        PlayableCard drawnCard;
         switch (drawCardEvent) {
-            case DRAW_FROM_RESOURCE_CARDS_DECK ->
-                drawnCard = drawFromResourceCardsDeck(client);
-            case DRAW_FROM_GOLD_CARDS_DECK ->
-                drawnCard = drawFromGoldCardsDeck(client);
-            case DRAW_REVEALED_RESOURCE_CARD_1 ->
-                drawnCard = drawFromRevealedResourceCards(client, DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);
-            case DRAW_REVEALED_RESOURCE_CARD_2 ->
-                drawnCard = drawFromRevealedResourceCards(client, DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);
-            case DRAW_REVEALED_GOLD_CARD_1 ->
-                drawnCard = drawFromRevealedGoldCards(client, DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1);
-            case DRAW_REVEALED_GOLD_CARD_2 ->
-                drawnCard = drawFromRevealedGoldCards(client, DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2);
+            case DRAW_FROM_RESOURCE_CARDS_DECK -> {
+                drawnCard = model.getResourceCardsDeck().drawACard();
+                drawnCard.flip();
+            }
+            case DRAW_FROM_GOLD_CARDS_DECK -> {
+                drawnCard = model.getGoldCardsDeck().drawACard();
+                drawnCard.flip();
+            }
+            case DRAW_REVEALED_RESOURCE_CARD_1 -> {
+                drawnCard = model.removeRevealedResourceCard(0);
+                if (!model.getResourceCardsDeck().isEmpty()) {
+                    PlayableCard cardToReveal = model.getResourceCardsDeck().drawACard();
+                    cardToReveal.flip();
+                    model.addRevealedResourceCard(cardToReveal);
+                }
+            }
+            case DRAW_REVEALED_RESOURCE_CARD_2 -> {
+                drawnCard = model.removeRevealedResourceCard(1);
+                if (!model.getResourceCardsDeck().isEmpty()) {
+                    PlayableCard cardToReveal = model.getResourceCardsDeck().drawACard();
+                    cardToReveal.flip();
+                    model.addRevealedResourceCard(cardToReveal);
+                }
+            }
+            case DRAW_REVEALED_GOLD_CARD_1 -> {
+                drawnCard = model.removeRevealedGoldCard(0);
+                if (!model.getGoldCardsDeck().isEmpty()) {
+                    PlayableCard cardToReveal = model.getGoldCardsDeck().drawACard();
+                    cardToReveal.flip();
+                    model.addRevealedGoldCard(cardToReveal);
+                }
+            }
+            case DRAW_REVEALED_GOLD_CARD_2 -> {
+                drawnCard = model.removeRevealedGoldCard(1);
+                if (!model.getGoldCardsDeck().isEmpty()) {
+                    PlayableCard cardToReveal = model.getGoldCardsDeck().drawACard();
+                    cardToReveal.flip();
+                    model.addRevealedGoldCard(cardToReveal);
+                }
+            }
+            default -> { return; }
         }
 
-        List<PlayableCard> hand = player.getHand();
-        hand.add(drawnCard);
-        player.setHand(hand);
+        nextPlayer();
 
-        nextPlayer(client);
-        player.setTurnStatus(TurnStatus.PLAY);
+        player.drawCard(drawnCard);
 
-        if (model.getResourceCardsDeck().isEmpty() &&
+        checkTurnsLeftInSecondToLastRound(player);
+
+    }
+
+    private void checkTurnsLeftInSecondToLastRound(Player player) {
+    if (model.getResourceCardsDeck().isEmpty() &&
         model.getGoldCardsDeck().isEmpty() &&
         model.getRevealedResourceCards().isEmpty() &&
         model.getRevealedGoldCards().isEmpty()) {
             turnsLeftInSecondToLastRound = model.getNumOfPlayers() - model.getPlayerOrder().indexOf(player) - 1;
-            try {
-                model.setGameStatus(GameStatus.LAST_ROUND_DECKS_EMPTY, client.getNickname());
-            } catch (RemoteException e) {
-                System.err.println("Error while getting nickname");
-            }
+            model.setGameStatus(GameStatus.LAST_ROUND_DECKS_EMPTY);
         }
 
         if (model.getGameStatus() == GameStatus.LAST_ROUND_20_POINTS)
-            turnsLeftInSecondToLastRound--;*/
-    }
-
-    /**
-     * Draws from the resource cards deck
-     */
-    private PlayableCard drawFromResourceCardsDeck(Client client) throws EmptyResourceCardsDeckException, NoSuchNicknameException {
-
-        if (model.getResourceCardsDeck().isEmpty())
-            throw new EmptyResourceCardsDeckException();
-
-        PlayableCard drawnCard = null;
-        drawnCard = model.getResourceCardsDeck().drawACard();
-
-        drawnCard.flip();
-
-        return drawnCard;
-
-    }
-
-    /**
-     * Draws from the gold cards deck
-     */
-    private PlayableCard drawFromGoldCardsDeck(Client client) throws EmptyResourceCardsDeckException {
-
-        if (model.getGoldCardsDeck().isEmpty())
-            throw new EmptyResourceCardsDeckException();
-
-        PlayableCard drawnCard = null;
-        drawnCard = model.getGoldCardsDeck().drawACard();
-        drawnCard.flip();
-
-        return drawnCard;
-    }
-
-    /**
-     * Draws the first revealed resource card on the table
-     */
-    private PlayableCard drawFromRevealedResourceCards(Client client, DrawCardEvent drawCardEvent) throws NoMoreRevealedCardHereException {
-
-        Map<DrawCardEvent, Integer> eventToHandIndex = new HashMap<>();
-        eventToHandIndex.put(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1, 0);
-        eventToHandIndex.put(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2, 1);
-
-        List<PlayableCard> revealedResourceCards = model.getRevealedResourceCards();
-        PlayableCard drawnCard = revealedResourceCards.get(eventToHandIndex.get(drawCardEvent));
-        DrawCardEvent otherDrawCardEvent = DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1;
-        if (drawCardEvent == DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1)
-            otherDrawCardEvent = DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2;
-        if (drawnCard == null && revealedResourceCards.get(eventToHandIndex.get(otherDrawCardEvent)) != null)
-            throw new NoMoreRevealedCardHereException();
-
-        PlayableCard cardToReveal = null;
-        if (!model.getResourceCardsDeck().isEmpty()) {
-            cardToReveal = model.getResourceCardsDeck().drawACard();
-            cardToReveal.flip();
-        }
-        revealedResourceCards.set(eventToHandIndex.get(drawCardEvent), cardToReveal);
-        model.setRevealedResourceCards(revealedResourceCards, "client.getNickname()");
-
-        return drawnCard;
-    }
-
-    /**
-     * Draws the first revealed gold card on the table
-     */
-    private PlayableCard drawFromRevealedGoldCards(Client client, DrawCardEvent drawCardEvent) {
-
-        Map<DrawCardEvent, Integer> eventToHandIndex = new HashMap<>();
-        eventToHandIndex.put(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1, 0);
-        eventToHandIndex.put(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2, 1);
-
-        List<PlayableCard> revealedGoldCards = model.getRevealedGoldCards();
-        PlayableCard drawnCard = revealedGoldCards.get(eventToHandIndex.get(drawCardEvent));
-        DrawCardEvent otherDrawCardEvent = DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1;
-        if (drawCardEvent == DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1)
-            otherDrawCardEvent = DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2;
-        if (drawnCard == null && revealedGoldCards.get(eventToHandIndex.get(otherDrawCardEvent)) != null)
-            throw new NoMoreRevealedCardHereException();
-
-        PlayableCard cardToReveal = null;
-        if (!model.getGoldCardsDeck().isEmpty()) {
-            try {
-                cardToReveal = model.getGoldCardsDeck().drawACard();
-                cardToReveal.flip();
-            } catch (EmptyResourceCardsDeckException e){
-                System.err.println("The gold cards deck is now empty!");
-            }
-        }
-        revealedGoldCards.set(eventToHandIndex.get(drawCardEvent), cardToReveal);
-        model.setRevealedGoldCards(revealedGoldCards, "client.getNickname()");
-
-        return drawnCard;
+            turnsLeftInSecondToLastRound--;
     }
 
     /**

@@ -149,12 +149,30 @@ public class ServerStub implements Server {
 
     @Override
     public void ctsUpdateFlipCard(Client client, String jsonFlipCardEvent) throws RemoteException {
-
+        try {
+            MessageFromClient message = new CTSFlipCardUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(jsonFlipCardEvent);
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
     }
 
     @Override
     public void ctsUpdatePlayCard(Client client, String jsonPlayCardEvent, int x, int y) throws NotYourTurnException, RemoteException {
-
+        try {
+            MessageFromClient message = new CTSPlayCardUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(jsonPlayCardEvent);
+            writer.println(x);
+            writer.println(y);
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
     }
 
     @Override

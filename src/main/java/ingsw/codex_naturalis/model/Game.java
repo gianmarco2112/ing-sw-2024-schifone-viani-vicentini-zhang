@@ -228,9 +228,6 @@ public class Game extends GameObservable implements PlayerObserver {
     public List<Player> getPlayerOrder() {
         return new ArrayList<>(playerOrder);
     }
-    public void setPlayerOrder(List<Player> playerOrder){
-        this.playerOrder = playerOrder;
-    }
 
     public Player getPlayerByNickname(String nickname){
         for (Player player : playerOrder)
@@ -244,7 +241,7 @@ public class Game extends GameObservable implements PlayerObserver {
     }
     public void setCurrentPlayer(Player currentPlayer){
         this.currentPlayer = currentPlayer;
-        notifyObservers(this, GameEvent.TURN_CHANGED);
+        //notifyObservers(this, GameEvent.TURN_CHANGED);
     }
 
     public List<Message> getChat() {
@@ -266,17 +263,29 @@ public class Game extends GameObservable implements PlayerObserver {
         return objectiveCardsDeck;
     }
 
+    public void addRevealedResourceCard(PlayableCard card) {
+        revealedResourceCards.add(card);
+    }
+    public void addRevealedGoldCard(PlayableCard card) {
+        revealedGoldCards.add(card);
+    }
+    public PlayableCard removeRevealedResourceCard(int index) {
+        return revealedResourceCards.remove(index);
+    }
+    public PlayableCard removeRevealedGoldCard(int index) {
+        return revealedGoldCards.remove(index);
+    }
     public List<PlayableCard> getRevealedResourceCards() {
         return new ArrayList<>(revealedResourceCards);
     }
-    public void setRevealedResourceCards(List<PlayableCard> revealedResourceCards, String nickname){
+    public void setRevealedResourceCards(List<PlayableCard> revealedResourceCards){
         this.revealedResourceCards = revealedResourceCards;
     }
 
     public List<PlayableCard> getRevealedGoldCards() {
         return new ArrayList<>(revealedGoldCards);
     }
-    public void setRevealedGoldCards(List<PlayableCard> revealedGoldCards, String nickname){
+    public void setRevealedGoldCards(List<PlayableCard> revealedGoldCards){
         this.revealedGoldCards = revealedGoldCards;
     }
 

@@ -72,51 +72,44 @@ public class PlayableSide {
     }
 
     public boolean isPlayable(PlayerArea playerArea, int x, int y) {
-        if (playerArea.containsCardOnCoordinates(x,y)){
+
+        if (playerArea.containsCardOnCoordinates(x,y))
             return false;
-        }
 
         int atLeastACard = 4;
 
         if (playerArea.containsCardOnCoordinates(x-1,y+1)){
             PlayableCard topLeftCard = playerArea.getCardOnCoordinates(x-1,y+1);
-            if (topLeftCard.getBottomRightCorner().isCovered()){
+            if (topLeftCard.getBottomRightCorner().isCovered())
                 return false;
-            }
         }
-        else{
+        else
             atLeastACard--;
-        }
         if (playerArea.containsCardOnCoordinates(x+1,y+1)){
             PlayableCard topRightCard = playerArea.getCardOnCoordinates(x+1,y+1);
-            if (topRightCard.getBottomLeftCorner().isCovered()){
+            if (topRightCard.getBottomLeftCorner().isCovered())
                 return false;
-            }
         }
-        else{
+        else
             atLeastACard--;
-        }
         if (playerArea.containsCardOnCoordinates(x-1,y-1)){
             PlayableCard bottomLeftCard = playerArea.getCardOnCoordinates(x-1,y-1);
-            if (bottomLeftCard.getTopRightCorner().isCovered()){
+            if (bottomLeftCard.getTopRightCorner().isCovered())
                 return false;
-            }
         }
-        else{
+        else
             atLeastACard--;
-        }
         if (playerArea.containsCardOnCoordinates(x+1,y-1)){
             PlayableCard bottomRightCard = playerArea.getCardOnCoordinates(x+1,y-1);
-            if (bottomRightCard.getTopLeftCorner().isCovered()){
+            if (bottomRightCard.getTopLeftCorner().isCovered())
                 return false;
-            }
         }
-        else{
+        else
             atLeastACard--;
-        }
-        if(atLeastACard < 1){
+
+        if(atLeastACard < 1)
             return false;
-        }
+
         return true;
     }
 

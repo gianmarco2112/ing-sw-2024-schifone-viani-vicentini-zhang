@@ -33,6 +33,18 @@ public class Back extends PlayableSide {
         for (Symbol sb : permanentResources) {
             playerArea.incrNumOfSymbol(sb);
         }
+        if(getTopLeftCorner().getSymbol() != Symbol.EMPTY){
+            playerArea.incrNumOfSymbol(getTopLeftCorner().getSymbol());
+        }
+        if(getTopRightCorner().getSymbol() != Symbol.EMPTY){
+            playerArea.incrNumOfSymbol(getTopRightCorner().getSymbol());
+        }
+        if(getBottomLeftCorner().getSymbol() != Symbol.EMPTY){
+            playerArea.incrNumOfSymbol(getBottomLeftCorner().getSymbol());
+        }
+        if(getTopRightCorner().getSymbol() != Symbol.EMPTY){
+            playerArea.incrNumOfSymbol(getBottomRightCorner().getSymbol());
+        }
     }
 
     @Override

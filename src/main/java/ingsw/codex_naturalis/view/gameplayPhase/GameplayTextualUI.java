@@ -179,12 +179,12 @@ public class GameplayTextualUI extends GameplayUI {
 
         askCoordinate("x");
         int x = getCoordinate();
-        if (x == 0)
+        if (x == 345)
             return;
 
         askCoordinate("y");
         int y = getCoordinate();
-        if (y == 0)
+        if (y == 345)
             return;
 
         notifyPlayCard(playCardEvent, x, y);
@@ -245,7 +245,7 @@ public class GameplayTextualUI extends GameplayUI {
         while (true) {
             input = s.next();
             if (input.equals("/"))
-                return 0;
+                return 345;
             try {
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
@@ -538,6 +538,11 @@ public class GameplayTextualUI extends GameplayUI {
 
 
     private void initCenterOfTable() {
+
+        resourceCards.clear();
+        goldCards.clear();
+        cardsToDraw.clear();
+
         if (game.topResourceCard() != null)
             resourceCards.add(game.topResourceCard());
         resourceCards.addAll(game.revealedResourceCards());
@@ -586,6 +591,10 @@ public class GameplayTextualUI extends GameplayUI {
             }
         }
 
+        if (getState() == State.RUNNING) {
+            System.out.println("==== Game update! ====");
+            askCommand();
+        }
         setState(State.RUNNING);
     }
 
@@ -619,7 +628,7 @@ public class GameplayTextualUI extends GameplayUI {
             System.out.println(color.getColorCode() + player.nickname() +"'s play area" + "\u001B[0m");
             System.out.println("Points: " + player.playerArea().points());
             System.out.println("Resources and objects: " + player.playerArea().numOfSymbols().toString());
-            System.out.println(player.playerArea().area().get(List.of(0,0)).description());
+            //System.out.println(cardsToString.hidPlayerAreaToString(player.playerArea()));
             System.out.println(cardsToString.listOfPlayableCardsToString(player.hand()));
             System.out.println("////////////////////////////////////////////////////////////////");
         }

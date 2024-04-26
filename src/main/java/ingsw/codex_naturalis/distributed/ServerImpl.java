@@ -7,6 +7,7 @@ import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayController;
 import ingsw.codex_naturalis.controller.setupPhase.SetupController;
 import ingsw.codex_naturalis.enumerations.GameStatus;
+import ingsw.codex_naturalis.events.gameplayPhase.DrawCardEvent;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCardEvent;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCardEvent;
 import ingsw.codex_naturalis.events.setupPhase.ObjectiveCardChoice;
@@ -403,7 +404,23 @@ public class ServerImpl implements Server, GameObserver {
 
     @Override
     public void ctsUpdateDrawCard(Client client, String jsonDrawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException {
-       // this.gameplayController.updateDrawCard(client, drawCardEvent);
+        executorService.submit( () -> {
+            try {
+                DrawCardEvent drawCardEvent = objectMapper.readValue(jsonDrawCardEvent, DrawCardEvent.class);
+                GameManagement<GameplayController> gameManagement = findGameplayGameManagementByClient(client);
+                try {
+                    gameManagement.getController().updateDrawCard(gameManagement.nicknameMap.getNickname(client), drawCardEvent);
+                } catch (NotYourTurnException | NotYourDrawTurnStatusException e) {
+                    try {
+                        client.reportGameplayUIError(e.getMessage());
+                    } catch (RemoteException ex) {
+                        System.err.println("Error while updating client");
+                    }
+                }
+            } catch (JsonProcessingException e){
+                System.err.println("Error while processing json");
+            }
+        });
     }
 
     @Override
@@ -475,7 +492,7 @@ public class ServerImpl implements Server, GameObserver {
             case COLOR_SETUP -> colorCase(game, playerWhoUpdated);
             case OBJECTIVE_CARD_CHOSEN -> objectiveCardCase(game, playerWhoUpdated);
             case HAND_CARD_FLIPPED -> privateCase(game, playerWhoUpdated);
-            case HAND_CARD_PLAYED -> publicCase(game, playerWhoUpdated);
+            case HAND_CARD_PLAYED, CARD_DRAWN -> publicCase(game, playerWhoUpdated);
         }
     }
 

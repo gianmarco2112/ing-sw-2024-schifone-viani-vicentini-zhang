@@ -15,7 +15,9 @@ import java.io.BufferedReader;
         @JsonSubTypes.Type(value = CTSReadyUpdate.class, name = "CTSReadyUpdate"),
         @JsonSubTypes.Type(value = CTSInitialCardUpdate.class, name = "CTSInitialCardUpdate"),
         @JsonSubTypes.Type(value = CTSColorUpdate.class, name = "CTSColorUpdate"),
-        @JsonSubTypes.Type(value = CTSObjectiveCardChoiceUpdate.class, name = "CTSObjectiveCardChoiceUpdate")
+        @JsonSubTypes.Type(value = CTSObjectiveCardChoiceUpdate.class, name = "CTSObjectiveCardChoiceUpdate"),
+        @JsonSubTypes.Type(value = CTSFlipCardUpdate.class, name = "CTSFlipCardUpdate"),
+        @JsonSubTypes.Type(value = CTSPlayCardUpdate.class, name = "CTSPlayCardUpdate"),
 })
 public interface MessageFromClient {
 

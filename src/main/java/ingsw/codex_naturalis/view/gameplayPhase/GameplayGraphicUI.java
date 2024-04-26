@@ -24,4 +24,9 @@ public class GameplayGraphicUI extends GameplayUI{
     public void update(Game.Immutable immGame) {
 
     }
+
+    @Override
+    public void reportError(String error) {
+
+    }
 }

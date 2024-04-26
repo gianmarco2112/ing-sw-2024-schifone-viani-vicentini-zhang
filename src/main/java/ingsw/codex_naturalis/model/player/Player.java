@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.model.player;
 
+import ingsw.codex_naturalis.events.gameplayPhase.DrawCardEvent;
 import ingsw.codex_naturalis.exceptions.NotPlayableException;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.enumerations.Color;
@@ -151,6 +152,12 @@ public class Player extends PlayerObservable {
         turnStatus = TurnStatus.DRAW;
 
         notifyObservers(this, PlayerEvent.HAND_CARD_PLAYED);
+    }
+
+    public void drawCard(PlayableCard playableCard) {
+        hand.add(playableCard);
+        turnStatus = TurnStatus.PLAY;
+        notifyObservers(this, PlayerEvent.CARD_DRAWN);
     }
 
     public List<ObjectiveCard> getSecretObjectiveCards() {

@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.model.player;
 
+import ingsw.codex_naturalis.exceptions.NotPlayableException;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.enumerations.TurnStatus;
@@ -142,6 +143,14 @@ public class Player extends PlayerObservable {
         playerArea.setInitialCard(initialCard);
         initialCard = null;
         notifyObservers(this, PlayerEvent.INITIAL_CARD_PLAYED);
+    }
+
+    public void playCard(PlayableCard cardToPlay, int x, int y) {
+        playerArea.setCardOnCoordinates(cardToPlay, x, y);
+        hand.remove(cardToPlay);
+        turnStatus = TurnStatus.DRAW;
+
+        notifyObservers(this, PlayerEvent.HAND_CARD_PLAYED);
     }
 
     public List<ObjectiveCard> getSecretObjectiveCards() {

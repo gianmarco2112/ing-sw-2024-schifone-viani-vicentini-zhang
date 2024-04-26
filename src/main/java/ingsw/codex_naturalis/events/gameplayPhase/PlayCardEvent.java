@@ -1,6 +1,6 @@
 package ingsw.codex_naturalis.events.gameplayPhase;
 
-public enum PlayCard {
+public enum PlayCardEvent {
 
     BACK,
     PLAY_CARD_1,

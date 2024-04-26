@@ -19,4 +19,9 @@ public class GameplayGraphicUI extends GameplayUI{
     public void updatePlayerOrder(Game.Immutable immGame) {
 
     }
+
+    @Override
+    public void update(Game.Immutable immGame) {
+
+    }
 }

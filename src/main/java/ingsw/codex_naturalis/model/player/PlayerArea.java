@@ -9,8 +9,6 @@ import ingsw.codex_naturalis.enumerations.ExtremeCoordinate;
 import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.model.cards.objective.SymbolsObjectiveCard;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -215,11 +213,12 @@ public class PlayerArea {
     }
     /**
      * Places the given card on the given coordinates and adjusts the max coordinates
+     *
      * @param card the card to play
-     * @param x coordinate x
-     * @param y coordinate y
+     * @param x    coordinate x
+     * @param y    coordinate y
      */
-    public void setCardOnCoordinates(PlayableCard card, int x, int y, String nickname){
+    public void setCardOnCoordinates(PlayableCard card, int x, int y){
         area.put(new ArrayList<>(List.of(x,y)), card);
         if(x > getExtremeCoordinate(ExtremeCoordinate.MAX_X))
             setExtremeCoordinate(ExtremeCoordinate.MAX_X, x);
@@ -232,7 +231,6 @@ public class PlayerArea {
 
         card.play(this, x, y);
 
-        //notifyObservers(GameEvent.PLAYER_AREA_CHANGED, nickname);
     }
     /**
      * Method to get the coordinates of a card

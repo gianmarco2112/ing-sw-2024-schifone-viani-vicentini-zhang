@@ -77,23 +77,23 @@ class DiagonalPatternCalcExtraPointsStrategyTest {
     //--------------------------------------------------------------------------
     //---------------COMPOSE PLAYER AREA----------------------------------------
     private void diagonalBottomLeftTopRight(){
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),1,1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),2,2,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),3,3,"Test");
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),1,1);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),2,2);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),3,3);
     }
 
     private void diagonalTopLeftBottomRight(){
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-1,1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-2,2,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-3,3,"Test");
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-1,1);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-2,2);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-3,3);
     }
     private void twoDiagonalTopLeftBottomRight(){
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-1,1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-2,2,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-3,3,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-4,4,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-5,5,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-6,6,"Test");
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-1,1);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-2,2);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-3,3);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-4,4);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-5,5);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),-6,6);
     }
     //--------------------------------------------------------------------------
     //------------------TEST ALGORITHM------------------------------------------

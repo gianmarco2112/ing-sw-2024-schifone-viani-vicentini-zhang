@@ -1,10 +1,10 @@
 package ingsw.codex_naturalis.view.gameplayPhase;
 
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayObserver;
-import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
-import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
+import ingsw.codex_naturalis.events.gameplayPhase.DrawCardEvent;
+import ingsw.codex_naturalis.events.gameplayPhase.FlipCardEvent;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
-import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
+import ingsw.codex_naturalis.events.gameplayPhase.PlayCardEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,27 +32,27 @@ public class GameplayObservable {
     }
 
 
-    public void notifyFlipCard(FlipCard flipCard) {
+    public void notifyFlipCard(FlipCardEvent flipCardEvent) {
         for (GameplayObserver o : obs){
-            o.updateFlipCard(flipCard);
+            o.ctsUpdateFlipCard(flipCardEvent);
         }
     }
 
-    public void notifyPlayCard(PlayCard playCard, int x, int y) {
+    public void notifyPlayCard(PlayCardEvent playCardEvent, int x, int y) {
         for (GameplayObserver o : obs){
-            o.updatePlayCard(playCard, x, y);
+            o.ctsUpdatePlayCard(playCardEvent, x, y);
         }
     }
 
-    public void notifyDrawCard(DrawCard drawCard) {
+    public void notifyDrawCard(DrawCardEvent drawCardEvent) {
         for (GameplayObserver o : obs){
-            o.updateDrawCard(drawCard);
+            o.ctsUpdateDrawCard(drawCardEvent);
         }
     }
 
     public void notifyText(Message message, String content, List<String> receivers) {
         for (GameplayObserver o : obs){
-            o.updateText(message, content, receivers);
+            o.ctsUpdateText(message, content, receivers);
         }
     }
 }

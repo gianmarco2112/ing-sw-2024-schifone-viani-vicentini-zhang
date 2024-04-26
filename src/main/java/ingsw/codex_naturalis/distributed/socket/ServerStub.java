@@ -3,14 +3,10 @@ package ingsw.codex_naturalis.distributed.socket;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.distributed.Client;
-import ingsw.codex_naturalis.distributed.ClientImpl;
 import ingsw.codex_naturalis.distributed.Server;
 import ingsw.codex_naturalis.distributed.socket.MessageFromClient.*;
 import ingsw.codex_naturalis.distributed.socket.MessageFromServer.MessageFromServer;
-import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
-import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
-import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 
@@ -152,17 +148,17 @@ public class ServerStub implements Server {
 
 
     @Override
-    public void ctsUpdateFlipCard(Client client, FlipCard flipCard) throws RemoteException {
+    public void ctsUpdateFlipCard(Client client, String jsonFlipCardEvent) throws RemoteException {
 
     }
 
     @Override
-    public void ctsUpdatePlayCard(Client client, PlayCard playCard, int x, int y) throws NotYourTurnException, RemoteException {
+    public void ctsUpdatePlayCard(Client client, String jsonPlayCardEvent, int x, int y) throws NotYourTurnException, RemoteException {
 
     }
 
     @Override
-    public void ctsUpdateDrawCard(Client client, DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException, RemoteException {
+    public void ctsUpdateDrawCard(Client client, String jsonDrawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException, RemoteException {
 
     }
 

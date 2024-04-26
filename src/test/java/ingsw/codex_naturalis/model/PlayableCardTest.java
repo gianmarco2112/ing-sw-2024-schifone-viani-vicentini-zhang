@@ -51,7 +51,7 @@ public class PlayableCardTest {
                         List.of(Symbol.QUILL,Symbol.QUILL,Symbol.QUILL)));
     }
     private void setInitialCard(){
-        player.getPlayerArea().setCardOnCoordinates(initialCard,0,0,"Test");
+        player.getPlayerArea().setCardOnCoordinates(initialCard,0,0);
     }
     private PlayableCard insectResourceCard(){
         PlayableCard resourceCard;
@@ -281,10 +281,10 @@ public class PlayableCardTest {
 
         hand.getLast().flip();
 
-        player.getPlayerArea().setCardOnCoordinates(hand.getFirst(),1,1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.get(1),2,2,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.get(2),3,3,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.getLast(),4,4,"Test");
+        player.getPlayerArea().setCardOnCoordinates(hand.getFirst(),1,1);
+        player.getPlayerArea().setCardOnCoordinates(hand.get(1),2,2);
+        player.getPlayerArea().setCardOnCoordinates(hand.get(2),3,3);
+        player.getPlayerArea().setCardOnCoordinates(hand.getLast(),4,4);
 
         assertEquals(1,player.getPlayerArea().getPoints());
     }
@@ -305,13 +305,13 @@ public class PlayableCardTest {
 
         hand.getLast().flip();
 
-        player.getPlayerArea().setCardOnCoordinates(hand.getFirst(),1,1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.get(1),2,0,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.get(2),3,-1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.get(3),2,-2,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.get(4),-1,-1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.get(5),0,-2,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.getLast(),1,-1,"Test");
+        player.getPlayerArea().setCardOnCoordinates(hand.getFirst(),1,1);
+        player.getPlayerArea().setCardOnCoordinates(hand.get(1),2,0);
+        player.getPlayerArea().setCardOnCoordinates(hand.get(2),3,-1);
+        player.getPlayerArea().setCardOnCoordinates(hand.get(3),2,-2);
+        player.getPlayerArea().setCardOnCoordinates(hand.get(4),-1,-1);
+        player.getPlayerArea().setCardOnCoordinates(hand.get(5),0,-2);
+        player.getPlayerArea().setCardOnCoordinates(hand.getLast(),1,-1);
 
         assertEquals(8,player.getPlayerArea().getPoints());
     }
@@ -327,10 +327,10 @@ public class PlayableCardTest {
 
         hand.getLast().flip();
 
-        player.getPlayerArea().setCardOnCoordinates(hand.getFirst(),1,1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.get(1),2,0,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.get(2),3,1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(hand.getLast(),1,-1,"Test");
+        player.getPlayerArea().setCardOnCoordinates(hand.getFirst(),1,1);
+        player.getPlayerArea().setCardOnCoordinates(hand.get(1),2,0);
+        player.getPlayerArea().setCardOnCoordinates(hand.get(2),3,1);
+        player.getPlayerArea().setCardOnCoordinates(hand.getLast(),1,-1);
 
         assertEquals(2,player.getPlayerArea().getPoints());
     }

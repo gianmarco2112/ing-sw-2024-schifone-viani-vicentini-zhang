@@ -4,6 +4,7 @@ import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 import ingsw.codex_naturalis.events.setupPhase.ObjectiveCardChoice;
 import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.view.cardsToString;
@@ -84,10 +85,7 @@ public class SetupTextualUI extends SetupUI {
         }
     }
 
-
-    private void ready() {
-
-        //clear possible previous inputs
+    private void clearPreviousInputs() {
         try {
             while (System.in.available() > 0) {
                 System.in.read(new byte[System.in.available()]);
@@ -95,6 +93,12 @@ public class SetupTextualUI extends SetupUI {
         } catch (IOException e){
             System.err.println("Error [System.in.available]");
         }
+    }
+
+
+    private void ready() {
+
+        clearPreviousInputs();
 
         System.out.println();
         System.out.println("Press enter if you're ready to play");
@@ -150,10 +154,12 @@ public class SetupTextualUI extends SetupUI {
             }
         } catch (NumberFormatException e) {
             printErrInvalidOption();
+            getInitialCardOption();
         }
 
     }
     private void askInitialCardOption() {
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -196,6 +202,7 @@ public class SetupTextualUI extends SetupUI {
     }
     private void askColorOption() {
 
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -232,6 +239,7 @@ public class SetupTextualUI extends SetupUI {
             setState(State.WAITING_FOR_UPDATE);
         } catch (NumberFormatException e) {
             printErrInvalidOption();
+            getColorOption();
         }
 
     }
@@ -244,6 +252,7 @@ public class SetupTextualUI extends SetupUI {
     }
     private void askObjectiveCardOption() {
 
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -274,6 +283,7 @@ public class SetupTextualUI extends SetupUI {
             setState(State.WAITING_FOR_UPDATE);
         } catch (NumberFormatException e) {
             printErrInvalidOption();
+            getObjectiveCardOption();
         }
 
     }
@@ -397,11 +407,20 @@ public class SetupTextualUI extends SetupUI {
     }
 
     private void showResourceAndGoldDecks() {
+
+        List<PlayableCard.Immutable> resourceCards = new ArrayList<>();
+        resourceCards.add(game.topResourceCard());
+        resourceCards.addAll(game.revealedResourceCards());
+
         System.out.println("\n\nResource cards");
-        System.out.println(cardsToString.listOfPlayableCardsToString(game.resourceCards()));
+        System.out.println(cardsToString.listOfPlayableCardsToString(resourceCards));
+
+        List<PlayableCard.Immutable> goldCards = new ArrayList<>();
+        goldCards.add(game.topGoldCard());
+        goldCards.addAll(game.revealedGoldCards());
 
         System.out.println("\nGold cards");
-        System.out.println(cardsToString.listOfPlayableCardsToString(game.goldCards()));
+        System.out.println(cardsToString.listOfPlayableCardsToString(goldCards));
     }
 
     private void showCommonObjectiveCards() {

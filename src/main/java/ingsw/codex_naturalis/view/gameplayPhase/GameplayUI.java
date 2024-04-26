@@ -9,4 +9,7 @@ public abstract class GameplayUI extends GameplayObservable implements Runnable 
 
     public abstract void updatePlayerOrder(Game.Immutable immGame);
 
+    public abstract void update(Game.Immutable immGame);
+
+    public abstract void reportError(String error);
 }

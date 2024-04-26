@@ -18,8 +18,6 @@ import ingsw.codex_naturalis.model.util.PlayerObserver;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -32,8 +30,10 @@ public class Game extends GameObservable implements PlayerObserver {
                             String currentPlayerNickname,
                             List<Player.ImmutableHidden> hiddenPlayers,
                             Player.Immutable player,
-                            List<PlayableCard.Immutable> resourceCards,
-                            List<PlayableCard.Immutable> goldCards,
+                            PlayableCard.Immutable topResourceCard,
+                            List<PlayableCard.Immutable> revealedResourceCards,
+                            PlayableCard.Immutable topGoldCard,
+                            List<PlayableCard.Immutable> revealedGoldCards,
                             List<ObjectiveCard.Immutable> commonObjectiveCards,
                             List<Message> chat) {}
 
@@ -51,11 +51,16 @@ public class Game extends GameObservable implements PlayerObserver {
 
         Player.Immutable playerReceiver = null;
 
-        List<PlayableCard.Immutable> immResourceCards = new ArrayList<>();
+        PlayableCard.Immutable topResourceCard = null;
 
-        List<PlayableCard.Immutable> immGoldCards = new ArrayList<>();
+        List<PlayableCard.Immutable> immRevealedResourceCards = new ArrayList<>();
+
+        PlayableCard.Immutable topGoldCard = null;
+
+        List<PlayableCard.Immutable> immRevealedGoldCards = new ArrayList<>();
 
         List<ObjectiveCard.Immutable> immCommonObjectiveCards = new ArrayList<>();
+
 
         for (Player player : playerOrder) {
             playerOrderNicknames.add(player.getNickname());
@@ -73,41 +78,25 @@ public class Game extends GameObservable implements PlayerObserver {
             currentPlayerNickname = currentPlayer.getNickname();
 
         if (resourceCardsDeck.getFirstCard() != null)
-            immResourceCards.add(resourceCardsDeck.getFirstCard().getImmutablePlayableCard());
+            topResourceCard = resourceCardsDeck.getFirstCard().getImmutablePlayableCard();
+
         for (PlayableCard card : revealedResourceCards)
-            if (card != null)
-                immResourceCards.add(card.getImmutablePlayableCard());
+            immRevealedResourceCards.add(card.getImmutablePlayableCard());
 
         if (goldCardsDeck.getFirstCard() != null)
-            immGoldCards.add(goldCardsDeck.getFirstCard().getImmutablePlayableCard());
+            topGoldCard = goldCardsDeck.getFirstCard().getImmutablePlayableCard();
+
         for (PlayableCard card : revealedGoldCards)
-            if (card != null)
-                immGoldCards.add(card.getImmutablePlayableCard());
+            immRevealedGoldCards.add(card.getImmutablePlayableCard());
 
         for (ObjectiveCard card : commonObjectiveCards)
-            if (card != null)
-                immCommonObjectiveCards.add(card.getImmutableObjectiveCard());
+            immCommonObjectiveCards.add(card.getImmutableObjectiveCard());
 
         return new Immutable(gameID, gameStatus, playerOrderNicknames,
                 currentPlayerNickname, immHiddenPlayers, playerReceiver,
-                immResourceCards, immGoldCards, immCommonObjectiveCards, chat);
+                topResourceCard, immRevealedResourceCards,
+                topGoldCard, immRevealedGoldCards, immCommonObjectiveCards, chat);
 
-    }
-
-    public List<PlayableCard.Immutable> getImmutableRevealedResourceCards() {
-        List<PlayableCard.Immutable> immutableRevealedResourceCards = new ArrayList<>();
-        for (PlayableCard card : revealedResourceCards)
-            if (card != null)
-                immutableRevealedResourceCards.add(card.getImmutablePlayableCard());
-        return immutableRevealedResourceCards;
-    }
-
-    public List<PlayableCard.Immutable> getImmutableRevealedGoldCards() {
-        List<PlayableCard.Immutable> immutableRevealedGoldCards = new ArrayList<>();
-        for (PlayableCard card : revealedGoldCards)
-            if (card != null)
-                immutableRevealedGoldCards.add(card.getImmutablePlayableCard());
-        return immutableRevealedGoldCards;
     }
 
 
@@ -253,7 +242,7 @@ public class Game extends GameObservable implements PlayerObserver {
     public Player getCurrentPlayer(){
         return currentPlayer;
     }
-    public void setCurrentPlayer(Player currentPlayer, String nickname){
+    public void setCurrentPlayer(Player currentPlayer){
         this.currentPlayer = currentPlayer;
         notifyObservers(this, GameEvent.TURN_CHANGED);
     }
@@ -371,9 +360,9 @@ public class Game extends GameObservable implements PlayerObserver {
         notifyObservers(this, GameEvent.SETUP_2);
     }
 
-    @Deprecated
     public void shufflePlayerList(){
         Collections.shuffle(this.playerOrder);
+        currentPlayer = playerOrder.getFirst();
     }
 
 

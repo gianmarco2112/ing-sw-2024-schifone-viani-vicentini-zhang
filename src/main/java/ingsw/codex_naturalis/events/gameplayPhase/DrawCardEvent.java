@@ -1,0 +1,12 @@
+package ingsw.codex_naturalis.events.gameplayPhase;
+
+public enum DrawCardEvent {
+
+    DRAW_FROM_RESOURCE_CARDS_DECK,
+    DRAW_FROM_GOLD_CARDS_DECK,
+    DRAW_REVEALED_RESOURCE_CARD_1,
+    DRAW_REVEALED_RESOURCE_CARD_2,
+    DRAW_REVEALED_GOLD_CARD_1,
+    DRAW_REVEALED_GOLD_CARD_2
+
+}

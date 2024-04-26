@@ -18,10 +18,14 @@ public interface Client extends Remote {
 
     void stcUpdateSetupUIInitialCard(String jsonImmGame, String jsonInitialCardEvent) throws RemoteException;
     void stcUpdateSetupUIColor(String jsonColor) throws RemoteException;
-    void reportSetupUIError(String message) throws RemoteException;
+    void reportSetupUIError(String error) throws RemoteException;
     void stcUpdateSetupUI(String jsonImmGame, String jsonGameEvent) throws RemoteException;
     void stcUpdateSetupUIObjectiveCardChoice(String jsonImmGame) throws RemoteException;
 
 
     void stcUpdateGameplayUIPlayerOrder(String jsonImmGame) throws RemoteException;
+
+    void stcUpdateGameplayUI(String jsonImmGame) throws RemoteException;
+
+    void reportGameplayUIError(String error) throws RemoteException;
 }

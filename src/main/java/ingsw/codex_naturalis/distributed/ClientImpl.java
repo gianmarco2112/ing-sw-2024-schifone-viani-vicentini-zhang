@@ -5,9 +5,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.distributed.util.LobbyObserver;
 import ingsw.codex_naturalis.enumerations.Color;
-import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
+import ingsw.codex_naturalis.events.gameplayPhase.FlipCardEvent;
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayObserver;
 import ingsw.codex_naturalis.controller.setupPhase.SetupObserver;
+import ingsw.codex_naturalis.events.gameplayPhase.PlayCardEvent;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.model.Game;
@@ -15,8 +16,7 @@ import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.view.UI;
 import ingsw.codex_naturalis.view.gameStartingPhase.GameStartingUI;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
-import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
-import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
+import ingsw.codex_naturalis.events.gameplayPhase.DrawCardEvent;
 import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.view.lobbyPhase.LobbyUI;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
@@ -212,8 +212,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
     }
 
     @Override
-    public void reportSetupUIError(String message) {
-        setupView.reportError(message);
+    public void reportSetupUIError(String error) {
+        setupView.reportError(error);
     }
 
     @Override
@@ -247,8 +247,22 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
         }
     }
 
+    @Override
+    public void stcUpdateGameplayUI(String jsonImmGame) throws RemoteException {
+        try {
+            Game.Immutable immGame = objectMapper.readValue(jsonImmGame, Game.Immutable.class);
+            gameplayView.update(immGame);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
 
-    //lobby observer
+    @Override
+    public void reportGameplayUIError(String error) throws RemoteException {
+        gameplayView.reportError(error);
+    }
+
+
     @Override
     public void ctsUpdateGameToAccess(int gameID, String nickname) {
         try {
@@ -258,7 +272,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
         }
     }
 
-    //lobby observer
     @Override
     public void ctsUpdateNewGame(int numOfPlayers, String nickname) {
         try {
@@ -310,31 +323,31 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
 
 
     @Override
-    public void updateFlipCard(FlipCard flipCard) {
+    public void ctsUpdateFlipCard(FlipCardEvent flipCardEvent) {
         try {
-            server.ctsUpdateFlipCard(this, flipCard);
-        } catch (RemoteException e) {
+            server.ctsUpdateFlipCard(this, objectMapper.writeValueAsString(flipCardEvent));
+        } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating the server");
         }
     }
     @Override
-    public void updatePlayCard(PlayCard playCard, int x, int y) throws NotYourTurnException {
+    public void ctsUpdatePlayCard(PlayCardEvent playCardEvent, int x, int y) throws NotYourTurnException {
         try {
-            server.ctsUpdatePlayCard(this, playCard, x, y);
-        } catch (RemoteException e) {
+            server.ctsUpdatePlayCard(this, objectMapper.writeValueAsString(playCardEvent), x, y);
+        } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating the server");
         }
     }
     @Override
-    public void updateDrawCard(DrawCard drawCard) throws NotYourTurnException, NotYourDrawTurnStatusException {
+    public void ctsUpdateDrawCard(DrawCardEvent drawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException {
         try {
-            server.ctsUpdateDrawCard(this, drawCard);
-        } catch (RemoteException e) {
+            server.ctsUpdateDrawCard(this, objectMapper.writeValueAsString(drawCardEvent));
+        } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating the server");
         }
     }
     @Override
-    public void updateText(Message message, String content, List<String> receivers) {
+    public void ctsUpdateText(Message message, String content, List<String> receivers) {
         try {
             server.ctsUpdateText(this, message, content, receivers);
         } catch (RemoteException e) {

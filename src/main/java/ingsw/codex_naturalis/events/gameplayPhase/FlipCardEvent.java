@@ -1,6 +1,6 @@
 package ingsw.codex_naturalis.events.gameplayPhase;
 
-public enum FlipCard {
+public enum FlipCardEvent {
 
     FLIP_CARD_1,
     FLIP_CARD_2,

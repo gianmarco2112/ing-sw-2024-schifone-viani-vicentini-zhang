@@ -33,6 +33,8 @@ public class Deck <T extends Card> {
     }
 
     public T getFirstCard(){
+        if (cards.isEmpty())
+            return null;
         return cards.getFirst();
     }
 }

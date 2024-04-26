@@ -3,9 +3,9 @@ package ingsw.codex_naturalis.controller;
 
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayController;
 import ingsw.codex_naturalis.enumerations.*;
-import ingsw.codex_naturalis.events.gameplayPhase.DrawCard;
-import ingsw.codex_naturalis.events.gameplayPhase.FlipCard;
-import ingsw.codex_naturalis.events.gameplayPhase.PlayCard;
+import ingsw.codex_naturalis.events.gameplayPhase.DrawCardEvent;
+import ingsw.codex_naturalis.events.gameplayPhase.FlipCardEvent;
+import ingsw.codex_naturalis.events.gameplayPhase.PlayCardEvent;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
 import ingsw.codex_naturalis.model.cards.Corner;
@@ -177,7 +177,7 @@ class GameplayControllerTest {
         Player player = model.getPlayerOrder().getFirst();
         player.setHand(hand);
 
-        gameplayController.updateFlipCard("Test", FlipCard.FLIP_CARD_1);
+        gameplayController.updateFlipCard("Test", FlipCardEvent.FLIP_CARD_1);
 
         assertTrue(player.getHand().getFirst().showingFront);
     }
@@ -193,24 +193,24 @@ class GameplayControllerTest {
 
         player.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
 
-        gameplayController.updatePlayCard("Test", PlayCard.PLAY_CARD_1,1,1);
+        gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,1,1);
 
         assertEquals(resourceCard,player.getPlayerArea().getCardOnCoordinates(1,1));
     }
 
     @Test
     void notYourTurnException(){
-        assertThrows(NotYourTurnException.class,()->{gameplayController.updatePlayCard("Test2", PlayCard.PLAY_CARD_1,1,1);});
+        assertThrows(NotYourTurnException.class,()->{gameplayController.updatePlayCard("Test2", PlayCardEvent.PLAY_CARD_1,1,1);});
     }
 
     @Test
     void updateDrawCard() {
         updatePlayCard();
-        gameplayController.updateDrawCard("Test", DrawCard.DRAW_FROM_RESOURCE_CARDS_DECK);//remove first
+        gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);//remove first
         PlayableCard card = player.getHand().getFirst();
         assertEquals("R01",card.getCardID());
 
-        assertThrows(NotYourTurnException.class,()->{gameplayController.updateDrawCard("Test1", DrawCard.DRAW_FROM_RESOURCE_CARDS_DECK);});
+        assertThrows(NotYourTurnException.class,()->{gameplayController.updateDrawCard("Test1", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);});
 
         //play a card-----
         PlayableCard resourceCard = insectResourceCard();
@@ -221,20 +221,20 @@ class GameplayControllerTest {
         player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
         player2.setHand(hand);
 
-        gameplayController.updatePlayCard("Test2", PlayCard.PLAY_CARD_1,1,1);
+        gameplayController.updatePlayCard("Test2", PlayCardEvent.PLAY_CARD_1,1,1);
         //----------------
-        gameplayController.updateDrawCard("Test2", DrawCard.DRAW_FROM_GOLD_CARDS_DECK);//remove first
+        gameplayController.updateDrawCard("Test2", DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);//remove first
         card = player2.getHand().getFirst();
         assertEquals("G01",card.getCardID());
 
-        assertThrows(NotYourDrawTurnStatusException.class,()->{gameplayController.updateDrawCard("Test", DrawCard.DRAW_FROM_RESOURCE_CARDS_DECK);});
+        assertThrows(NotYourDrawTurnStatusException.class,()->{gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);});
     }
 
     @Test
     void updateDrawRevealedResourceCard() {
         setRevealedCards();
         updatePlayCard();
-        gameplayController.updateDrawCard("Test", DrawCard.DRAW_REVEALED_RESOURCE_CARD_1);//remove first
+        gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);//remove first
         PlayableCard card = player.getHand().getFirst();
         assertEquals("RTest",card.getCardID());
 
@@ -247,9 +247,9 @@ class GameplayControllerTest {
         player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
         player2.setHand(hand);
 
-        gameplayController.updatePlayCard("Test2", PlayCard.PLAY_CARD_1,1,1);
+        gameplayController.updatePlayCard("Test2", PlayCardEvent.PLAY_CARD_1,1,1);
         //----------------
-        gameplayController.updateDrawCard("Test2", DrawCard.DRAW_REVEALED_RESOURCE_CARD_2);//remove first
+        gameplayController.updateDrawCard("Test2", DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);//remove first
         card = player.getHand().getFirst();
         assertEquals("RTest",card.getCardID());
     }
@@ -258,7 +258,7 @@ class GameplayControllerTest {
     void updateDrawRevealedGoldCard() {
         setRevealedCards();
         updatePlayCard();
-        gameplayController.updateDrawCard("Test", DrawCard.DRAW_REVEALED_GOLD_CARD_1);//remove first
+        gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1);//remove first
         PlayableCard card = player.getHand().getFirst();
         assertEquals("GTest",card.getCardID());
 
@@ -271,9 +271,9 @@ class GameplayControllerTest {
         player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
         player2.setHand(hand);
 
-        gameplayController.updatePlayCard("Test2", PlayCard.PLAY_CARD_1,1,1);
+        gameplayController.updatePlayCard("Test2", PlayCardEvent.PLAY_CARD_1,1,1);
         //----------------
-        gameplayController.updateDrawCard("Test2", DrawCard.DRAW_REVEALED_GOLD_CARD_2);//remove first
+        gameplayController.updateDrawCard("Test2", DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2);//remove first
         card = player.getHand().getFirst();
         assertEquals("GTest",card.getCardID());
     }
@@ -291,7 +291,7 @@ class GameplayControllerTest {
 
     @Test
     void noSuchNicknameException(){
-        assertThrows(NoSuchNicknameException.class,()->{gameplayController.updateFlipCard("Test1", FlipCard.FLIP_CARD_1);});
+        assertThrows(NoSuchNicknameException.class,()->{gameplayController.updateFlipCard("Test1", FlipCardEvent.FLIP_CARD_1);});
     }
     @Test
     void notPlayableException(){
@@ -301,7 +301,7 @@ class GameplayControllerTest {
 
         Player player = model.getPlayerOrder().getFirst();
         player.setHand(hand);
-        assertThrows(NotPlayableException.class,()->{gameplayController.updatePlayCard("Test", PlayCard.PLAY_CARD_1,1,1);});
+        assertThrows(NotPlayableException.class,()->{gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,1,1);});
     }
 
     @Test
@@ -318,12 +318,12 @@ class GameplayControllerTest {
 
             player.setHand(hand);
 
-            gameplayController.updatePlayCard("Test", PlayCard.PLAY_CARD_1,i,i);
+            gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,i,i);
             i++;
         }
         assertEquals(GameStatus.LAST_ROUND_20_POINTS,model.getGameStatus());
 
-        gameplayController.updateDrawCard("Test", DrawCard.DRAW_FROM_RESOURCE_CARDS_DECK);
+        gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
         //play a card-----
         PlayableCard resourceCard = insectResourceCard();
         List<PlayableCard> hand = new ArrayList<>();
@@ -333,15 +333,15 @@ class GameplayControllerTest {
         player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
         player2.setHand(hand);
 
-        gameplayController.updatePlayCard("Test2", PlayCard.PLAY_CARD_1,1,1);
+        gameplayController.updatePlayCard("Test2", PlayCardEvent.PLAY_CARD_1,1,1);
 
-        gameplayController.updateDrawCard("Test2", DrawCard.DRAW_FROM_RESOURCE_CARDS_DECK);
+        gameplayController.updateDrawCard("Test2", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
 
         player.setHand(hand);
-        gameplayController.updatePlayCard("Test", PlayCard.PLAY_CARD_1,-1,-1);
+        gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,-1,-1);
 
         player2.setHand(hand);
-        gameplayController.updatePlayCard("Test2", PlayCard.PLAY_CARD_1,-1,-1);
+        gameplayController.updatePlayCard("Test2", PlayCardEvent.PLAY_CARD_1,-1,-1);
 
         assertEquals(GameStatus.ENDGAME,model.getGameStatus());
     }
@@ -358,9 +358,9 @@ class GameplayControllerTest {
 
         player.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
 
-        //gameplayController.updatePlayCard("Test", PlayCard.PLAY_CARD_1,1,1);
+        //gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,1,1);
 
-        assertThrows(NotPlayableException.class,()->{gameplayController.updatePlayCard("Test", PlayCard.PLAY_CARD_1,1,1);});
+        assertThrows(NotPlayableException.class,()->{gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,1,1);});
 
     }
 
@@ -370,23 +370,23 @@ class GameplayControllerTest {
         while (i<=40){
             model.setCurrentPlayer(player,"Test");
             player.setTurnStatus(TurnStatus.DRAW);
-            gameplayController.updateDrawCard("Test", DrawCard.DRAW_FROM_RESOURCE_CARDS_DECK);
+            gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
             i++;
         }
         model.setCurrentPlayer(player,"Test");
         player.setTurnStatus(TurnStatus.DRAW);
-        assertThrows(EmptyDeckException.class,()->{gameplayController.updateDrawCard("Test", DrawCard.DRAW_FROM_RESOURCE_CARDS_DECK);});
+        assertThrows(EmptyResourceCardsDeckException.class,()->{gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);});
 
         i = 1;
         while (i<=40){
             model.setCurrentPlayer(player,"Test");
             player.setTurnStatus(TurnStatus.DRAW);
-            gameplayController.updateDrawCard("Test", DrawCard.DRAW_FROM_GOLD_CARDS_DECK);
+            gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);
             i++;
         }
         model.setCurrentPlayer(player,"Test");
         player.setTurnStatus(TurnStatus.DRAW);
-        assertThrows(EmptyDeckException.class,()->{gameplayController.updateDrawCard("Test", DrawCard.DRAW_FROM_GOLD_CARDS_DECK);});
+        assertThrows(EmptyResourceCardsDeckException.class,()->{gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);});
 
         assertEquals(GameStatus.LAST_ROUND_DECKS_EMPTY,model.getGameStatus());
     }
@@ -403,12 +403,12 @@ class GameplayControllerTest {
         while (i<=40){
             model.setCurrentPlayer(player,"Test");
             player.setTurnStatus(TurnStatus.DRAW);
-            gameplayController.updateDrawCard("Test", DrawCard.DRAW_REVEALED_RESOURCE_CARD_2);
+            gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);
             i++;
         }
 
         model.setCurrentPlayer(player,"Test");
         player.setTurnStatus(TurnStatus.DRAW);
-        assertThrows(NoMoreRevealedCardHereException.class,()->{gameplayController.updateDrawCard("Test", DrawCard.DRAW_REVEALED_RESOURCE_CARD_1);});
+        assertThrows(NoMoreRevealedCardHereException.class,()->{gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);});
     }
 }*/

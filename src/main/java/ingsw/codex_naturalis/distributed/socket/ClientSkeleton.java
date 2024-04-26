@@ -6,7 +6,6 @@ import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
 import ingsw.codex_naturalis.distributed.socket.MessageFromClient.MessageFromClient;
 import ingsw.codex_naturalis.distributed.socket.MessageFromServer.*;
-import ingsw.codex_naturalis.view.UI;
 
 import java.io.*;
 import java.net.Socket;
@@ -165,6 +164,11 @@ public class ClientSkeleton implements Client {
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
+    }
+
+    @Override
+    public void stcUpdateGameplayUI(String jsonImmGame) throws RemoteException {
+
     }
 
 

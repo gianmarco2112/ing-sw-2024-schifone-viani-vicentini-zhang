@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.view.lobbyPhase;
 import ingsw.codex_naturalis.distributed.GameSpecs;
 import ingsw.codex_naturalis.exceptions.*;
 
+import java.io.IOException;
 import java.util.*;
 
 public class LobbyTextualUI extends LobbyUI {
@@ -68,10 +69,20 @@ public class LobbyTextualUI extends LobbyUI {
     private void printErrInvalidOption(){
         System.err.println("Invalid option");
     }
+    private void clearPreviousInputs() {
+        try {
+            while (System.in.available() > 0) {
+                System.in.read(new byte[System.in.available()]);
+            }
+        } catch (IOException e){
+            System.err.println("Error [System.in.available]");
+        }
+    }
 
 
     private void askGameAccessOption() {
 
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -102,6 +113,7 @@ public class LobbyTextualUI extends LobbyUI {
             }
         } catch (NumberFormatException e) {
             printErrInvalidOption();
+            getGameAccessOption();
         }
 
     }
@@ -124,6 +136,7 @@ public class LobbyTextualUI extends LobbyUI {
     }
     private void askNumOfPlayers() {
 
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -186,7 +199,8 @@ public class LobbyTextualUI extends LobbyUI {
 
         if (gameSpecsMap.isEmpty())
             throw new NoExistingGamesAvailable();
-        
+
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -229,6 +243,7 @@ public class LobbyTextualUI extends LobbyUI {
 
     private void askNickname() {
 
+        clearPreviousInputs();
         System.out.println("""
                 
                 

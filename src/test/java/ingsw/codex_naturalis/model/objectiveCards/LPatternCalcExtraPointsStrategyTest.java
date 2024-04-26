@@ -170,28 +170,28 @@ public class LPatternCalcExtraPointsStrategyTest {
                 0));
     }
     private void bottomLeftL(){
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),1,1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),2,2,"Test");
-        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),1,3,"Test");
-        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),2,4,"Test");
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),1,1);
+        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),2,2);
+        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),1,3);
+        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),2,4);
     }
     private void bottomRightL(){
-        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),-1,1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-2,2,"Test");
-        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-3,3,"Test");
-        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-2,4,"Test");
+        player.getPlayerArea().setCardOnCoordinates(plantResourceCard(),-1,1);
+        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-2,2);
+        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-3,3);
+        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-2,4);
     }
     private void topLeftL(){
-        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),1,-1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),2,-2,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),1,-3,"Test");
-        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),2,-4,"Test");
+        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),1,-1);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),2,-2);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),1,-3);
+        player.getPlayerArea().setCardOnCoordinates(insectResourceCard(),2,-4);
     }
     private void topRightL(){
-        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-1,-1,"Test");
-        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),-2,-2,"Test");
-        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),-1,-3,"Test");
-        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),-2,-4,"Test");
+        player.getPlayerArea().setCardOnCoordinates(fungiResourceCard(),-1,-1);
+        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),-2,-2);
+        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),-1,-3);
+        player.getPlayerArea().setCardOnCoordinates(animalResourceCard(),-2,-4);
     }
     @Test
     void bottomLeftLTest(){

@@ -1,16 +1,11 @@
 package ingsw.codex_naturalis.view.gameplayPhase;
 
 import ingsw.codex_naturalis.enumerations.Color;
-import ingsw.codex_naturalis.enumerations.ExtremeCoordinate;
-import ingsw.codex_naturalis.enumerations.Symbol;
 import ingsw.codex_naturalis.events.gameplayPhase.*;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
-import ingsw.codex_naturalis.model.cards.Corner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.player.Player;
-import ingsw.codex_naturalis.model.player.PlayerArea;
-import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.view.cardsToString;
 
 import java.util.*;
@@ -21,6 +16,9 @@ public class GameplayTextualUI extends GameplayUI {
     private final Scanner s = new Scanner(System.in);
 
     private Game.Immutable game;
+    private final List<PlayableCard.Immutable> resourceCards = new ArrayList<>();
+    private final List<PlayableCard.Immutable> goldCards = new ArrayList<>();
+    private final List<List<PlayableCard.Immutable>> cardsToDraw = new ArrayList<>();
 
 
     private enum State {
@@ -48,29 +46,10 @@ public class GameplayTextualUI extends GameplayUI {
 
 
 
-
-    @Override
-    public void run() {
-
-        waitForUpdate();
-        playing();
-
-    }
-
-    private void playing() {
-
-        while (true) {
-            askCommand();
-            getCommand();
-        }
-
-    }
-
     @Override
     public void stop() {
         setState(State.STOPPING_THE_VIEW);
     }
-
 
     private void printErrInvalidOption(){
         System.err.println("Invalid option");
@@ -88,19 +67,37 @@ public class GameplayTextualUI extends GameplayUI {
         }
     }
 
+    @Override
+    public void run() {
+
+        waitForUpdate();
+        playing();
+
+    }
+
+    private void playing() {
+
+        while (true) {
+            askCommand();
+            getCommand();
+            waitForUpdate();
+        }
+
+    }
+
 
     private void askCommand() {
         System.out.println("""
                 
                 
-                ----------------------------------------
+                ------------------
                 Commands list:
                 
                 (1) Flip a card
                 (2) Play a card
                 (3) Draw a card
                 (4) Send a message
-                ----------------------------------------
+                ------------------
                 
                 
                 """);
@@ -122,6 +119,7 @@ public class GameplayTextualUI extends GameplayUI {
             }
         } catch (NumberFormatException e) {
             printErrInvalidOption();
+            getCommand();
         }
     }
 
@@ -138,10 +136,10 @@ public class GameplayTextualUI extends GameplayUI {
                 -------------------------------
                 Which card do you want to flip?
                 
-                (/) Back
-                """);
+                (/) Back""");
         for (int i=0; i<game.player().hand().size(); i++)
-            System.out.println("("+i+1+") Card "+i+1);
+            System.out.println("(" + (i+1) + ") Card " + (i+1));
+        System.out.println("-------------------------------");
         System.out.println("\n");
     }
     private void getFlipCardOption() {
@@ -151,11 +149,11 @@ public class GameplayTextualUI extends GameplayUI {
             return;
         try {
             int option = Integer.parseInt(input);
-            if (game.player().hand().size() <= option) {
+            if (game.player().hand().size() >= option) {
                 switch (option) {
-                    case 1 -> notifyFlipCard(FlipCard.FLIP_CARD_1);
-                    case 2 -> notifyFlipCard(FlipCard.FLIP_CARD_2);
-                    case 3 -> notifyFlipCard(FlipCard.FLIP_CARD_3);
+                    case 1 -> notifyFlipCard(FlipCardEvent.FLIP_CARD_1);
+                    case 2 -> notifyFlipCard(FlipCardEvent.FLIP_CARD_2);
+                    case 3 -> notifyFlipCard(FlipCardEvent.FLIP_CARD_3);
                     default -> {
                         printErrInvalidOption();
                         getFlipCardOption();
@@ -169,13 +167,14 @@ public class GameplayTextualUI extends GameplayUI {
             setState(State.WAITING_FOR_UPDATE);
         } catch (NumberFormatException e) {
             printErrInvalidOption();
+            getFlipCardOption();
         }
     }
 
     private void playingCard() {
         askPlayCardOption();
-        PlayCard playCard = getPlayCardOption();
-        if (playCard == PlayCard.BACK)
+        PlayCardEvent playCardEvent = getPlayCardOption();
+        if (playCardEvent == PlayCardEvent.BACK)
             return;
 
         askCoordinate("x");
@@ -188,7 +187,8 @@ public class GameplayTextualUI extends GameplayUI {
         if (y == 0)
             return;
 
-        notifyPlayCard(playCard, x, y);
+        notifyPlayCard(playCardEvent, x, y);
+        setState(State.WAITING_FOR_UPDATE);
     }
     private void askPlayCardOption() {
         System.out.println("""
@@ -197,30 +197,30 @@ public class GameplayTextualUI extends GameplayUI {
                 -------------------------------
                 Which card do you want to play?
                 
-                (/) Back
-                """);
+                (/) Back""");
         for (int i=0; i<game.player().hand().size(); i++)
-            System.out.println("("+i+1+") Card "+i+1);
+            System.out.println("(" + (i+1) + ") Card " + (i+1));
+        System.out.println("-------------------------------");
         System.out.println("\n");
     }
-    private PlayCard getPlayCardOption() {
+    private PlayCardEvent getPlayCardOption() {
         String input;
         while (true) {
             input = s.next();
             if (input.equals("/"))
-                return PlayCard.BACK;
+                return PlayCardEvent.BACK;
             try {
                 int option = Integer.parseInt(input);
-                if (game.player().hand().size() <= option) {
+                if (game.player().hand().size() >= option) {
                     switch (option) {
                         case 1 -> {
-                            return PlayCard.PLAY_CARD_1;
+                            return PlayCardEvent.PLAY_CARD_1;
                         }
                         case 2 -> {
-                            return PlayCard.PLAY_CARD_2;
+                            return PlayCardEvent.PLAY_CARD_2;
                         }
                         case 3 -> {
-                            return PlayCard.PLAY_CARD_3;
+                            return PlayCardEvent.PLAY_CARD_3;
                         }
                         default -> { printErrInvalidOption(); }
                     }
@@ -234,9 +234,10 @@ public class GameplayTextualUI extends GameplayUI {
         System.out.println("""
                 
                 
-                ----------------------------------------""");
+                -----------------------------""");
         System.out.println("Please write the " + coordinate + " coordinate");
         System.out.println("\n(/) Back");
+        System.out.println("-----------------------------");
         System.out.println("\n");
     }
     private int getCoordinate() {
@@ -254,6 +255,215 @@ public class GameplayTextualUI extends GameplayUI {
     }
 
     private void drawingCard() {
+
+        try {
+            askDrawCardOption();
+        } catch (ZeroCardsLeftException e) {
+            System.err.println(e.getMessage());
+            return;
+        }
+        getDrawCardOption();
+
+    }
+    private void askDrawCardOption() throws ZeroCardsLeftException{
+
+        if (cardsToDraw.isEmpty())
+            throw new ZeroCardsLeftException();
+
+        System.out.println("""
+                
+                
+                ---------------------------------------
+                Which type of card do you want to draw?
+                
+                (/) Back""");
+
+        switch (cardsToDraw.size()) {
+            case 1 -> { System.out.println("(1) Gold card"); }
+            case 2 -> {
+                System.out.println("(1) Resource card");
+                System.out.println("(2) Gold card");
+            }
+        }
+
+        System.out.println("---------------------------------------\n\n");
+    }
+    private void getDrawCardOption() {
+        String input;
+        input = s.next();
+        if (input.equals("/"))
+            return;
+        try {
+            int option = Integer.parseInt(input);
+            switch (option) {
+                case 1 -> {
+                    if (resourceCards.isEmpty())
+                        drawingGoldCard();
+                    else drawingResourceCard();
+                }
+                case 2 -> {
+                    if (goldCards.isEmpty()) {
+                        printErrInvalidOption();
+                        getDrawCardOption();
+                    }
+                    else
+                        drawingGoldCard();
+                }
+                default -> {
+                    printErrInvalidOption();
+                    getDrawCardOption();
+                }
+            }
+        } catch (NumberFormatException e) {
+            printErrInvalidOption();
+            getDrawCardOption();
+        }
+    }
+    private void drawingResourceCard() {
+
+        try {
+            askDrawResourceCardOption();
+        } catch (EmptyResourceCardsDeckException e){
+            System.out.println(e.getMessage());
+            return;
+        }
+        getDrawResourceCardOption();
+
+    }
+    private void askDrawResourceCardOption() throws EmptyResourceCardsDeckException{
+
+        if (resourceCards.isEmpty())
+            throw new EmptyResourceCardsDeckException();
+
+        System.out.println("""
+                
+                
+                ----------------------------------------
+                Which resource card do you want to draw?
+                
+                (/) Back""");
+        if (game.topResourceCard() != null) {
+            System.out.println("(1) Deck card");
+            for (int i=0; i<game.revealedResourceCards().size(); i++)
+                System.out.println("("+(i+2)+") Revealed card "+(i+1));
+        }
+        else {
+            for (int i = 0; i < game.revealedResourceCards().size(); i++)
+                System.out.println("(" + (i + 1) + ") Revealed card " + (i + 1));
+        }
+        System.out.println("----------------------------------------\n\n");
+
+    }
+    private void getDrawResourceCardOption() {
+        String input;
+        input = s.next();
+        if (input.equals("/"))
+            return;
+        try {
+            int option = Integer.parseInt(input);
+            switch (option) {
+                case 1 -> {
+                    if (game.topResourceCard() != null)
+                        notifyDrawCard(DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
+                    else
+                        notifyDrawCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);
+                }
+                case 2 -> {
+                    if (game.topResourceCard() != null)
+                        notifyDrawCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);
+                    else
+                        notifyDrawCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);
+                }
+                case 3 -> {
+                    if (game.revealedResourceCards().size() == 2)
+                        notifyDrawCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);
+                    else {
+                        printErrInvalidOption();
+                        getDrawResourceCardOption();
+                    }
+                }
+                default -> {
+                    printErrInvalidOption();
+                    getDrawResourceCardOption();
+                }
+            }
+        } catch (NumberFormatException e) {
+            printErrInvalidOption();
+            getDrawCardOption();
+        }
+    }
+    private void drawingGoldCard() {
+
+        try {
+            askDrawGoldCardOption();
+        } catch (EmptyGoldCardsDeckException e){
+            System.out.println(e.getMessage());
+            return;
+        }
+        getDrawGoldCardOption();
+
+    }
+    private void askDrawGoldCardOption() throws EmptyGoldCardsDeckException{
+
+        if (goldCards.isEmpty())
+            throw new EmptyGoldCardsDeckException();
+
+        System.out.println("""
+                
+                
+                ------------------------------------
+                Which gold card do you want to draw?
+                
+                (/) Back""");
+        if (game.topGoldCard() != null) {
+            System.out.println("(1) Deck card");
+            for (int i=0; i<game.revealedGoldCards().size(); i++)
+                System.out.println("("+(i+2)+") Revealed card "+(i+1));
+        }
+        else {
+            for (int i = 0; i < game.revealedGoldCards().size(); i++)
+                System.out.println("(" + (i + 1) + ") Revealed card " + (i + 1));
+        }
+        System.out.println("------------------------------------\n\n");
+
+    }
+    private void getDrawGoldCardOption() {
+        String input;
+        input = s.next();
+        if (input.equals("/"))
+            return;
+        try {
+            int option = Integer.parseInt(input);
+            switch (option) {
+                case 1 -> {
+                    if (game.topGoldCard() != null)
+                        notifyDrawCard(DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);
+                    else
+                        notifyDrawCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1);
+                }
+                case 2 -> {
+                    if (game.topGoldCard() != null)
+                        notifyDrawCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1);
+                    else
+                        notifyDrawCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2);
+                }
+                case 3 -> {
+                    if (game.revealedGoldCards().size() == 2)
+                        notifyDrawCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2);
+                    else {
+                        printErrInvalidOption();
+                        getDrawGoldCardOption();
+                    }
+                }
+                default -> {
+                    printErrInvalidOption();
+                    getDrawGoldCardOption();
+                }
+            }
+        } catch (NumberFormatException e) {
+            printErrInvalidOption();
+            getDrawCardOption();
+        }
     }
 
     private void sendingMessage() {
@@ -264,27 +474,7 @@ public class GameplayTextualUI extends GameplayUI {
 
 
 
-    /*private void drawCardCase(){
-        System.out.println("--- Which card do you want to draw? ---");
-        printUtilityCommands();
-        printDrawCardCommands();
-        try {
-            DrawCard drawCard = askGenericCommandToPlayer(drawCardCommands);
-            notifyDrawCard(drawCard);
-            addCardToTheOptions();
-        } catch (UtilityCommandException e){
-            UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
-            utilityCommandCase(utilityCommand);
-        } catch (NotYourDrawTurnStatusException | NotYourTurnException | EmptyDeckException | NoMoreRevealedCardHereException e){
-            System.err.println(e.getMessage());
-        }
-    }
-
-    private void addCardToTheOptions() {
-        flipCardCommands.put(3, FlipCard.values()[2]);
-        playCardCommands.put(3, PlayCard.values()[2]);
-    }
-
+    /*
     private void textCase(){
         System.out.println("--- Who do you want to send a message to? ---");
         printUtilityCommands();
@@ -343,45 +533,33 @@ public class GameplayTextualUI extends GameplayUI {
             else
                 return input;
         }
-    }
-
-
-    private <T extends Enum<T>> T askGenericCommandToPlayer(Map<Integer, T> genericCommands) throws UtilityCommandException {
-        while (true) {
-            String input = s.next();
-            if (utilityCommands.containsKey(input))
-                throw new UtilityCommandException(input);
-            try{
-                int number = Integer.parseInt(input);
-                if (genericCommands.containsKey(number))
-                    return genericCommands.get(number);
-                else
-                    System.err.println("This is not a command: " + number);
-            } catch (NumberFormatException e) {
-                System.err.println("This is not a command: " + input);
-            }
-        }
     }*/
 
 
 
+    private void initCenterOfTable() {
+        if (game.topResourceCard() != null)
+            resourceCards.add(game.topResourceCard());
+        resourceCards.addAll(game.revealedResourceCards());
 
+        if (game.topGoldCard() != null)
+            goldCards.add(game.topGoldCard());
+        goldCards.addAll(game.revealedGoldCards());
 
-    public void update(Game.Immutable o, GameEvent arg, String nickname, String playerWhoUpdated) {
-        try {
-            switch (arg) {
-                //o.player().playerArea().area().get(new ArrayList<>(List.of(0,0)));
-            }
-        } catch (NoSuchNicknameException e) {
-            System.err.println(e.getMessage());
-        }
+        if (!resourceCards.isEmpty())
+            cardsToDraw.add(resourceCards);
+
+        if (!goldCards.isEmpty())
+            cardsToDraw.add(goldCards);
     }
-
 
     @Override
     public void updatePlayerOrder(Game.Immutable immGame) {
 
         this.game = immGame;
+
+        initCenterOfTable();
+
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         show();
         System.out.println("The player order is:");
@@ -391,8 +569,37 @@ public class GameplayTextualUI extends GameplayUI {
 
     }
 
+    @Override
+    public void update(Game.Immutable immGame) {
+
+        String lastCurrentPlayerNickname = game.currentPlayerNickname();
+        game = immGame;
+        initCenterOfTable();
+
+        show();
+        if (!lastCurrentPlayerNickname.equals(game.currentPlayerNickname())) {
+            if (game.player().nickname().equals(game.currentPlayerNickname())) {
+                System.out.println("=================== It's your turn! ===================");
+            }
+            else {
+                System.out.println("=================== It's " + game.currentPlayerNickname() + "'s turn! ===================");
+            }
+        }
+
+        setState(State.RUNNING);
+    }
+
+    @Override
+    public void reportError(String error) {
+        System.err.println(error);
+        setState(State.RUNNING);
+    }
+
 
     private void show() {
+
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
         showOtherPlayers();
 
         showResourceAndGoldDecks();
@@ -400,6 +607,8 @@ public class GameplayTextualUI extends GameplayUI {
         showCommonObjectiveCards();
 
         showYourPlayArea();
+
+        System.out.println(game.player().playerArea().objectiveCard().card());
 
         showYourHand();
     }
@@ -422,15 +631,20 @@ public class GameplayTextualUI extends GameplayUI {
         System.out.println(color.getColorCode() + "\nYour play area" + "\u001B[0m");
         System.out.println("Points: " + game.player().playerArea().points());
         System.out.println("Resources and objects: " + game.player().playerArea().numOfSymbols().toString());
-        System.out.println(game.player().playerArea().area().get(List.of(0,0)).description());
+        System.out.println(cardsToString.playerAreaToString(game.player().playerArea()));
     }
 
     private void showResourceAndGoldDecks() {
-        System.out.println("\n\nResource cards");
-        System.out.println(cardsToString.listOfPlayableCardsToString(game.resourceCards()));
 
-        System.out.println("\nGold cards");
-        System.out.println(cardsToString.listOfPlayableCardsToString(game.goldCards()));
+        if (!resourceCards.isEmpty()) {
+            System.out.println("\n\nResource cards");
+            System.out.println(cardsToString.listOfPlayableCardsToString(resourceCards));
+        }
+
+        if (!goldCards.isEmpty()) {
+            System.out.println("\nGold cards");
+            System.out.println(cardsToString.listOfPlayableCardsToString(goldCards));
+        }
     }
 
     private void showCommonObjectiveCards() {

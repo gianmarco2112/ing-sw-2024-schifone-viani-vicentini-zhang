@@ -156,15 +156,7 @@ public class ClientSkeleton implements Client {
 
     @Override
     public void stcUpdateGameplayUIPlayerOrder(String jsonImmGame) throws RemoteException {
-        try {
-            MessageFromServer message = new STCGameplayUIPlayerOrderUpdate();
-            String jsonMessage = objectMapper.writeValueAsString(message);
-            writer.println(jsonMessage);
-            writer.println(jsonImmGame);
-            writer.flush();
-        } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
-        }
+
     }
 
 

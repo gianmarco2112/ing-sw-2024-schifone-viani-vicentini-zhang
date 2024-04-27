@@ -158,6 +158,6 @@ public class CardTUIRepresentationTest {
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),7,3);
         playerArea.setCardOnCoordinates(resourceCardsDeck.drawACard(),4,0);
 
-        System.out.println(cardsToString.playerAreaToString(playerArea.getImmutablePlayerArea()));
+        System.out.println(cardsToString.playerAreaToString(playerArea.getImmutablePlayerArea().area(), playerArea.getImmutablePlayerArea().extremeCoordinates()));
     }
 }

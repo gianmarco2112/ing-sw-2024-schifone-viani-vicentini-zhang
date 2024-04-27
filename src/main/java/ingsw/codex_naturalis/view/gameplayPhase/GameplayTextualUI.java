@@ -628,7 +628,7 @@ public class GameplayTextualUI extends GameplayUI {
             System.out.println(color.getColorCode() + player.nickname() +"'s play area" + "\u001B[0m");
             System.out.println("Points: " + player.playerArea().points());
             System.out.println("Resources and objects: " + player.playerArea().numOfSymbols().toString());
-            //System.out.println(cardsToString.hidPlayerAreaToString(player.playerArea()));
+            System.out.println(cardsToString.playerAreaToString(player.playerArea().area(), player.playerArea().extremeCoordinates()));
             System.out.println(cardsToString.listOfPlayableCardsToString(player.hand()));
             System.out.println("////////////////////////////////////////////////////////////////");
         }
@@ -640,7 +640,7 @@ public class GameplayTextualUI extends GameplayUI {
         System.out.println(color.getColorCode() + "\nYour play area" + "\u001B[0m");
         System.out.println("Points: " + game.player().playerArea().points());
         System.out.println("Resources and objects: " + game.player().playerArea().numOfSymbols().toString());
-        System.out.println(cardsToString.playerAreaToString(game.player().playerArea()));
+        System.out.println(cardsToString.playerAreaToString(game.player().playerArea().area(), game.player().playerArea().extremeCoordinates()));
     }
 
     private void showResourceAndGoldDecks() {

@@ -164,6 +164,14 @@ public class cardsToString {
             }
         }
 
+        // adding Y coordinates
+        columns.put(extremeCoordinates.get(ExtremeCoordinate.MIN_X)-1, new ArrayList<>());
+        for (int i = extremeCoordinates.get(ExtremeCoordinate.MAX_Y); i >= extremeCoordinates.get(ExtremeCoordinate.MIN_Y) - 1; i--) {
+            columns.get(extremeCoordinates.get(ExtremeCoordinate.MIN_X)-1).addAll(List.of("     ", "     ", NumIn3Char(i, false) + "  "));
+        }
+        columns.get(extremeCoordinates.get(ExtremeCoordinate.MIN_X)-1).add("   " + NumIn3Char(extremeCoordinates.get(ExtremeCoordinate.MIN_X) - 1, true));
+
+        // populating columns
         for (int i = extremeCoordinates.get(ExtremeCoordinate.MAX_X); i >= extremeCoordinates.get(ExtremeCoordinate.MIN_X); i--) {
             columns.put(i, new ArrayList<>());
             for (int j = extremeCoordinates.get(ExtremeCoordinate.MAX_Y); j >= extremeCoordinates.get(ExtremeCoordinate.MIN_Y); j--) {
@@ -215,24 +223,53 @@ public class cardsToString {
                         }
                     }
                 }
+                // adding X Coordinates
+                if (j == extremeCoordinates.get(ExtremeCoordinate.MIN_Y)){
+                    columns.get(i).addAll(List.of("   ", NumIn3Char(i, true)));
+                }
             }
         }
 
-        for (int j = 0; j < 3*(extremeCoordinates.get(ExtremeCoordinate.MAX_Y)-extremeCoordinates.get(ExtremeCoordinate.MIN_Y)+1)+2; j++) {
-            for (int i = extremeCoordinates.get(ExtremeCoordinate.MIN_X); i <= extremeCoordinates.get(ExtremeCoordinate.MAX_X); i++) {
+        // player area assembly
+        for (int j = 0; j < 3*(extremeCoordinates.get(ExtremeCoordinate.MAX_Y)-extremeCoordinates.get(ExtremeCoordinate.MIN_Y)+1)+4; j++) {
+            for (int i = extremeCoordinates.get(ExtremeCoordinate.MIN_X) - 1; i <= extremeCoordinates.get(ExtremeCoordinate.MAX_X); i++) {
                 outString.append(columns.get(i).get(j));
             }
             outString.append("\n");
         }
+
+        // adding Extreme coordinates
+        outString.insert(0, NumIn3Char(extremeCoordinates.get(ExtremeCoordinate.MAX_Y) + 1, false) + "\n");
+        outString.replace(outString.length()-1, outString.length(),
+                NumIn3Char(extremeCoordinates.get(ExtremeCoordinate.MAX_X) + 1, true) + "\n");
         return outString.toString();
     }
 
-    private String NumIn3Char(Integer i){
-        String outString = "";
-        if (i > -99 && i < 99){
 
+    private static String NumIn3Char(Integer i, boolean x_coordinate){
+        String outString = "";
+        if (i>-99 && i<99){
+            if(i>=0 && i<=9){
+                if(x_coordinate){
+                    outString = " " + i.toString() + " ";
+                }
+                else{
+                    outString = "  " + i.toString();
+                }
+            }
+            else if((i<=-1 && i>=-9)){
+                if(x_coordinate){
+                    outString = i.toString() + " ";
+                }
+                else{
+                    outString = " " + i.toString();
+                }
+            } else if (i>=10) {
+                outString = " " + i.toString();
+            } else if (i<=-10) {
+                outString = i.toString();
+            }
         }
         return outString;
     }
-
 }

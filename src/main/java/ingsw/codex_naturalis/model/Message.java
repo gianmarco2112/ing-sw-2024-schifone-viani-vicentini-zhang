@@ -1,35 +1,31 @@
 package ingsw.codex_naturalis.model;
 
-import ingsw.codex_naturalis.model.player.Player;
-
-import java.io.Serializable;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
  * MessageEvent class
  */
-public class Message implements Serializable {
-
-    private static final long serialVersionUID = 3L;
+public class Message {
 
     /**
      * Content of the message
      */
-    private final String content;
+    private String content;
     /**
      * Sent time
      */
-    private final LocalTime sentTime;
+    private String sentTime;
 
     /**
      * Sender of the message
      */
-    private final String sender;
+    private String sender;
     /**
      * Receivers of the message
      */
-    private final List<String> receivers;
+    private List<String> receivers;
 
 
     /**
@@ -42,8 +38,12 @@ public class Message implements Serializable {
         this.content = content;
         this.sender = sender;
         this.receivers = new ArrayList<>(receivers);
-        this.sentTime = LocalTime.now();
+        LocalTime localTime = LocalTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        this.sentTime = localTime.format(dateTimeFormatter);
     }
+
+    public Message(){}
 
 
     /**
@@ -58,7 +58,7 @@ public class Message implements Serializable {
      * Sent time getter
      * @return Sent time
      */
-    public LocalTime getSentTime(){
+    public String getSentTime(){
         return sentTime;
     }
 

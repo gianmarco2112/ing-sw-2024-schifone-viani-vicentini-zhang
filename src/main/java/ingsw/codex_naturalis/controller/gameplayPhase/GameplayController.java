@@ -5,16 +5,15 @@ import ingsw.codex_naturalis.enumerations.GameStatus;
 import ingsw.codex_naturalis.enumerations.TurnStatus;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCardEvent;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCardEvent;
-import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCardEvent;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.Message;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public class GameplayController {
@@ -194,20 +193,22 @@ public class GameplayController {
 
 
 
-    public void updateText(Client client, Message arg, String content, List<String> receivers) {
+    public synchronized void updateSendMessage(String nickname, String receiver, String content) {
 
-        sendAMessage(client, arg, content, receivers);
+        List<String> receivers = new ArrayList<>();
+        if (receiver != null)
+            receivers.add(receiver);
+        else {
+            for (Player player : model.getPlayerOrder())
+                if (!player.getNickname().equals(nickname))
+                    receivers.add(player.getNickname());
+        }
+        model.addMessageToChat(new Message(content, nickname, receivers));
 
     }
-    private void sendAMessage(Client client, Message arg, String content, List<String> receivers){
 
-        List<ingsw.codex_naturalis.model.Message> messages = model.getChat();
-        ingsw.codex_naturalis.model.Message messageToSend = null;
-        messageToSend = new ingsw.codex_naturalis.model.Message(content, "client.getNickname()", receivers);
-        messages.add(messageToSend);
-        model.setMessages(messages, "client.getNickname()");
 
-    }
+
 
     public Game getModel() {
         return model;

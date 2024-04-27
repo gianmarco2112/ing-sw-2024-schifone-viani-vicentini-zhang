@@ -61,6 +61,8 @@ public class Game extends GameObservable implements PlayerObserver {
 
         List<ObjectiveCard.Immutable> immCommonObjectiveCards = new ArrayList<>();
 
+        List<Message> playerReceiverChat = new ArrayList<>();
+
 
         for (Player player : playerOrder) {
             playerOrderNicknames.add(player.getNickname());
@@ -92,10 +94,14 @@ public class Game extends GameObservable implements PlayerObserver {
         for (ObjectiveCard card : commonObjectiveCards)
             immCommonObjectiveCards.add(card.getImmutableObjectiveCard());
 
+        for (Message message : chat)
+            if (message.getReceivers().contains(playerNicknameReceiver) || message.getSender().equals(playerNicknameReceiver))
+                playerReceiverChat.add(message);
+
         return new Immutable(gameID, gameStatus, playerOrderNicknames,
                 currentPlayerNickname, immHiddenPlayers, playerReceiver,
                 topResourceCard, immRevealedResourceCards,
-                topGoldCard, immRevealedGoldCards, immCommonObjectiveCards, chat);
+                topGoldCard, immRevealedGoldCards, immCommonObjectiveCards, playerReceiverChat);
 
     }
 
@@ -119,14 +125,6 @@ public class Game extends GameObservable implements PlayerObserver {
      * Contains all the players of the game, ordered by the turn they play
      */
     private List<Player> playerOrder;
-
-    public void setColorToPlayer(Color color, Player player) throws ColorAlreadyChosenException{
-        for (Player p : playerOrder) {
-            if (p.getColor() == color)
-                throw new ColorAlreadyChosenException();
-        }
-        player.setColor(color);
-    }
 
     /**
      * Current player
@@ -156,19 +154,19 @@ public class Game extends GameObservable implements PlayerObserver {
     /**
      * The two revealed resource cards
      */
-    private List<PlayableCard> revealedResourceCards;
+    private final List<PlayableCard> revealedResourceCards;
 
     /**
      * The two revealed gold cards
      */
-    private List<PlayableCard> revealedGoldCards;
+    private final List<PlayableCard> revealedGoldCards;
 
     /**
      * The two common objective cards
      */
-    private List<ObjectiveCard> commonObjectiveCards;
+    private final List<ObjectiveCard> commonObjectiveCards;
 
-    private List<Message> chat;
+    private final List<Message> chat;
 
 
 
@@ -241,14 +239,15 @@ public class Game extends GameObservable implements PlayerObserver {
     }
     public void setCurrentPlayer(Player currentPlayer){
         this.currentPlayer = currentPlayer;
-        //notifyObservers(this, GameEvent.TURN_CHANGED);
     }
 
     public List<Message> getChat() {
         return new ArrayList<>(chat);
     }
-    public void setMessages(List<Message> messages, String nickname){
-        this.chat = messages;
+
+    public void addMessageToChat(Message message) {
+        chat.add(message);
+        notifyObservers(this, GameEvent.MESSAGE);
     }
 
     public Deck<PlayableCard> getResourceCardsDeck() {
@@ -278,15 +277,8 @@ public class Game extends GameObservable implements PlayerObserver {
     public List<PlayableCard> getRevealedResourceCards() {
         return new ArrayList<>(revealedResourceCards);
     }
-    public void setRevealedResourceCards(List<PlayableCard> revealedResourceCards){
-        this.revealedResourceCards = revealedResourceCards;
-    }
-
     public List<PlayableCard> getRevealedGoldCards() {
         return new ArrayList<>(revealedGoldCards);
-    }
-    public void setRevealedGoldCards(List<PlayableCard> revealedGoldCards){
-        this.revealedGoldCards = revealedGoldCards;
     }
 
     /**

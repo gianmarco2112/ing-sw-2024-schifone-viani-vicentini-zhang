@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.distributed;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import ingsw.codex_naturalis.distributed.util.LobbyObserver;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCardEvent;
@@ -17,7 +18,6 @@ import ingsw.codex_naturalis.view.UI;
 import ingsw.codex_naturalis.view.gameStartingPhase.GameStartingUI;
 import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCardEvent;
-import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.view.lobbyPhase.LobbyUI;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 import ingsw.codex_naturalis.events.setupPhase.ObjectiveCardChoice;
@@ -347,9 +347,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client, LobbyObse
         }
     }
     @Override
-    public void ctsUpdateText(Message message, String content, List<String> receivers) {
+    public void ctsUpdateSendMessage(String receiver, String content) {
         try {
-            server.ctsUpdateText(this, message, content, receivers);
+            server.ctsUpdateSendMessage(this, receiver, content);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }

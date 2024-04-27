@@ -260,11 +260,15 @@ public class LobbyTextualUI extends LobbyUI {
     private String getNickname()  {
 
         while (true) {
-            String input = s.next();
-            if (input.length() > 20)
+            String input = s.nextLine();
+            if (input.contains(" ")) {
+                System.err.println("You can't include a white space!");
+            } else if (input.length() > 20) {
                 System.err.println("Too many characters!");
-            else
+            }
+            else if (!input.isEmpty()) {
                 return input;
+            }
         }
 
     }

@@ -2,22 +2,22 @@ package ingsw.codex_naturalis.distributed;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import ingsw.codex_naturalis.distributed.util.GameObserver;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayController;
 import ingsw.codex_naturalis.controller.setupPhase.SetupController;
-import ingsw.codex_naturalis.enumerations.GameStatus;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCardEvent;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCardEvent;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCardEvent;
 import ingsw.codex_naturalis.events.setupPhase.ObjectiveCardChoice;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.Message;
 import ingsw.codex_naturalis.model.util.GameEvent;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.model.util.PlayerEvent;
 import ingsw.codex_naturalis.view.UI;
-import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.events.setupPhase.InitialCardEvent;
 
 import java.rmi.RemoteException;
@@ -424,8 +424,11 @@ public class ServerImpl implements Server, GameObserver {
     }
 
     @Override
-    public void ctsUpdateText(Client client, Message message, String content, List<String> receivers) {
-        //this.gameplayController.updateText(client, message, content, receivers);
+    public void ctsUpdateSendMessage(Client client, String receiver, String content) {
+        executorService.submit( () -> {
+            GameManagement<GameplayController> gameManagement = findGameplayGameManagementByClient(client);
+            gameManagement.getController().updateSendMessage(gameManagement.nicknameMap.getNickname(client), receiver, content);
+        });
     }
 
 
@@ -435,6 +438,11 @@ public class ServerImpl implements Server, GameObserver {
 
     @Override
     public void update(Game game, GameEvent gameEvent) {
+
+        if (gameEvent == GameEvent.MESSAGE) {
+            messageCase(game);
+            return;
+        }
 
         GameManagement<SetupController> setupGameManagement = findSetupGameManagementByGame(game);
         List<Client> clients = setupGameManagement.getViews();
@@ -459,6 +467,30 @@ public class ServerImpl implements Server, GameObserver {
             }
         }
 
+    }
+
+    private void messageCase(Game game) {
+        GameManagement<GameplayController> gameplayGameManagement = findGameplayGameManagementByGame(game);
+        List<Client> clients = gameplayGameManagement.getViews();
+
+        Message message = game.getChat().getLast();
+        List<String> playersInvolved = new ArrayList<>();
+        playersInvolved.add(message.getSender());
+        playersInvolved.addAll(message.getReceivers());
+
+        List<Client> clientsInvolved = new ArrayList<>();
+        for (Client client : clients)
+            if (playersInvolved.contains(gameplayGameManagement.nicknameMap.getNickname(client)))
+                clientsInvolved.add(client);
+
+        for (Client client : clientsInvolved) {
+            Game.Immutable immGame = game.getImmutableGame(gameplayGameManagement.nicknameMap.getNickname(client));
+            try {
+                client.stcUpdateGameplayUI(objectMapper.writeValueAsString(immGame));
+            } catch (RemoteException | JsonProcessingException e) {
+                System.err.println("Error while updating client");
+            }
+        }
     }
 
     private void changeFromSetupToGameplay(Game game, GameManagement<SetupController> setupGameManagement, List<Client> clients) {
@@ -492,11 +524,11 @@ public class ServerImpl implements Server, GameObserver {
             case COLOR_SETUP -> colorCase(game, playerWhoUpdated);
             case OBJECTIVE_CARD_CHOSEN -> objectiveCardCase(game, playerWhoUpdated);
             case HAND_CARD_FLIPPED -> privateCase(game, playerWhoUpdated);
-            case HAND_CARD_PLAYED, CARD_DRAWN -> publicCase(game, playerWhoUpdated);
+            case HAND_CARD_PLAYED, CARD_DRAWN -> publicCase(game);
         }
     }
 
-    private void publicCase(Game game, Player playerWhoUpdated) {
+    private void publicCase(Game game) {
         GameManagement<GameplayController> gameplayGameManagement = findGameplayGameManagementByGame(game);
         List<Client> clients = gameplayGameManagement.getViews();
         for (Client client : clients) {

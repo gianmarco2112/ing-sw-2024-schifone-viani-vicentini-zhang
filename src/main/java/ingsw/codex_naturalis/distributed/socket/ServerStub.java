@@ -6,14 +6,12 @@ import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.distributed.Server;
 import ingsw.codex_naturalis.distributed.socket.MessageFromClient.*;
 import ingsw.codex_naturalis.distributed.socket.MessageFromServer.MessageFromServer;
-import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.List;
 
 public class ServerStub implements Server {
 
@@ -177,12 +175,29 @@ public class ServerStub implements Server {
 
     @Override
     public void ctsUpdateDrawCard(Client client, String jsonDrawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException, RemoteException {
-
+        try {
+            MessageFromClient message = new CTSDrawCardUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(jsonDrawCardEvent);
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
     }
 
     @Override
-    public void ctsUpdateText(Client client, Message message, String content, List<String> receivers) throws RemoteException {
-
+    public void ctsUpdateSendMessage(Client client, String receiver, String content) throws RemoteException {
+        try {
+            MessageFromClient message = new CTSSendMessageUpdate();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(receiver);
+            writer.println(content);
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
     }
 
 

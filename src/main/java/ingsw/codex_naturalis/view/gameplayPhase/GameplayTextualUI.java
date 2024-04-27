@@ -4,10 +4,12 @@ import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.events.gameplayPhase.*;
 import ingsw.codex_naturalis.exceptions.*;
 import ingsw.codex_naturalis.model.Game;
+import ingsw.codex_naturalis.model.Message;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.player.Player;
 import ingsw.codex_naturalis.view.cardsToString;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -19,6 +21,7 @@ public class GameplayTextualUI extends GameplayUI {
     private final List<PlayableCard.Immutable> resourceCards = new ArrayList<>();
     private final List<PlayableCard.Immutable> goldCards = new ArrayList<>();
     private final List<List<PlayableCard.Immutable>> cardsToDraw = new ArrayList<>();
+    private final List<String> playersToText = new ArrayList<>();
 
 
     private enum State {
@@ -67,6 +70,16 @@ public class GameplayTextualUI extends GameplayUI {
         }
     }
 
+    private void clearPreviousInputs() {
+        try {
+            while (System.in.available() > 0) {
+                System.in.read(new byte[System.in.available()]);
+            }
+        } catch (IOException e){
+            System.err.println("Error [System.in.available]");
+        }
+    }
+
     @Override
     public void run() {
 
@@ -78,6 +91,7 @@ public class GameplayTextualUI extends GameplayUI {
     private void playing() {
 
         while (true) {
+            clearPreviousInputs();
             askCommand();
             getCommand();
             waitForUpdate();
@@ -130,6 +144,7 @@ public class GameplayTextualUI extends GameplayUI {
 
     }
     private void askFlipCardOption() {
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -191,6 +206,7 @@ public class GameplayTextualUI extends GameplayUI {
         setState(State.WAITING_FOR_UPDATE);
     }
     private void askPlayCardOption() {
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -231,6 +247,7 @@ public class GameplayTextualUI extends GameplayUI {
         }
     }
     private void askCoordinate(String coordinate) {
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -269,7 +286,7 @@ public class GameplayTextualUI extends GameplayUI {
 
         if (cardsToDraw.isEmpty())
             throw new ZeroCardsLeftException();
-
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -334,7 +351,7 @@ public class GameplayTextualUI extends GameplayUI {
 
         if (resourceCards.isEmpty())
             throw new EmptyResourceCardsDeckException();
-
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -387,6 +404,7 @@ public class GameplayTextualUI extends GameplayUI {
                     getDrawResourceCardOption();
                 }
             }
+            setState(State.WAITING_FOR_UPDATE);
         } catch (NumberFormatException e) {
             printErrInvalidOption();
             getDrawCardOption();
@@ -407,7 +425,7 @@ public class GameplayTextualUI extends GameplayUI {
 
         if (goldCards.isEmpty())
             throw new EmptyGoldCardsDeckException();
-
+        clearPreviousInputs();
         System.out.println("""
                 
                 
@@ -460,6 +478,7 @@ public class GameplayTextualUI extends GameplayUI {
                     getDrawGoldCardOption();
                 }
             }
+            setState(State.WAITING_FOR_UPDATE);
         } catch (NumberFormatException e) {
             printErrInvalidOption();
             getDrawCardOption();
@@ -467,81 +486,92 @@ public class GameplayTextualUI extends GameplayUI {
     }
 
     private void sendingMessage() {
+
+        askSendMessageOption();
+        String receiver = getSendMessageOption();
+        if (receiver != null && receiver.equals("/"))
+            return;
+
+        askMessageContent();
+        String messageContent = getMessageContent();
+        if (messageContent.equals("/"))
+            return;
+
+        notifySendMessage(receiver, messageContent);
+        setState(State.WAITING_FOR_UPDATE);
+
     }
-
-
-
-
-
-
-    /*
-    private void textCase(){
-        System.out.println("--- Who do you want to send a message to? ---");
-        printUtilityCommands();
-        printTextCommands();
-        try {
-            Message textCommand = askGenericCommandToPlayer(textCommands);
-            List<String> playersToText = new ArrayList<>();
-            switch (textCommand) {
-                case TEXT_A_PLAYER -> {
-                    playersToText.add(askWhichPlayerToPlayer());
-                }
-                case TEXT_ALL_PLAYERS ->
-                        playersToText = new ArrayList<>(playerNicknames.values());
-            }
-            String message = askMessageContentToPlayer();
-            notifyText(textCommand, message, playersToText);
-        } catch (UtilityCommandException e) {
-            UtilityCommand utilityCommand = utilityCommands.get(e.getMessage());
-            utilityCommandCase(utilityCommand);
-        }
+    private void askSendMessageOption() {
+        clearPreviousInputs();
+        System.out.println("""
+                
+                
+                -------------------------------------
+                Who do you want to send e message to?
+                
+                (/) Back
+                (1) {To all the players}""");
+        for (int i=0; i<playersToText.size(); i++)
+            System.out.println("(" + (i+2) + ") " + playersToText.get(i));
+        System.out.println("-------------------------------------");
+        System.out.println("\n");
     }
-
-    private String askWhichPlayerToPlayer() throws UtilityCommandException{
-        System.out.println("--- Which player do you want to text? ---");
-        printUtilityCommands();
-        for (Map.Entry<Integer, String> entry : playerNicknames.entrySet()) {
-            System.out.println(entry.getKey() + " - " + entry.getValue());
-        }
+    private String getSendMessageOption() {
+        String input;
         while (true) {
-            String input = s.next();
-            if (utilityCommands.containsKey(input))
-                throw new UtilityCommandException(input);
-            try{
-                Integer number = Integer.parseInt(input);
-                if (playerNicknames.containsKey(number))
-                    return playerNicknames.get(number);
-                else
-                    System.err.println("This is not a command: " + number);
+            input = s.next();
+            if (input.equals("/"))
+                return ("/");
+            try {
+                int option = Integer.parseInt(input);
+                if (playersToText.size() >= option-1) {
+                    switch (option) {
+                        case 1 -> { return null; }
+                        case 2 -> { return playersToText.get(0); }
+                        case 3 -> { return playersToText.get(1); }
+                        case 4 -> { return playersToText.get(2); }
+                        default -> { printErrInvalidOption(); }
+                    }
+                } else { printErrInvalidOption(); }
             } catch (NumberFormatException e) {
-                System.err.println("This is not a command: "+ input);
+                printErrInvalidOption();
             }
         }
     }
+    private void askMessageContent() {
+        clearPreviousInputs();
+        System.out.println("""
+                
+                
+                ------------------
+                Write your message
+                
+                (/) Back
+                ------------------
+                
+                
+                """);
+    }
+    private String getMessageContent() {
 
-    private String askMessageContentToPlayer() throws  UtilityCommandException{
-        System.out.println("--- Write your message ---");
-        printUtilityCommands();
         while (true) {
-            String input = s.next();
-            if (utilityCommands.containsKey(input))
-                throw new UtilityCommandException(input);
-            if (input.length() > 150)
-                System.err.println("These are too many characters...");
-            else if (input.isEmpty())
-                System.err.println("You wrote nothing!");
-            else
+            String input = s.nextLine();
+            if (input.length() > 100)
+                System.err.println("Too many characters!");
+            else if (!input.isEmpty())
                 return input;
         }
-    }*/
+
+    }
 
 
 
-    private void initCenterOfTable() {
+    private void init() {
 
         resourceCards.clear();
         goldCards.clear();
         cardsToDraw.clear();
+        playersToText.clear();
 
         if (game.topResourceCard() != null)
             resourceCards.add(game.topResourceCard());
@@ -556,6 +586,11 @@ public class GameplayTextualUI extends GameplayUI {
 
         if (!goldCards.isEmpty())
             cardsToDraw.add(goldCards);
+
+        for (String nickname : game.playerOrderNicknames())
+            if (!nickname.equals(game.player().nickname()))
+                playersToText.add(nickname);
+
     }
 
     @Override
@@ -563,7 +598,7 @@ public class GameplayTextualUI extends GameplayUI {
 
         this.game = immGame;
 
-        initCenterOfTable();
+        init();
 
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         show();
@@ -579,7 +614,7 @@ public class GameplayTextualUI extends GameplayUI {
 
         String lastCurrentPlayerNickname = game.currentPlayerNickname();
         game = immGame;
-        initCenterOfTable();
+        init();
 
         show();
         if (!lastCurrentPlayerNickname.equals(game.currentPlayerNickname())) {
@@ -592,7 +627,7 @@ public class GameplayTextualUI extends GameplayUI {
         }
 
         if (getState() == State.RUNNING) {
-            System.out.println("==== Game update! ====");
+            System.out.println("=================== Game update! ===================");
             askCommand();
         }
         setState(State.RUNNING);
@@ -607,9 +642,11 @@ public class GameplayTextualUI extends GameplayUI {
 
     private void show() {
 
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
         showOtherPlayers();
+
+        showChat();
 
         showResourceAndGoldDecks();
 
@@ -632,6 +669,33 @@ public class GameplayTextualUI extends GameplayUI {
             System.out.println(cardsToString.listOfPlayableCardsToString(player.hand()));
             System.out.println("////////////////////////////////////////////////////////////////");
         }
+    }
+
+    private void showChat() {
+
+        System.out.println("GAME CHAT");
+        for (Message message : game.chat()) {
+            System.out.println("...............");
+
+            System.out.print("From: ");
+            if (message.getSender().equals(game.player().nickname()))
+                System.out.println("you");
+            else
+                System.out.println(message.getSender());
+
+            System.out.print("To: ");
+            if (message.getReceivers().size() == game.playerOrderNicknames().size()-1)
+                System.out.println("all the players");
+            else if (message.getReceivers().contains(game.player().nickname()))
+                System.out.println("you");
+            else
+                System.out.println(message.getReceivers().get(0));
+
+            System.out.println("Sent time: " + message.getSentTime());
+            System.out.println(message.getContent());
+            System.out.println("...............");
+        }
+        System.out.println("////////////////////////////////////////////////////////////////");
     }
 
     private void showYourPlayArea(){

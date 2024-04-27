@@ -38,7 +38,12 @@ public class PlayerArea {
             immutableArea.put(key, area.get(key).getImmutablePlayableCard());
         }
 
-        return new PlayerArea.Immutable(immutableArea, extremeCoordinates, numOfSymbols,
+        Map<Symbol,Integer> noCornerNumOfSymbols = new HashMap<>();
+        for (Map.Entry<Symbol,Integer> entry : numOfSymbols.entrySet())
+            if (entry.getKey() != Symbol.COVERED)
+                noCornerNumOfSymbols.put(entry.getKey(), entry.getValue());
+
+        return new PlayerArea.Immutable(immutableArea, new HashMap<>(extremeCoordinates), noCornerNumOfSymbols,
                 immObjectiveCard, points, extraPoints);
 
     }
@@ -46,10 +51,15 @@ public class PlayerArea {
     public PlayerArea.ImmutableHidden getImmutableHiddenPlayerArea(){
 
         Map<List<Integer>, PlayableCard.Immutable> immutableArea = new LinkedHashMap<>();
-        for (List<Integer> key : area.keySet()) {
+        for (List<Integer> key : area.keySet())
             immutableArea.put(key, area.get(key).getImmutablePlayableCard());
-        }
-        return new PlayerArea.ImmutableHidden(immutableArea, extremeCoordinates, numOfSymbols, points);
+
+        Map<Symbol,Integer> noCornerNumOfSymbols = new HashMap<>();
+        for (Map.Entry<Symbol,Integer> entry : numOfSymbols.entrySet())
+            if (entry.getKey() != Symbol.COVERED)
+                noCornerNumOfSymbols.put(entry.getKey(), entry.getValue());
+
+        return new PlayerArea.ImmutableHidden(immutableArea, new HashMap<>(extremeCoordinates), noCornerNumOfSymbols, points);
 
     }
 

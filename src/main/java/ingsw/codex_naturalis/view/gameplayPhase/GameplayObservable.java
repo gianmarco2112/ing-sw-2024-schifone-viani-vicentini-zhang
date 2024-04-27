@@ -3,7 +3,6 @@ package ingsw.codex_naturalis.view.gameplayPhase;
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayObserver;
 import ingsw.codex_naturalis.events.gameplayPhase.DrawCardEvent;
 import ingsw.codex_naturalis.events.gameplayPhase.FlipCardEvent;
-import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.events.gameplayPhase.PlayCardEvent;
 
 import java.util.ArrayList;
@@ -50,9 +49,9 @@ public class GameplayObservable {
         }
     }
 
-    public void notifyText(Message message, String content, List<String> receivers) {
+    public void notifySendMessage(String receiver, String content) {
         for (GameplayObserver o : obs){
-            o.ctsUpdateText(message, content, receivers);
+            o.ctsUpdateSendMessage(receiver, content);
         }
     }
 }

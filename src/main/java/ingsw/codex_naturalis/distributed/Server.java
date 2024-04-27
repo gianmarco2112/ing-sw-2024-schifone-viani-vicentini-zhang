@@ -1,12 +1,10 @@
 package ingsw.codex_naturalis.distributed;
 
-import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import ingsw.codex_naturalis.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.exceptions.NotYourDrawTurnStatusException;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.List;
 
 public interface Server extends Remote {
 
@@ -26,6 +24,6 @@ public interface Server extends Remote {
     void ctsUpdateFlipCard(Client client, String jsonFlipCardEvent) throws RemoteException;
     void ctsUpdatePlayCard(Client client, String jsonPlayCardEvent, int x, int y) throws NotYourTurnException, RemoteException;
     void ctsUpdateDrawCard(Client client, String jsonDrawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException, RemoteException;
-    void ctsUpdateText(Client client, Message message, String content, List<String> receivers) throws RemoteException;
+    void ctsUpdateSendMessage(Client client, String receiver, String content) throws RemoteException;
 
 }

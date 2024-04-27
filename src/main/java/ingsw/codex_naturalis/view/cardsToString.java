@@ -180,7 +180,12 @@ public class cardsToString {
 
                     if (cardsAsListOfStrings.containsKey(List.of(i, j+1))){
                         if (!cardsAsListOfStrings.containsKey(List.of(i-1, j)) && !cardsAsListOfStrings.containsKey(List.of(i+1, j))) {
-                            columns.get(i).add(" ".repeat(5));
+                            if (j != extremeCoordinates.get(ExtremeCoordinate.MIN_Y)) {
+                                columns.get(i).add(" ".repeat(5));
+                            }
+                            else{
+                                columns.get(i).addAll(List.of(" ".repeat(5), " ".repeat(5), " ".repeat(5)));
+                            }
                         }
                         else {
                             if (j != extremeCoordinates.get(ExtremeCoordinate.MIN_Y)) {
@@ -220,6 +225,14 @@ public class cardsToString {
             outString.append("\n");
         }
         return outString.toString();
+    }
+
+    private String NumIn3Char(Integer i){
+        String outString = "";
+        if (i > -99 && i < 99){
+
+        }
+        return outString;
     }
 
 }

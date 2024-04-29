@@ -99,7 +99,7 @@ public class PlayerArea {
      * Constructor
      */
     public PlayerArea(){
-        this.objectiveCard = new SymbolsObjectiveCard("aaa", 1, new HashMap<>());
+        this.objectiveCard = null;
         this.area = new LinkedHashMap<>();
         this.points = 0;
         this.extraPoints = 0;

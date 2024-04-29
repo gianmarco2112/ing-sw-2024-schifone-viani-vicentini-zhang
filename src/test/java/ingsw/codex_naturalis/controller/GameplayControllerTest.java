@@ -1,4 +1,3 @@
-/*
 package ingsw.codex_naturalis.controller;
 
 import ingsw.codex_naturalis.controller.gameplayPhase.GameplayController;
@@ -16,10 +15,7 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiver;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverForObject;
 import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.StandardStrategy;
-import ingsw.codex_naturalis.model.enumerations.*;
 import ingsw.codex_naturalis.model.player.Player;
-import ingsw.codex_naturalis.view.gameplayPhase.GameplayUI;
-import ingsw.codex_naturalis.events.gameplayPhase.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,21 +28,23 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameplayControllerTest {
     GameplayController gameplayController;
     Game model;
-    GameplayUI view;
     Player player;
     Player player2;
+    //--------------SETUP-----------------------------------------------------
     @BeforeEach
-    void setUp(){
+    void setUp() {
         model = new Game(0,2);
+
         player = new Player("Test");
         player.setColor(Color.RED);
+        model.addPlayer(player);
+
         player2 = new Player("Test2");
         player2.setColor(Color.BLUE);
-        model.addPlayer(player);
         model.addPlayer(player2);
-        model.setPlayerOrder(List.of(player,player2));
-        model.setCurrentPlayer(player,"Test");
-        gameplayController = new GameplayController(model,view);
+
+        model.setCurrentPlayer(player);
+        gameplayController = new GameplayController(model,null);
     }
     //--------------CARDS-----------------------------------------------------
     private PlayableCard insectResourceCard(){
@@ -163,8 +161,10 @@ class GameplayControllerTest {
     //------------------------------------------------------------------
     //--------------PRIVATE METHODS-------------------------------------
     private void setRevealedCards(){
-        model.setRevealedResourceCards(List.of(insectResourceCard(),insectResourceCard()),"Test");
-        model.setRevealedGoldCards(List.of(insectGoldCard(),insectGoldCard()),"Test");
+        model.addRevealedResourceCard(insectResourceCard());
+        model.addRevealedResourceCard(insectResourceCard());
+        model.addRevealedGoldCard(insectGoldCard());
+        model.addRevealedGoldCard(insectGoldCard());
     }
     //------------------------------------------------------------------
     //--------------------TESTS-----------------------------------------
@@ -174,12 +174,12 @@ class GameplayControllerTest {
         List<PlayableCard> hand = new ArrayList<>();
         hand.add(resourceCard);
 
-        Player player = model.getPlayerOrder().getFirst();
+        Player player = model.getCurrentPlayer();
         player.setHand(hand);
 
         gameplayController.updateFlipCard("Test", FlipCardEvent.FLIP_CARD_1);
 
-        assertTrue(player.getHand().getFirst().showingFront);
+        assertTrue(player.getHand().getFirst().getImmutablePlayableCard().showingFront());
     }
 
     @Test
@@ -188,10 +188,10 @@ class GameplayControllerTest {
         List<PlayableCard> hand = new ArrayList<>();
         hand.add(resourceCard);
 
-        Player player = model.getPlayerOrder().getFirst();
+        Player player = model.getCurrentPlayer();
         player.setHand(hand);
 
-        player.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
+        player.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
 
         gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,1,1);
 
@@ -218,7 +218,7 @@ class GameplayControllerTest {
         hand.add(resourceCard);
 
         Player player2 = model.getCurrentPlayer();
-        player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
+        player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
         player2.setHand(hand);
 
         gameplayController.updatePlayCard("Test2", PlayCardEvent.PLAY_CARD_1,1,1);
@@ -244,7 +244,7 @@ class GameplayControllerTest {
         hand.add(resourceCard);
 
         Player player2 = model.getCurrentPlayer();
-        player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
+        player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
         player2.setHand(hand);
 
         gameplayController.updatePlayCard("Test2", PlayCardEvent.PLAY_CARD_1,1,1);
@@ -268,7 +268,7 @@ class GameplayControllerTest {
         hand.add(resourceCard);
 
         Player player2 = model.getCurrentPlayer();
-        player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
+        player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
         player2.setHand(hand);
 
         gameplayController.updatePlayCard("Test2", PlayCardEvent.PLAY_CARD_1,1,1);
@@ -280,9 +280,7 @@ class GameplayControllerTest {
 
     @Test
     void updateText() {
-        Player player1 = new Player("Test1");
-
-        gameplayController.updateText("Test", Message.TEXT_A_PLAYER,"Prova",List.of("Test1"));
+        gameplayController.updateSendMessage("Test", "Test1","Prova");
 
         assertEquals("Prova",model.getChat().getFirst().getContent());
         assertEquals("Test",model.getChat().getFirst().getSender());
@@ -290,16 +288,12 @@ class GameplayControllerTest {
     }
 
     @Test
-    void noSuchNicknameException(){
-        assertThrows(NoSuchNicknameException.class,()->{gameplayController.updateFlipCard("Test1", FlipCardEvent.FLIP_CARD_1);});
-    }
-    @Test
     void notPlayableException(){
         PlayableCard resourceCard = insectResourceCard();
         List<PlayableCard> hand = new ArrayList<>();
         hand.add(resourceCard);
 
-        Player player = model.getPlayerOrder().getFirst();
+        Player player = model.getCurrentPlayer();
         player.setHand(hand);
         assertThrows(NotPlayableException.class,()->{gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,1,1);});
     }
@@ -307,40 +301,47 @@ class GameplayControllerTest {
     @Test
     void lastRoundGameStatusTest(){
         int i = 1;
-        Player player = model.getPlayerOrder().getFirst();
-        player.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
-        model.setGameStatus(GameStatus.GAMEPLAY,"Test");
-        while(i<=21){
+        Player player = model.getCurrentPlayer();
+        player.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
+        model.setGameStatus(GameStatus.GAMEPLAY);
+        while(i<21){
             PlayableCard resourceCard = insectResourceCardWithPoint();
-            resourceCard.flip("Test");
+            resourceCard.flip();
             List<PlayableCard> hand = new ArrayList<>();
             hand.add(resourceCard);
 
             player.setHand(hand);
 
+            model.setCurrentPlayer(player);
+
             gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,i,i);
+            gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
             i++;
         }
         assertEquals(GameStatus.LAST_ROUND_20_POINTS,model.getGameStatus());
 
-        gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
         //play a card-----
         PlayableCard resourceCard = insectResourceCard();
         List<PlayableCard> hand = new ArrayList<>();
         hand.add(resourceCard);
 
         Player player2 = model.getCurrentPlayer();
-        player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
+        player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
         player2.setHand(hand);
 
         gameplayController.updatePlayCard("Test2", PlayCardEvent.PLAY_CARD_1,1,1);
-
+        //draw a card-----
         gameplayController.updateDrawCard("Test2", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
 
+        //now is the last round
+        hand.add(resourceCard);
         player.setHand(hand);
+        //play a card without drawing a card because last round
         gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,-1,-1);
 
+        hand.add(resourceCard);
         player2.setHand(hand);
+        //play a card without drawing a card because last round
         gameplayController.updatePlayCard("Test2", PlayCardEvent.PLAY_CARD_1,-1,-1);
 
         assertEquals(GameStatus.ENDGAME,model.getGameStatus());
@@ -349,66 +350,15 @@ class GameplayControllerTest {
     @Test
     void GoldCardPlayTest(){
         PlayableCard goldStandardCard = goldStandardCard();
-        goldStandardCard.flip("Test");
+        goldStandardCard.flip();
         List<PlayableCard> hand = new ArrayList<>();
         hand.add(goldStandardCard);
 
-        Player player = model.getPlayerOrder().getFirst();
+        Player player = model.getCurrentPlayer();
         player.setHand(hand);
 
-        player.getPlayerArea().setCardOnCoordinates(initialCard(),0,0,"Test");
-
-        //gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,1,1);
+        player.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
 
         assertThrows(NotPlayableException.class,()->{gameplayController.updatePlayCard("Test", PlayCardEvent.PLAY_CARD_1,1,1);});
-
     }
-
-    @Test
-    void emptyDecks(){
-        int i = 1;
-        while (i<=40){
-            model.setCurrentPlayer(player,"Test");
-            player.setTurnStatus(TurnStatus.DRAW);
-            gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
-            i++;
-        }
-        model.setCurrentPlayer(player,"Test");
-        player.setTurnStatus(TurnStatus.DRAW);
-        assertThrows(EmptyResourceCardsDeckException.class,()->{gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);});
-
-        i = 1;
-        while (i<=40){
-            model.setCurrentPlayer(player,"Test");
-            player.setTurnStatus(TurnStatus.DRAW);
-            gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);
-            i++;
-        }
-        model.setCurrentPlayer(player,"Test");
-        player.setTurnStatus(TurnStatus.DRAW);
-        assertThrows(EmptyResourceCardsDeckException.class,()->{gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);});
-
-        assertEquals(GameStatus.LAST_ROUND_DECKS_EMPTY,model.getGameStatus());
-    }
-
-    @Test
-    void emptyDecksForRevealedCards(){
-        List<PlayableCard>  list = new ArrayList<>();
-        list.add(null);
-        list.add(null);
-        model.setRevealedResourceCards(list,"Test");
-        model.setRevealedGoldCards(list,"Test");
-
-        int i = 1;
-        while (i<=40){
-            model.setCurrentPlayer(player,"Test");
-            player.setTurnStatus(TurnStatus.DRAW);
-            gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);
-            i++;
-        }
-
-        model.setCurrentPlayer(player,"Test");
-        player.setTurnStatus(TurnStatus.DRAW);
-        assertThrows(NoMoreRevealedCardHereException.class,()->{gameplayController.updateDrawCard("Test", DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);});
-    }
-}*/
+}

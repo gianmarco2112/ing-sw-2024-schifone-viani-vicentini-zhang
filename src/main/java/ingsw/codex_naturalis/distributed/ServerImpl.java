@@ -202,7 +202,7 @@ public class ServerImpl implements Server, GameObserver {
 
                     else {
                         lobbyAndStartingGames.remove(lobbyAndStartingGameManagement);
-                        SetupController setupController = new SetupController(lobbyAndStartingGameManagement.getModel(), lobbyAndStartingGameManagement.getViews());
+                        SetupController setupController = new SetupController(lobbyAndStartingGameManagement.getModel());
                         Game model = lobbyAndStartingGameManagement.getModel();
                         List<Client> views = lobbyAndStartingGameManagement.getViews();
                         GameManagement<SetupController> gameManagement = new GameManagement<>(model, setupController, views);
@@ -317,7 +317,7 @@ public class ServerImpl implements Server, GameObserver {
     public void ctsUpdateReady(Client client) {
        executorService.submit( () -> {
             GameManagement<SetupController> gameManagement = findSetupGameManagementByClient(client);
-            gameManagement.getController().updateReady(gameManagement.nicknameMap.getNickname(client));
+            gameManagement.getController().updateReady();
         });
 
     }

@@ -1,6 +1,5 @@
 package ingsw.codex_naturalis.controller.setupPhase;
 
-import ingsw.codex_naturalis.distributed.Client;
 import ingsw.codex_naturalis.enumerations.Color;
 import ingsw.codex_naturalis.enumerations.GameStatus;
 import ingsw.codex_naturalis.events.setupPhase.ObjectiveCardChoice;
@@ -11,18 +10,14 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.model.player.Player;
 
-import java.util.List;
-
 public class SetupController {
 
     private final Game model;
-    private final List<Client> views;
     private int readyPlayers = 0;
 
     //--------------------------------------------------------------------------------------
-    public SetupController(Game model, List<Client> views) {
+    public SetupController(Game model) {
         this.model = model;
-        this.views = views;
     }
 
 
@@ -31,7 +26,7 @@ public class SetupController {
     }
 
 
-    public synchronized void updateReady(String nickname){
+    public synchronized void updateReady(){
         readyPlayers++;
         if (readyPlayers == model.getNumOfPlayers()) {
             model.setupResourceAndGoldCards();

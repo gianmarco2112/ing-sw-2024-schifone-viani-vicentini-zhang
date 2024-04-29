@@ -25,9 +25,6 @@ public class PlayableCard extends Card {
 
     public record Immutable(String cardID, boolean showingFront, String description, String handCard, PlayableSide currentPlayableSide) {}
 
-
-
-
     /**
      * Card type, can be INITIAL, RESOURCE or GOLD
      */
@@ -55,6 +52,11 @@ public class PlayableCard extends Card {
 
     /**
      * Constructor of the card
+     * @param cardID
+     * @param playableCardType
+     * @param kingdom
+     * @param front
+     * @param back
      */
 
     //---------------------------------------------------------------------------------
@@ -175,14 +177,29 @@ public class PlayableCard extends Card {
      */
     public Corner getBottomRightCorner() { return currentPlayableSide.getBottomRightCorner(); }
 
+    /**
+     * Method to increment the counters of each Symbol related to the played card.
+     * @param playerArea: of the player whose counters are incremented
+     */
     public void play(PlayerArea playerArea){
         currentPlayableSide.play(playerArea);
     }
-
+    /**
+     * This method verifies that the card is playable at the specified coordinates
+     * @param playerArea: of the Player that wish to play the card
+     * @return True: if the indicated position is free of other cards and the
+     *               requirements of the card I want to play are fulfilled
+     *         False: otherwise
+     */
     public boolean isPlayable(PlayerArea playerArea, int x, int y){
         return currentPlayableSide.isPlayable(playerArea, x, y);
     }
-
+    /**
+     * This method plays the card, placing it on the specified coordinates
+     * @param playerArea: the PlayerArea of the Player that is playing the card
+     * @param x: the x coordinate where to play the card
+     * @param y: the y coordinate where to play the card
+     */
     public void play(PlayerArea playerArea, int x, int y){
         currentPlayableSide.play(playerArea, x, y);
     }

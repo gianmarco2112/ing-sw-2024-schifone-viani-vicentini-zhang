@@ -16,6 +16,9 @@ import ingsw.codex_naturalis.enumerations.Symbol;
 
 import java.util.Map;
 
+/**
+ * Class that represents one side (Front or Back) of an INITIAL, GOLD or RESOURCE card
+ */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "type"
@@ -47,6 +50,14 @@ public class PlayableSide {
      */
     private final Corner bottomRightCorner;
 
+    /**
+     * Side's constructor
+     * @param topLeftCorner
+     * @param topRightCorner
+     * @param bottomLeftCorner
+     * @param bottomRightCorner
+     */
+
     //-------------------------------------------------------------------------------------------
     @JsonCreator
     public PlayableSide(
@@ -61,16 +72,41 @@ public class PlayableSide {
     }
 
     //----------------------------------------------------------------------------------------------
+    /**
+     * Top left corner's getter
+     * @return topLeftCorner
+     */
     public Corner getTopLeftCorner(){ return topLeftCorner; }
+    /**
+     * Top right corner's getter
+     * @return topRightCorner
+     */
     public Corner getTopRightCorner() { return topRightCorner; }
+    /**
+     * Bottom left corner's getter
+     * @return bottomLeftCorner
+     */
     public Corner getBottomLeftCorner() { return bottomLeftCorner; }
+    /**
+     * Bottom right corner's getter
+     * @return bottomRightCorner
+     */
     public Corner getBottomRightCorner() { return bottomRightCorner; }
-
-
+    /**
+     * Method to increment the counters of each Symbol related to the played card.
+     * @param playerArea: of the player whose counters are incremented
+     */
     public void play(PlayerArea playerArea){
         gainSymbols(playerArea);
     }
 
+    /**
+     * This method verifies that the card is playable at the specified coordinates
+     * @param playerArea: of the Player that wish to play the card
+     * @return True: if the indicated position is free of other cards and the
+     *               requirements of the card I want to play are fulfilled
+     *         False: otherwise
+     */
     public boolean isPlayable(PlayerArea playerArea, int x, int y) {
 
         if (playerArea.containsCardOnCoordinates(x,y))
@@ -112,12 +148,22 @@ public class PlayableSide {
 
         return true;
     }
-
+    /**
+     * This method plays the card, placing it on the specified coordinates
+     * @param playerArea: the PlayerArea of the Player that is playing the card
+     * @param x: the x coordinate where to play the card
+     * @param y: the y coordinate where to play the card
+     */
     public void play(PlayerArea playerArea, int x, int y) {
         coverCorners(playerArea, x, y);
         gainSymbols(playerArea);
     }
-
+    /**
+     * This method covers the corners of the corner-adjacent cards to the played card, if they are present.
+     * @param playerArea: the PlayerArea of the Player that has played the card
+     * @param x: the x coordinate where the card has been played
+     * @param y: the y coordinate where the card has been played
+     */
     protected void coverCorners(PlayerArea playerArea, int x, int y){
         if (playerArea.containsCardOnCoordinates(x-1, y+1)){
             PlayableCard topLeftCard = playerArea.getCardOnCoordinates(x-1,y+1);
@@ -153,6 +199,10 @@ public class PlayableSide {
         }
     }
 
+    /**
+     * This method updates the Symbol's counters of the Player with the Symbols on the played card
+     * @param playerArea
+     */
     protected void gainSymbols(PlayerArea playerArea){
         if(topLeftCorner.getSymbol() != Symbol.EMPTY){
             playerArea.incrNumOfSymbol(topLeftCorner.getSymbol());

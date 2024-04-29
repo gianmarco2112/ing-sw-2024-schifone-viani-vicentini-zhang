@@ -10,7 +10,9 @@ import ingsw.codex_naturalis.enumerations.Symbol;
 
 import java.io.Serial;
 import java.io.Serializable;
-
+/**
+ * Card type, can be INITIAL, RESOURCE or GOLD
+ */
 public class PlayableCard extends Card {
 
     public PlayableCard.Immutable getImmutablePlayableCard(){
@@ -31,23 +33,29 @@ public class PlayableCard extends Card {
      */
     private final PlayableCardType playableCardType;
     /**
-     * Kingdom
+     * Kingdom of the card
      */
     private final Symbol kingdom;
     /**
-     * Front
+     * Front side of the card
      */
     private final PlayableSide front;
     /**
-     * Back
+     * Back side of the card
      */
     private final PlayableSide back;
     /**
-     * Current side showing
+     * The side that the card is currently showing
      */
     private PlayableSide currentPlayableSide;
-
+    /**
+     * True if the card is showing the front side, False otherwise
+     */
     private boolean showingFront;
+
+    /**
+     * Constructor of the card
+     */
 
     //---------------------------------------------------------------------------------
     @JsonCreator
@@ -67,23 +75,40 @@ public class PlayableCard extends Card {
     }
 
     //---------------------------------------------------------------------------------
+
+    /**
+     * Getter of the type of the card
+     * @return playableCardTYpe: the type (INITIAL, GOLD, RESOURCE) of the card
+     */
     public PlayableCardType getPlayableCardType() {
         return playableCardType;
     }
-
+    /**
+     * Getter of the kingdom of the card
+     * @return kingdom: the kingdom of the card
+     */
     public Symbol getKingdom() {
         return kingdom;
     }
-
+    /**
+     * Getter of the side currently showed by the card
+     * @return currentPlayableSide: the side that the card is currently showing
+     */
     public PlayableSide getCurrentPlayableSide() {
         return currentPlayableSide;
     }
-
+    /**
+     * Setter of the side currently showed by the card
+     */
     public void setCurrentPlayableSide(PlayableSide currentPlayableSide) {
         this.currentPlayableSide = currentPlayableSide;
     }
 
-
+    /**
+     * Method to flip the card:
+     * if the card is currently showing front, it would be flipped to the back side
+     * if the card is currently showing back, it would be flipped to the front side
+     */
     @Override
     public void flip(){
         if(!showingFront){
@@ -93,21 +118,31 @@ public class PlayableCard extends Card {
             showBack();
         }
     }
-
+    /**
+     * Set to front the side that the card is showing
+     */
     private void showFront() {
         showingFront = true;
         currentPlayableSide = front;
     }
-
+    /**
+     * Set to back the side that the card is showing
+     */
     private void showBack() {
         showingFront = false;
         currentPlayableSide = back;
     }
-
+    /**
+     * Front side's getter
+     * @return front: the front side of the card
+     */
     public PlayableSide getFront() {
         return front;
     }
-
+    /**
+     * Back side's getter
+     * @return back: the back side of the card
+     */
     public PlayableSide getBack() {
         return back;
     }
@@ -119,10 +154,25 @@ public class PlayableCard extends Card {
     public String playerAreaCardToString(Symbol kingdom){
         return currentPlayableSide.playerAreaCardToString(kingdom);
     }
-
+    /**
+     * Top left corner's getter
+     * @return TopLeftCorner
+     */
     public Corner getTopLeftCorner(){ return currentPlayableSide.getTopLeftCorner(); }
+    /**
+     * Top right corner's getter
+     * @return TopRightCorner
+     */
     public Corner getTopRightCorner() { return currentPlayableSide.getTopRightCorner(); }
+    /**
+     * Bottom left corner's getter
+     * @return BottomLeftCorner
+     */
     public Corner getBottomLeftCorner() { return currentPlayableSide.getBottomLeftCorner(); }
+    /**
+     * Bottom right corner's getter
+     * @return BottomRightCorner
+     */
     public Corner getBottomRightCorner() { return currentPlayableSide.getBottomRightCorner(); }
 
     public void play(PlayerArea playerArea){

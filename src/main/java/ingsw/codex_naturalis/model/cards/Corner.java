@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.enumerations.Symbol;
 
 /**
- * Corner class
+ * Corner class: each card would have 4 corners
  */
 public class Corner {
     /**
@@ -19,9 +19,9 @@ public class Corner {
     private Boolean covered;
 
     /**
-     * Contructor
-     * @param symbol Symbol
-     * @param covered Covered
+     * Corner's constructor
+     * @param symbol Symbol: the symbol on the corner
+     * @param covered Covered: boolean to know if the corner is hidden/visible or not
      */
     @JsonCreator
     public Corner(
@@ -31,9 +31,8 @@ public class Corner {
         this.covered = covered;
     }
 
-
     /**
-     * Symbol getter
+     * Getter of the Symbol on the corner
      * @return Symbol
      */
     public Symbol getSymbol(){
@@ -49,7 +48,7 @@ public class Corner {
     }
 
     /**
-     * Covers the corner
+     * Covers the corner, setting the boolean Covered to True
      */
     public void cover(){
         covered = true;

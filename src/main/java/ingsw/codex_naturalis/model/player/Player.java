@@ -20,7 +20,7 @@ public class Player extends PlayerObservable {
 
     /**
      * Part of the model's view: immutable overview with any attribute of the Player
-     * (intended for the controller in order to manage the game)
+     * (intended for the Controller in order to manage the game)
      */
 
     public record Immutable(String nickname, Color color, TurnStatus turnStatus,
@@ -28,7 +28,7 @@ public class Player extends PlayerObservable {
                             PlayerArea.Immutable playerArea) {}
     /**
      * Part of the model's view: immutable overview with any attribute of the Player
-     * (intended as what other players can see of the Player -> the Player's secret objective card is hidden)
+     * (intended for the View -> the Player's secret objective card is hidden)
      */
 
     public record ImmutableHidden(String nickname, Color color, TurnStatus turnStatus,

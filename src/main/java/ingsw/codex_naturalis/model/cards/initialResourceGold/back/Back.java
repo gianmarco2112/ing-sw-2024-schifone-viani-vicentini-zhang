@@ -9,11 +9,18 @@ import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.enumerations.Symbol;
 
 import java.util.List;
-
+/**
+ * Back side of the INITIAL,GOLD or RESOURCE card
+ */
 public class Back extends PlayableSide {
-    
+    /**
+     * List of the central Symbols (called permanent Symbols) of the card
+     */
     private final List<Symbol> permanentResources;
-    
+    /**
+     * Constructor
+     */
+
     //----------------------------------------------------------------------------------
     @JsonCreator
     public Back(
@@ -25,9 +32,11 @@ public class Back extends PlayableSide {
         super(topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
         this.permanentResources = permanentResources;
     }
-
     //----------------------------------------------------------------------------------
-
+    /**
+     * This method updates the Symbol's counters of the Player with the Permanent Symbols of the card
+     * @param playerArea
+     */
     @Override
     protected void gainSymbols(PlayerArea playerArea){
         for (Symbol sb : permanentResources) {

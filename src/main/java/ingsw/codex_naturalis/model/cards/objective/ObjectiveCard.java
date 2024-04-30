@@ -18,11 +18,14 @@ import java.util.List;
 /**
  * ObjectiveCard's class
  * An objective card gives points for each objective achieved
- * The objective can be: to have a certain number of symbols on player's area or to compose a certain pattern with cards
+ * The objective can be: to have a certain number of symbols on player's area or to
+ * compose a certain pattern with cards
  * The patterns can be two type: an L or a diagonal.
- * It is not necessary to have an attribute to represent the color of the ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide, because we can know it from
- * the kingdom in which it belongs to.
- * Finally, ObjectiveCard has an interface that call the right algorithms at runtime.
+ * It is not necessary to have an attribute to represent the color of the
+ * ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide,
+ * because we can know it from the kingdom in which it belongs to.
+ * Finally,to give the right amount of points to Players, ObjectiveCard has an interface
+ * that, at runtime, calls the right algorithm.
  */
 
 @JsonTypeInfo(
@@ -33,29 +36,35 @@ import java.util.List;
         @Type(value = PatternObjectiveCard.class, name = "pattern")
 })
 public abstract class ObjectiveCard extends Card {
-
+    /**
+     * True if the card is showing the front side, False if it's showing the back side
+     */
     private boolean showingFront;
-
+    /**
+     * Getter of the ObjectiveCard
+     */
     public ObjectiveCard.Immutable getImmutableObjectiveCard(){
         return new ObjectiveCard.Immutable(getCardID(), showingFront, cardToString());
     }
-
+    /**
+     * Getter of the immutable ObjectiveCard (flipped to the back side in order to be hidden)
+     */
     public ObjectiveCard.Immutable getImmutableHiddenPlayableCard(){
         return new ObjectiveCard.Immutable(getCardID(), false, cardToString());
     }
+    /**
+     * Part of the model's view: immutable view of the Objective card
+     */
 
     public record Immutable(String cardID, boolean showingFront, String card) implements Serializable {
         @Serial
         private static final long serialVersionUID = 9L;
     }
 
-
-
     /**
-     * attribute points represents the points that objective card gives for each objective achieved
+     * The points that the objective card gives to the Player each time the objective is achieved
      */
     private final int points;
-
 
     /**
      * Constructor
@@ -70,20 +79,24 @@ public abstract class ObjectiveCard extends Card {
         showingFront = false;
     }
 
-
-
     /**
      * Getter
-     * @return how many points the card gives for one objective achieved
+     * @return points: how many points the card gives each time the objective is achieved
      */
     public int getPoints() {
         return points;
     }
-
+    /**
+     * Method to flip the card:
+     * if the card is currently showing front, it would be flipped to the back side
+     * if the card is currently showing back, it would be flipped to the front side
+     */
     public void flip(){
         showingFront = !showingFront;
     }
-
+    /**
+     * This method adds to the PlayerArea the points given by the Objective card
+     */
     public abstract void gainPoints(List<PlayerArea> playerAreas);
 
     public abstract String cardToString();

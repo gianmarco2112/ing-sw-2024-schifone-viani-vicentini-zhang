@@ -14,14 +14,21 @@ import java.io.Serializable;
  * Card type, can be INITIAL, RESOURCE or GOLD
  */
 public class PlayableCard extends Card {
-
+    /**
+     * Getter of the immutable hidden PlayableCard
+     */
     public PlayableCard.Immutable getImmutablePlayableCard(){
         return new PlayableCard.Immutable(getCardID(), showingFront, playerAreaCardToString(kingdom), handCardToString(kingdom), getCurrentPlayableSide());
     }
-
+    /**
+     * Getter of the immutable PlayableCard (flipped to the back side in order to be hidden)
+     */
     public PlayableCard.Immutable getImmutableHiddenPlayableCard(){
         return new PlayableCard.Immutable(getCardID(), false, playerAreaCardToString(kingdom), back.handCardToString(kingdom), getCurrentPlayableSide());
     }
+    /**
+     * Part of the model's view: immutable view of the INITIAL, GOLD or RESOURCE card
+     */
 
     public record Immutable(String cardID, boolean showingFront, String description, String handCard, PlayableSide currentPlayableSide) {}
 

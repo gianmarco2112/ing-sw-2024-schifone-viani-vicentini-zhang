@@ -288,7 +288,7 @@ public class PlayerArea {
         return new ArrayList<>();
     }
     /**
-     * This method returns a copy of the Player's Area where cards are substitute
+     * This method returns a copy of the Player's Area where cards are substituted
      * by a boolean, initialized to False
      * (it is necessary for the pattern objective card strategy)
      * @return the boolean copy of the Player's Area

@@ -10,48 +10,54 @@ module ingsw.codex_naturalis {
 
     opens ingsw.codex_naturalis to javafx.fxml;
 
-    opens ingsw.codex_naturalis.model.cards.initialResourceGold to com.fasterxml.jackson.databind;
-    exports ingsw.codex_naturalis.model.cards.initialResourceGold to com.fasterxml.jackson.databind;
-    opens ingsw.codex_naturalis.model.cards.initialResourceGold.front to com.fasterxml.jackson.databind;
-    exports ingsw.codex_naturalis.model.cards.initialResourceGold.front to com.fasterxml.jackson.databind;
-    opens ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies to com.fasterxml.jackson.databind;
-    exports ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies to com.fasterxml.jackson.databind;
-    opens ingsw.codex_naturalis.model to com.fasterxml.jackson.databind;
-    exports ingsw.codex_naturalis.model  to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.server.model.cards.initialResourceGold to com.fasterxml.jackson.databind;
+    exports ingsw.codex_naturalis.server.model.cards.initialResourceGold to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.server.model.cards.initialResourceGold.front to com.fasterxml.jackson.databind;
+    exports ingsw.codex_naturalis.server.model.cards.initialResourceGold.front to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.server.model.cards.initialResourceGold.front.strategies to com.fasterxml.jackson.databind;
+    exports ingsw.codex_naturalis.server.model.cards.initialResourceGold.front.strategies to com.fasterxml.jackson.databind;
 
 
-    exports ingsw.codex_naturalis.enumerations;
-    exports ingsw.codex_naturalis.view.gameplayPhase;
-    exports ingsw.codex_naturalis.model.cards;
-    exports ingsw.codex_naturalis.controller.setupPhase;
+    exports ingsw.codex_naturalis.common.enumerations;
+    exports ingsw.codex_naturalis.client.view.gameplayPhase;
+    exports ingsw.codex_naturalis.server.model.cards;
 
-    exports ingsw.codex_naturalis.model.cards.initialResourceGold.back to com.fasterxml.jackson.databind;
-    opens ingsw.codex_naturalis.model.cards.initialResourceGold.back to com.fasterxml.jackson.databind;
+    exports ingsw.codex_naturalis.server.model.cards.initialResourceGold.back to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.server.model.cards.initialResourceGold.back to com.fasterxml.jackson.databind;
 
-    opens ingsw.codex_naturalis.model.cards.objective to com.fasterxml.jackson.databind;
-    exports ingsw.codex_naturalis.model.cards.objective to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.server.model.cards.objective to com.fasterxml.jackson.databind;
+    exports ingsw.codex_naturalis.server.model.cards.objective to com.fasterxml.jackson.databind;
 
     exports ingsw.codex_naturalis;
 
-    exports ingsw.codex_naturalis.distributed.socket.MessageFromServer;
-    exports ingsw.codex_naturalis.distributed.socket.MessageFromClient;
+    exports ingsw.codex_naturalis.common.middleware.MessageFromServer;
+    exports ingsw.codex_naturalis.common.middleware.MessageFromClient;
 
-    exports ingsw.codex_naturalis.events.setupPhase;
-    exports ingsw.codex_naturalis.view;
-    exports ingsw.codex_naturalis.exceptions;
-    exports ingsw.codex_naturalis.model.util to com.fasterxml.jackson.databind;
-    opens ingsw.codex_naturalis.model.util to com.fasterxml.jackson.databind;
-    exports ingsw.codex_naturalis.model.player to com.fasterxml.jackson.databind;
-    opens ingsw.codex_naturalis.model.player to com.fasterxml.jackson.databind;
-    opens ingsw.codex_naturalis.model.cards to com.fasterxml.jackson.databind;
-    exports ingsw.codex_naturalis.controller.gameplayPhase;
-    exports ingsw.codex_naturalis.events.gameplayPhase;
-    opens ingsw.codex_naturalis.enumerations to javafx.fxml;
-    exports ingsw.codex_naturalis.distributed;
-    opens ingsw.codex_naturalis.distributed to javafx.fxml;
-    exports ingsw.codex_naturalis.distributed.socket;
-    opens ingsw.codex_naturalis.distributed.socket to javafx.fxml;
-    opens ingsw.codex_naturalis.distributed.socket.MessageFromClient to javafx.fxml;
-    exports ingsw.codex_naturalis.distributed.util;
-    opens ingsw.codex_naturalis.distributed.util to javafx.fxml;
+    exports ingsw.codex_naturalis.common.events.setupPhase;
+    exports ingsw.codex_naturalis.client.view;
+    exports ingsw.codex_naturalis.common.exceptions;
+    exports ingsw.codex_naturalis.server.model.util to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.server.model.util to com.fasterxml.jackson.databind;
+    exports ingsw.codex_naturalis.server.model.player to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.server.model.player to com.fasterxml.jackson.databind;
+    opens ingsw.codex_naturalis.server.model.cards to com.fasterxml.jackson.databind;
+    exports ingsw.codex_naturalis.common.events.gameplayPhase;
+    opens ingsw.codex_naturalis.common.enumerations to javafx.fxml;
+    exports ingsw.codex_naturalis.common.middleware;
+    opens ingsw.codex_naturalis.common.middleware to javafx.fxml;
+    opens ingsw.codex_naturalis.common.middleware.MessageFromClient to javafx.fxml;
+    exports ingsw.codex_naturalis.client.util;
+    opens ingsw.codex_naturalis.client.util to javafx.fxml;
+    exports ingsw.codex_naturalis.client;
+    opens ingsw.codex_naturalis.client to javafx.fxml;
+    exports ingsw.codex_naturalis.server;
+    opens ingsw.codex_naturalis.server to javafx.fxml;
+    exports ingsw.codex_naturalis.common;
+    opens ingsw.codex_naturalis.common to javafx.fxml;
+    exports ingsw.codex_naturalis.server.util;
+    opens ingsw.codex_naturalis.server.util to javafx.fxml;
+    exports ingsw.codex_naturalis.common.util;
+    opens ingsw.codex_naturalis.common.util to javafx.fxml;
+    exports ingsw.codex_naturalis.server.model;
+    opens ingsw.codex_naturalis.server.model to com.fasterxml.jackson.databind, javafx.fxml;
 }

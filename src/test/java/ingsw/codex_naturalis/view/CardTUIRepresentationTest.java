@@ -2,11 +2,12 @@ package ingsw.codex_naturalis.view;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
-import ingsw.codex_naturalis.model.Deck;
-import ingsw.codex_naturalis.model.DefaultValue;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.cards.objective.ObjectiveCard;
-import ingsw.codex_naturalis.model.player.PlayerArea;
+import ingsw.codex_naturalis.client.view.cardsToString;
+import ingsw.codex_naturalis.server.model.Deck;
+import ingsw.codex_naturalis.server.model.DefaultValue;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.server.model.cards.objective.ObjectiveCard;
+import ingsw.codex_naturalis.server.model.player.PlayerArea;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

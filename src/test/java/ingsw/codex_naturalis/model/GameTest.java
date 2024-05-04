@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.model;
 
-import ingsw.codex_naturalis.enumerations.GameStatus;
+import ingsw.codex_naturalis.server.model.Game;
+import ingsw.codex_naturalis.common.enumerations.GameStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,17 +1,18 @@
 package ingsw.codex_naturalis.model;
 
 
-import ingsw.codex_naturalis.model.cards.Corner;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.front.PointsGiverForObject;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.CornerStrategy;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.front.strategies.StandardStrategy;
-import ingsw.codex_naturalis.enumerations.PlayableCardType;
-import ingsw.codex_naturalis.enumerations.Symbol;
-import ingsw.codex_naturalis.model.player.Player;
+import ingsw.codex_naturalis.server.model.Game;
+import ingsw.codex_naturalis.server.model.cards.Corner;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableSide;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.back.Back;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.front.PointsGiverForObject;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.front.strategies.CornerStrategy;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.front.strategies.StandardStrategy;
+import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
+import ingsw.codex_naturalis.common.enumerations.Symbol;
+import ingsw.codex_naturalis.server.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

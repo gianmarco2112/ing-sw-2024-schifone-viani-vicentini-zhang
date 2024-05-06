@@ -1,14 +1,14 @@
 package ingsw.codex_naturalis.model;
 
-import ingsw.codex_naturalis.model.cards.Corner;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableCard;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.PlayableSide;
-import ingsw.codex_naturalis.model.cards.initialResourceGold.back.Back;
-import ingsw.codex_naturalis.enumerations.Color;
-import ingsw.codex_naturalis.enumerations.PlayableCardType;
-import ingsw.codex_naturalis.enumerations.Symbol;
-import ingsw.codex_naturalis.enumerations.TurnStatus;
-import ingsw.codex_naturalis.model.player.Player;
+import ingsw.codex_naturalis.server.model.cards.Corner;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableCard;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableSide;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.back.Back;
+import ingsw.codex_naturalis.common.enumerations.Color;
+import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
+import ingsw.codex_naturalis.common.enumerations.Symbol;
+import ingsw.codex_naturalis.common.enumerations.TurnStatus;
+import ingsw.codex_naturalis.server.model.player.Player;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

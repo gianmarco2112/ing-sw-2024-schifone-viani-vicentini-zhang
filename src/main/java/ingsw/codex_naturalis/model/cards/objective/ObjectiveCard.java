@@ -98,7 +98,9 @@ public abstract class ObjectiveCard extends Card {
      * This method adds to the PlayerArea the points given by the Objective card
      */
     public abstract void gainPoints(List<PlayerArea> playerAreas);
-
+    /**
+     * To print the card on the screen (the visual representation of the card is a string)
+     */
     public abstract String cardToString();
 
 }

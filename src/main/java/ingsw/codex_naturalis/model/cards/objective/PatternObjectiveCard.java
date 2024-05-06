@@ -20,12 +20,12 @@ public class PatternObjectiveCard extends ObjectiveCard {
     private final Map<ExtremeCoordinate, Integer> extremeCoordinates;
   
     /**
-     * HashMap contains the pattern for the Objective
+     * HashMap that contains the pattern for the Objective
      */
     private final Map<List<Integer>, Symbol> pattern;
     /**
      * constructor
-     * @param points points that
+     * @param points points given by the pattern
      * @param positions positions of the pattern
      * @param kingdoms kingdom in the pattern's positions
      * @param maxX max row of the pattern
@@ -57,24 +57,32 @@ public class PatternObjectiveCard extends ObjectiveCard {
         setExtremeCoordinate(ExtremeCoordinate.MIN_X, minX);
         setExtremeCoordinate(ExtremeCoordinate.MIN_Y, minY);
     }
-
+    /**
+     * Getter of the extreme coordinates
+     */
     private int getExtremeCoordinate(ExtremeCoordinate extremeCoordinate) {
         return extremeCoordinates.get(extremeCoordinate);
     }
+    /**
+     * Setter of the extreme coordinates
+     */
     private void setExtremeCoordinate(ExtremeCoordinate extremeCoordinate, Integer value) {
         extremeCoordinates.put(extremeCoordinate, value);
     }
 
-
     /**
-     * verifies the pattern for each player associated to the card
+     * verifies the pattern for each player associated to the card and gives the related points
      */
     public void gainPoints(List<PlayerArea> playerAreas){
         for(int i=0; i< playerAreas.size(); i++){
             checkPatternOnPlayer(playerAreas, i);
         }
     }
-
+    /**
+     * Method used by cardToString to print the cards
+     * This method creates a copy of the pattern on the card that would be later manipulated
+     * @return patternCopy
+     */
     private Map<List<Integer>, Symbol> patternMutableAsCopy(){
         Map<List<Integer>, Symbol> patternCopy = new HashMap<List<Integer>, Symbol>();
         List<Integer> list = new ArrayList();
@@ -86,7 +94,12 @@ public class PatternObjectiveCard extends ObjectiveCard {
         }
         return patternCopy;
     }
-
+    /**
+     * This method prints to the user's screen the visual representation of the cards
+     * (the pattern is always represented with a 3x3 matrix)
+     * @return outString: the visual representation (implemented as a string) of the card
+     *
+     */
     @Override
     public String cardToString() {
         // bc is "border color"
@@ -131,7 +144,14 @@ public class PatternObjectiveCard extends ObjectiveCard {
 
         return outString;
     }
-
+    /**
+     * This method is invoked just for the L-type patterns
+     * In the player's area this type of pattern requires a 3x4 matrix of cards
+     * One of these lines is not part of the pattern but is necessary to link the
+     * two cards of the same color. Depending on which specific pattern the card
+     * represents, the unused line could be the second or the third
+     * @return unusedLineCoordinate: an integer representing the unused line's number
+     */
     private int getUnusedLineInPattern(){
         int unusedLineCoordinate = -1;
         boolean isLineUsed;
@@ -149,7 +169,11 @@ public class PatternObjectiveCard extends ObjectiveCard {
         }
         return unusedLineCoordinate;
     }
-
+    /**
+     * This method checks whether the pattern is diagonal-type
+     * (which means it is already mappable in a 3x3 matrix)
+     * @return True if the pattern is diagonal-type, False otherwise
+     */
     private boolean patternIsMappableIn3x3(Map<List<Integer>, Symbol> patt){
         boolean isMappalbe = false;
         int max_x = Integer.MIN_VALUE;
@@ -170,7 +194,11 @@ public class PatternObjectiveCard extends ObjectiveCard {
             isMappalbe = true;
         return isMappalbe;
     }
-
+    /**
+     * This method checks whether the pattern is L-type
+     * (which means it is mappable in a 3x2 matrix once eliminated the unused line)
+     * @return True if the pattern is L-type, False otherwise
+     */
     private boolean patternIs3x2(Map<List<Integer>, Symbol> patt){
         boolean is3x2 = false;
         int max_x = Integer.MIN_VALUE;
@@ -194,9 +222,11 @@ public class PatternObjectiveCard extends ObjectiveCard {
     }
     
     /**
-     * Method to map the pattern. Call this only if patterIsMappableIn3x3() is true
-     * @param unmappedPattern copy of this.pattern
-     * @param lineToRemove line not used in pattern
+     * This method is invoked just for the L-type patterns.
+     * It removes the unused line, reducing the matrix from a 4x2 to a 3x2
+     * @param unmappedPattern copy of this pattern
+     * @param lineToRemove line not used in pattern [given by getUnusedLineInPattern()]
+     * @return mappedPattern: the 4x2 L-type pattern converted into a 3x2 matrix
      */
     private Map<List<Integer>, Symbol> removeLineFromPattern(Map<List<Integer>, Symbol> unmappedPattern, int lineToRemove){
         Symbol symbolToCopy = Symbol.EMPTY;
@@ -219,7 +249,13 @@ public class PatternObjectiveCard extends ObjectiveCard {
         }
         return mappedPattern;
     }
-
+    /**
+     * This method is invoked just for the L-type patterns.
+     * It would normalize the coordinates of the mappedPattern (the 3x2 copy of the L-type pattern):
+     * after removing the unusedLine the coordinates of the pattern would not respect the numerical order
+     * because they skip the number representing the removed line.
+     * @return mappedPattern: the 3x2 pattern with the coordinates normalized
+     */
     private Map<List<Integer>, Symbol> normalizeCoordinates(Map<List<Integer>, Symbol> unmappedPattern) {
         Map<List<Integer>, Symbol> mappedPattern = new HashMap<List<Integer>, Symbol>();
         int max_x = Integer.MIN_VALUE;
@@ -245,7 +281,12 @@ public class PatternObjectiveCard extends ObjectiveCard {
         }
         return mappedPattern;
     }
-
+    /**
+     * This method is invoked just for the L-type patterns.
+     * It would add an empty column in order to create a 3x3 matrix from the 3x2
+     * mappedPattern representing the L-type pattern
+     * @return : a 3x3 version of the mappedPattern
+     */
     private Map<List<Integer>, Symbol> addEmptyColumn(Map<List<Integer>, Symbol> unmappedPattern) {
         Map<List<Integer>, Symbol> mappedPattern = unmappedPattern;
         int cardsInColumn0 = 0;
@@ -274,7 +315,8 @@ public class PatternObjectiveCard extends ObjectiveCard {
     }
 
     /**
-     * Method to check for patterns in the current player area
+     * Method to check if (and how many times) the objective card's specific pattern is present
+     * in the current player's area and to give to the current player the relative points
      * @param i player index
      */
     private void checkPatternOnPlayer(List<PlayerArea> playerAreas, int i){
@@ -300,7 +342,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
     }
 
     /**
-     * Method to check for a pattern on the current area coordinates of the current player area
+     * Method to check for a pattern on the current area coordinates of the current player's area
      * @param xArea x
      * @param yArea y
      * @param i player index
@@ -327,7 +369,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
 
     /**
      * Method that marks the found spots of the pattern in the player area in order to ignore them
-     * in the next controls
+     * in the next controls (in order to avoid counting the same cards as part of different patterns)
      * @param areaToMark area to mark
      * @param xArea x
      * @param yArea y
@@ -343,21 +385,25 @@ public class PatternObjectiveCard extends ObjectiveCard {
     }
 
     /**
-     * Method to get the pattern width
-     * @return Pattern width
+     * Getter of the pattern's width
+     * @return : a number representing the pattern's width
      */
     private int getPatternWidth(){
         return getExtremeCoordinate(ExtremeCoordinate.MAX_X) + getExtremeCoordinate(ExtremeCoordinate.MIN_X)+1;
     }
 
     /**
-     * Method to get the pattern height
-     * @return Pattern height
+     * Getter of the pattern's height
+     * @return : a number representing the pattern's height
      */
     private int getPatternHeight(){
         return getExtremeCoordinate(ExtremeCoordinate.MAX_Y) + getExtremeCoordinate(ExtremeCoordinate.MIN_Y)+1;
     }
-    
+    /**
+     * Getter of the central symbol (that represents the card's color)
+     * of the card at the specified coordinates
+     * @return : card's central symbol
+     */
     private Symbol getSymbolAt(int x, int y){
         return pattern.get(new ArrayList<>(List.of(x,y)));
     }

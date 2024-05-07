@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="lobbies-page-image" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ingsw.codex_naturalis.view.GUI.LobbiesControllerFX">
+   <center>
+      <BorderPane maxHeight="760" maxWidth="1280" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760" prefWidth="1280">
+         <center>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" opacity="0.83">
+               <content>
+                  <VBox fx:id="LobbyContainer" alignment="TOP_CENTER" prefHeight="250.0" prefWidth="300.0" BorderPane.alignment="CENTER" />
+               </content>
+            </ScrollPane>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER" opacity="0.92" prefHeight="100.0" prefWidth="200.0" spacing="60.0" styleClass="lobbies-box" stylesheets="@../style.css" BorderPane.alignment="CENTER">
+               <children>
+                  <Label />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="171.0" spacing="10.0">
+                     <children>
+                        <Label text="#Players" />
+                        <ChoiceBox fx:id="Players_CB" prefHeight="26.0" prefWidth="77.0" />
+                     </children>
+                  </HBox>
+                  <Button fx:id="CreateGame_BTN" mnemonicParsing="false" onAction="#createGame" text="Create Game" />
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </HBox>
+         </bottom>
+         <left>
+            <AnchorPane prefHeight="200.0" prefWidth="50.0" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <AnchorPane prefHeight="200.0" prefWidth="50.0" BorderPane.alignment="CENTER" />
+         </right>
+         <top>
+            <HBox alignment="CENTER" opacity="0.92" prefHeight="50.0" prefWidth="200.0" spacing="50.0" styleClass="lobbies-box" stylesheets="@../style.css" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Choose the game you want to join or create a new game!" />
+                  <Button fx:id="refresh_BTN" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="25.0" />
+               </BorderPane.margin>
+            </HBox>
+         </top>
+      </BorderPane>
+   </center>
+</BorderPane>

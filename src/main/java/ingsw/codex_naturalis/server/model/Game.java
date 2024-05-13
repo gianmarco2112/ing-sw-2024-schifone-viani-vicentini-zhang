@@ -1,10 +1,13 @@
 package ingsw.codex_naturalis.server.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import ingsw.codex_naturalis.common.exceptions.MaxNumOfPlayersInException;
-import ingsw.codex_naturalis.common.exceptions.NicknameAlreadyExistsException;
+import ingsw.codex_naturalis.common.enumerations.Color;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ingsw.codex_naturalis.common.enumerations.GameRunningStatus;
+import ingsw.codex_naturalis.server.exceptions.ColorAlreadyChosenException;
+import ingsw.codex_naturalis.server.exceptions.InvalidNumOfPlayersException;
+import ingsw.codex_naturalis.server.exceptions.MaxNumOfPlayersInException;
 import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.server.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.common.enumerations.GameStatus;
@@ -23,87 +26,6 @@ import java.util.*;
  */
 public class Game extends GameObservable implements PlayerObserver {
 
-    public record Immutable(int gameID, GameStatus gameStatus,
-                            List<String> playerOrderNicknames,
-                            String currentPlayerNickname,
-                            List<Player.ImmutableHidden> hiddenPlayers,
-                            Player.Immutable player,
-                            PlayableCard.Immutable topResourceCard,
-                            List<PlayableCard.Immutable> revealedResourceCards,
-                            PlayableCard.Immutable topGoldCard,
-                            List<PlayableCard.Immutable> revealedGoldCards,
-                            List<ObjectiveCard.Immutable> commonObjectiveCards,
-                            List<Message> chat) {}
-
-    public Game.Immutable getImmutableGame(String playerNicknameReceiver) {
-
-        int gameID = this.gameID;
-
-        GameStatus gameStatus = this.gameStatus;
-
-        List<String> playerOrderNicknames = new ArrayList<>();
-
-        String currentPlayerNickname;
-
-        List<Player.ImmutableHidden> immHiddenPlayers = new ArrayList<>();
-
-        Player.Immutable playerReceiver = null;
-
-        PlayableCard.Immutable topResourceCard = null;
-
-        List<PlayableCard.Immutable> immRevealedResourceCards = new ArrayList<>();
-
-        PlayableCard.Immutable topGoldCard = null;
-
-        List<PlayableCard.Immutable> immRevealedGoldCards = new ArrayList<>();
-
-        List<ObjectiveCard.Immutable> immCommonObjectiveCards = new ArrayList<>();
-
-        List<Message> playerReceiverChat = new ArrayList<>();
-
-
-        for (Player player : playerOrder) {
-            playerOrderNicknames.add(player.getNickname());
-            if (!player.getNickname().equals(playerNicknameReceiver))
-                immHiddenPlayers.add(player.getImmutableHiddenPlayer());
-            else
-                playerReceiver = player.getImmutablePlayer();
-        }
-        if (currentPlayer == null) {
-            playerOrderNicknames.clear();
-            playerOrderNicknames.add("");
-            currentPlayerNickname = "";
-        }
-        else
-            currentPlayerNickname = currentPlayer.getNickname();
-
-        if (resourceCardsDeck.getFirstCard() != null)
-            topResourceCard = resourceCardsDeck.getFirstCard().getImmutablePlayableCard();
-
-        for (PlayableCard card : revealedResourceCards)
-            immRevealedResourceCards.add(card.getImmutablePlayableCard());
-
-        if (goldCardsDeck.getFirstCard() != null)
-            topGoldCard = goldCardsDeck.getFirstCard().getImmutablePlayableCard();
-
-        for (PlayableCard card : revealedGoldCards)
-            immRevealedGoldCards.add(card.getImmutablePlayableCard());
-
-        for (ObjectiveCard card : commonObjectiveCards)
-            immCommonObjectiveCards.add(card.getImmutableObjectiveCard());
-
-        for (Message message : chat)
-            if (message.getReceivers().contains(playerNicknameReceiver) || message.getSender().equals(playerNicknameReceiver))
-                playerReceiverChat.add(message);
-
-        return new Immutable(gameID, gameStatus, playerOrderNicknames,
-                currentPlayerNickname, immHiddenPlayers, playerReceiver,
-                topResourceCard, immRevealedResourceCards,
-                topGoldCard, immRevealedGoldCards, immCommonObjectiveCards, playerReceiverChat);
-
-    }
-
-
     /**
      * Game ID is necessary in order to have multiple game
      */
@@ -117,12 +39,14 @@ public class Game extends GameObservable implements PlayerObserver {
     /**
      * Max number of players of the game, the game creator decides this parameter
      */
-    private final int numOfPlayers;
+    private int numOfPlayers;
 
     /**
      * Contains all the players of the game, ordered by the turn they play
      */
     private List<Player> playerOrder;
+
+    private final Map<String, Player> nicknameToPlayer = new HashMap<>();
 
     /**
      * Current player
@@ -166,12 +90,17 @@ public class Game extends GameObservable implements PlayerObserver {
 
     private final List<Message> chat;
 
+    private GameRunningStatus gameRunningStatus = GameRunningStatus.RUNNING;
+
 
 
     /**
      * Constructor
      */
     public Game(int gameID, int numOfPlayers) {
+
+        if (numOfPlayers > 4 || numOfPlayers < 2)
+            throw new InvalidNumOfPlayersException();
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -195,7 +124,7 @@ public class Game extends GameObservable implements PlayerObserver {
 
         this.playerOrder = new ArrayList<>();
         this.gameID = gameID;
-        this.gameStatus = GameStatus.LOBBY;
+        this.gameStatus = GameStatus.WAITING_FOR_PLAYERS;
         this.numOfPlayers = numOfPlayers;
         this.chat = new ArrayList<>();
         this.revealedResourceCards = new ArrayList<>();
@@ -205,6 +134,10 @@ public class Game extends GameObservable implements PlayerObserver {
 
 
 
+    public List<ObjectiveCard> getCommonObjectiveCards() {
+        return commonObjectiveCards;
+    }
+
     public int getGameID() {
         return gameID;
     }
@@ -212,9 +145,10 @@ public class Game extends GameObservable implements PlayerObserver {
     public GameStatus getGameStatus() {
         return gameStatus;
     }
+
     public void setGameStatus(GameStatus gameStatus){
         this.gameStatus = gameStatus;
-        notifyObservers(this, GameEvent.GAME_STATUS_CHANGED);
+        notifyGameEvent(this, GameEvent.GAME_STATUS_CHANGED);
     }
 
     public int getNumOfPlayers() {
@@ -225,16 +159,24 @@ public class Game extends GameObservable implements PlayerObserver {
         return new ArrayList<>(playerOrder);
     }
 
+    public void silentlyRemovePlayer(Player player) {
+        this.playerOrder.remove(player);
+    }
+
+    public void removePlayer(Player player) {
+        this.playerOrder.remove(player);
+        numOfPlayers--;
+        notifyPlayerLeft(this, player.getNickname());
+    }
+
     public Player getPlayerByNickname(String nickname){
-        for (Player player : playerOrder)
-            if (player.getNickname().equals(nickname))
-                return player;
-        return null;
+        return nicknameToPlayer.get(nickname);
     }
 
     public Player getCurrentPlayer(){
         return currentPlayer;
     }
+
     public void setCurrentPlayer(Player currentPlayer){
         this.currentPlayer = currentPlayer;
     }
@@ -245,7 +187,7 @@ public class Game extends GameObservable implements PlayerObserver {
 
     public void addMessageToChat(Message message) {
         chat.add(message);
-        notifyObservers(this, GameEvent.MESSAGE);
+        notifyGameEvent(this, GameEvent.MESSAGE);
     }
 
     public Deck<PlayableCard> getResourceCardsDeck() {
@@ -283,21 +225,31 @@ public class Game extends GameObservable implements PlayerObserver {
      * Adds a player to the game
      * @param player Player
      */
-    public void addPlayer(Player player) throws NicknameAlreadyExistsException, MaxNumOfPlayersInException {
+    public boolean addPlayer(Player player) throws MaxNumOfPlayersInException {
         if (playerOrder.size() >= numOfPlayers)
             throw new MaxNumOfPlayersInException();
 
-        for (Player p : playerOrder){
-            if(player.getNickname().equals(p.getNickname())){
-                throw new NicknameAlreadyExistsException();
-            }
-        }
         playerOrder.add(player);
         player.addObserver(this);
+        nicknameToPlayer.put(player.getNickname(), player);
+        notifyPlayerJoined(this, player.getNickname());
+        if (playerOrder.size() == numOfPlayers) {
+            gameStatus = GameStatus.READY;
+            return true;
+        }
+        return false;
     }
 
+    public void setPlayerColor(Player player, Color color) throws ColorAlreadyChosenException {
+        for (Player p : playerOrder)
+            if (p.getColor() == color)
+                throw new ColorAlreadyChosenException();
+        player.setColor(color);
+    }
 
-
+    public void exceptionThrown(Player player, String error) {
+        notifyException(error, player.getNickname());
+    }
 
     public void setupResourceAndGoldCards(){
         resourceCardsDeck.shuffle();
@@ -325,7 +277,8 @@ public class Game extends GameObservable implements PlayerObserver {
             player.setInitialCard(initialCardsDeck.drawACard());
         }
 
-        notifyObservers(this, GameEvent.SETUP_1);
+        gameStatus = GameStatus.SETUP_1;
+        notifyGameEvent(this, GameEvent.SETUP_1);
     }
 
     public void setupHands() {
@@ -356,7 +309,8 @@ public class Game extends GameObservable implements PlayerObserver {
                 objectiveCard.flip();
             player.setupSecretObjectiveCards(secretObjectiveCards);
         }
-        notifyObservers(this, GameEvent.SETUP_2);
+        gameStatus = GameStatus.SETUP_2;
+        notifyGameEvent(this, GameEvent.SETUP_2);
     }
 
     public void shufflePlayerList(){
@@ -364,11 +318,40 @@ public class Game extends GameObservable implements PlayerObserver {
         currentPlayer = playerOrder.getFirst();
     }
 
+    /**
+     * Sets the new current player
+     */
+    public void nextPlayer() {
+        Player nextPlayer;
+        do {
+            int index = getPlayerOrder().indexOf(getCurrentPlayer());
+            if (index < getPlayerOrder().size() - 1) {
+                nextPlayer = getPlayerOrder().get(index + 1);
+            } else {
+                nextPlayer = getPlayerOrder().getFirst();
+            }
+        } while (!nextPlayer.isInGame());
+        setCurrentPlayer(nextPlayer);
+        notifyTurnChanged(nextPlayer.getNickname());
+    }
 
+    public GameRunningStatus getGameRunningStatus() {
+        return gameRunningStatus;
+    }
+
+    public void setGameRunningStatus(GameRunningStatus gameRunningStatus) {
+        this.gameRunningStatus = gameRunningStatus;
+        notifyGameRunningStatus(this, gameRunningStatus);
+    }
 
     @Override
     public void update(Player player, PlayerEvent playerEvent) {
-        notifyObservers(this, playerEvent, player);
+        notifyPlayerEvent(this, playerEvent, player, player.getNickname());
+    }
+
+    @Override
+    public void updatePlayerConnectionStatus(Player player, boolean inGame) {
+        notifyPlayerConnectionStatus(this, player.getNickname(), inGame);
     }
 
 }

@@ -33,4 +33,9 @@ public class PlayerObservable {
         }
     }
 
+    public void notifyPlayerInGameStatus(Player player, boolean inGame) {
+        for (PlayerObserver o : obs) {
+            o.updatePlayerConnectionStatus(player, inGame);
+        }
+    }
 }

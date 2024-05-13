@@ -22,7 +22,7 @@ class GameTest {
     @Test
     void simpleGameTest(){
         assertEquals(0,game.getGameID());
-        game.setGameStatus(GameStatus.SETUP);
+        game.setGameStatus(GameStatus.SETUP_1);
         game.setGameStatus(GameStatus.GAMEPLAY);
         assertEquals(GameStatus.GAMEPLAY,game.getGameStatus());
         assertEquals(4,game.getNumOfPlayers());

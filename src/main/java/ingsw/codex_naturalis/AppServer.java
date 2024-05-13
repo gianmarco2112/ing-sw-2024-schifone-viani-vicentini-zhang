@@ -2,7 +2,7 @@ package ingsw.codex_naturalis;
 
 import ingsw.codex_naturalis.common.Server;
 import ingsw.codex_naturalis.server.ServerImpl;
-import ingsw.codex_naturalis.common.middleware.ClientSkeleton;
+import ingsw.codex_naturalis.server.ClientSkeleton;
 
 import java.io.IOException;
 import java.net.ServerSocket;

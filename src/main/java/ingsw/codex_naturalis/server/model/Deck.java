@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.server.model;
 
+import ingsw.codex_naturalis.server.exceptions.EmptyDeckException;
 import ingsw.codex_naturalis.server.model.cards.Card;
 
 import java.util.Collections;
@@ -19,7 +20,7 @@ public class Deck <T extends Card> {
         Collections.shuffle(cards);
     }
 
-    public T drawACard(){
+    public T drawACard() throws EmptyDeckException {
         return cards.removeFirst();
     }
 

@@ -5,29 +5,33 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.common.Client;
 import ingsw.codex_naturalis.common.GameController;
 import ingsw.codex_naturalis.common.enumerations.Color;
+import ingsw.codex_naturalis.common.enumerations.GameRunningStatus;
 import ingsw.codex_naturalis.common.enumerations.GameStatus;
 import ingsw.codex_naturalis.common.enumerations.TurnStatus;
-import ingsw.codex_naturalis.common.events.gameplayPhase.DrawCardEvent;
-import ingsw.codex_naturalis.common.events.gameplayPhase.FlipCardEvent;
-import ingsw.codex_naturalis.common.events.gameplayPhase.PlayCardEvent;
-import ingsw.codex_naturalis.common.events.setupPhase.InitialCardEvent;
-import ingsw.codex_naturalis.common.events.setupPhase.ObjectiveCardChoice;
-import ingsw.codex_naturalis.common.exceptions.*;
+import ingsw.codex_naturalis.common.events.DrawCardEvent;
+import ingsw.codex_naturalis.common.events.InitialCardEvent;
+import ingsw.codex_naturalis.server.exceptions.*;
 import ingsw.codex_naturalis.server.model.Game;
 import ingsw.codex_naturalis.server.model.Message;
 import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.server.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.server.model.player.Player;
+import ingsw.codex_naturalis.server.model.player.PlayerArea;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GameControllerImpl implements GameController {
 
     private final Game model;
 
     private final List<VirtualView> virtualViews = new ArrayList<>();
+
+    private final BlockingQueue<Runnable> updatesQueue = new LinkedBlockingQueue<>();
+
+    private final ServerImpl server;
 
     private int readyPlayers = 0;
 
@@ -40,17 +44,21 @@ public class GameControllerImpl implements GameController {
 
 
 
-    public GameControllerImpl(Game model, List<Client> clients) {
-
-        this.model = model;
+    public GameControllerImpl(ServerImpl server, int gameID, int numOfPlayers, Client client, String nickname) {
+        this.server = server;
+        this.model = new Game(gameID, numOfPlayers);
         turnsLeftInLastRound = model.getNumOfPlayers();
         turnsLeftInSecondToLastRound = model.getNumOfPlayers();
-        for (Client client : clients)
-            virtualViews.add(new VirtualView(client));
-
-        for (VirtualView virtualView : virtualViews)
-            model.addObserver(virtualView);
-
+        new Thread(() -> {
+            while (true) {
+                try {
+                    updatesQueue.take().run();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+        addPlayer(client, nickname);
     }
 
 
@@ -65,169 +73,149 @@ public class GameControllerImpl implements GameController {
     }
 
 
-    private Client getClientByNickname(String nickname) throws RemoteException{
-
-        for (VirtualView virtualView : virtualViews) {
-            if (virtualView.getClient().getNickname().equals(nickname))
-                return virtualView.getClient();
+    public synchronized boolean addPlayer(Client client, String nickname) {
+        Player player = new Player(nickname);
+        VirtualView virtualView = new VirtualView(client, nickname);
+        virtualViews.add(virtualView);
+        model.addObserver(virtualView);
+        try {
+            return model.addPlayer(player);
+        } catch (MaxNumOfPlayersInException | InvalidNumOfPlayersException e) {
+            model.deleteObserver(virtualView);
+            virtualViews.remove(virtualView);
+            throw e;
         }
-
-        throw new RuntimeException("No client found");
-
     }
 
 
     @Override
-    public synchronized void updateReady(){
-
-        readyPlayers++;
-        if (readyPlayers == model.getNumOfPlayers()) {
-            model.setupResourceAndGoldCards();
-            model.dealInitialCards();
-            readyPlayers = 0;
+    public synchronized void readyToPlay(){
+        try {
+            updatesQueue.put( () -> {
+                readyPlayers++;
+                if (readyPlayers >= model.getNumOfPlayers()) {
+                    model.setupResourceAndGoldCards();
+                    model.dealInitialCards();
+                    readyPlayers = 0;
+                }
+            });
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-
     }
 
     @Override
     public synchronized void updateInitialCard(String nickname, String jsonInitialCardEvent) {
-
         try {
-            InitialCardEvent initialCardEvent = objectMapper.readValue(jsonInitialCardEvent, InitialCardEvent.class);
-            Player player = model.getPlayerByNickname(nickname);
-            PlayableCard initialCard = player.getInitialCard();
-            switch (initialCardEvent) {
-                case FLIP -> player.flip(initialCard);
-                case PLAY -> player.playInitialCard();
-            }
-        } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            updatesQueue.put( () -> {
+                Player player = model.getPlayerByNickname(nickname);
+                try {
+                    InitialCardEvent initialCardEvent = objectMapper.readValue(jsonInitialCardEvent, InitialCardEvent.class);
+                    switch (initialCardEvent) {
+                        case FLIP -> player.flipInitialCard();
+                        case PLAY -> player.playInitialCard();
+                    }
+                } catch (JsonProcessingException e) {
+                    System.err.println("Error while processing json");
+                }
+            });
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-
     }
 
     @Override
-    public synchronized void updateColor(String nickname, String jsonColor) {
-
+    public synchronized void chooseColor(String nickname, String jsonColor) {
         try {
-            Color color = objectMapper.readValue(jsonColor, Color.class);
-            Player player = model.getPlayerByNickname(nickname);
-            for (Player p : model.getPlayerOrder())
-                if (p.getColor() == color) {
-                    getClientByNickname(nickname).reportSetupUIError(new ColorAlreadyChosenException().getMessage());
+            updatesQueue.put( () -> {
+                Player player = model.getPlayerByNickname(nickname);
+                try {
+                    Color color = objectMapper.readValue(jsonColor, Color.class);
+                    model.setPlayerColor(player, color);
+                    readyPlayers++;
+                    if (readyPlayers == model.getNumOfPlayers()) {
+                        model.setupHands();
+                        model.setupCommonObjectiveCards();
+                        model.setupSecretObjectiveCards();
+                        readyPlayers = 0;
+                    }
+                } catch (JsonProcessingException e) {
+                    System.err.println("Error while processing json\n" + e.getMessage());
+                } catch (ColorAlreadyChosenException ex) {
+                    model.exceptionThrown(player, ex.getMessage());
+                }
+            });
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public synchronized void chooseSecretObjectiveCard(String nickname, int index) {
+        try {
+            updatesQueue.put( () -> {
+                Player player = model.getPlayerByNickname(nickname);
+                try {
+                    player.chooseObjectiveCard(index, model.getObjectiveCardsDeck());
+                    readyPlayers++;
+                    if (readyPlayers == model.getPlayerOrder().size()) {
+                        model.shufflePlayerList();
+                        model.setGameStatus(GameStatus.GAMEPLAY);
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    model.exceptionThrown(player, e.getMessage());
+                }
+            });
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+    @Override
+    public synchronized void flipCard(String nickname, int index) {
+        if (model.getGameRunningStatus() == GameRunningStatus.TO_CANCEL_LATER)
+            return;
+        try {
+            updatesQueue.put( () -> {
+                Player player = model.getPlayerByNickname(nickname);
+                try {
+                    player.flipCard(index);
+                } catch (IndexOutOfBoundsException e) {
+                    model.exceptionThrown(player, e.getMessage());
+                }
+            });
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public synchronized void playCard(String nickname, int index, int x, int y) {
+        if (model.getGameRunningStatus() == GameRunningStatus.TO_CANCEL_LATER)
+            return;
+        try {
+            updatesQueue.put( () -> {
+                Player player = model.getPlayerByNickname(nickname);
+                if (player != model.getCurrentPlayer()) {
+                    model.exceptionThrown(player, new NotYourTurnException().getMessage());
                     return;
                 }
-            player.setColor(color);
-            readyPlayers++;
-            if (readyPlayers == model.getNumOfPlayers()) {
-                model.setupHands();
-                model.setupCommonObjectiveCards();
-                model.setupSecretObjectiveCards();
-                readyPlayers = 0;
-            }
-        } catch (JsonProcessingException | RemoteException e) {
-            System.err.println("Error while updating client\n" + e.getMessage());
+                try {
+                    player.playCard(index, x, y);
+                    checkGameStatus(player);
+                } catch (IndexOutOfBoundsException | NotYourPlayTurnStatusException | NotPlayableException e) {
+                    model.exceptionThrown(player, e.getMessage());
+                }
+            });
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-
-
     }
 
-    @Override
-    public synchronized void updateObjectiveCard(String nickname, String jsonObjectiveCardChoice) {
-
-        try {
-            ObjectiveCardChoice objectiveCardChoice = objectMapper.readValue(jsonObjectiveCardChoice, ObjectiveCardChoice.class);
-            Player player = model.getPlayerByNickname(nickname);
-            ObjectiveCard objectiveCard;
-            switch (objectiveCardChoice) {
-                case CHOICE_1 -> {
-                    objectiveCard = player.getSecretObjectiveCards().removeFirst();
-                    model.getObjectiveCardsDeck().discardACard(player.getSecretObjectiveCards().removeFirst());
-                }
-                case CHOICE_2 -> {
-                    objectiveCard = player.getSecretObjectiveCards().removeLast();
-                    model.getObjectiveCardsDeck().discardACard(player.getSecretObjectiveCards().removeFirst());
-                }
-                default -> {
-                    return;
-                }
-            }
-            player.chooseObjectiveCard(objectiveCard);
-            readyPlayers++;
-            if (readyPlayers == model.getPlayerOrder().size()) {
-                model.shufflePlayerList();
-                model.setGameStatus(GameStatus.GAMEPLAY);
-            }
-        } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json:\n" + e.getMessage());
-        }
-
-    }
-
-
-
-
-
-    @Override
-    public synchronized void updateFlipCard(String nickname, String jsonFlipCardEvent) {
-
-        try {
-            FlipCardEvent flipCardEvent = objectMapper.readValue(jsonFlipCardEvent, FlipCardEvent.class);
-            Player player = model.getPlayerByNickname(nickname);
-            switch (flipCardEvent) {
-                case FLIP_CARD_1 -> player.flip(player.getHand().get(0));
-                case FLIP_CARD_2 -> player.flip(player.getHand().get(1));
-                case FLIP_CARD_3 -> player.flip(player.getHand().get(2));
-            }
-        } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json:\n" + e.getMessage());
-        }
-
-    }
-
-    @Override
-    public synchronized void updatePlayCard(String nickname, String jsonPlayCardEvent, int x, int y) throws NotYourTurnException, NotYourPlayTurnStatusException, NotPlayableException {
-
-        try {
-            PlayCardEvent playCardEvent = objectMapper.readValue(jsonPlayCardEvent, PlayCardEvent.class);
-
-            Player player = model.getPlayerByNickname(nickname);
-
-            if (!nickname.equals(model.getCurrentPlayer().getNickname())) {
-                getClientByNickname(nickname).reportGameplayUIError(new NotYourTurnException().getMessage());
-                return;
-            }
-
-            if (!player.getTurnStatus().equals(TurnStatus.PLAY)) {
-                getClientByNickname(nickname).reportGameplayUIError(new NotYourPlayTurnStatusException().getMessage());
-                return;
-            }
-
-            PlayableCard cardToPlay;
-            switch (playCardEvent) {
-                case PLAY_CARD_1 -> cardToPlay = player.getHand().get(0);
-                case PLAY_CARD_2 -> cardToPlay = player.getHand().get(1);
-                case PLAY_CARD_3 -> cardToPlay = player.getHand().get(2);
-                default -> {
-                    return;
-                }
-            }
-
-            if (!cardToPlay.isPlayable(player.getPlayerArea(), x, y)) {
-                getClientByNickname(nickname).reportGameplayUIError(new NotPlayableException().getMessage());
-                return;
-            }
-
-            player.playCard(cardToPlay, x, y);
-
-            checkGameStatus(player);
-        } catch (JsonProcessingException | RemoteException e) {
-            System.err.println("Error while updating client:\n" + e.getMessage());
-        }
-
-    }
     private void checkGameStatus(Player player) {
-
         if (player.getPlayerArea().getPoints() >= 20 && model.getGameStatus() == GameStatus.GAMEPLAY) {
             turnsLeftInSecondToLastRound = model.getNumOfPlayers() - model.getPlayerOrder().indexOf(player);
             model.setGameStatus(GameStatus.LAST_ROUND_20_POINTS);
@@ -238,39 +226,67 @@ public class GameControllerImpl implements GameController {
 
         if (turnsLeftInSecondToLastRound == 0) {
             turnsLeftInLastRound--;
-            nextPlayer();
+            model.nextPlayer();
         }
 
         if (turnsLeftInSecondToLastRound > 0 && model.getGameStatus() == GameStatus.LAST_ROUND_DECKS_EMPTY) {
             turnsLeftInSecondToLastRound--;
-            nextPlayer();
+            model.nextPlayer();
         }
 
         if (turnsLeftInLastRound == 0) {
+            //secret obj cards
+            for (Player p : model.getPlayerOrder())
+                p.getPlayerArea().getObjectiveCard().gainPoints(new ArrayList<>(List.of(p.getPlayerArea())));
+            //common obj cards
+            for (ObjectiveCard card : model.getCommonObjectiveCards()) {
+                List<PlayerArea> playerAreas = new ArrayList<>();
+                for (Player p : model.getPlayerOrder())
+                    playerAreas.add(p.getPlayerArea());
+                card.gainPoints(playerAreas);
+            }
             model.setGameStatus(GameStatus.ENDGAME);
+            endGame();
         }
-
     }
 
     @Override
-    public synchronized void updateDrawCard(String nickname, String jsonDrawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException {
-
+    public synchronized void drawCard(String nickname, String jsonDrawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException {
+        if (model.getGameRunningStatus() == GameRunningStatus.TO_CANCEL_LATER)
+            return;
         try {
-            DrawCardEvent drawCardEvent = objectMapper.readValue(jsonDrawCardEvent, DrawCardEvent.class);
+            updatesQueue.put( () -> {
+                Player player = model.getPlayerByNickname(nickname);
+                try {
+                    DrawCardEvent drawCardEvent = objectMapper.readValue(jsonDrawCardEvent, DrawCardEvent.class);
+                    if (!nickname.equals(model.getCurrentPlayer().getNickname())) {
+                        model.exceptionThrown(player, new NotYourTurnException().getMessage());
+                        return;
+                    }
+                    if (player.getTurnStatus() != TurnStatus.DRAW) {
+                        model.exceptionThrown(player, new NotYourDrawTurnStatusException().getMessage());
+                        return;
+                    }
+                    switch (drawCardEvent) {
+                        case DRAW_FROM_RESOURCE_CARDS_DECK, DRAW_FROM_GOLD_CARDS_DECK -> drawFromDeck(player, drawCardEvent);
+                        default -> drawRevealedCard(player, drawCardEvent);
+                    }
+                    model.nextPlayer();
+                    checkTurnsLeftInSecondToLastRound(player);
+                } catch (JsonProcessingException e) {
+                    System.err.println("Error while processing json:\n" + e.getMessage());
+                } catch (EmptyDeckException ex) {
+                    model.exceptionThrown(player, ex.getMessage());
+                }
+            });
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-            Player player = model.getPlayerByNickname(nickname);
-
-            if (!nickname.equals(model.getCurrentPlayer().getNickname())) {
-                getClientByNickname(nickname).reportGameplayUIError(new NotYourTurnException().getMessage());
-                return;
-            }
-
-            if (!player.getTurnStatus().equals(TurnStatus.DRAW)) {
-                getClientByNickname(nickname).reportGameplayUIError(new NotYourDrawTurnStatusException().getMessage());
-                return;
-            }
-
-            PlayableCard drawnCard;
+    private void drawFromDeck(Player player, DrawCardEvent drawCardEvent) {
+        PlayableCard drawnCard = null;
+        try {
             switch (drawCardEvent) {
                 case DRAW_FROM_RESOURCE_CARDS_DECK -> {
                     drawnCard = model.getResourceCardsDeck().drawACard();
@@ -280,6 +296,17 @@ public class GameControllerImpl implements GameController {
                     drawnCard = model.getGoldCardsDeck().drawACard();
                     drawnCard.flip();
                 }
+            }
+            player.drawCard(drawnCard);
+        } catch (EmptyDeckException e) {
+            model.exceptionThrown(player, e.getMessage());
+        }
+    }
+
+    private void drawRevealedCard(Player player, DrawCardEvent drawCardEvent) {
+        PlayableCard drawnCard = null;
+        try {
+            switch (drawCardEvent) {
                 case DRAW_REVEALED_RESOURCE_CARD_1 -> {
                     drawnCard = model.removeRevealedResourceCard(0);
                     if (!model.getResourceCardsDeck().isEmpty()) {
@@ -312,21 +339,13 @@ public class GameControllerImpl implements GameController {
                         model.addRevealedGoldCard(cardToReveal);
                     }
                 }
-                default -> {
-                    return;
-                }
             }
-
-            nextPlayer();
-
             player.drawCard(drawnCard);
-
-            checkTurnsLeftInSecondToLastRound(player);
-        } catch (JsonProcessingException | RemoteException e) {
-            System.err.println("Error while updating client:\n" + e.getMessage());
+        } catch (IndexOutOfBoundsException e) {
+            model.exceptionThrown(player, "No more revealed card here!");
         }
-
     }
+
     private void checkTurnsLeftInSecondToLastRound(Player player) {
         if (model.getResourceCardsDeck().isEmpty() &&
                 model.getGoldCardsDeck().isEmpty() &&
@@ -335,37 +354,78 @@ public class GameControllerImpl implements GameController {
             turnsLeftInSecondToLastRound = model.getNumOfPlayers() - model.getPlayerOrder().indexOf(player) - 1;
             model.setGameStatus(GameStatus.LAST_ROUND_DECKS_EMPTY);
         }
-
         if (model.getGameStatus() == GameStatus.LAST_ROUND_20_POINTS)
             turnsLeftInSecondToLastRound--;
-    }
-    /**
-     * Sets the new current player
-     */
-    private void nextPlayer() {
-        Player nextPlayer;
-        int index = model.getPlayerOrder().indexOf(model.getCurrentPlayer());
-        if (index < model.getPlayerOrder().size() -1 ) {
-            nextPlayer = model.getPlayerOrder().get(index+1);
-        } else {
-            nextPlayer = model.getPlayerOrder().getFirst();
-        }
-        model.setCurrentPlayer(nextPlayer);
+        player.setTurnStatus(TurnStatus.PLAY);
     }
 
     @Override
-    public synchronized void updateSendMessage(String nickname, String receiver, String content) {
-
-        List<String> receivers = new ArrayList<>();
-        if (receiver != null)
-            receivers.add(receiver);
-        else {
-            for (Player player : model.getPlayerOrder())
-                if (!player.getNickname().equals(nickname))
-                    receivers.add(player.getNickname());
+    public synchronized void sendMessage(String nickname, String receiver, String content) {
+        if (model.getGameRunningStatus() == GameRunningStatus.TO_CANCEL_LATER)
+            return;
+        try {
+            updatesQueue.put( () -> {
+                List<String> receivers = new ArrayList<>();
+                if (receiver != null)
+                    receivers.add(receiver);
+                else {
+                    for (Player player : model.getPlayerOrder())
+                        if (!player.getNickname().equals(nickname))
+                            receivers.add(player.getNickname());
+                }
+                model.addMessageToChat(new Message(content, nickname, receivers));
+            });
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        model.addMessageToChat(new Message(content, nickname, receivers));
-
     }
 
+
+    public synchronized void removePlayer(String nickname) {
+        model.removePlayer(model.getPlayerByNickname(nickname));
+        removeView(nickname);
+    }
+
+    public synchronized void disconnectPlayer(String nickname) {
+        removeView(nickname);
+        if (model.getGameStatus() == GameStatus.GAMEPLAY ||
+                model.getGameStatus() == GameStatus.LAST_ROUND_20_POINTS ||
+                model.getGameStatus() == GameStatus.LAST_ROUND_DECKS_EMPTY)
+            model.getPlayerByNickname(nickname).setInGame(false);
+        else if (model.getGameStatus() == GameStatus.WAITING_FOR_PLAYERS) {
+            model.silentlyRemovePlayer(model.getPlayerByNickname(nickname));
+        } else model.removePlayer(model.getPlayerByNickname(nickname));
+    }
+
+    public GameRunningStatus getPlayersConnectionStatus() {
+        if (model.getNumOfPlayers() == 1)
+            return GameRunningStatus.TO_CANCEL_NOW;
+        int count = 0;
+        for (Player player : model.getPlayerOrder())
+            if (player.isInGame())
+                count++;
+        if (count >= 2)
+            return GameRunningStatus.RUNNING;
+        return GameRunningStatus.TO_CANCEL_LATER;
+    }
+
+    private void removeView(String nickname) {
+        VirtualView viewToRemove = null;
+        for (VirtualView view : virtualViews)
+            if (view.getNickname().equals(nickname))
+                viewToRemove = view;
+        virtualViews.remove(viewToRemove);
+        model.deleteObserver(viewToRemove);
+    }
+
+    public synchronized void reconnect(Client client, String nickname) {
+        VirtualView view = new VirtualView(client, nickname);
+        virtualViews.add(view);
+        model.addObserver(view);
+        model.getPlayerByNickname(nickname).setInGame(true);
+    }
+
+    private void endGame() {
+        server.endGame(this);
+    }
 }

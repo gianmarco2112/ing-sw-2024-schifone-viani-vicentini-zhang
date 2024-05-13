@@ -1,35 +1,17 @@
 package ingsw.codex_naturalis.client;
 
-import ingsw.codex_naturalis.client.view.gameStartingPhase.GameStartingGraphicUI;
-import ingsw.codex_naturalis.client.view.gameStartingPhase.GameStartingTextualUI;
-import ingsw.codex_naturalis.client.view.gameStartingPhase.GameStartingUI;
-import ingsw.codex_naturalis.client.view.gameplayPhase.GameplayTextualUI;
-import ingsw.codex_naturalis.client.view.gameplayPhase.GameplayUI;
-import ingsw.codex_naturalis.client.view.lobbyPhase.LobbyGraphicUI;
-import ingsw.codex_naturalis.client.view.lobbyPhase.LobbyTextualUI;
-import ingsw.codex_naturalis.client.view.lobbyPhase.LobbyUI;
-import ingsw.codex_naturalis.client.view.setupPhase.SetupGraphicUI;
-import ingsw.codex_naturalis.client.view.setupPhase.SetupTextualUI;
-import ingsw.codex_naturalis.client.view.setupPhase.SetupUI;
+import ingsw.codex_naturalis.client.view.gui.GraphicalUI;
+import ingsw.codex_naturalis.client.view.tui.TextualUI;
+import ingsw.codex_naturalis.client.view.UI;
+import ingsw.codex_naturalis.client.view.util.UIObservableItem;
+
 
 public enum UIChoice {
 
     TUI {
 
-        public LobbyUI createLobbyUI(){
-            return new LobbyTextualUI();
-        }
-
-        public GameStartingUI createGameStartingUI(){
-            return new GameStartingTextualUI();
-        }
-
-        public SetupUI createSetupUI(){
-            return new SetupTextualUI();
-        }
-
-        public GameplayUI createGameplayUI() {
-            return new GameplayTextualUI();
+        public UI createView(UIObservableItem uiObservableItem) {
+            return new TextualUI(uiObservableItem);
         }
 
     },
@@ -38,21 +20,8 @@ public enum UIChoice {
 
     GUI{
 
-        public LobbyUI createLobbyUI(){
-            return new LobbyGraphicUI();
-        }
-
-        public GameStartingGraphicUI createGameStartingUI(){
-            return new GameStartingGraphicUI();
-        }
-
-        public SetupGraphicUI createSetupUI(){
-            return new SetupGraphicUI();
-        }
-
-        public GameplayUI createGameplayUI() {
-            // TO FIX
-            return new GameplayTextualUI();
+        public UI createView(UIObservableItem uiObservableItem) {
+            return new GraphicalUI(uiObservableItem);
         }
 
     };
@@ -60,8 +29,5 @@ public enum UIChoice {
 
 
 
-    public abstract LobbyUI createLobbyUI();
-    public abstract GameStartingUI createGameStartingUI();
-    public abstract SetupUI createSetupUI();
-    public abstract GameplayUI createGameplayUI();
+    public abstract UI createView(UIObservableItem uiObservableItem);
 }

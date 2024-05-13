@@ -3,7 +3,7 @@ package ingsw.codex_naturalis;
 import ingsw.codex_naturalis.client.ClientImpl;
 import ingsw.codex_naturalis.common.NetworkProtocol;
 import ingsw.codex_naturalis.common.Server;
-import ingsw.codex_naturalis.common.middleware.ServerStub;
+import ingsw.codex_naturalis.client.ServerStub;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -41,7 +41,7 @@ public class AppClient {
         }
 
         ClientImpl client = new ClientImpl(server, NetworkProtocol.RMI);
-        client.run();
+        client.runView();
 
     }
 
@@ -66,7 +66,7 @@ public class AppClient {
             }
         }).start();
 
-        client.run();
+        client.runView();
     }
 
 

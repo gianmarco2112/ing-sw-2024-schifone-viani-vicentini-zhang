@@ -7,7 +7,7 @@ module ingsw.codex_naturalis {
     requires com.fasterxml.jackson.databind;
     requires java.rmi;
     requires java.desktop;
-    requires javafx.media;
+    requires com.google.common;
 
     opens ingsw.codex_naturalis to javafx.fxml;
 
@@ -20,7 +20,6 @@ module ingsw.codex_naturalis {
 
 
     exports ingsw.codex_naturalis.common.enumerations;
-    exports ingsw.codex_naturalis.client.view.gameplayPhase;
     exports ingsw.codex_naturalis.server.model.cards;
 
     exports ingsw.codex_naturalis.server.model.cards.initialResourceGold.back to com.fasterxml.jackson.databind;
@@ -31,24 +30,18 @@ module ingsw.codex_naturalis {
 
     exports ingsw.codex_naturalis;
 
-    exports ingsw.codex_naturalis.common.middleware.MessageFromServer;
-    exports ingsw.codex_naturalis.common.middleware.MessageFromClient;
+    exports ingsw.codex_naturalis.common.middleware.MessageToClient;
+    exports ingsw.codex_naturalis.common.middleware.MessageToServer;
 
-    exports ingsw.codex_naturalis.common.events.setupPhase;
     exports ingsw.codex_naturalis.client.view;
-    exports ingsw.codex_naturalis.common.exceptions;
+    exports ingsw.codex_naturalis.server.exceptions;
     exports ingsw.codex_naturalis.server.model.util to com.fasterxml.jackson.databind;
     opens ingsw.codex_naturalis.server.model.util to com.fasterxml.jackson.databind;
     exports ingsw.codex_naturalis.server.model.player to com.fasterxml.jackson.databind;
     opens ingsw.codex_naturalis.server.model.player to com.fasterxml.jackson.databind;
     opens ingsw.codex_naturalis.server.model.cards to com.fasterxml.jackson.databind;
-    exports ingsw.codex_naturalis.common.events.gameplayPhase;
     opens ingsw.codex_naturalis.common.enumerations to javafx.fxml;
-    exports ingsw.codex_naturalis.common.middleware;
-    opens ingsw.codex_naturalis.common.middleware to javafx.fxml;
-    opens ingsw.codex_naturalis.common.middleware.MessageFromClient to javafx.fxml;
-    exports ingsw.codex_naturalis.client.util;
-    opens ingsw.codex_naturalis.client.util to javafx.fxml;
+    opens ingsw.codex_naturalis.common.middleware.MessageToServer to javafx.fxml;
     exports ingsw.codex_naturalis.client;
     opens ingsw.codex_naturalis.client to javafx.fxml;
     exports ingsw.codex_naturalis.server;
@@ -62,6 +55,14 @@ module ingsw.codex_naturalis {
     exports ingsw.codex_naturalis.server.model;
     opens ingsw.codex_naturalis.server.model to com.fasterxml.jackson.databind, javafx.fxml;
 
-    exports ingsw.codex_naturalis.view.GUI;
-    opens ingsw.codex_naturalis.view.GUI;
+    exports ingsw.codex_naturalis.client.view.gui;
+    opens ingsw.codex_naturalis.client.view.gui;
+    opens ingsw.codex_naturalis.client.view to javafx.fxml;
+    exports ingsw.codex_naturalis.common.immutableModel;
+    opens ingsw.codex_naturalis.common.immutableModel to com.fasterxml.jackson.databind, javafx.fxml;
+    exports ingsw.codex_naturalis.client.view.util;
+    opens ingsw.codex_naturalis.client.view.util to javafx.fxml;
+    exports ingsw.codex_naturalis.client.view.tui;
+    opens ingsw.codex_naturalis.client.view.tui to javafx.fxml;
+    exports ingsw.codex_naturalis.common.events;
 }

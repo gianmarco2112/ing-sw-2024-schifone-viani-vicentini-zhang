@@ -162,6 +162,10 @@ public class PlayerArea {
         extremeCoordinates.put(extremeCoordinate, value);
     }
 
+    public Map<ExtremeCoordinate, Integer> getExtremeCoordinates() {
+        return new HashMap<>(extremeCoordinates);
+    }
+
     /**
      * Getter of the Player's points
      * @return Points

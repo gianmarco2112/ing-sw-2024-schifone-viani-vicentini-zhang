@@ -3,9 +3,8 @@ package ingsw.codex_naturalis.controller.setupPhase;
 import ingsw.codex_naturalis.server.GameControllerImpl;
 import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.enumerations.GameStatus;
-import ingsw.codex_naturalis.common.events.setupPhase.InitialCardEvent;
-import ingsw.codex_naturalis.common.events.setupPhase.ObjectiveCardChoice;
-import ingsw.codex_naturalis.common.exceptions.ColorAlreadyChosenException;
+import ingsw.codex_naturalis.common.events.InitialCardEvent;
+import ingsw.codex_naturalis.server.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.server.model.Game;
 import ingsw.codex_naturalis.server.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,8 +32,8 @@ class GameControllerImplTest {
         assertNull(model.getPlayerOrder().getFirst().getInitialCard());
         assertNull(model.getPlayerOrder().getLast().getInitialCard());
 
-        gameControllerImpl.updateReady();
-        gameControllerImpl.updateReady();
+        gameControllerImpl.readyToPlay();
+        gameControllerImpl.readyToPlay();
 
         assertEquals(2,model.getRevealedResourceCards().size());
         assertEquals(2,model.getRevealedGoldCards().size());
@@ -68,11 +67,11 @@ class GameControllerImplTest {
         assertTrue(model.getImmutableGame("player1").commonObjectiveCards().isEmpty());
         assertTrue(model.getPlayerOrder().getFirst().getSecretObjectiveCards().isEmpty());
 
-        gameControllerImpl.updateColor("player1", Color.BLUE);
+        gameControllerImpl.chooseColor("player1", Color.BLUE);
         assertThrows(ColorAlreadyChosenException.class,()->{
-            gameControllerImpl.updateColor("player1", Color.BLUE);});
+            gameControllerImpl.chooseColor("player1", Color.BLUE);});
 
-        gameControllerImpl.updateColor("player2", Color.RED);
+        gameControllerImpl.chooseColor("player2", Color.RED);
 
         assertEquals(3,model.getPlayerOrder().getFirst().getHand().size());
         assertFalse(model.getImmutableGame("player1").commonObjectiveCards().isEmpty());
@@ -85,13 +84,13 @@ class GameControllerImplTest {
         updateColor();
 
         assertNull(model.getPlayerOrder().getFirst().getPlayerArea().getObjectiveCard());
-        gameControllerImpl.updateObjectiveCard("player1", ObjectiveCardChoice.CHOICE_1);
+        gameControllerImpl.chooseSecretObjectiveCard("player1", ObjectiveCardChoice.CHOICE_1);
         assertEquals(0,model.getPlayerOrder().getFirst().getSecretObjectiveCards().size());
         assertNotNull(model.getPlayerOrder().getFirst().getPlayerArea().getObjectiveCard());
 
 
         assertNull(model.getPlayerOrder().getLast().getPlayerArea().getObjectiveCard());
-        gameControllerImpl.updateObjectiveCard("player2", ObjectiveCardChoice.CHOICE_2);
+        gameControllerImpl.chooseSecretObjectiveCard("player2", ObjectiveCardChoice.CHOICE_2);
         assertEquals(0,model.getPlayerOrder().getLast().getSecretObjectiveCards().size());
         assertNotNull(model.getPlayerOrder().getLast().getPlayerArea().getObjectiveCard());
 

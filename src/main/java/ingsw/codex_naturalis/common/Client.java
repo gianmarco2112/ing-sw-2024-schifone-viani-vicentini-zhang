@@ -9,26 +9,53 @@ public interface Client extends Remote {
     String getNickname() throws RemoteException;
     void setNickname(String nickname) throws RemoteException;
 
-    void setViewAsLobby(String jsonGamesSpecs) throws RemoteException;
-    void stcUpdateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException;
-    void reportLobbyUIError(String error) throws RemoteException;
+
+    void updateGamesSpecs(String jsonGameSpecs) throws RemoteException;
+
+    void reportException(String error) throws RemoteException;
 
 
-    void setViewAsGameStarting(int gameID) throws RemoteException;
+    void gameJoined(int gameID) throws RemoteException;
 
 
-    void setViewAsSetup() throws RemoteException;
-    void stcUpdateSetupUIInitialCard(String jsonImmGame, String jsonInitialCardEvent) throws RemoteException;
-    void stcUpdateSetupUIColor(String jsonColor) throws RemoteException;
-    void reportSetupUIError(String error) throws RemoteException;
-    void stcUpdateSetupUI(String jsonImmGame, String jsonGameEvent) throws RemoteException;
-    void stcUpdateSetupUIObjectiveCardChoice(String jsonImmGame) throws RemoteException;
+    void allPlayersJoined() throws RemoteException;
 
 
-    void setViewAsGameplay(String jsonImmGame) throws RemoteException;
+    void setupUpdated(String jsonImmGame, String jsonGameEvent) throws RemoteException;
+    void initialCardUpdated(String jsonImmGame, String jsonInitialCardEvent) throws RemoteException;
+    void colorUpdated(String jsonColor) throws RemoteException;
+    void objectiveCardChosen(String jsonImmGame) throws RemoteException;
 
-    void stcUpdateGameplayUI(String jsonImmGame) throws RemoteException;
 
-    void reportGameplayUIError(String error) throws RemoteException;
+    void setupEnded(String jsonImmGame) throws RemoteException;
 
+    void cardFlipped(String jsonGame) throws RemoteException;
+
+    void cardPlayed(String jsonImmGame, String playerNicknameWhoUpdated) throws RemoteException;
+
+    void cardDrawn(String jsonImmGame, String playerNicknameWhoUpdated) throws RemoteException;
+
+    void turnChanged(String currentPlayer) throws RemoteException;
+
+    void messageSent(String jsonImmGame) throws RemoteException;
+
+    void twentyPointsReached(String jsonImmGame) throws RemoteException;
+
+    void decksEmpty(String jsonImmGame) throws RemoteException;
+
+    void gameEnded(String winner, String jsonPlayers, String jsonPoints,
+                   String jsonSecretObjectiveCards) throws RemoteException;
+
+    void gameCanceled() throws RemoteException;
+
+    void gameLeft() throws RemoteException;
+
+    void gameRejoined(String jsonImmGame, String nickname) throws RemoteException;
+
+    void updatePlayerInGameStatus(String jsonImmGame, String playerNickname,
+                                  String jsonInGame, String jsonHasDisconnected) throws RemoteException;
+
+    void gameToCancelLater() throws RemoteException;
+
+    void gameResumed() throws RemoteException;
 }

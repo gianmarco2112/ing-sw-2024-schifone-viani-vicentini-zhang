@@ -6,4 +6,5 @@ public interface PlayerObserver {
 
     void update(Player player, PlayerEvent playerEvent);
 
+    void updatePlayerConnectionStatus(Player player, boolean inGame);
 }

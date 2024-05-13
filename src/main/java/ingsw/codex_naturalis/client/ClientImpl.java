@@ -3,66 +3,57 @@ package ingsw.codex_naturalis.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ingsw.codex_naturalis.client.view.UI;
+import ingsw.codex_naturalis.client.view.util.UIObservableItem;
+import ingsw.codex_naturalis.client.view.util.ViewObserver;
 import ingsw.codex_naturalis.common.Client;
 import ingsw.codex_naturalis.common.GameController;
-import ingsw.codex_naturalis.server.model.GameSpecs;
+import ingsw.codex_naturalis.common.immutableModel.ImmGame;
+import ingsw.codex_naturalis.common.immutableModel.ImmObjectiveCard;
+import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
 import ingsw.codex_naturalis.common.NetworkProtocol;
 import ingsw.codex_naturalis.common.Server;
-import ingsw.codex_naturalis.client.util.LobbyObserver;
 import ingsw.codex_naturalis.common.enumerations.Color;
-import ingsw.codex_naturalis.common.events.gameplayPhase.FlipCardEvent;
-import ingsw.codex_naturalis.client.util.GameplayObserver;
-import ingsw.codex_naturalis.client.util.SetupObserver;
-import ingsw.codex_naturalis.common.events.gameplayPhase.PlayCardEvent;
-import ingsw.codex_naturalis.common.exceptions.NotYourTurnException;
-import ingsw.codex_naturalis.common.exceptions.NotYourDrawTurnStatusException;
-import ingsw.codex_naturalis.server.model.Game;
+import ingsw.codex_naturalis.server.exceptions.NotYourTurnException;
+import ingsw.codex_naturalis.server.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.server.model.util.GameEvent;
-import ingsw.codex_naturalis.client.view.UI;
-import ingsw.codex_naturalis.client.view.gameStartingPhase.GameStartingUI;
-import ingsw.codex_naturalis.client.view.gameplayPhase.GameplayUI;
-import ingsw.codex_naturalis.common.events.gameplayPhase.DrawCardEvent;
-import ingsw.codex_naturalis.client.view.lobbyPhase.LobbyUI;
-import ingsw.codex_naturalis.common.events.setupPhase.InitialCardEvent;
-import ingsw.codex_naturalis.common.events.setupPhase.ObjectiveCardChoice;
-import ingsw.codex_naturalis.client.view.setupPhase.SetupUI;
+import ingsw.codex_naturalis.common.events.DrawCardEvent;
+import ingsw.codex_naturalis.common.events.InitialCardEvent;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.concurrent.*;
 
-public class ClientImpl implements Client, LobbyObserver, SetupObserver, GameplayObserver, Runnable {
+public class ClientImpl implements Client, ViewObserver {
 
     private String nickname;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    private final UIChoice uiChoice;
-
-    private UI uiState = UI.NULL;
-
-    private LobbyUI lobbyView;
-    private GameStartingUI gameStartingView;
-    private SetupUI setupView;
-    private GameplayUI gameplayView;
+    private UI view;
 
     private final Server server;
     private GameController gameController;
 
+    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
-    public ClientImpl(Server server, NetworkProtocol networkProtocol) throws RemoteException{
 
-        uiChoice = askUIChoice();
-
+    public ClientImpl(Server server, NetworkProtocol networkProtocol) throws RemoteException {
         this.server = server;
-
         switch (networkProtocol) {
             case RMI -> server.register((Client) UnicastRemoteObject.exportObject(this, 0));
             case SOCKET -> server.register(this);
         }
 
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            try {
+                server.imAlive(this);
+            } catch (RemoteException e) {
+                System.err.println("Error while sending heart beat");
+            }
+        }, 0, 5, TimeUnit.SECONDS);
     }
-
 
 
     private UIChoice askUIChoice() {
@@ -86,15 +77,15 @@ public class ClientImpl implements Client, LobbyObserver, SetupObserver, Gamepla
         System.out.println("\u001B[0m");
 
         System.out.println("""
-                
+                                
                 --------------------------------------------------------
                 Please choose your preferred user interface (UI) option:
-                
+                                
                 (1) Textual User interface - TUI
                 (2) Graphical User Interface - GUI
                 --------------------------------------------------------
                                 
-                
+                                
                 """);
 
         Map<Integer, UIChoice> uiChoices = new LinkedHashMap<>();
@@ -102,11 +93,15 @@ public class ClientImpl implements Client, LobbyObserver, SetupObserver, Gamepla
         String input;
         while (true) {
             input = s.next();
-            try{
+            try {
                 int option = Integer.parseInt(input);
                 switch (option) {
-                    case 1 -> { return UIChoice.TUI; }
-                    case 2 -> { return UIChoice.GUI; }
+                    case 1 -> {
+                        return UIChoice.TUI;
+                    }
+                    case 2 -> {
+                        return UIChoice.GUI;
+                    }
                     default -> System.err.println("Invalid option");
                 }
             } catch (NumberFormatException e) {
@@ -118,289 +113,363 @@ public class ClientImpl implements Client, LobbyObserver, SetupObserver, Gamepla
 
 
     @Override
-    public String getNickname() throws RemoteException {
+    public String getNickname() {
         return nickname;
     }
 
     @Override
-    public void setNickname(String nickname) throws RemoteException {
+    public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    @Override
-    public void setViewAsLobby(String jsonGamesSpecs) throws RemoteException {
-
-        lobbyView = uiChoice.createLobbyUI();
-        lobbyView.addObserver(this);
-        stcUpdateLobbyUIGameSpecs(jsonGamesSpecs);
-        uiState = UI.LOBBY;
-
+        view.setNickname(nickname);
     }
 
 
-    //client
     @Override
-    public void stcUpdateLobbyUIGameSpecs(String jsonGamesSpecs) throws RemoteException {
-
-        List<GameSpecs> gamesSpecs = new ArrayList<>();
-
+    public void updateGamesSpecs(String jsonGameSpecs) {
         try {
-            gamesSpecs = objectMapper.readValue(jsonGamesSpecs, new TypeReference<List<GameSpecs>>(){});
+            List<GameSpecs> gamesSpecs = objectMapper.readValue(jsonGameSpecs, new TypeReference<List<GameSpecs>>() {
+            });
+            view.updateGamesSpecs(gamesSpecs);
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json value");
-            return;
         }
-
-        lobbyView.updateGamesSpecs(gamesSpecs);
-
-    }
-
-    //client
-    @Override
-    public void reportLobbyUIError(String error) throws RemoteException {
-        lobbyView.reportError(error);
     }
 
 
-
-
     @Override
-    public void setViewAsGameStarting(int gameID) throws RemoteException {
-
-        gameStartingView = uiChoice.createGameStartingUI();
-        gameStartingView.updateGameID(gameID);
-        uiState = UI.GAME_STARTING;
-        lobbyView.stop();
-
+    public void reportException(String error) {
+        view.reportError(error);
     }
 
 
-
-
-
     @Override
-    public void setViewAsSetup() throws RemoteException {
-
-        this.gameController = server.getGameController(this);
-
-        setupView = uiChoice.createSetupUI();
-        setupView.addObserver(this);
-        switch (uiState) {
-            case LOBBY -> {
-                uiState = UI.SETUP;
-                lobbyView.stop();
-            }
-            case GAME_STARTING -> {
-                uiState = UI.SETUP;
-                gameStartingView.stop();
-            }
-        }
-
+    public void gameJoined(int gameID) {
+        view.updateGameID(gameID);
     }
 
+
     @Override
-    public void stcUpdateSetupUIInitialCard(String jsonImmGame, String jsonInitialCardEvent) {
+    public void allPlayersJoined() {
+        view.allPlayersJoined();
+    }
+
+
+    @Override
+    public void setupUpdated(String jsonImmGame, String jsonGameEvent) {
+
         try {
-            Game.Immutable game = objectMapper.readValue(jsonImmGame, Game.Immutable.class);
+            ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
+            GameEvent gameEvent = objectMapper.readValue(jsonGameEvent, GameEvent.class);
+            view.updateSetup(immGame, gameEvent);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+
+    }
+
+    @Override
+    public void initialCardUpdated(String jsonImmGame, String jsonInitialCardEvent) {
+        try {
+            ImmGame game = objectMapper.readValue(jsonImmGame, ImmGame.class);
             InitialCardEvent initialCardEvent = objectMapper.readValue(jsonInitialCardEvent, InitialCardEvent.class);
-            setupView.updateInitialCard(game, initialCardEvent);
+            view.updateInitialCard(game, initialCardEvent);
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
     }
 
     @Override
-    public void stcUpdateSetupUIColor(String jsonColor) throws RemoteException {
+    public void colorUpdated(String jsonColor) {
         try {
             Color color = objectMapper.readValue(jsonColor, Color.class);
-            setupView.updateColor(color);
+            view.updateColor(color);
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
     }
 
     @Override
-    public void reportSetupUIError(String error) {
-        setupView.reportError(error);
-    }
-
-    @Override
-    public void stcUpdateSetupUI(String jsonImmGame, String jsonGameEvent) {
+    public void objectiveCardChosen(String jsonImmGame) {
         try {
-            Game.Immutable immGame = objectMapper.readValue(jsonImmGame, Game.Immutable.class);
-            GameEvent gameEvent = objectMapper.readValue(jsonGameEvent, GameEvent.class);
-            setupView.update(immGame, gameEvent);
+            ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
+            view.updateObjectiveCardChoice(immGame);
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
     }
 
     @Override
-    public void stcUpdateSetupUIObjectiveCardChoice(String jsonImmGame) throws RemoteException {
+    public void setupEnded(String jsonImmGame) {
         try {
-            Game.Immutable immGame = objectMapper.readValue(jsonImmGame, Game.Immutable.class);
-            setupView.updateObjectiveCardChoice(immGame);
+            ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
+            view.endSetup(immGame);
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
     }
 
     @Override
-    public void setViewAsGameplay(String jsonImmGame) throws RemoteException {
-
+    public void cardFlipped(String jsonGame) {
         try {
-            Game.Immutable immGame = objectMapper.readValue(jsonImmGame, Game.Immutable.class);
-            gameplayView = uiChoice.createGameplayUI();
-            gameplayView.updatePlayerOrder(immGame);
-            gameplayView.addObserver(this);
-            gameplayView.updatePlayerOrder(immGame);
-            uiState = UI.GAMEPLAY;
-            setupView.stop();
-        } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
-        }
-
-    }
-
-    @Override
-    public void stcUpdateGameplayUI(String jsonImmGame) throws RemoteException {
-        try {
-            Game.Immutable immGame = objectMapper.readValue(jsonImmGame, Game.Immutable.class);
-            gameplayView.update(immGame);
+            ImmGame immGame = objectMapper.readValue(jsonGame, ImmGame.class);
+            view.cardFlipped(immGame);
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
         }
     }
 
     @Override
-    public void reportGameplayUIError(String error) throws RemoteException {
-        gameplayView.reportError(error);
+    public void cardPlayed(String jsonImmGame, String playerNicknameWhoUpdated) {
+        try {
+            ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
+            view.cardPlayed(immGame, playerNicknameWhoUpdated);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void cardDrawn(String jsonImmGame, String playerNicknameWhoUpdated) {
+        try {
+            ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
+            view.cardDrawn(immGame, playerNicknameWhoUpdated);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void turnChanged(String currentPlayer) throws RemoteException {
+        view.turnChanged(currentPlayer);
+    }
+
+    @Override
+    public void messageSent(String jsonImmGame) {
+        try {
+            ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
+            view.messageSent(immGame);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void twentyPointsReached(String jsonImmGame) {
+        try {
+            ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
+            view.twentyPointsReached(immGame);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void decksEmpty(String jsonImmGame) {
+        try {
+            ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
+            view.decksEmpty(immGame);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void gameEnded(String winner, String jsonPlayers, String jsonPoints, String jsonSecretObjectiveCards) {
+        try {
+            List<String> players = objectMapper.readValue(jsonPlayers, new TypeReference<>() {
+            });
+            List<Integer> points = objectMapper.readValue(jsonPoints, new TypeReference<>() {
+            });
+            List<ImmObjectiveCard> secretObjectiveCards = objectMapper.readValue(jsonPlayers, new TypeReference<>() {
+            });
+            view.gameEnded(winner, players, points, secretObjectiveCards);
+            gameController = null;
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void gameCanceled() {
+        view.gameCanceled();
+        gameController = null;
+    }
+
+    @Override
+    public void gameLeft() {
+        view.gameLeft();
+        gameController = null;
+    }
+
+    @Override
+    public void gameRejoined(String jsonImmGame, String nickname) {
+        this.nickname = nickname;
+        try {
+            ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
+            view.gameRejoined(immGame);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json\n"+e.getMessage());
+        }
+    }
+
+    @Override
+    public void updatePlayerInGameStatus(String jsonImmGame, String playerNickname,
+                                         String jsonInGame, String jsonHasDisconnected) {
+        try {
+            ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
+            boolean inGame = objectMapper.readValue(jsonInGame, Boolean.class);
+            boolean hasDisconected = objectMapper.readValue(jsonHasDisconnected, Boolean.class);
+            view.updatePlayerInGameStatus(immGame, playerNickname, inGame, hasDisconected);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
+    @Override
+    public void gameToCancelLater()  {
+        view.gamePaused();
+    }
+
+    @Override
+    public void gameResumed()  {
+        view.gameResumed();
     }
 
 
     @Override
-    public void ctsUpdateGameToAccess(int gameID, String nickname) {
+    public void ctsUpdateNickname(String nickname) {
         try {
-            server.ctsUpdateGameToAccess(this, gameID, nickname);
+            server.chooseNickname(this, nickname);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
     }
 
     @Override
-    public void ctsUpdateNewGame(int numOfPlayers, String nickname) {
+    public void ctsUpdateGameToAccess(int gameID) {
         try {
-            server.ctsUpdateNewGame(this, numOfPlayers, nickname);
+            server.accessExistingGame(this, gameID);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
     }
 
+    @Override
+    public void ctsUpdateNewGame(int numOfPlayers) {
+        try {
+            server.accessNewGame(this, numOfPlayers);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
+    }
 
 
     @Override
     public void ctsUpdateReady() {
-
         try {
-            gameController.updateReady();
+            gameController = server.getGameController(this);
+            gameController.readyToPlay();
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
-
     }
 
     @Override
     public void ctsUpdateInitialCard(InitialCardEvent initialCardEvent) {
-
         try {
             gameController.updateInitialCard(nickname, objectMapper.writeValueAsString(initialCardEvent));
         } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating the server");
         }
-
     }
 
     @Override
     public void ctsUpdateColor(Color color) {
-
         try {
-            gameController.updateColor(nickname, objectMapper.writeValueAsString(color));
+            gameController.chooseColor(nickname, objectMapper.writeValueAsString(color));
         } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating the server");
         }
-
     }
 
     @Override
-    public void ctsUpdateObjectiveCardChoice(ObjectiveCardChoice objectiveCardChoice) {
-
+    public void ctsUpdateObjectiveCardChoice(int index) {
         try {
-            gameController.updateObjectiveCard(nickname, objectMapper.writeValueAsString(objectiveCardChoice));
-        } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating the server");
-        }
-
-    }
-
-
-    @Override
-    public void ctsUpdateFlipCard(FlipCardEvent flipCardEvent) {
-
-        try {
-            gameController.updateFlipCard(nickname, objectMapper.writeValueAsString(flipCardEvent));
-        } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating the server");
-        }
-
-    }
-    @Override
-    public void ctsUpdatePlayCard(PlayCardEvent playCardEvent, int x, int y) throws NotYourTurnException {
-
-        try {
-            gameController.updatePlayCard(nickname, objectMapper.writeValueAsString(playCardEvent), x, y);
-        } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating the server");
-        }
-
-    }
-    @Override
-    public void ctsUpdateDrawCard(DrawCardEvent drawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException {
-
-        try {
-            gameController.updateDrawCard(nickname, objectMapper.writeValueAsString(drawCardEvent));
-        } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating the server");
-        }
-
-    }
-    @Override
-    public void ctsUpdateSendMessage(String receiver, String content) {
-
-        try {
-            gameController.updateSendMessage(nickname, receiver, content);
+            gameController.chooseSecretObjectiveCard(nickname, index);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }
-
     }
 
 
-
-
+    @Override
+    public void ctsUpdateFlipCard(int index) {
+        try {
+            gameController.flipCard(nickname, index);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
+    }
 
     @Override
-    public void run() {
-
-        while (true) {
-            try { Thread.sleep(0); }
-            catch (Exception e) { e.printStackTrace(); }
-            switch (uiState) {
-                case LOBBY -> lobbyView.run();
-                case GAME_STARTING -> gameStartingView.run();
-                case SETUP -> setupView.run();
-                case GAMEPLAY -> gameplayView.run();
-            }
+    public void ctsUpdatePlayCard(int index, int x, int y) throws NotYourTurnException {
+        try {
+            gameController.playCard(nickname, index, x, y);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
         }
+    }
+
+    @Override
+    public void ctsUpdateDrawCard(DrawCardEvent drawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException {
+        try {
+            gameController.drawCard(nickname, objectMapper.writeValueAsString(drawCardEvent));
+        } catch (RemoteException | JsonProcessingException e) {
+            System.err.println("Error while updating the server");
+        }
+    }
+
+    @Override
+    public void ctsUpdateSendMessage(String receiver, String content) {
+        try {
+            gameController.sendMessage(nickname, receiver, content);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
+    }
+
+    @Override
+    public void updateLeaveGame() {
+        try {
+            server.leaveGame(this, false);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating the server");
+        }
+    }
+
+    @Override
+    public void updateGetGameController() {
+        try {
+            this.gameController = server.getGameController(this);
+        } catch (RemoteException e) {
+            System.err.println("Error while getting game controller\n"+e.getMessage());
+        }
+    }
+
+
+    public void runView() {
+
+        UIObservableItem uiObservableItem = new UIObservableItem();
+        uiObservableItem.addObserver(this);
+        view = askUIChoice().createView(uiObservableItem);
+
+        try {
+            server.viewIsReady(this);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating server");
+        }
+
+        view.run();
 
     }
 

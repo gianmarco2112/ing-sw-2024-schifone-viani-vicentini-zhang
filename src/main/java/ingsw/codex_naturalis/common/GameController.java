@@ -6,22 +6,22 @@ import java.rmi.RemoteException;
 public interface GameController extends Remote {
 
 
-    void updateReady() throws RemoteException;
+    void readyToPlay() throws RemoteException;
 
     void updateInitialCard(String nickname, String jsonInitialCardEvent) throws RemoteException;
 
-    void updateColor(String nickname, String jsonColor) throws RemoteException;
+    void chooseColor(String nickname, String jsonColor) throws RemoteException;
 
-    void updateObjectiveCard(String nickname, String jsonObjectiveCardChoice) throws RemoteException;
+    void chooseSecretObjectiveCard(String nickname, int index) throws RemoteException;
 
 
 
-    void updateFlipCard(String nickname, String jsonFlipCardEvent) throws RemoteException;
+    void flipCard(String nickname, int index) throws RemoteException;
 
-    void updatePlayCard(String nickname, String jsonPlayCardEvent, int x, int y) throws RemoteException;
+    void playCard(String nickname, int index, int x, int y) throws RemoteException;
 
-    void updateDrawCard(String nickname, String jsonDrawCardEvent) throws RemoteException;
+    void drawCard(String nickname, String jsonDrawCardEvent) throws RemoteException;
 
-    void updateSendMessage(String nickname, String receiver, String content) throws RemoteException;
+    void sendMessage(String nickname, String receiver, String content) throws RemoteException;
 
 }

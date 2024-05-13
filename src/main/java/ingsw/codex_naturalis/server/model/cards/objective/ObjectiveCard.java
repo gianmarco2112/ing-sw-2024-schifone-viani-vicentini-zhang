@@ -34,22 +34,26 @@ import java.util.List;
         @Type(value = PatternObjectiveCard.class, name = "pattern")
 })
 public abstract class ObjectiveCard extends Card {
+
     /**
      * True if the card is showing the front side, False if it's showing the back side
      */
     private boolean showingFront;
+
     /**
      * Getter of the ObjectiveCard
      */
     public ObjectiveCard.Immutable getImmutableObjectiveCard(){
         return new ObjectiveCard.Immutable(getCardID(), showingFront, cardToString());
     }
+
     /**
      * Getter of the immutable ObjectiveCard (flipped to the back side in order to be hidden)
      */
     public ObjectiveCard.Immutable getImmutableHiddenPlayableCard(){
         return new ObjectiveCard.Immutable(getCardID(), false, cardToString());
     }
+
     /**
      * Part of the model's view: immutable view of the Objective card
      */
@@ -100,5 +104,9 @@ public abstract class ObjectiveCard extends Card {
      * To print the card on the screen (the visual representation of the card is a string)
      */
     public abstract String cardToString();
+
+    public boolean isShowingFront() {
+        return showingFront;
+    }
 
 }

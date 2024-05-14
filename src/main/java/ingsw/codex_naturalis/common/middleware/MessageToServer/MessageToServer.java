@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import ingsw.codex_naturalis.server.ClientSkeleton;
 
+/**
+ * It represents a message sent to a server through sockets.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         property = "type")
 @JsonSubTypes({

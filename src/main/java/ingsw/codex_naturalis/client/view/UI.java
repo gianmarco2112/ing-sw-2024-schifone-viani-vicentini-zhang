@@ -9,6 +9,9 @@ import ingsw.codex_naturalis.server.model.util.GameEvent;
 
 import java.util.List;
 
+/**
+ * Interface implemented by the TUI and the GUI
+ */
 public interface UI {
 
     void run();

@@ -165,7 +165,10 @@ public class Game extends GameObservable implements PlayerObserver {
 
     public void removePlayer(Player player) {
         this.playerOrder.remove(player);
-        numOfPlayers--;
+        if (gameStatus != GameStatus.WAITING_FOR_PLAYERS)
+            numOfPlayers--;
+        if (playerOrder.isEmpty())
+            gameRunningStatus = GameRunningStatus.TO_CANCEL_NOW;
         notifyPlayerLeft(this, player.getNickname());
     }
 

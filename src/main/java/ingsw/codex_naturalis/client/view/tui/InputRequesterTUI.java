@@ -7,6 +7,9 @@ import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Class used by the TUI to ask for players inputs.
+ */
 public class InputRequesterTUI {
 
     private void clearPreviousInputs() {
@@ -92,13 +95,6 @@ public class InputRequesterTUI {
             + "     Max number of players: " + gamesSpecs.get(i).maxNumOfPlayers());
         }
         System.out.println("------------------------------------------------------------------------------\n");
-
-    }
-
-    public void ready() {
-
-        clearPreviousInputs();
-        System.out.println("\nPress any key and enter if you're ready to play");
 
     }
 

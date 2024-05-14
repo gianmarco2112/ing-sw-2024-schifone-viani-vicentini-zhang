@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import ingsw.codex_naturalis.client.ServerStub;
 
+/**
+ * This interface represents a message sent to a socket client.
+ */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "type")

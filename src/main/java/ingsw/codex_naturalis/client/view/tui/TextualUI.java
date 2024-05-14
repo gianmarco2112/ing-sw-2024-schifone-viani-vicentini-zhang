@@ -13,8 +13,14 @@ import ingsw.codex_naturalis.server.model.util.GameEvent;
 
 import java.util.*;
 
+/**
+ * Textual User Interface
+ */
 public class TextualUI implements UI {
 
+    /**
+     * View state
+     */
     private enum State {
         LOGIN,
         LOBBY,
@@ -22,8 +28,14 @@ public class TextualUI implements UI {
         REJOINED
     }
 
+    /**
+     * Used to update the not started games in lobby while the user is in that state.
+     */
     private boolean askingWhichGameToAccess = false;
 
+    /**
+     * Game states
+     */
     private enum GameState {
         WAITING_FOR_PLAYERS,
         READY,
@@ -33,6 +45,9 @@ public class TextualUI implements UI {
         PLAYING,
     }
 
+    /**
+     * Running states
+     */
     private enum RunningState {
         RUNNING,
         WAITING_FOR_UPDATE,
@@ -91,7 +106,10 @@ public class TextualUI implements UI {
             this.askingWhichGameToAccess = askingWhichGameToAccess;
         }
     }
-    
+
+    /**
+     * Used to notify the client
+     */
     private final UIObservableItem uiObservableItem;
 
     private final InputRequesterTUI inputRequesterTUI = new InputRequesterTUI();
@@ -154,6 +172,9 @@ public class TextualUI implements UI {
     }
 
 
+    /**
+     * Asks for nickname
+     */
     private void loginView() {
         inputRequesterTUI.nickname();
         String nickname = askNickname();
@@ -166,6 +187,9 @@ public class TextualUI implements UI {
         gameAccessOption();
     }
 
+    /**
+     * Asks if he wants to join an existing game or create a new one
+     */
     private void gameAccessOption() {
         inputRequesterTUI.gameAccessOption();
         int option = askForOptionInput(1, 2, false);
@@ -175,6 +199,9 @@ public class TextualUI implements UI {
         }
     }
 
+    /**
+     * For creating a new game
+     */
     private void newGameAccess() {
 
         inputRequesterTUI.newGameAccess();
@@ -187,6 +214,9 @@ public class TextualUI implements UI {
 
     }
 
+    /**
+     * For joining an existing game
+     */
     private void existingGameAccess() {
 
         try {
@@ -226,24 +256,20 @@ public class TextualUI implements UI {
 
         switch (gameState) {
             case WAITING_FOR_PLAYERS -> {
-                while (getGameState() == GameState.WAITING_FOR_PLAYERS) {
-                    System.out.println("\nGameID: " + gameID);
-                    System.out.println("Waiting for players...");
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-            case READY -> {
-                inputRequesterTUI.ready();
+                System.out.println("\nGameID: " + gameID);
+                System.out.println("Waiting for players...");
+                System.out.println("Press any key and enter if you want to leave the game");
                 scanner.next();
                 if (getRunningState() == RunningState.STOP)
                     return;
                 setRunningState(RunningState.WAITING_FOR_UPDATE);
-                uiObservableItem.notifyReady();
-                System.out.println("You are ready to play. Please wait for the other players to be ready");
+                switch (getGameState()) {
+                    case WAITING_FOR_PLAYERS -> uiObservableItem.notifyLeaveGame();
+                    case READY -> {
+                        uiObservableItem.notifyReady();
+                        System.out.println("You are ready to play. Please wait for the other players to be ready");
+                    }
+                }
             }
             case SETUP_INITIAL_CARD -> playingInitialCard();
             case SETUP_COLOR -> choosingColor();
@@ -451,9 +477,9 @@ public class TextualUI implements UI {
 
     @Override
     public void allPlayersJoined() {
-        setState(State.GAME);
+        System.out.println("\nPress any key and enter if you're ready to play");
         setGameState(GameState.READY);
-        setRunningState(RunningState.RUNNING);
+        //setRunningState(RunningState.RUNNING);
     }
 
     @Override

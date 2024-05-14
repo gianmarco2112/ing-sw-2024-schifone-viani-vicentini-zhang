@@ -23,23 +23,53 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * This class is the controller of a specific game.
+ */
 public class GameControllerImpl implements GameController {
 
+    /**
+     * Model
+     */
     private final Game model;
 
+    /**
+     * Virtual views connected to the game that observe the model and update the controller.
+     */
     private final List<VirtualView> virtualViews = new ArrayList<>();
 
+    /**
+     * Updates queue, used to make rmi async and to ensure that every message received from a client
+     * gets processed in the correct order.
+     */
     private final BlockingQueue<Runnable> updatesQueue = new LinkedBlockingQueue<>();
 
+    /**
+     * Main server
+     */
     private final ServerImpl server;
 
+    /**
+     * Ready players count, used for some setup aspects of the game to make sure all players
+     * are going together.
+     */
     private int readyPlayers = 0;
 
-    //including the player who gets to 20 points
+    /**
+     * Turns left in second to last rond count, used when all decks are empty or a player
+     * reaches 20 points (in this case, his round is also included).
+     */
     private int turnsLeftInSecondToLastRound;
 
+    /**
+     * Turns left in last round, used when all decks are empty or a player
+     * reaches 20 points.
+     */
     private int turnsLeftInLastRound;
 
+    /**
+     * Jackson object mapper.
+     */
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -72,7 +102,12 @@ public class GameControllerImpl implements GameController {
         return virtualViews;
     }
 
-
+    /**
+     * Method to add a player to the game, it also creates his virtual view.
+     * @param client client to add
+     * @param nickname client's nickname
+     * @return true if the game is full, false if it isn't
+     */
     public synchronized boolean addPlayer(Client client, String nickname) {
         Player player = new Player(nickname);
         VirtualView virtualView = new VirtualView(client, nickname);
@@ -88,6 +123,9 @@ public class GameControllerImpl implements GameController {
     }
 
 
+    /**
+     * Method called by a client to notify he is ready to play.
+     */
     @Override
     public synchronized void readyToPlay(){
         try {
@@ -104,6 +142,11 @@ public class GameControllerImpl implements GameController {
         }
     }
 
+    /**
+     * Method called by a client to flip or play his initial card.
+     * @param nickname client's nickname
+     * @param jsonInitialCardEvent flip or play
+     */
     @Override
     public synchronized void updateInitialCard(String nickname, String jsonInitialCardEvent) {
         try {
@@ -124,6 +167,11 @@ public class GameControllerImpl implements GameController {
         }
     }
 
+    /**
+     * Method called by a client to choose his color.
+     * @param nickname client's nickname
+     * @param jsonColor color
+     */
     @Override
     public synchronized void chooseColor(String nickname, String jsonColor) {
         try {
@@ -150,6 +198,11 @@ public class GameControllerImpl implements GameController {
         }
     }
 
+    /**
+     * Method called by a client to choose his secret objective card.
+     * @param nickname client's nickname
+     * @param index objective card choice (index)
+     */
     @Override
     public synchronized void chooseSecretObjectiveCard(String nickname, int index) {
         try {
@@ -172,8 +225,11 @@ public class GameControllerImpl implements GameController {
     }
 
 
-
-
+    /**
+     * Method called by a client to flip his hand card.
+     * @param nickname client's nickname
+     * @param index index of the hand card
+     */
     @Override
     public synchronized void flipCard(String nickname, int index) {
         if (model.getGameRunningStatus() == GameRunningStatus.TO_CANCEL_LATER)
@@ -192,6 +248,13 @@ public class GameControllerImpl implements GameController {
         }
     }
 
+    /**
+     * Method called by a client to play his hand card.
+     * @param nickname client's nickname
+     * @param index index of the hand card
+     * @param x coordinate x of his play area
+     * @param y coordinate y of his play area
+     */
     @Override
     public synchronized void playCard(String nickname, int index, int x, int y) {
         if (model.getGameRunningStatus() == GameRunningStatus.TO_CANCEL_LATER)
@@ -215,6 +278,11 @@ public class GameControllerImpl implements GameController {
         }
     }
 
+    /**
+     * Method called after a card has been played, it checks if the player reached 20 points,
+     * if the game ended and changes the turn.
+     * @param player player that has just played his card
+     */
     private void checkGameStatus(Player player) {
         if (player.getPlayerArea().getPoints() >= 20 && model.getGameStatus() == GameStatus.GAMEPLAY) {
             turnsLeftInSecondToLastRound = model.getNumOfPlayers() - model.getPlayerOrder().indexOf(player);
@@ -250,6 +318,13 @@ public class GameControllerImpl implements GameController {
         }
     }
 
+    /**
+     * Method called by a client to draw a card.
+     * @param nickname client's nickname
+     * @param jsonDrawCardEvent card to draw
+     * @throws NotYourTurnException when it's not his turn
+     * @throws NotYourDrawTurnStatusException when he has to play a card first
+     */
     @Override
     public synchronized void drawCard(String nickname, String jsonDrawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException {
         if (model.getGameRunningStatus() == GameRunningStatus.TO_CANCEL_LATER)
@@ -284,6 +359,11 @@ public class GameControllerImpl implements GameController {
         }
     }
 
+    /**
+     * Draw from deck method.
+     * @param player player who wants to draw
+     * @param drawCardEvent card to draw
+     */
     private void drawFromDeck(Player player, DrawCardEvent drawCardEvent) {
         PlayableCard drawnCard = null;
         try {
@@ -303,6 +383,11 @@ public class GameControllerImpl implements GameController {
         }
     }
 
+    /**
+     * Draw revealed card method.
+     * @param player player who wants to draw
+     * @param drawCardEvent card to draw
+     */
     private void drawRevealedCard(Player player, DrawCardEvent drawCardEvent) {
         PlayableCard drawnCard = null;
         try {
@@ -346,6 +431,10 @@ public class GameControllerImpl implements GameController {
         }
     }
 
+    /**
+     * Method called after a players has drawn a card, it is used for turns managing.
+     * @param player player that has drawn a card
+     */
     private void checkTurnsLeftInSecondToLastRound(Player player) {
         if (model.getResourceCardsDeck().isEmpty() &&
                 model.getGoldCardsDeck().isEmpty() &&
@@ -359,6 +448,12 @@ public class GameControllerImpl implements GameController {
         player.setTurnStatus(TurnStatus.PLAY);
     }
 
+    /**
+     * Method called by a client to send a chat message
+     * @param nickname client's nickname sender
+     * @param receiver receiver (null if it's a global message)
+     * @param content message content
+     */
     @Override
     public synchronized void sendMessage(String nickname, String receiver, String content) {
         if (model.getGameRunningStatus() == GameRunningStatus.TO_CANCEL_LATER)
@@ -381,11 +476,19 @@ public class GameControllerImpl implements GameController {
     }
 
 
+    /**
+     * Method called by the main server to remove a player after he left the game.
+     * @param nickname player's nickname
+     */
     public synchronized void removePlayer(String nickname) {
         model.removePlayer(model.getPlayerByNickname(nickname));
         removeView(nickname);
     }
 
+    /**
+     * Method called by the main server after a player has disconnected.
+     * @param nickname player's nickname
+     */
     public synchronized void disconnectPlayer(String nickname) {
         removeView(nickname);
         if (model.getGameStatus() == GameStatus.GAMEPLAY ||
@@ -397,6 +500,11 @@ public class GameControllerImpl implements GameController {
         } else model.removePlayer(model.getPlayerByNickname(nickname));
     }
 
+    /**
+     * Method called to get the game running status based on the players who left
+     * and have disconnected.
+     * @return the
+     */
     public GameRunningStatus getPlayersConnectionStatus() {
         if (model.getNumOfPlayers() == 1)
             return GameRunningStatus.TO_CANCEL_NOW;
@@ -409,6 +517,10 @@ public class GameControllerImpl implements GameController {
         return GameRunningStatus.TO_CANCEL_LATER;
     }
 
+    /**
+     * Method used to remove a view after the client has left or disconnected.
+     * @param nickname client's nickname
+     */
     private void removeView(String nickname) {
         VirtualView viewToRemove = null;
         for (VirtualView view : virtualViews)
@@ -418,6 +530,11 @@ public class GameControllerImpl implements GameController {
         model.deleteObserver(viewToRemove);
     }
 
+    /**
+     * Method called to reconnect a client to the game.
+     * @param client client to reconnect
+     * @param nickname client's nickname
+     */
     public synchronized void reconnect(Client client, String nickname) {
         VirtualView view = new VirtualView(client, nickname);
         virtualViews.add(view);
@@ -425,6 +542,9 @@ public class GameControllerImpl implements GameController {
         model.getPlayerByNickname(nickname).setInGame(true);
     }
 
+    /**
+     * Method called to end the game.
+     */
     private void endGame() {
         server.endGame(this);
     }

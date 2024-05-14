@@ -30,10 +30,19 @@ import java.util.*;
  */
 public class VirtualView implements GameObserver {
 
+    /**
+     * Client
+     */
     private final Client client;
 
+    /**
+     * Nickname
+     */
     private final String nickname;
 
+    /**
+     * Object mapper
+     */
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -52,13 +61,16 @@ public class VirtualView implements GameObserver {
     }
 
 
+    /**
+     * A player has joined the game.
+     * @param game model
+     * @param nickname player's nickname who joined
+     */
     @Override
     public void updatePlayerJoined(Game game, String nickname) {
         try {
-            if (game.getNumOfPlayers() > game.getPlayerOrder().size()) {
-                if (this.nickname.equals(nickname))
-                    client.gameJoined(game.getGameID());
-            } else
+            client.gameJoined(game.getGameID());
+            if (game.getNumOfPlayers() == game.getPlayerOrder().size())
                 client.allPlayersJoined();
         } catch (RemoteException e) {
             System.err.println("Error while updating client\n" + e.getMessage());
@@ -66,6 +78,11 @@ public class VirtualView implements GameObserver {
     }
 
 
+    /**
+     * Generic update from the model, it includes setup phases, chat and game status.
+     * @param game model
+     * @param gameEvent game event
+     */
     @Override
     public void update(Game game, GameEvent gameEvent) {
         switch (gameEvent) {
@@ -81,6 +98,14 @@ public class VirtualView implements GameObserver {
         }
     }
 
+    /**
+     * Generic update from a player (part of the model), it includes all the main actions performed
+     * by a player
+     * @param game model
+     * @param playerEvent player event
+     * @param playerWhoUpdated player who updated
+     * @param playerNicknameWhoUpdated player's nickname who updated
+     */
     @Override
     public void update(Game game, PlayerEvent playerEvent, Player playerWhoUpdated, String playerNicknameWhoUpdated) {
         switch (playerEvent) {
@@ -95,6 +120,11 @@ public class VirtualView implements GameObserver {
         }
     }
 
+    /**
+     * Exception thrown by the model
+     * @param error error
+     * @param playerNicknameWhoUpdated player's nickname who got the exception
+     */
     @Override
     public void updateException(String error, String playerNicknameWhoUpdated) {
         if (nickname.equals(playerNicknameWhoUpdated)) {
@@ -106,6 +136,10 @@ public class VirtualView implements GameObserver {
         }
     }
 
+    /**
+     * The turn has changed.
+     * @param playerNickname current player's nickname
+     */
     @Override
     public void updateTurnChanged(String playerNickname) {
         try {
@@ -115,6 +149,12 @@ public class VirtualView implements GameObserver {
         }
     }
 
+    /**
+     * A player has disconnected or reconnected to the game.
+     * @param game model
+     * @param playerNickname player's nickname
+     * @param inGame disconnected or connected
+     */
     @Override
     public void updatePlayerConnectionStatus(Game game, String playerNickname, boolean inGame) {
         try {
@@ -141,6 +181,11 @@ public class VirtualView implements GameObserver {
         }
     }
 
+    /**
+     * A player left the game.
+     * @param game model
+     * @param playerNicknameWhoLeft player's nickname who left
+     */
     @Override
     public void updatePlayerLeft(Game game, String playerNicknameWhoLeft) {
         try {
@@ -163,6 +208,12 @@ public class VirtualView implements GameObserver {
         }
     }
 
+    /**
+     * The game running status changed, it means: the game has to be canceled, the game will
+     * be canceled, the game is not paused anymore.
+     * @param game model
+     * @param gameRunningStatus game running status
+     */
     @Override
     public void updateGameRunningStatus(Game game, GameRunningStatus gameRunningStatus) {
         try {
@@ -266,6 +317,11 @@ public class VirtualView implements GameObserver {
     }
 
 
+    /**
+     * It updates the client only if he is the player.
+     * @param game model
+     * @param playerNicknameWhoUpdated player's nickname who updated
+     */
     private void cardFlipped(Game game, String playerNicknameWhoUpdated) {
         try {
             if (nickname.equals(playerNicknameWhoUpdated)) {
@@ -295,6 +351,11 @@ public class VirtualView implements GameObserver {
         }
     }
 
+    /**
+     * It makes sure the client is interested in the update (he is only if
+     * he is a sender or one of the receivers).
+     * @param game model
+     */
     private void messageCase(Game game) {
         Message message = game.getChat().getLast();
         List<String> playersInvolved = new ArrayList<>();

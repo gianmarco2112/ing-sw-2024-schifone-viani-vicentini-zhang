@@ -10,16 +10,34 @@ import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
+/**
+ * This class is used in socket protocol, it receives the update from the client through his server
+ * stub and forwards them to the server implementation.
+ */
 public class ClientSkeleton implements Client {
 
+    /**
+     * Client's nickname
+     */
     String nickname;
 
     private final ServerImpl serverImpl;
+
+    /**
+     * Client's game controller
+     */
     private GameControllerImpl gameControllerImpl;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * Used to read the input
+     */
     private final BufferedReader reader;
+
+    /**
+     * Used to write the output
+     */
     private final PrintWriter writer;
 
 

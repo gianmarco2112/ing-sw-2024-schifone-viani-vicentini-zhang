@@ -18,7 +18,7 @@ public interface Server extends Remote {
 
     GameController getGameController(Client client) throws RemoteException;
 
-    void leaveGame(Client client, boolean hasDisconnected) throws RemoteException;
+    void leaveGame(Client client) throws RemoteException;
 
     void imAlive(Client client) throws RemoteException;
 

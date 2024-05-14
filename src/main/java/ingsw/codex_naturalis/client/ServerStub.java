@@ -14,6 +14,10 @@ import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
+/**
+ * This class is used for socket communication, it receives the updates from the server through the client
+ * skeleton and forwards them to the client implementation.
+ */
 public class ServerStub implements Server, GameController {
 
     ClientImpl client;
@@ -127,7 +131,7 @@ public class ServerStub implements Server, GameController {
     }
 
     @Override
-    public void leaveGame(Client client, boolean hasDisconnected) throws RemoteException {
+    public void leaveGame(Client client) throws RemoteException {
         try {
             MessageToServer message = new CTSLeaveGame();
             String jsonMessage = objectMapper.writeValueAsString(message);

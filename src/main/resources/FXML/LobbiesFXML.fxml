@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="lobbies-page-image" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ingsw.codex_naturalis.view.GUI.LobbiesControllerFX">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="lobbies-page-image" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ingsw.codex_naturalis.client.view.gui.LobbiesControllerFX">
    <center>
       <BorderPane maxHeight="760" maxWidth="1280" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760" prefWidth="1280">
          <center>
@@ -47,7 +47,6 @@
             <HBox alignment="CENTER" opacity="0.92" prefHeight="50.0" prefWidth="200.0" spacing="50.0" styleClass="lobbies-box" stylesheets="@../style.css" BorderPane.alignment="CENTER">
                <children>
                   <Label text="Choose the game you want to join or create a new game!" />
-                  <Button fx:id="refresh_BTN" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="25.0" />

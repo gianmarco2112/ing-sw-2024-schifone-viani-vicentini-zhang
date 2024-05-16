@@ -1,6 +1,6 @@
-/*
-package ingsw.codex_naturalis.view.GUI;
+package ingsw.codex_naturalis.client.view.gui;
 
+import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
 import ingsw.codex_naturalis.server.GameControllerImpl;
 import ingsw.codex_naturalis.client.ClientImpl;
 import javafx.collections.FXCollections;
@@ -29,15 +29,10 @@ public class LobbiesControllerFX implements Initializable {
     private VBox LobbyContainer;
     @FXML
     private ChoiceBox<Integer> Players_CB;
-    @FXML
-    private Button refresh_BTN;
     private HashMap<Integer,LobbyControllerFX> lobbiesFX;
-    private ClientImpl client;
-    private String gameID;
-    private ViewGUI viewGUI;
+    private GraphicalUI viewGUI;
 
-    public void setClient(ClientImpl client, ViewGUI viewGUI) {
-        this.client = client;
+    public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
     }
 
@@ -48,15 +43,30 @@ public class LobbiesControllerFX implements Initializable {
         Players_CB.setItems(playerOptions);
     }
 
-    public void createLobbies(List<GameControllerImpl> lobbies) {
-
+    public void createLobbies(List<GameSpecs> lobbies) {
+        for(GameSpecs lobby : lobbies) {
+            System.out.println(lobby.ID());
+            if (lobby.currentNumOfPlayers()<=lobby.maxNumOfPlayers()) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/FXML/LobbyFXML.fxml"));
+                try {
+                    HBox lobbyHBox = fxmlLoader.load();
+                    lobbyHBox.maxWidthProperty().bind(LobbyContainer.widthProperty());
+                    lobbyHBox.minWidthProperty().bind(LobbyContainer.widthProperty());
+                    LobbyControllerFX lobbyControllerFX = fxmlLoader.getController();
+                    lobbyControllerFX.setViewGUI(viewGUI);
+                    lobbiesFX.put(lobby.ID(), lobbyControllerFX);
+                    lobbyControllerFX.setData(lobby);
+                    LobbyContainer.getChildren().add(lobbyHBox);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
-    public void updateLobbies(List<GameControllerImpl> lobbies) {
+    public void updateLobbies(List<GameSpecs> lobbies) {
         LobbyContainer.getChildren().clear();
         createLobbies(lobbies);
-    }
-    public void refresh() {
-        //notify...
     }
     public void createGame() {
         if(Players_CB.getValue() == null) {
@@ -67,8 +77,9 @@ public class LobbiesControllerFX implements Initializable {
             alert.showAndWait();
             return;
         }
-        //notify...
-        viewGUI.endLobbyPhase();
+        viewGUI.endLobbiesPhase(Players_CB.getValue());
+    }
+    public Integer getNumOfPlayers() {
+        return Players_CB.getValue();
     }
 }
-*/

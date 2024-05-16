@@ -1,13 +1,15 @@
-/*
-package ingsw.codex_naturalis.view.GUI;
+package ingsw.codex_naturalis.client.view.gui;
 
-import ingsw.codex_naturalis.client.ClientImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+
+import javafx.scene.input.KeyCode;
+
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,26 +19,13 @@ import java.util.regex.Pattern;
 public class LoginControllerFX implements Initializable {
     @FXML
     private TextField nickname_LBL;
+    private String nickname;
     @FXML
     private VBox nickname_VB;
-    private ClientImpl client;
-    private ViewGUI viewGUI;*/
-/**//*
+    private GraphicalUI viewGUI;
 
-    public void setClient(ClientImpl client,ViewGUI viewGUI) {
-        this.client = client;
+    public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
-    }
-
-    public ClientImpl getClient() {
-        return client;
-    }
-
-    public void nicknameAlreadyUsed() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("Nickname already used");
-        alert.showAndWait();
     }
 
     @Override
@@ -47,15 +36,15 @@ public class LoginControllerFX implements Initializable {
 
     @FXML
     void sendNickname(ActionEvent event) {
-        String nickname = nickname_LBL.getText();
-        if (nickname.isEmpty() || !validateString(nickname) || nickname.length() >= 15) {
+        //String nickname = nickname_LBL.getText();
+        if (nickname_LBL.getText().isEmpty() || !validateString(nickname_LBL.getText()) || nickname_LBL.getText().length() >= 15) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Nickname not inserted");
             alert.showAndWait();
         }else {
-            //notify...
-            viewGUI.endLoginPhase();
+            viewGUI.endLoginPhase(nickname_LBL.getText());
+            //nickname = nickname_LBL.getText();
         }
     }
 
@@ -65,5 +54,8 @@ public class LoginControllerFX implements Initializable {
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
     }
+
+    public String getNickname() {
+        return nickname;
+    }
 }
-*/

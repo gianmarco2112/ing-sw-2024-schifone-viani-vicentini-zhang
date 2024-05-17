@@ -1,10 +1,4 @@
-/*
-package ingsw.codex_naturalis.view.GUI;
-
-import ingsw.codex_naturalis.server.model.Game;
+package ingsw.codex_naturalis.client.view.gui;
 
 public class EndGameControllerFX {
-    public void createRankingTable(Game.Immutable msg) {
-    }
 }
-*/

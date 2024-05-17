@@ -1,7 +1,6 @@
 package ingsw.codex_naturalis.client.view.gui;
 
 import ingsw.codex_naturalis.client.view.UI;
-import ingsw.codex_naturalis.client.view.tui.TextualUI;
 import ingsw.codex_naturalis.client.view.util.UIObservableItem;
 import ingsw.codex_naturalis.common.immutableModel.ImmGame;
 import ingsw.codex_naturalis.common.immutableModel.ImmObjectiveCard;
@@ -20,10 +19,12 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 public class GraphicalUI extends Application implements UI {
-
-    //////////FSM////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    //////////FSM/////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
     private enum State {
         LOGIN,
         LOBBY,
@@ -70,24 +71,53 @@ public class GraphicalUI extends Application implements UI {
             lock.notifyAll();
         }
     }
+    private GraphicalUI.GameState getGameState() {
+        synchronized (lock) {
+            return gameState;
+        }
+    }
+    private void setGameState(GraphicalUI.GameState gameState) {
+        synchronized (lock) {
+            this.gameState = gameState;
+            lock.notifyAll();
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////
+    /////////////////////MVC/////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////
     private List<GameSpecs> gamesSpecs = null;
     private int gameID;
     private ImmGame game = null;
+    private Boolean allPlayersJoined = false;
+    private final Scanner scanner = new Scanner(System.in);
     @Override
     public void run() {
         while (true) {
             switch (getRunningState()) {
                 case RUNNING -> running();
                 case WAITING_FOR_UPDATE -> waitForUpdate();
-                case STOP -> { setRunningState(GraphicalUI.RunningState.RUNNING); }
+                case STOP -> { setRunningState(RunningState.RUNNING); }
             }
         }
     }
 
     private void waitForUpdate() {
-        while (getRunningState() == GraphicalUI.RunningState.WAITING_FOR_UPDATE) {
+        while (getRunningState() == RunningState.WAITING_FOR_UPDATE) {
             synchronized (lock) {
                 try {
                     lock.wait();
@@ -108,21 +138,41 @@ public class GraphicalUI extends Application implements UI {
 
     private void gameView() {
         setScene("Game");
+
+        switch (gameState) {
+            case WAITING_FOR_PLAYERS -> {
+                scanner.next();//da completare con un bottone che esce mentre si aspettano gli altri giocatori
+                if (getRunningState() == RunningState.STOP)
+                    return;
+                setRunningState(RunningState.WAITING_FOR_UPDATE);
+                switch (getGameState()) {
+                    case WAITING_FOR_PLAYERS -> uiObservableItem.notifyLeaveGame();
+                    case READY -> {
+                        uiObservableItem.notifyReady();
+
+                    }
+                }
+            }
+            //case SETUP_INITIAL_CARD -> playingInitialCard();
+            //case SETUP_COLOR -> choosingColor();
+            //case SETUP_OBJECTIVE_CARD -> choosingObjectiveCard();
+            //case PLAYING -> playing();
+        }
     }
 
     private void lobbyView() {
         setScene("Lobbies");
-        setRunningState(GraphicalUI.RunningState.WAITING_FOR_UPDATE);
+        setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
     private void loginView() {
         setScene("Login");
-        setRunningState(GraphicalUI.RunningState.WAITING_FOR_UPDATE);
+        setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
     @Override
     public void setNickname(String nickname) {
-        setState(GraphicalUI.State.LOBBY);
-        setRunningState(GraphicalUI.RunningState.RUNNING);
+        setState(State.LOBBY);
+        setRunningState(RunningState.RUNNING);
     }
 
     @Override
@@ -133,8 +183,10 @@ public class GraphicalUI extends Application implements UI {
     @Override
     public void updateGamesSpecs(List<GameSpecs> gamesSpecs) {
         this.gamesSpecs = gamesSpecs;
+        System.out.println("gameSpecs");
         Platform.runLater(() -> {
             if (lobbiesControllerFX != null) {
+                System.out.println("gameSpecs2 " + gamesSpecs);
                 lobbiesControllerFX.updateLobbies(gamesSpecs);
             } else {
                 System.out.println("LobbiesControllerFX is null. Unable to set available games.");
@@ -144,12 +196,18 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void updateGameID(int gameID) {
-        setScene("Game");
+        //setScene("Game");
+        this.gameID = gameID;
+        System.out.println(this.gameID);
+        setState(State.GAME);
+        setGameState(GameState.WAITING_FOR_PLAYERS);
+        setRunningState(GraphicalUI.RunningState.RUNNING);
     }
 
     @Override
     public void allPlayersJoined() {
-
+        allPlayersJoined = true;
+        setGameState(GameState.READY);
     }
 
     @Override
@@ -250,12 +308,29 @@ public class GraphicalUI extends Application implements UI {
     public void endLoginPhase(String nickname) {
         uiObservableItem.notifyNickname(nickname);
     }
-
-
     public void endLobbiesPhase(int numOfPlayers) {
         uiObservableItem.notifyNewGame(numOfPlayers);
+        System.out.println("numero di giocatori selezionati è " + numOfPlayers);
     }
+    public void endLobbyPhase(int id) {
+        uiObservableItem.notifyGameToAccess(id);
+    }
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////FX///////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     private static GraphicalUI instance;
     private UIObservableItem uiObservableItem;
@@ -335,6 +410,9 @@ public class GraphicalUI extends Application implements UI {
                     stage.setMinWidth(1280);
                     stage.setMinHeight(720);
                     gameControllerFX = fxmlLoader.getController();
+                    if(allPlayersJoined){
+                        gameControllerFX.allPlayersJoined();
+                    }
                     break;
                 case "EndGame":
                     endGameControllerFX = fxmlLoader.getController();
@@ -355,5 +433,7 @@ public class GraphicalUI extends Application implements UI {
             stage.show();
         });
     }
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
 }

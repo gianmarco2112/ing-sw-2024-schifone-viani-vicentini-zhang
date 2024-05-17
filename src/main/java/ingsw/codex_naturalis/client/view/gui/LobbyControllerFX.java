@@ -36,5 +36,6 @@ public class LobbyControllerFX {
         GameNameJoin_LB.setText(String.valueOf(lobby.ID()));
         MaxNumPlayers_LB.setText(lobby.maxNumOfPlayers() + "");
         NumPlayersConnected_LB.setText(lobby.currentNumOfPlayers() + "");
+        JoinGame_BTN.setOnAction(actionEvent -> viewGUI.endLobbyPhase(lobby.ID()));
     }
 }

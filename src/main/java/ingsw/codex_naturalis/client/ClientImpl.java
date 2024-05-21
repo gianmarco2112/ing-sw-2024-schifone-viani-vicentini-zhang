@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.client.view.UI;
+import ingsw.codex_naturalis.client.view.tui.TextualUI;
 import ingsw.codex_naturalis.client.view.util.UIObservableItem;
 import ingsw.codex_naturalis.client.view.util.ViewObserver;
 import ingsw.codex_naturalis.common.Client;
@@ -650,5 +651,9 @@ public class ClientImpl implements Client, ViewObserver {
 
     }
 
+    public void setViewTest(){
+        UIObservableItem uiObservableItem = new UIObservableItem();
+        view = new TextualUI(uiObservableItem);
+    }
 
 }

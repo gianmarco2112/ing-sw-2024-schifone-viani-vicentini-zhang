@@ -2,33 +2,33 @@ package ingsw.codex_naturalis.client.view.gui;
 
 import ingsw.codex_naturalis.client.view.UI;
 import ingsw.codex_naturalis.client.view.util.UIObservableItem;
-import ingsw.codex_naturalis.common.immutableModel.ImmGame;
-import ingsw.codex_naturalis.common.immutableModel.ImmObjectiveCard;
 import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
 import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
+import ingsw.codex_naturalis.common.immutableModel.ImmGame;
+import ingsw.codex_naturalis.common.immutableModel.ImmObjectiveCard;
 import ingsw.codex_naturalis.server.model.util.GameEvent;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
 public class GraphicalUI extends Application implements UI {
-    //////////////////////////////////////////////////////////////////////
-    //////////FSM/////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////
+
     private enum State {
         LOGIN,
         LOBBY,
+        WAIT,
+        CONFIRM,
         GAME,
         REJOINED
     }
@@ -84,30 +84,28 @@ public class GraphicalUI extends Application implements UI {
             lock.notifyAll();
         }
     }
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////////
-    /////////////////////MVC/////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////
-    private List<GameSpecs> gamesSpecs = null;
+    private static GraphicalUI instance;
+    private UIObservableItem uiObservableItem;
+    private final HashMap<String, String> scenes;
+    private FXMLLoader fxmlLoader;
+    private Stage stage;
+    private Scene scene;
     private int gameID;
-    private ImmGame game = null;
-    private final Scanner scanner = new Scanner(System.in);
-    private String nickname;
-    private int maxNunOfPlayers;
+    private int numOfPlayers;
+    private ImmGame game;
+    private String initialCardID;
+    private Boolean initialCardPlayedFront;
+    private List<String> readyPlayersList = new ArrayList<>();
+    private List<GameSpecs> gamesSpecs;
+    private GameControllerFX gameControllerFX;
+    private LobbiesControllerFX lobbiesControllerFX;
+    private LoginControllerFX loginControllerFX;
+    private EndGameControllerFX endGameControllerFX;
+    private WaitingRoomControllerFX waitingRoomControllerFX;
+    private ColorSetupControllerFX colorSetupControllerFX;
+    private CardsSetupControllerFX cardsSetupControllerFX;
+
     @Override
     public void run() {
         while (true) {
@@ -116,6 +114,16 @@ public class GraphicalUI extends Application implements UI {
                 case WAITING_FOR_UPDATE -> waitForUpdate();
                 case STOP -> { setRunningState(RunningState.RUNNING); }
             }
+        }
+    }
+
+    private void running() {
+        switch (getState()) {
+            case LOGIN -> loginView();
+            case LOBBY -> lobbyView();
+            case WAIT -> waitView();
+            case CONFIRM -> confirmView();
+            case GAME -> gameView();
         }
     }
 
@@ -131,45 +139,39 @@ public class GraphicalUI extends Application implements UI {
         }
     }
 
-    private void running() {
-        switch (getState()) {
-            case LOGIN -> loginView();
-            case LOBBY -> lobbyView();
-            case GAME -> gameView();
-        }
-    }
-
-    private void gameView() {
-        setScene("Game");
-
-        switch (gameState) {
-            case WAITING_FOR_PLAYERS -> {
-                scanner.next();//da completare con un bottone che esce mentre si aspettano gli altri giocatori
-                if (getRunningState() == RunningState.STOP)
-                    return;
-                setRunningState(RunningState.WAITING_FOR_UPDATE);
-                switch (getGameState()) {
-                    case WAITING_FOR_PLAYERS -> uiObservableItem.notifyLeaveGame();
-                    case READY -> {
-                        uiObservableItem.notifyReady();
-
-                    }
-                }
-            }
-            //case SETUP_INITIAL_CARD -> playingInitialCard();
-            //case SETUP_COLOR -> choosingColor();
-            //case SETUP_OBJECTIVE_CARD -> choosingObjectiveCard();
-            //case PLAYING -> playing();
-        }
+    private void loginView() {
+        setScene("Login");
+        setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
     private void lobbyView() {
         setScene("Lobbies");
         setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
-    private void loginView() {
-        setScene("Login");
+
+    private void waitView() {
+        setScene("WaitingRoom");
         setRunningState(RunningState.WAITING_FOR_UPDATE);
+    }
+
+    private void confirmView() {
+        if(waitingRoomControllerFX==null){
+            setScene("WaitingRoom");
+            try {
+                waitForRunLater();
+            } catch (InterruptedException ignored) {}
+        }
+        waitingRoomControllerFX.setConfirmView();
+    }
+
+    private void gameView() {
+        setScene("Game");
+        setRunningState(RunningState.WAITING_FOR_UPDATE);
+    }
+
+    @Override
+    public void reportError(String error) {
+
     }
 
     @Override
@@ -179,14 +181,8 @@ public class GraphicalUI extends Application implements UI {
     }
 
     @Override
-    public void reportError(String error) {
-
-    }
-
-    @Override
     public void updateGamesSpecs(List<GameSpecs> gamesSpecs) {
         this.gamesSpecs = gamesSpecs;
-        System.out.println(gamesSpecs);
         Platform.runLater(() -> {
             if (lobbiesControllerFX != null) {
                 lobbiesControllerFX.updateLobbies(this.gamesSpecs);
@@ -197,48 +193,46 @@ public class GraphicalUI extends Application implements UI {
     @Override
     public void updateGameID(int gameID) {
         this.gameID = gameID;
-        System.out.println("updateGameID " + this.gameID);
-        setState(State.GAME);
+
         setGameState(GameState.WAITING_FOR_PLAYERS);
-        setRunningState(GraphicalUI.RunningState.RUNNING);
+        setState(State.WAIT);
+        setRunningState(RunningState.RUNNING);
     }
 
     @Override
     public void allPlayersJoined() {
-        try {
-            waitForRunLater();
-        } catch (InterruptedException ignored) {}
-        if(gameControllerFX!=null){
-            gameControllerFX.allPlayersJoined();
-        }else{
-            System.out.println("gameControllerFX is null");
-        }
-        setGameState(GameState.READY);
-    }
-
-    /**
-     * Util method to wait for the JavaFX thread to execute a Runnable.
-     * Call this method after executing a command that is queued in the JavaFX thread with
-     * a {@code Platform.runLater} call.
-     */
-    protected static void waitForRunLater() throws InterruptedException {
-        Semaphore semaphore = new Semaphore(0);
-        Platform.runLater(semaphore::release);
-        semaphore.acquire();
+        setState(State.CONFIRM);
+        setRunningState(RunningState.RUNNING);
     }
 
     @Override
     public void updateSetup(ImmGame game, GameEvent gameEvent) {
         this.game = game;
         switch (gameEvent) {
-            //case SETUP_1 -> firstSetup();
-            //case SETUP_2 -> secondSetup();
+            case SETUP_1 -> firstSetup();
+            case SETUP_2 -> secondSetup();
         }
+    }
+
+    private void firstSetup() {
+        setScene("CardsSetup");
+        setGameState(GameState.SETUP_INITIAL_CARD);
+        setRunningState(RunningState.WAITING_FOR_UPDATE);
+    }
+
+    private void secondSetup() {
+        setScene("CardsSetup");
+        setGameState(GameState.SETUP_OBJECTIVE_CARD);
+        setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
     @Override
     public void updateInitialCard(ImmGame game, InitialCardEvent initialCardEvent) {
-
+        this.game = game;
+        if(initialCardEvent == InitialCardEvent.PLAY) {
+            setScene("ColorSetup");
+            setRunningState(RunningState.WAITING_FOR_UPDATE);
+        }
     }
 
     @Override
@@ -248,12 +242,14 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void updateObjectiveCardChoice(ImmGame immGame) {
+        this.game = immGame;
 
     }
 
     @Override
     public void endSetup(ImmGame game) {
-
+        this.game = game;
+        setScene("Game");
     }
 
     @Override
@@ -326,65 +322,20 @@ public class GraphicalUI extends Application implements UI {
 
     }
 
-    public void endLoginPhase(String nickname) {
-        this.nickname = nickname;
-        uiObservableItem.notifyNickname(nickname);
+    @Override
+    public void playerIsReady(String playerNickname) {
+        System.out.println(playerNickname + " è pronto!");
     }
-    public void endLobbiesPhase(int numOfPlayers) {
-        uiObservableItem.notifyNewGame(numOfPlayers);
-        maxNunOfPlayers = numOfPlayers;
-    }
-    public void endLobbyPhase(int id, int numOfPlayers) {
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
-        uiObservableItem.notifyGameToAccess(id);
-        maxNunOfPlayers = numOfPlayers;
-    }
-    public String getNickname(){
-        return nickname;
-    }
-    public int getGameId(){
-        return gameID;
-    }
-    public void refreshLobbies(){
-        updateGamesSpecs(gamesSpecs);
-    }
-    public int getMaxNumOfPlayers(){
-        return maxNunOfPlayers;
-    }
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
-
-
-
-
-    ////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////FX///////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-    private static GraphicalUI instance;
-    private UIObservableItem uiObservableItem;
-    private final HashMap<String, String> scenes;
-    private FXMLLoader fxmlLoader;
-    private Stage stage;
-    private Scene scene;
-    private GameControllerFX gameControllerFX;
-    private LobbiesControllerFX lobbiesControllerFX;
-    private LoginControllerFX loginControllerFX;
-    private EndGameControllerFX endGameControllerFX;
-
-    public GraphicalUI(){
+    public GraphicalUI() {
         scenes = new HashMap<>();
         scenes.put("Game", "/FXML/GameFXML.fxml");
         scenes.put("EndGame", "/FXML/EndGameFXML.fxml");
         scenes.put("Lobbies", "/FXML/LobbiesFXML.fxml");
         scenes.put("Login", "/FXML/LoginFXML.fxml");
+        scenes.put("WaitingRoom", "/FXML/WaitingForPlayersFXML.fxml");
+        scenes.put("ColorSetup", "/FXML/selectColorGUI.fxml");
+        scenes.put("CardsSetup", "/FXML/selectCardsInSetupGUI.fxml");
         fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(scenes.get("Login")));
         try {
@@ -392,15 +343,11 @@ public class GraphicalUI extends Application implements UI {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
-    }
-    public static GraphicalUI getInstance() {
-        return instance;
-    }
     @Override
     public void start(Stage stage) throws Exception {
         instance = this;
-
         this.stage = stage;
         stage.getIcons().add(new Image(getClass().getResource("/lobbiesPageResources/title.png").toString()));
         stage.setOnCloseRequest((WindowEvent t) -> {
@@ -410,9 +357,15 @@ public class GraphicalUI extends Application implements UI {
         stage.setMinWidth(1280);
         stage.setMinHeight(760);
     }
+
+    public static GraphicalUI getInstance() {
+        return instance;
+    }
+
     public void setUIObservableItem(UIObservableItem uiObservableItem) {
         this.uiObservableItem = uiObservableItem;
     }
+
     private void setScene(String sceneName) {
         Platform.runLater(() -> {
             fxmlLoader = new FXMLLoader();
@@ -427,7 +380,6 @@ public class GraphicalUI extends Application implements UI {
             scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
             stage.setScene(scene);
             stage.setResizable(false);
-            //stage.setMaximized(true);
             stage.setFullScreen(false);
             stage.setMaximized(false);
             stage.setTitle("Codex Naturalis");
@@ -444,28 +396,90 @@ public class GraphicalUI extends Application implements UI {
                     stage.setResizable(false);
                     gameControllerFX = fxmlLoader.getController();
                     gameControllerFX.setViewGUI(this);
+                    gameControllerFX.endSetup(initialCardID,
+                            initialCardPlayedFront);
                     break;
                 case "EndGame":
                     endGameControllerFX = fxmlLoader.getController();
+                    endGameControllerFX.setViewGUI(this);
                     break;
                 case "Lobbies":
                     lobbiesControllerFX = fxmlLoader.getController();
                     lobbiesControllerFX.setViewGUI(this);
                     updateGamesSpecs(gamesSpecs);
-                    /*lobbiesControllerFX = fxmlLoader.getController();
-                    if (lobbiesControllerFX == null) {
-                        System.out.println("Il controller è ancora null dopo il caricamento del FXML.");
-                    } else {
-                        System.out.println("Controller di lobbies caricato con successo.");
-                        lobbiesControllerFX.setViewGUI(this);
-                        updateGamesSpecs(gamesSpecs);
-                    }*/
+                    break;
+                case "WaitingRoom":
+                    waitingRoomControllerFX = fxmlLoader.getController();
+                    waitingRoomControllerFX.setViewGUI(this);
+                    break;
+                case "ColorSetup":
+                    colorSetupControllerFX = fxmlLoader.getController();
+                    colorSetupControllerFX.setViewGUI(this);
+                    break;
+                case "CardsSetup":
+                    cardsSetupControllerFX = fxmlLoader.getController();
+                    cardsSetupControllerFX.setViewGUI(this);
+                    if(getGameState()==GameState.SETUP_INITIAL_CARD){
+                        cardsSetupControllerFX.showInitialCard(game.player().initialCard().cardID());
+                        initialCardID = game.player().initialCard().cardID();
+                    }
+                    if(getGameState()==GameState.SETUP_OBJECTIVE_CARD){
+                        cardsSetupControllerFX.chooseObjective(game.player().secretObjectiveCards());
+                    }
                     break;
             }
             stage.show();
         });
     }
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Util method to wait for the JavaFX thread to execute a Runnable.
+     * Call this method after executing a command that is queued in the JavaFX thread with
+     * a {@code Platform.runLater} call.
+     */
+    protected static void waitForRunLater() throws InterruptedException {
+        Semaphore semaphore = new Semaphore(0);
+        Platform.runLater(semaphore::release);
+        semaphore.acquire();
+    }
+
+    public void endLoginPhase(String nickname) {
+        uiObservableItem.notifyNickname(nickname);
+    }
+
+    public void endLobbiesPhase(int numOfPlayers) {
+        this.numOfPlayers = numOfPlayers;
+        uiObservableItem.notifyNewGame(numOfPlayers);
+        setScene("WaitingRoom");
+    }
+
+    public void joinGame(int gameID, int numOfPlayers) {
+        this.numOfPlayers = numOfPlayers;
+        setRunningState(RunningState.WAITING_FOR_UPDATE);
+        uiObservableItem.notifyGameToAccess(gameID);
+        setScene("WaitingRoom");
+    }
+
+    public void playerPressEnter(){
+        uiObservableItem.notifyReady();
+    }
+
+    public void playingInitialCard(boolean front) {
+        if(front) {
+            initialCardPlayedFront = true;
+            uiObservableItem.notifyInitialCard(InitialCardEvent.FLIP);
+            uiObservableItem.notifyInitialCard(InitialCardEvent.PLAY);
+        }else {
+            initialCardPlayedFront = false;
+            uiObservableItem.notifyInitialCard(InitialCardEvent.PLAY);
+        }
+    }
+
+    public void colorChoosed(Color color) {
+        uiObservableItem.notifyColor(color);
+    }
+
+    public void choosedObjective(int i) {
+        uiObservableItem.notifyObjectiveCardChoice(i);
+    }
 }

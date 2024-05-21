@@ -1,24 +1,24 @@
 package ingsw.codex_naturalis.client.view.gui;
 
+import ingsw.codex_naturalis.common.immutableModel.ImmGame;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.layout.VBox;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.io.IOException;
+import java.io.InputStream;
 
-public class GameControllerFX implements Initializable {
+public class GameControllerFX {
+    @FXML
+    private ImageView board;
+
     @FXML
     private ScrollPane chatBox;
 
@@ -29,10 +29,13 @@ public class GameControllerFX implements Initializable {
     private TextField chatTextField;
 
     @FXML
-    private Label confirm_ready_to_play_LBL;
+    private VBox chatbox;
 
     @FXML
-    private Button enterButton;
+    private ImageView commonObjective1;
+
+    @FXML
+    private ImageView commonObjective2;
 
     @FXML
     private Button flipCard1;
@@ -47,16 +50,31 @@ public class GameControllerFX implements Initializable {
     private Label gameUpdateLBL;
 
     @FXML
-    private ScrollPane gameUpdates;
+    private AnchorPane gameUpdates;
 
     @FXML
     private BorderPane globalPane;
 
     @FXML
+    private ImageView goldDeck;
+
+    @FXML
+    private ImageView handCard1;
+
+    @FXML
+    private ImageView handCard2;
+
+    @FXML
+    private ImageView handCard3;
+
+    @FXML
+    private ImageView myInitialCard;
+
+    @FXML
     private ScrollPane myPlayerArea;
 
     @FXML
-    private AnchorPane overlay;
+    private ImageView mySecretObjective;
 
     @FXML
     private ScrollPane playerArea1;
@@ -68,13 +86,34 @@ public class GameControllerFX implements Initializable {
     private ScrollPane playerArea3;
 
     @FXML
+    private ImageView resourceDeck;
+
+    @FXML
+    private ImageView revealedGold1;
+
+    @FXML
+    private ImageView revealedGold2;
+
+    @FXML
+    private ImageView revealedResource1;
+
+    @FXML
+    private ImageView revealedResource2;
+
+    @FXML
     private Label secretObjextiveLBL;
 
     @FXML
     private Button sendMessageButton;
 
     @FXML
-    private ImageView spinner;
+    private ImageView user1Initialcard;
+
+    @FXML
+    private ImageView user2Initialcard;
+
+    @FXML
+    private ImageView user3Initialcard;
 
     @FXML
     private Label username1;
@@ -85,74 +124,30 @@ public class GameControllerFX implements Initializable {
     @FXML
     private Label username3;
 
-    @FXML
-    private Label waiting_for_players_LBL;
     private GraphicalUI viewGUI;
-
-    WaitingForPlayersControllerFX waitingForPlayersControllerFX;
-
-    public void allPlayersJoined() {
-        /*spinner.setVisible(false);
-        waiting_for_players_LBL.setVisible(false);
-        confirm_ready_to_play_LBL.setVisible(true);
-        enterButton.setVisible(true);*/
-        waitingForPlayersControllerFX.ready(true);
-        waitingForPlayersControllerFX.full();
-
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXML/WaitingForPlayersFXML.fxml"));
-            Parent waitingForPlayersRoot = fxmlLoader.load();
-            waitingForPlayersControllerFX = fxmlLoader.getController();
-            waitingForPlayersControllerFX.setView(viewGUI);
-            waitingForPlayersControllerFX.ready(false);
-            //waitingForPlayersControllerFX.initializes();
-
-            globalPane.getChildren().add(waitingForPlayersRoot);
-
-            globalPane.getStyleClass().add("waiting-page-image");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-
-
-
-
-        username1.setVisible(false);
-        username2.setVisible(false);
-        username3.setVisible(false);
-
-        secretObjextiveLBL.setVisible(false);
-        sendMessageButton.setVisible(false);
-
-        myPlayerArea.setVisible(false);
-        playerArea1.setVisible(false);
-        playerArea2.setVisible(false);
-        playerArea3.setVisible(false);
-
-        gameUpdates.setVisible(false);
-        gameUpdateLBL.setVisible(false);
-
-        chatBox.setVisible(false);
-        chatLBL.setVisible(false);
-        chatTextField.setVisible(false);
-
-        flipCard1.setVisible(false);
-        flipCard2.setVisible(false);
-        flipCard3.setVisible(false);
-    }
 
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
+    }
 
-        waitingForPlayersControllerFX.nickname(viewGUI.getNickname(),viewGUI.getGameId());
-        waitingForPlayersControllerFX.initializes(viewGUI.getMaxNumOfPlayers());
+    public void endSetup(String initialCard, Boolean showingFront) {
+
+        String myinitalcard;
+        String handCard1;
+        String handCard2;
+        String handCard3;
+
+        if(showingFront){
+            myinitalcard = "/CardsImages/Initial/fronts/" + initialCard + ".png";
+        } else {
+            myinitalcard = "/CardsImages/Initial/backs/" + initialCard + ".png";
+        }
+
+        try (InputStream initialCardStream = getClass().getResourceAsStream(myinitalcard)) {
+
+            myInitialCard.setImage(new Image(initialCardStream));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,8 +1,6 @@
 package ingsw.codex_naturalis.client.view.gui;
 
 import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
-import ingsw.codex_naturalis.server.GameControllerImpl;
-import ingsw.codex_naturalis.client.ClientImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -20,20 +17,32 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class LobbiesControllerFX implements Initializable {
+    private GraphicalUI viewGUI;
+    private HashMap<Integer,LobbyControllerFX> lobbiesFX;
+
     @FXML
     private Button CreateGame_BTN;
+
     @FXML
     private VBox LobbyContainer;
+
     @FXML
     private ChoiceBox<Integer> Players_CB;
+
     @FXML
-    private Button btnRefresh;
-    private HashMap<Integer,LobbyControllerFX> lobbiesFX;
-    private GraphicalUI viewGUI;
+    void createGame(ActionEvent event) {
+        if(Players_CB.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error");
+            alert.setContentText("Please select a number of players");
+            alert.showAndWait();
+            return;
+        }
+        CreateGame_BTN.setOnMouseClicked(actionEvent -> viewGUI.endLobbiesPhase(Players_CB.getValue()));
+    }
 
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
@@ -46,9 +55,13 @@ public class LobbiesControllerFX implements Initializable {
         Players_CB.setItems(playerOptions);
     }
 
+    public void updateLobbies(List<GameSpecs> gamesSpecs) {
+        LobbyContainer.getChildren().clear();
+        createLobbies(gamesSpecs);
+    }
+
     public void createLobbies(List<GameSpecs> lobbies) {
         for(GameSpecs lobby : lobbies) {
-            System.out.println(lobby.ID());
             if (lobby.currentNumOfPlayers()<=lobby.maxNumOfPlayers()) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/FXML/LobbyFXML.fxml"));
@@ -66,28 +79,5 @@ public class LobbiesControllerFX implements Initializable {
                 }
             }
         }
-    }
-    public void updateLobbies(List<GameSpecs> lobbies) {
-        LobbyContainer.getChildren().clear();
-        createLobbies(lobbies);
-    }
-    public void createGame() {
-        if(Players_CB.getValue() == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Error");
-            alert.setContentText("Please select a number of players");
-            alert.showAndWait();
-            return;
-        }
-        viewGUI.endLobbiesPhase(Players_CB.getValue());
-    }
-    public Integer getNumOfPlayers() {
-        return Players_CB.getValue();
-    }
-
-    @FXML
-    void refresh(ActionEvent event) {
-        viewGUI.refreshLobbies();
     }
 }

@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ingsw.codex_naturalis.client.view.gui.CardsSetupControllerFX">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" prefHeight="720.0" prefWidth="1280.0">
          <children>
@@ -16,14 +15,14 @@
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <ImageView fx:id="frontInitial" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#frontInitialSelected" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" onMouseClicked="#backInitialSelected" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="backInitial" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#backInitialSelected" pickOnBounds="true" preserveRatio="true" />
                </children>
             </HBox>
             <Label text="Seleziona la tua carta obbiettivo" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <ImageView fx:id="objectiveCard1" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#objectiveCard1Selected" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" onDragDetected="#objectiveCard2" onMouseClicked="#objectiveCard2Selected" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="objectiveCard2" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#objectiveCard2Selected" pickOnBounds="true" preserveRatio="true" />
                </children>
             </HBox>
             <Button fx:id="ConfirmBtn" mnemonicParsing="false" onMouseClicked="#cardChoiceConfirmed" text="Conferma" />

@@ -1,8 +1,6 @@
 package ingsw.codex_naturalis.client.view.gui;
 
 import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
-import ingsw.codex_naturalis.server.GameControllerImpl;
-import ingsw.codex_naturalis.client.ClientImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,6 +25,7 @@ public class LobbyControllerFX {
 
     @FXML
     private ImageView bulletPointTile;
+
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
     }
@@ -36,6 +35,6 @@ public class LobbyControllerFX {
         GameNameJoin_LB.setText("GameID: " + lobby.ID());
         MaxNumPlayers_LB.setText(lobby.maxNumOfPlayers() + "");
         NumPlayersConnected_LB.setText(lobby.currentNumOfPlayers() + "");
-        JoinGame_BTN.setOnAction(actionEvent -> viewGUI.endLobbyPhase(lobby.ID(),lobby.maxNumOfPlayers()));
+        JoinGame_BTN.setOnAction(actionEvent -> viewGUI.joinGame(lobby.ID(),lobby.maxNumOfPlayers()));
     }
 }

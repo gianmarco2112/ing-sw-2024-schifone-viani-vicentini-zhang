@@ -45,7 +45,9 @@ public class Game extends GameObservable implements PlayerObserver {
      * Contains all the players of the game, ordered by the turn they play
      */
     private List<Player> playerOrder;
-
+    /**
+     * Hashmap that links the player with his nickname
+     */
     private final Map<String, Player> nicknameToPlayer = new HashMap<>();
 
     /**
@@ -54,7 +56,7 @@ public class Game extends GameObservable implements PlayerObserver {
     private Player currentPlayer;
 
     /**
-     * Initial cards deck
+     * Initial cards deck1
      */
     private Deck<PlayableCard> initialCardsDeck;
 
@@ -87,15 +89,19 @@ public class Game extends GameObservable implements PlayerObserver {
      * The two common objective cards
      */
     private final List<ObjectiveCard> commonObjectiveCards;
-
+    /**
+     * The game chat (contains all the messages sent by the players during the game)
+     */
     private final List<Message> chat;
-
+    /**
+     * The status of the game (when the game is created is initialized to running)
+     */
     private GameRunningStatus gameRunningStatus = GameRunningStatus.RUNNING;
-
-
 
     /**
      * Constructor
+     * @param gameID : the ID of the game
+     * @param numOfPlayers : number of players in the game
      */
     public Game(int gameID, int numOfPlayers) {
 
@@ -132,37 +138,65 @@ public class Game extends GameObservable implements PlayerObserver {
         this.commonObjectiveCards = new ArrayList<>();
     }
 
-
+    /**
+     * Getter of the common objective cards
+     * @return commonObjectiveCards
+     */
 
     public List<ObjectiveCard> getCommonObjectiveCards() {
         return commonObjectiveCards;
     }
-
+    /**
+     * Getter of the game ID
+     * @return gameID
+     */
     public int getGameID() {
         return gameID;
     }
-
+    /**
+     * Getter of the current status of the game
+     * @return gameStatus
+     */
     public GameStatus getGameStatus() {
         return gameStatus;
     }
-
+    /**
+     * Setter if the current status of the game
+     * @param gameStatus : the status I want to set
+     */
     public void setGameStatus(GameStatus gameStatus){
         this.gameStatus = gameStatus;
         notifyGameEvent(this, GameEvent.GAME_STATUS_CHANGED);
     }
-
+    /**
+     * Getter of the number of players in the game
+     * @return numOfPlayers
+     */
     public int getNumOfPlayers() {
         return numOfPlayers;
     }
-
+    /**
+     * Getter of the Players' order
+     * @return playerOrder : a list of the players in the order they're playing
+     */
     public List<Player> getPlayerOrder() {
         return new ArrayList<>(playerOrder);
     }
-
+    /**
+     * This method removes the specified player from the game (without the possibility of
+     * reconnecting later) without notifying the other clients (if the player quits before
+     * the game starts, the other players do not need to know)
+     * @param player : the player I want to remove
+     */
     public void silentlyRemovePlayer(Player player) {
         this.playerOrder.remove(player);
     }
-
+    /**
+     * This method removes the specified player from the game (without the possibility of
+     * reconnecting later) notifying other clients (if the player leaves during the game,
+     * the other clients need to know that, so that they don't wait for him)
+     * @param player : the player I want to remove
+     */
     public void removePlayer(Player player) {
         this.playerOrder.remove(player);
         if (gameStatus != GameStatus.WAITING_FOR_PLAYERS)
@@ -171,59 +205,101 @@ public class Game extends GameObservable implements PlayerObserver {
             gameRunningStatus = GameRunningStatus.TO_CANCEL_NOW;
         notifyPlayerLeft(this, player.getNickname());
     }
-
+    /**
+     * Getter of the Player (giving his nickname)
+     * @param nickname: the nickname of the desired player
+     * @return nicknameToPlayer : the Player
+     */
     public Player getPlayerByNickname(String nickname){
         return nicknameToPlayer.get(nickname);
     }
-
+    /**
+     * Getter of the current Player
+     * @return currentPlayer
+     */
     public Player getCurrentPlayer(){
         return currentPlayer;
     }
-
+    /**
+     * Setter of the current Player
+     * @param currentPlayer: the player to set as the current one
+     */
     public void setCurrentPlayer(Player currentPlayer){
         this.currentPlayer = currentPlayer;
     }
-
+    /**
+     * Getter of the game's chat
+     * @return chat
+     */
     public List<Message> getChat() {
         return new ArrayList<>(chat);
     }
-
+    /**
+     * This method add a message to the game's chat
+     */
     public void addMessageToChat(Message message) {
         chat.add(message);
         notifyGameEvent(this, GameEvent.MESSAGE);
     }
-
+    /**
+     * Getter of the resource cards' deck
+     * @return resourceCardDeck
+     */
     public Deck<PlayableCard> getResourceCardsDeck() {
         return resourceCardsDeck;
     }
-
+    /**
+     * Getter of the gold cards' deck
+     * @return goldCardDeck
+     */
     public Deck<PlayableCard> getGoldCardsDeck() {
         return goldCardsDeck;
     }
-
+    /**
+     * Getter of the objective cards' deck
+     * @return objectiveCardDeck
+     */
     public Deck<ObjectiveCard> getObjectiveCardsDeck() {
         return objectiveCardsDeck;
     }
-
+    /**
+     * This method adds a resource card to the 2 revealed resource cards in the centre
+     */
     public void addRevealedResourceCard(PlayableCard card) {
         revealedResourceCards.add(card);
     }
+    /**
+     * This method adds a gold card to the 2 revealed gold cards in the centre
+     */
     public void addRevealedGoldCard(PlayableCard card) {
         revealedGoldCards.add(card);
     }
+    /**
+     * This method removes a resource card to the 2 revealed resource cards in the centre
+     */
     public PlayableCard removeRevealedResourceCard(int index) {
         return revealedResourceCards.remove(index);
     }
+    /**
+     * This method adds a gold card to the 2 revealed gold cards in the centre
+     */
     public PlayableCard removeRevealedGoldCard(int index) {
         return revealedGoldCards.remove(index);
     }
+    /**
+     * Getter of the 2 revealed resource card in the centre of the board
+     * @return revealedResourceCards: an arraylist with all the revealed resource cards
+     */
     public List<PlayableCard> getRevealedResourceCards() {
         return new ArrayList<>(revealedResourceCards);
     }
+    /**
+     * Getter of the 2 revealed gold card in the centre of the board
+     * @return revealedGoldCards: an arraylist with all the revealed gold cards
+     */
     public List<PlayableCard> getRevealedGoldCards() {
         return new ArrayList<>(revealedGoldCards);
     }
-
     /**
      * Adds a player to the game
      * @param player Player
@@ -242,18 +318,28 @@ public class Game extends GameObservable implements PlayerObserver {
         }
         return false;
     }
-
+    /**
+     * Setter of player's color
+     * @param player : the player
+     * @param color : the color
+     */
     public void setPlayerColor(Player player, Color color) throws ColorAlreadyChosenException {
         for (Player p : playerOrder)
             if (p.getColor() == color)
                 throw new ColorAlreadyChosenException();
         player.setColor(color);
     }
-
+    /**
+     * This method notifies the observers that an exception has been thrown
+     * @param player: the player that has thrown the exception
+     * @param error: the error that has been thrown
+     */
     public void exceptionThrown(Player player, String error) {
         notifyException(error, player.getNickname());
     }
-
+    /**
+     * This method sets up gold and resource cards by shuffling the decks and revealing two resource cards and 2 gold cards
+     */
     public void setupResourceAndGoldCards(){
         resourceCardsDeck.shuffle();
         this.revealedResourceCards.add(resourceCardsDeck.drawACard());
@@ -268,9 +354,7 @@ public class Game extends GameObservable implements PlayerObserver {
         for (PlayableCard card : revealedGoldCards){
             card.flip();
         }
-
     }
-
     /**
      * Deals an initial card to each player
      */
@@ -283,7 +367,9 @@ public class Game extends GameObservable implements PlayerObserver {
         gameStatus = GameStatus.SETUP_1;
         notifyGameEvent(this, GameEvent.SETUP_1);
     }
-
+    /**
+     * This method sets up a player's hand by drawing 2 resource cards and 1 objective cards
+     */
     public void setupHands() {
 
         for (Player player : playerOrder) {
@@ -296,7 +382,9 @@ public class Game extends GameObservable implements PlayerObserver {
                 card.flip();
         }
     }
-
+    /**
+     * This method sets up the 2 common objective cards by drawing and adding them to the centre of the board
+     */
     public void setupCommonObjectiveCards(){
         objectiveCardsDeck.shuffle();
         this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());

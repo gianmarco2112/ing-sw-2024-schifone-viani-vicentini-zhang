@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,7 +40,7 @@ class GameControllerImplTest {
     }
 
     @Test
-    void readyToPlay() {
+    void readyToPlay() throws InterruptedException {
         assertNull(model.getPlayerOrder().getFirst().getInitialCard());
         assertNull(model.getPlayerOrder().getLast().getInitialCard());
         assertEquals(0,model.getRevealedResourceCards().size());
@@ -48,9 +49,7 @@ class GameControllerImplTest {
         gameplayController.readyToPlay();
         gameplayController.readyToPlay();
 
-        while(model.getPlayerOrder().getFirst().getInitialCard() == null || model.getPlayerOrder().getLast().getInitialCard() == null){
-            //System.out.println("aspetto che il model si aggiorni");
-        }
+        TimeUnit.MILLISECONDS.sleep(1);
 
         assertNotNull(model.getPlayerOrder().getFirst().getInitialCard());
         assertNotNull(model.getPlayerOrder().getLast().getInitialCard());
@@ -60,7 +59,7 @@ class GameControllerImplTest {
 
     @Test
     void updateInitialCard() throws JsonProcessingException {
-        readyToPlay();
+        //readyToPlay();
         assertFalse(model.getPlayerOrder().getFirst().getInitialCard().getImmutablePlayableCard().showingFront());
         gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.FLIP));
         while(!model.getPlayerOrder().getFirst().getInitialCard().getImmutablePlayableCard().showingFront()){

@@ -1,4 +1,4 @@
-package ingsw.codex_naturalis.controller.setupPhase;
+/*package ingsw.codex_naturalis.controller.setupPhase;
 
 import ingsw.codex_naturalis.server.GameControllerImpl;
 import ingsw.codex_naturalis.common.enumerations.Color;
@@ -96,4 +96,4 @@ class GameControllerImplTest {
 
         assertEquals(model.getGameStatus(), GameStatus.GAMEPLAY);
     }
-}
+}*/

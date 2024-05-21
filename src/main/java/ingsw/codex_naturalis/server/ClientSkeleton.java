@@ -407,6 +407,19 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    @Override
+    public void playerIsReady(String playerNickname) throws RemoteException {
+        try {
+            MessageToClient message = new STCPlayerIsReady();
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            writer.println(jsonMessage);
+            writer.println(playerNickname);
+            writer.flush();
+        } catch (JsonProcessingException e) {
+            System.err.println("Error while processing json");
+        }
+    }
+
 
     public void receive() throws IOException {
 

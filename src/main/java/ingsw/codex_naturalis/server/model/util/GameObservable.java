@@ -76,5 +76,11 @@ public class GameObservable {
             o.updateGameRunningStatus(game, gameRunningStatus);
         }
     }
+
+    public void notifyPlayerReady(String playerNickname){
+        for (GameObserver o : obs) {
+            o.updatePlayerReady(playerNickname);
+        }
+    }
 }
 

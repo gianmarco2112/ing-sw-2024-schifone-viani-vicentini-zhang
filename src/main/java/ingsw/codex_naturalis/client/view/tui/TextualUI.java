@@ -683,6 +683,11 @@ public class TextualUI implements UI {
         setRunningState(RunningState.RUNNING);
     }
 
+    @Override
+    public void playerIsReady(String playerNickname) {
+        System.out.println(playerNickname+" is ready!");
+    }
+
 
     private void firstSetup() {
 

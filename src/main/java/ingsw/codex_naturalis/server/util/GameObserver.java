@@ -24,4 +24,6 @@ public interface GameObserver {
     void updatePlayerLeft(Game game, String playerNicknameWhoLeft);
 
     void updateGameRunningStatus(Game game, GameRunningStatus gameRunningStatus);
+
+    void updatePlayerReady(String playerNickname);
 }

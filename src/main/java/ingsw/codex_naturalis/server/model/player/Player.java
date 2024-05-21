@@ -24,6 +24,11 @@ public class Player extends PlayerObservable {
     private final String nickname;
 
     /**
+     * Ready state of the player
+     */
+    private boolean ready = false;
+
+    /**
      * Color of the player
      */
     private Color color;
@@ -85,7 +90,9 @@ public class Player extends PlayerObservable {
     }
 
     public void flipCard(int index) {
+        System.out.println(hand.get(index).getImmutablePlayableCard().showingFront());
         hand.get(index).flip();
+        System.out.println(hand.get(index).getImmutablePlayableCard().showingFront());
         notifyObservers(this, PlayerEvent.HAND_CARD_FLIPPED);
     }
 
@@ -246,6 +253,11 @@ public class Player extends PlayerObservable {
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
         notifyPlayerInGameStatus(this, inGame);
+    }
+
+    public void setReady(boolean ready){
+        this.ready = ready;
+        notifyReady(this);
     }
 
 }

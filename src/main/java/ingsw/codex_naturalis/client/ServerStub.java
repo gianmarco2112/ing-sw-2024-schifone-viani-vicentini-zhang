@@ -156,7 +156,7 @@ public class ServerStub implements Server, GameController {
 
 
     @Override
-    public void readyToPlay() throws RemoteException {
+    public void readyToPlay(String nickname) throws RemoteException {
         try {
             MessageToServer message = new CTSReadyToPlay();
             String jsonMessage = objectMapper.writeValueAsString(message);

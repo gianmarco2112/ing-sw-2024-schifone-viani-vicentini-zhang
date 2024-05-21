@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 public interface GameController extends Remote {
 
 
-    void readyToPlay() throws RemoteException;
+    void readyToPlay(String nickname) throws RemoteException;
 
     void updateInitialCard(String nickname, String jsonInitialCardEvent) throws RemoteException;
 

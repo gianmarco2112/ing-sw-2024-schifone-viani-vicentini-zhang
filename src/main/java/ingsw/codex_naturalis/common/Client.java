@@ -58,4 +58,6 @@ public interface Client extends Remote {
     void gameToCancelLater() throws RemoteException;
 
     void gameResumed() throws RemoteException;
+
+    void playerIsReady(String playerNickname) throws RemoteException;
 }

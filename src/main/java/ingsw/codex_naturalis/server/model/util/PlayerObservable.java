@@ -38,4 +38,10 @@ public class PlayerObservable {
             o.updatePlayerConnectionStatus(player, inGame);
         }
     }
+
+    public void notifyReady(Player player){
+        for (PlayerObserver o : obs) {
+            o.updateReady(player);
+        }
+    }
 }

@@ -127,10 +127,11 @@ public class GameControllerImpl implements GameController {
      * Method called by a client to notify he is ready to play.
      */
     @Override
-    public synchronized void readyToPlay(){
+    public synchronized void readyToPlay(String nickname){
         try {
             updatesQueue.put( () -> {
                 readyPlayers++;
+                model.getPlayerByNickname(nickname).setReady(true);
                 if (readyPlayers >= model.getNumOfPlayers()) {
                     model.setupResourceAndGoldCards();
                     model.dealInitialCards();

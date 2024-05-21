@@ -42,6 +42,7 @@ import ingsw.codex_naturalis.client.ServerStub;
         @JsonSubTypes.Type(value = STCUpdatePlayerInGameStatus.class, name = "STCUpdatePlayerInGameStatus"),
         @JsonSubTypes.Type(value = STCGameToCancelLater.class, name = "STCGameToCancelLater"),
         @JsonSubTypes.Type(value = STCGameResumed.class, name = "STCGameResumed"),
+        @JsonSubTypes.Type(value = STCPlayerIsReady.class, name = "STCPlayerIsReady"),
 })
 public interface MessageToClient {
 

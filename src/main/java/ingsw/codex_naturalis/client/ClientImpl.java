@@ -15,8 +15,6 @@ import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
 import ingsw.codex_naturalis.common.NetworkProtocol;
 import ingsw.codex_naturalis.common.Server;
 import ingsw.codex_naturalis.common.enumerations.Color;
-import ingsw.codex_naturalis.server.exceptions.NotYourTurnException;
-import ingsw.codex_naturalis.server.exceptions.NotYourDrawTurnStatusException;
 import ingsw.codex_naturalis.server.model.util.GameEvent;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
@@ -461,6 +459,11 @@ public class ClientImpl implements Client, ViewObserver {
         view.gameResumed();
     }
 
+    @Override
+    public void playerIsReady(String playerNickname) throws RemoteException {
+        view.playerIsReady(playerNickname);
+    }
+
 
     /**
      * Called to choose a nickname
@@ -509,7 +512,7 @@ public class ClientImpl implements Client, ViewObserver {
     public void ctsUpdateReady() {
         try {
             gameController = server.getGameController(this);
-            gameController.readyToPlay();
+            gameController.readyToPlay(nickname);
         } catch (RemoteException e) {
             System.err.println("Error while updating the server");
         }

@@ -445,4 +445,9 @@ public class Game extends GameObservable implements PlayerObserver {
         notifyPlayerConnectionStatus(this, player.getNickname(), inGame);
     }
 
+    @Override
+    public void updateReady(Player player) {
+        notifyPlayerReady(player.getNickname());
+    }
+
 }

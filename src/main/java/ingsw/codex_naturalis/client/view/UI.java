@@ -66,4 +66,6 @@ public interface UI {
     void gamePaused();
 
     void gameResumed();
+
+    void playerIsReady(String playerNickname);
 }

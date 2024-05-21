@@ -227,6 +227,15 @@ public class VirtualView implements GameObserver {
         }
     }
 
+    @Override
+    public void updatePlayerReady(String playerNickname) {
+        try {
+            client.playerIsReady(playerNickname);
+        } catch (RemoteException e) {
+            System.err.println("Error while updating client\n"+e.getMessage());
+        }
+    }
+
 
     private void initialCardUpdated(Game game, String playerNicknameWhoUpdated, InitialCardEvent initialCardEvent) {
         try {

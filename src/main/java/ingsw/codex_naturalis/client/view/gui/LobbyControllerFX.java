@@ -33,9 +33,9 @@ public class LobbyControllerFX {
 
     public void setData(GameSpecs lobby) {
         bulletPointTile.setImage(new Image(Objects.requireNonNull(getClass().getResource("/lobbiesPageResources/title.png")).toString()));
-        GameNameJoin_LB.setText(String.valueOf(lobby.ID()));
+        GameNameJoin_LB.setText("GameID: " + lobby.ID());
         MaxNumPlayers_LB.setText(lobby.maxNumOfPlayers() + "");
         NumPlayersConnected_LB.setText(lobby.currentNumOfPlayers() + "");
-        JoinGame_BTN.setOnAction(actionEvent -> viewGUI.endLobbyPhase(lobby.ID()));
+        JoinGame_BTN.setOnAction(actionEvent -> viewGUI.endLobbyPhase(lobby.ID(),lobby.maxNumOfPlayers()));
     }
 }

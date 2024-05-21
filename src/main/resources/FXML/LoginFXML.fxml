@@ -22,8 +22,8 @@
             </ImageView>
             <VBox>
                <children>
-                  <Text styleClass="h4" text="Gianmarco Schifone - Alessia Beatrice Viani - Leonardo Vicentini - Andrea Zhang" />
-                  <Text style="-fx-font-size: 1.4em" text="Prova finale - Ingegneria del Software" />
+                  <Text style="-fx-font-family: luminari;" styleClass="h4" text="Gianmarco Schifone - Alessia Beatrice Viani - Leonardo Vicentini - Andrea Zhang" />
+                  <Text style="-fx-font-size: 1.4em; -fx-font-family: luminari;" text="Prova finale - Ingegneria del Software" />
                </children>
             </VBox>
          </children>
@@ -38,14 +38,24 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            <Label styleClass="h2" text="Welcome!" />
-            <Label styleClass="h4" text="Insert your nickname:" />
+            <ImageView fitHeight="91.0" fitWidth="434.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../loginPageResources/fascia1conSfrondoTrasparente.png" />
+               </image>
+            </ImageView>
+            <Label style="-fx-font-family: luminari;" styleClass="h2" stylesheets="@../style.css" text="Welcome!" />
+            <Label style="-fx-font-family: luminari;" styleClass="h4" text="Insert your nickname:" />
             <VBox fx:id="nickname_VB" alignment="CENTER" prefHeight="126.0" prefWidth="180.0" spacing="20.0">
                <children>
-                  <TextField fx:id="nickname_LBL" promptText="NickName" styleClass="nickname-input" stylesheets="@../style.css" />
-                  <Button fx:id="endLoginPhaseButton_BTN" mnemonicParsing="false" onAction="#sendNickname" styleClass="myshelfie-big-button" stylesheets="@../style.css" text="Enter" />
+                  <TextField fx:id="nickname_LBL" promptText="NickName" style="-fx-font-family: luminari;" styleClass="nickname-input" stylesheets="@../style.css" />
+                  <Button fx:id="endLoginPhaseButton_BTN" mnemonicParsing="false" onAction="#sendNickname" styleClass="big-button" stylesheets="@../style.css" text="Enter" />
                </children>
             </VBox>
+            <ImageView fitHeight="96.0" fitWidth="459.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../loginPageResources/fascia2conSfondoTrasparente.png" />
+               </image>
+            </ImageView>
          </children>
       </VBox>
    </center>

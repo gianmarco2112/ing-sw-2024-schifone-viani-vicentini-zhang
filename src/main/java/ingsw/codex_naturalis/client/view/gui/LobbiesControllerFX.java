@@ -5,6 +5,7 @@ import ingsw.codex_naturalis.server.GameControllerImpl;
 import ingsw.codex_naturalis.client.ClientImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,6 +30,8 @@ public class LobbiesControllerFX implements Initializable {
     private VBox LobbyContainer;
     @FXML
     private ChoiceBox<Integer> Players_CB;
+    @FXML
+    private Button btnRefresh;
     private HashMap<Integer,LobbyControllerFX> lobbiesFX;
     private GraphicalUI viewGUI;
 
@@ -81,5 +84,10 @@ public class LobbiesControllerFX implements Initializable {
     }
     public Integer getNumOfPlayers() {
         return Players_CB.getValue();
+    }
+
+    @FXML
+    void refresh(ActionEvent event) {
+        viewGUI.refreshLobbies();
     }
 }

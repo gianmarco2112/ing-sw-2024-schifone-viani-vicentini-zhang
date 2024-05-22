@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.client.view.gui;
 
+import ingsw.codex_naturalis.common.enumerations.Color;
+import ingsw.codex_naturalis.common.enumerations.Symbol;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -73,6 +75,9 @@ public class GameControllerFX {
     private ScrollPane myPlayerArea;
 
     @FXML
+    private AnchorPane myPlayerAreaAnchorPane;
+
+    @FXML
     private ImageView mySecretObjective;
 
     @FXML
@@ -132,9 +137,10 @@ public class GameControllerFX {
     public void endSetup(String initialCard, Boolean showingFront, String myObjectiveCard,
                          String handCard1, String handCard2, String handCard3,
                          String commonObjective1, String commonObjective2,
-                         String topGoldCard, String topResourceCard,
+                         String topGoldCard, String topResourceCard, Symbol kingdomG, Symbol kingdomR,
                          String revealedResourceCard1, String revealedResourceCard2,
-                         String revealedGoldCard1, String revealedGoldCard2) {
+                         String revealedGoldCard1, String revealedGoldCard2,
+                         Color myColor) {
 
         String myinitalcard;
         String hand1 = "/CardsImages/HandCards/" + handCard1 + ".png";
@@ -147,17 +153,39 @@ public class GameControllerFX {
         String secretObjective = "/CardsImages/Objective/" + myObjectiveCard + ".png";
         String commonObj1 = "/CardsImages/Objective/" + commonObjective1 + ".png";
         String commonObj2 = "/CardsImages/Objective/" + commonObjective2 + ".png";
-        String topRCard;
-        String topGCard;
+        String topRCard = null;
+        String topGCard = null;
         String revealedRC1 = "/CardsImages/HandCards/" + revealedResourceCard1 + ".png";
         String revealedRC2 = "/CardsImages/HandCards/" + revealedResourceCard2 + ".png";
         String revealedGC1 = "/CardsImages/HandCards/" + revealedGoldCard1 + ".png";
         String revealedGC2 = "/CardsImages/HandCards/" + revealedGoldCard2 + ".png";
+        String myColorChosen = null;
 
         if(showingFront){
             myinitalcard = "/CardsImages/Initial/fronts/" + initialCard + ".png";
         } else {
             myinitalcard = "/CardsImages/Initial/backs/" + initialCard + ".png";
+        }
+
+        switch (kingdomG){
+            case Symbol.ANIMAL -> topGCard = "/CardsImages/HandCards/GbackANIMAL.png";
+            case Symbol.FUNGI -> topGCard = "/CardsImages/HandCards/GbackFUNGI.png";
+            case Symbol.PLANT -> topGCard = "/CardsImages/HandCards/GbackPLANT.png";
+            case Symbol.INSECT -> topGCard = "/CardsImages/HandCards/GbackINSECT.png";
+        }
+
+        switch (kingdomR){
+            case Symbol.ANIMAL -> topRCard = "/CardsImages/HandCards/RbackANIMAL.png";
+            case Symbol.FUNGI -> topRCard = "/CardsImages/HandCards/RbackFUNGI.png";
+            case Symbol.PLANT -> topRCard = "/CardsImages/HandCards/RbackPLANT.png";
+            case Symbol.INSECT -> topRCard = "/CardsImages/HandCards/RbackINSECT.png";
+        }
+
+        switch (myColor){
+            case Color.BLUE -> myColorChosen = "/pedine/pedina_blu.png";
+            case Color.RED -> myColorChosen = "/pedine/pedina_rossa.png";
+            case Color.GREEN -> myColorChosen = "/pedine/pedina_verde.png";
+            case Color.YELLOW -> myColorChosen = "/pedine/pedina_gialla.png";
         }
 
         try (InputStream initialCardStream = getClass().getResourceAsStream(myinitalcard);
@@ -174,7 +202,10 @@ public class GameControllerFX {
              InputStream revealedRC1Stream = getClass().getResourceAsStream(revealedRC1);
              InputStream revealedRC2Stream = getClass().getResourceAsStream(revealedRC2);
              InputStream revealedGC1Stream = getClass().getResourceAsStream(revealedGC1);
-             InputStream revealedGC2Stream = getClass().getResourceAsStream(revealedGC2)
+             InputStream revealedGC2Stream = getClass().getResourceAsStream(revealedGC2);
+             InputStream topRCardStream = getClass().getResourceAsStream(topRCard);
+             InputStream topGCardStream = getClass().getResourceAsStream(topGCard);
+             InputStream myColorStream = getClass().getResourceAsStream(myColorChosen);
         ) {
 
             myInitialCard.setImage(new Image(initialCardStream));
@@ -220,6 +251,16 @@ public class GameControllerFX {
             this.revealedResource2.setImage(new Image(revealedRC2Stream));
             this.revealedGold1.setImage(new Image(revealedGC1Stream));
             this.revealedGold2.setImage(new Image(revealedGC2Stream));
+
+            this.resourceDeck.setImage(new Image(topRCardStream));
+            this.goldDeck.setImage(new Image(topGCardStream));
+
+            ImageView myPedina = new ImageView(new Image(myColorStream));
+            myPedina.setFitHeight(33);
+            myPedina.setFitWidth(33);
+            myPedina.setLayoutX(329);
+            myPedina.setLayoutY(122);
+            myPlayerAreaAnchorPane.getChildren().add(myPedina);
 
         } catch (IOException e) {
             e.printStackTrace();

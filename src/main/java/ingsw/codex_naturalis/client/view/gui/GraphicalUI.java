@@ -106,6 +106,7 @@ public class GraphicalUI extends Application implements UI {
     private ImmPlayableCard topGoldCard;
     private List<ImmPlayableCard> revealedResourceCards;
     private List<ImmPlayableCard> revealedGoldCards;
+    private Color myColor;
     private GameControllerFX gameControllerFX;
     private LobbiesControllerFX lobbiesControllerFX;
     private LoginControllerFX loginControllerFX;
@@ -264,6 +265,7 @@ public class GraphicalUI extends Application implements UI {
         topGoldCard = game.topGoldCard();
         revealedResourceCards = game.revealedResourceCards();
         revealedGoldCards = game.revealedGoldCards();
+        myColor = game.player().color();
         setScene("Game");
     }
 
@@ -416,9 +418,11 @@ public class GraphicalUI extends Application implements UI {
                             myObjectiveCard.cardID(),
                             hand.get(0).cardID(),hand.get(1).cardID(),hand.get(2).cardID(),
                             commonObjectiveCard.get(0).cardID(),commonObjectiveCard.get(1).cardID(),
-                            topGoldCard.cardID(),topResourceCard.cardID(),
+                            topGoldCard.cardID(),topResourceCard.cardID(), topGoldCard.kingdom(), topResourceCard.kingdom(),
                             revealedResourceCards.get(0).cardID(),revealedResourceCards.get(1).cardID(),
-                            revealedGoldCards.get(0).cardID(),revealedGoldCards.get(1).cardID());
+                            revealedGoldCards.get(0).cardID(),revealedGoldCards.get(1).cardID(),
+                            myColor
+                            );
                     break;
                 case "EndGame":
                     endGameControllerFX = fxmlLoader.getController();

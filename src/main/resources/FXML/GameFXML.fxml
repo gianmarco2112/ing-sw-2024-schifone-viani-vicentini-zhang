@@ -27,9 +27,8 @@
                <ImageView fx:id="mySecretObjective" fitHeight="93.0" fitWidth="133.0" layoutX="25.0" layoutY="611.0" pickOnBounds="true" preserveRatio="true" />
                <ScrollPane fx:id="myPlayerArea" layoutX="221.0" layoutY="229.0" prefHeight="363.0" prefWidth="692.0">
                   <content>
-                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="477.0" prefWidth="829.0" style="-fx-background-color: #FFFFCC;">
+                     <AnchorPane fx:id="myPlayerAreaAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="477.0" prefWidth="829.0" style="-fx-background-color: #FFFFCC;">
                         <children>
-                           <ImageView fitHeight="93.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true" />
                            <ImageView fx:id="myInitialCard" fitHeight="93.0" fitWidth="133.0" layoutX="279.0" layoutY="139.0" pickOnBounds="true" preserveRatio="true" />
                         </children>
                      </AnchorPane>

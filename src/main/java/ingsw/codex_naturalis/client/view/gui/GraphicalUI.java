@@ -14,6 +14,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -108,6 +111,7 @@ public class GraphicalUI extends Application implements UI {
     private List<ImmPlayableCard> revealedGoldCards;
     private Color myColor;
     private int indexOfFlippedHandCard;
+    private String firstPlayer;
     private GameControllerFX gameControllerFX;
     private LobbiesControllerFX lobbiesControllerFX;
     private LoginControllerFX loginControllerFX;
@@ -267,6 +271,7 @@ public class GraphicalUI extends Application implements UI {
         revealedResourceCards = game.revealedResourceCards();
         revealedGoldCards = game.revealedGoldCards();
         myColor = game.player().color();
+        firstPlayer = game.playerOrderNicknames().getFirst();
         setScene("Game");
     }
 
@@ -427,7 +432,8 @@ public class GraphicalUI extends Application implements UI {
                             topGoldCard.cardID(),topResourceCard.cardID(), topGoldCard.kingdom(), topResourceCard.kingdom(),
                             revealedResourceCards.get(0).cardID(),revealedResourceCards.get(1).cardID(),
                             revealedGoldCards.get(0).cardID(),revealedGoldCards.get(1).cardID(),
-                            myColor
+                            myColor,
+                            firstPlayer
                             );
                     break;
                 case "EndGame":

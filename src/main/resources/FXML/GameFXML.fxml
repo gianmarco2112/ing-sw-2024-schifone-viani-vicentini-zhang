@@ -55,7 +55,7 @@
                <Label fx:id="gameUpdateLBL" layoutX="710.0" layoutY="603.0" text="Game updates" />
                <ScrollPane layoutX="706.0" layoutY="627.0" prefHeight="73.0" prefWidth="200.0">
                   <content>
-                     <AnchorPane fx:id="gameUpdates" minHeight="0.0" minWidth="0.0" prefHeight="104.0" prefWidth="182.0" />
+                     <AnchorPane fx:id="gameUpdates" minHeight="61.0" minWidth="185.0" prefHeight="69.0" prefWidth="194.0" />
                   </content>
                </ScrollPane>
                <ScrollPane fx:id="playerArea1" layoutX="931.0" layoutY="22.0" prefHeight="128.0" prefWidth="335.0">

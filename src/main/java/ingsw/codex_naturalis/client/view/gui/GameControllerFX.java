@@ -11,10 +11,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.scene.shape.Rectangle;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -142,7 +144,7 @@ public class GameControllerFX {
                          String topGoldCard, String topResourceCard, Symbol kingdomG, Symbol kingdomR,
                          String revealedResourceCard1, String revealedResourceCard2,
                          String revealedGoldCard1, String revealedGoldCard2,
-                         Color myColor) {
+                         Color myColor, String firstPlayer) {
 
         String myinitalcard;
         String hand1 = "/CardsImages/HandCards/" + handCard1 + ".png";
@@ -267,6 +269,17 @@ public class GameControllerFX {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Text testo = new Text();
+        testo.setText("The game setup ended!\n" + firstPlayer + "'s turn");
+        testo.setLayoutY(20);
+        testo.setLayoutX(20);
+        gameUpdates.getChildren().add(testo);
+        testo.wrappingWidthProperty().bind(gameUpdates.maxWidthProperty());
+        testo.wrappingWidthProperty().bind(gameUpdates.maxHeightProperty());
+
+        Pane pane = createPaneCard(279,139);
+        pane.setStyle("-fx-background-color: lightblue;");
+        myPlayerAreaAnchorPane.getChildren().add(pane);
     }
 
 
@@ -318,5 +331,59 @@ public class GameControllerFX {
         }catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Pane createPaneCard(int x, int y) {
+        int width = 133;
+        int height = 93;
+
+        Pane pane = new Pane();
+        pane.setLayoutX(x);
+        pane.setLayoutY(y);
+
+        pane.setMinWidth(width);
+        pane.setMinHeight(height);
+
+        createClickableCorners(pane);
+
+        return pane;
+    }
+    private void createClickableCorners(Pane card) {
+        int width = 29;
+        int height = 36;
+
+        Rectangle topLeft = createCorner(width, height);
+        topLeft.setOnMouseClicked(event -> handlerCornerClick(event, "Top Left"));
+
+        Rectangle topRight = createCorner(width, height);
+        topRight.setOnMouseClicked(event -> handlerCornerClick(event, "Top Right"));
+
+        Rectangle bottomLeft = createCorner(width, height);
+        bottomLeft.setOnMouseClicked(event -> handlerCornerClick(event, "Bottom Left"));
+
+        Rectangle bottomRight = createCorner(width, height);
+        bottomRight.setOnMouseClicked(event -> handlerCornerClick(event, "Bottom Right"));
+
+        topRight.setLayoutX(0);
+        topRight.setLayoutY(0);
+        topLeft.setLayoutX(104);
+        topLeft.setLayoutY(0);
+        bottomLeft.setLayoutX(0);
+        bottomLeft.setLayoutY(56);
+        bottomRight.setLayoutX(104);
+        bottomRight.setLayoutY(57);
+
+        card.getChildren().addAll(topRight,topLeft,bottomRight,bottomLeft);
+    }
+
+    private Rectangle createCorner(int width, int height) {
+        Rectangle corner = new Rectangle(width,height);
+        corner.setFill(javafx.scene.paint.Color.RED);
+        return corner;
+    }
+
+    private void handlerCornerClick(MouseEvent event, String corner) {
+        //evento play card da notificare
+        System.out.println(corner + "Clicked!!");
     }
 }

@@ -16,7 +16,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -133,6 +132,7 @@ public class GameControllerFX {
     private Label username3;
 
     private GraphicalUI viewGUI;
+    private ImageView selectedCard = null;
 
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
@@ -145,6 +145,15 @@ public class GameControllerFX {
                          String revealedResourceCard1, String revealedResourceCard2,
                          String revealedGoldCard1, String revealedGoldCard2,
                          Color myColor, String firstPlayer) {
+
+        myPlayerAreaAnchorPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        myPlayerAreaAnchorPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+
+        myPlayerArea.setHvalue(1.0);
+        myPlayerArea.setVvalue(1.0);
+
+        myInitialCard.setLayoutX(9999);
+        myInitialCard.setLayoutY(9999);
 
         String myinitalcard;
         String hand1 = "/CardsImages/HandCards/" + handCard1 + ".png";
@@ -262,8 +271,8 @@ public class GameControllerFX {
             ImageView myPedina = new ImageView(new Image(myColorStream));
             myPedina.setFitHeight(33);
             myPedina.setFitWidth(33);
-            myPedina.setLayoutX(329);
-            myPedina.setLayoutY(122);
+            myPedina.setLayoutX(9999+50);
+            myPedina.setLayoutY(9999-17);
             myPlayerAreaAnchorPane.getChildren().add(myPedina);
 
         } catch (IOException e) {
@@ -277,8 +286,8 @@ public class GameControllerFX {
         testo.wrappingWidthProperty().bind(gameUpdates.maxWidthProperty());
         testo.wrappingWidthProperty().bind(gameUpdates.maxHeightProperty());
 
-        Pane pane = createPaneCard(279,139);
-        pane.setStyle("-fx-background-color: lightblue;");
+        Pane pane = createPaneCard(9999,9999);
+        //pane.setStyle("-fx-background-color: lightblue;");
         myPlayerAreaAnchorPane.getChildren().add(pane);
     }
 
@@ -350,40 +359,101 @@ public class GameControllerFX {
     }
     private void createClickableCorners(Pane card) {
         int width = 29;
-        int height = 36;
+        int height = 35;
 
         Rectangle topLeft = createCorner(width, height);
-        topLeft.setOnMouseClicked(event -> handlerCornerClick(event, "Top Left"));
+        topLeft.setOnMouseClicked(event -> handlerCornerClick(event, "TopLeft", card.getLayoutX(), card.getLayoutY()));
 
         Rectangle topRight = createCorner(width, height);
-        topRight.setOnMouseClicked(event -> handlerCornerClick(event, "Top Right"));
+        topRight.setOnMouseClicked(event -> handlerCornerClick(event, "TopRight", card.getLayoutX(), card.getLayoutY()));
 
         Rectangle bottomLeft = createCorner(width, height);
-        bottomLeft.setOnMouseClicked(event -> handlerCornerClick(event, "Bottom Left"));
+        bottomLeft.setOnMouseClicked(event -> handlerCornerClick(event, "BottomLeft", card.getLayoutX(), card.getLayoutY()));
 
         Rectangle bottomRight = createCorner(width, height);
-        bottomRight.setOnMouseClicked(event -> handlerCornerClick(event, "Bottom Right"));
+        bottomRight.setOnMouseClicked(event -> handlerCornerClick(event, "BottomRight", card.getLayoutX(), card.getLayoutY()));
 
-        topRight.setLayoutX(0);
-        topRight.setLayoutY(0);
-        topLeft.setLayoutX(104);
+        topLeft.setLayoutX(0);
         topLeft.setLayoutY(0);
+        topRight.setLayoutX(104);
+        topRight.setLayoutY(0);
         bottomLeft.setLayoutX(0);
-        bottomLeft.setLayoutY(56);
+        bottomLeft.setLayoutY(53);
         bottomRight.setLayoutX(104);
-        bottomRight.setLayoutY(57);
+        bottomRight.setLayoutY(53);
 
         card.getChildren().addAll(topRight,topLeft,bottomRight,bottomLeft);
     }
 
     private Rectangle createCorner(int width, int height) {
         Rectangle corner = new Rectangle(width,height);
-        corner.setFill(javafx.scene.paint.Color.RED);
+        //corner.setFill(javafx.scene.paint.Color.RED);
+        corner.setFill(javafx.scene.paint.Color.TRANSPARENT);
+        corner.setStroke(javafx.scene.paint.Color.TRANSPARENT);
         return corner;
     }
 
-    private void handlerCornerClick(MouseEvent event, String corner) {
+    private void handlerCornerClick(MouseEvent event, String corner, double layoutX, double layoutY) {
         //evento play card da notificare
         System.out.println(corner + "Clicked!!");
+        if(selectedCard != null) {
+            Pane pane;
+            //if corner è topLeft allora LayoutX-104 e LayoutY-54
+            //if corner è topRight allora LayoutX+104 e LayoutY-54
+            //if corner è bottomLeft allora LayoutX-104 e LayoutY+54
+            //if corner è bottomRight allora LayoutX+104 e LayoutY+54
+            switch (corner) {
+                case "TopLeft" -> {
+                    selectedCard.setLayoutX((int) layoutX - 104);
+                    selectedCard.setLayoutY((int) layoutY - 54);
+                    myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+
+                    pane = createPaneCard((int) layoutX - 104, (int) layoutY - 54);
+                    myPlayerAreaAnchorPane.getChildren().add(pane);
+                }
+                case "TopRight" -> {
+                    selectedCard.setLayoutX((int) layoutX + 104);
+                    selectedCard.setLayoutY((int) layoutY - 54);
+                    myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+
+                    pane = createPaneCard((int) layoutX + 104, (int) layoutY - 54);
+                    myPlayerAreaAnchorPane.getChildren().add(pane);
+                }
+                case "BottomLeft" -> {
+                    selectedCard.setLayoutX((int) layoutX - 104);
+                    selectedCard.setLayoutY((int) layoutY + 54);
+                    myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+
+                    pane = createPaneCard((int) layoutX - 104, (int) layoutY + 54);
+                    myPlayerAreaAnchorPane.getChildren().add(pane);
+                }
+                case "BottomRight" -> {
+                    selectedCard.setLayoutX((int) layoutX + 104);
+                    selectedCard.setLayoutY((int) layoutY + 54);
+                    myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+
+                    pane = createPaneCard((int) layoutX + 104, (int) layoutY + 54);
+                    myPlayerAreaAnchorPane.getChildren().add(pane);
+                }
+            }
+        }
+    }
+
+    @FXML
+    void playHandCard1(MouseEvent event) {
+        System.out.println("Voglio giocare la prima carta!");
+        selectedCard = handCard1;
+    }
+
+    @FXML
+    void playHandCard2(MouseEvent event) {
+        System.out.println("Voglio giocare la seconda carta!");
+        selectedCard = handCard2;
+    }
+
+    @FXML
+    void playHandCard3(MouseEvent event) {
+        System.out.println("Voglio giocare la terza carta!");
+        selectedCard = handCard3;
     }
 }

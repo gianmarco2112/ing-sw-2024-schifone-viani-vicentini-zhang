@@ -1,0 +1,122 @@
+[
+  {
+    "cardID": "I01",
+    "playableCardType": "INITIAL",
+    "kingdom": "EMPTY",
+    "front": {
+      "type": "playableSide",
+      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
+      "topRightCorner": {"symbol": "PLANT", "covered": false},
+      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
+      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
+    },
+    "back": {
+      "type": "back",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "PLANT", "covered": false},
+      "bottomLeftCorner": {"symbol": "INSECT", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "permanentResources":["INSECT"]
+    }
+  },
+  {
+    "cardID": "I02",
+    "playableCardType": "INITIAL",
+    "kingdom": "EMPTY",
+    "front": {
+      "type": "playableSide",
+      "topLeftCorner": {"symbol": "PLANT", "covered": false},
+      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
+      "bottomLeftCorner": {"symbol": "FUNGI", "covered": false},
+      "bottomRightCorner": {"symbol": "INSECT", "covered": false}
+    },
+    "back": {
+      "type": "back",
+      "topLeftCorner": {"symbol": "ANIMAL", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "FUNGI", "covered": false},
+      "permanentResources":["FUNGI"]
+    }
+  },
+  {
+    "cardID": "I03",
+    "playableCardType": "INITIAL",
+    "kingdom": "EMPTY",
+    "front": {
+      "type": "playableSide",
+      "topLeftCorner": {"symbol": "INSECT", "covered": false},
+      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
+      "bottomLeftCorner": {"symbol": "FUNGI", "covered": false},
+      "bottomRightCorner": {"symbol": "PLANT", "covered": false}
+    },
+    "back": {
+      "type": "back",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "permanentResources":["PLANT", "FUNGI"]
+    }
+  },
+  {
+    "cardID": "I04",
+    "playableCardType": "INITIAL",
+    "kingdom": "EMPTY",
+    "front": {
+      "type": "playableSide",
+      "topLeftCorner": {"symbol": "PLANT", "covered": false},
+      "topRightCorner": {"symbol": "INSECT", "covered": false},
+      "bottomLeftCorner": {"symbol": "ANIMAL", "covered": false},
+      "bottomRightCorner": {"symbol": "FUNGI", "covered": false}
+    },
+    "back": {
+      "type": "back",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomRightCorner": {"symbol": "EMPTY", "covered": false},
+      "permanentResources":["ANIMAL", "INSECT"]
+    }
+  },
+  {
+    "cardID": "I05",
+    "playableCardType": "INITIAL",
+    "kingdom": "EMPTY",
+    "front": {
+      "type": "playableSide",
+      "topLeftCorner": {"symbol": "INSECT", "covered": false},
+      "topRightCorner": {"symbol": "FUNGI", "covered": false},
+      "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
+      "bottomRightCorner": {"symbol": "ANIMAL", "covered": false}
+    },
+    "back": {
+      "type": "back",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true},
+      "permanentResources":["ANIMAL", "INSECT", "PLANT"]
+    }
+  },
+  {
+    "cardID": "I06",
+    "playableCardType": "INITIAL",
+    "kingdom": "EMPTY",
+    "front": {
+      "type": "playableSide",
+      "topLeftCorner": {"symbol": "FUNGI", "covered": false},
+      "topRightCorner": {"symbol": "ANIMAL", "covered": false},
+      "bottomLeftCorner": {"symbol": "PLANT", "covered": false},
+      "bottomRightCorner": {"symbol": "INSECT", "covered": false}
+    },
+    "back": {
+      "type": "back",
+      "topLeftCorner": {"symbol": "EMPTY", "covered": false},
+      "topRightCorner": {"symbol": "EMPTY", "covered": false},
+      "bottomLeftCorner": {"symbol": "COVERED", "covered": true},
+      "bottomRightCorner": {"symbol": "COVERED", "covered": true},
+      "permanentResources":["PLANT", "ANIMAL", "FUNGI"]
+    }
+  }
+]

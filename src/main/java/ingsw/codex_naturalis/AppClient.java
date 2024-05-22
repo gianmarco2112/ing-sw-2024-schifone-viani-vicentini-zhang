@@ -16,13 +16,19 @@ public class AppClient {
 
 
     public static void main(String[] args) {
+        String ipAddress = "localhost";
+
+        //ASK FOR IP ADDRESS
+
+        /*Scanner scanner = new Scanner(System.in);
+        System.out.println("Insert IP address");
+        ipAddress = scanner.next();*/
 
         NetworkProtocol networkProtocol = askNetworkProtocol();
-
         try {
             switch (networkProtocol) {
-                case RMI -> runRMIClient();
-                case SOCKET -> runSocketClient();
+                case RMI -> runRMIClient(ipAddress);
+                case SOCKET -> runSocketClient(ipAddress);
             }
         } catch (RemoteException e) {
             System.err.println("Error while creating client");
@@ -30,9 +36,9 @@ public class AppClient {
 
     }
 
-    private static void runRMIClient() throws RemoteException {
+    private static void runRMIClient(String ipAddress) throws RemoteException {
 
-        Registry registry = LocateRegistry.getRegistry(1235);
+        Registry registry = LocateRegistry.getRegistry(ipAddress, 1235);
         Server server;
         try {
             server = (Server) registry.lookup("Server");
@@ -45,9 +51,9 @@ public class AppClient {
 
     }
 
-    private static void runSocketClient() throws RemoteException {
+    private static void runSocketClient(String ipAddress) throws RemoteException {
 
-        ServerStub serverStub = new ServerStub("localhost", 1234);
+        ServerStub serverStub = new ServerStub(ipAddress, 1234);
         ClientImpl client = new ClientImpl(serverStub, NetworkProtocol.SOCKET);
 
         new Thread(() -> {

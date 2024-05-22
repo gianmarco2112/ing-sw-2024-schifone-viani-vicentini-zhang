@@ -46,8 +46,8 @@ class GameControllerImplTest {
         assertEquals(0,model.getRevealedResourceCards().size());
         assertEquals(0,model.getRevealedGoldCards().size());
 
-        gameplayController.readyToPlay();
-        gameplayController.readyToPlay();
+        /*gameplayController.readyToPlay();
+        gameplayController.readyToPlay();*/
 
         TimeUnit.MILLISECONDS.sleep(1);
 

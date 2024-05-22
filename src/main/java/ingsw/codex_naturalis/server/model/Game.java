@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.server.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import ingsw.codex_naturalis.common.enumerations.Color;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +20,7 @@ import ingsw.codex_naturalis.server.model.util.PlayerObserver;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -109,23 +111,37 @@ public class Game extends GameObservable implements PlayerObserver {
             throw new InvalidNumOfPlayersException();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
-            String resourceCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/resourceCards.json";
-            String goldCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/goldCards.json";
-            String objectiveCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/objectiveCards.json";
-
-            List<PlayableCard> initialCards = objectMapper.readValue(new File(initialCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
-            List<PlayableCard> resourceCards = objectMapper.readValue(new File(resourceCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
-            List<PlayableCard> goldCards = objectMapper.readValue(new File(goldCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
-            List<ObjectiveCard> objectiveCards = objectMapper.readValue(new File(objectiveCardsJsonFilePath), new TypeReference<List<ObjectiveCard>>() {});
-
+        try (InputStream in = getClass().getResourceAsStream("/jsonCards/initialCards.json")){
+            JsonNode jsonNode = objectMapper.readValue(in, JsonNode.class);
+            String jsonString = objectMapper.writeValueAsString(jsonNode);
+            List<PlayableCard> initialCards = objectMapper.readValue(jsonString, new TypeReference<List<PlayableCard>>() {});
             this.initialCardsDeck = new Deck<>(initialCards);
+        } catch (IOException e) {
+            System.err.println("Error while reading JSON file\n"+e.getMessage());
+        }
+        try (InputStream in = getClass().getResourceAsStream("/jsonCards/resourceCards.json")){
+            JsonNode jsonNode = objectMapper.readValue(in, JsonNode.class);
+            String jsonString = objectMapper.writeValueAsString(jsonNode);
+            List<PlayableCard> resourceCards = objectMapper.readValue(jsonString, new TypeReference<List<PlayableCard>>() {});
             this.resourceCardsDeck = new Deck<>(resourceCards);
+        } catch (IOException e) {
+            System.err.println("Error while reading JSON file\n"+e.getMessage());
+        }
+        try (InputStream in = getClass().getResourceAsStream("/jsonCards/goldCards.json")){
+            JsonNode jsonNode = objectMapper.readValue(in, JsonNode.class);
+            String jsonString = objectMapper.writeValueAsString(jsonNode);
+            List<PlayableCard> goldCards = objectMapper.readValue(jsonString, new TypeReference<List<PlayableCard>>() {});
             this.goldCardsDeck = new Deck<>(goldCards);
+        } catch (IOException e) {
+            System.err.println("Error while reading JSON file\n"+e.getMessage());
+        }
+        try (InputStream in = getClass().getResourceAsStream("/jsonCards/objectiveCards.json")){
+            JsonNode jsonNode = objectMapper.readValue(in, JsonNode.class);
+            String jsonString = objectMapper.writeValueAsString(jsonNode);
+            List<ObjectiveCard> objectiveCards = objectMapper.readValue(jsonString, new TypeReference<List<ObjectiveCard>>() {});
             this.objectiveCardsDeck = new Deck<>(objectiveCards);
-        } catch (IOException e){
-            System.err.println("ERROR while opening json file");
+        } catch (IOException e) {
+            System.err.println("Error while reading JSON file\n"+e.getMessage());
         }
 
         this.playerOrder = new ArrayList<>();

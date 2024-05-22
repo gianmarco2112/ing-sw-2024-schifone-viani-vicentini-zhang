@@ -99,8 +99,13 @@ public class GraphicalUI extends Application implements UI {
     private Boolean initialCardPlayedFront;
     private ImmObjectiveCard myObjectiveCard;
     private List<ImmPlayableCard> hand;
+    private List<ImmObjectiveCard> commonObjectiveCard;
     private List<String> readyPlayersList = new ArrayList<>();
     private List<GameSpecs> gamesSpecs;
+    private ImmPlayableCard topResourceCard;
+    private ImmPlayableCard topGoldCard;
+    private List<ImmPlayableCard> revealedResourceCards;
+    private List<ImmPlayableCard> revealedGoldCards;
     private GameControllerFX gameControllerFX;
     private LobbiesControllerFX lobbiesControllerFX;
     private LoginControllerFX loginControllerFX;
@@ -254,6 +259,11 @@ public class GraphicalUI extends Application implements UI {
         this.game = game;
         myObjectiveCard = game.player().playerArea().objectiveCard();
         hand = game.player().hand();
+        commonObjectiveCard = game.commonObjectiveCards();
+        topResourceCard = game.topResourceCard();
+        topGoldCard = game.topGoldCard();
+        revealedResourceCards = game.revealedResourceCards();
+        revealedGoldCards = game.revealedGoldCards();
         setScene("Game");
     }
 
@@ -404,7 +414,11 @@ public class GraphicalUI extends Application implements UI {
                     gameControllerFX.endSetup(initialCardID,
                             initialCardPlayedFront,
                             myObjectiveCard.cardID(),
-                            hand.get(0).cardID(),hand.get(1).cardID(),hand.get(2).cardID());
+                            hand.get(0).cardID(),hand.get(1).cardID(),hand.get(2).cardID(),
+                            commonObjectiveCard.get(0).cardID(),commonObjectiveCard.get(1).cardID(),
+                            topGoldCard.cardID(),topResourceCard.cardID(),
+                            revealedResourceCards.get(0).cardID(),revealedResourceCards.get(1).cardID(),
+                            revealedGoldCards.get(0).cardID(),revealedGoldCards.get(1).cardID());
                     break;
                 case "EndGame":
                     endGameControllerFX = fxmlLoader.getController();

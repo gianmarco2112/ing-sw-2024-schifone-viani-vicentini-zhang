@@ -130,7 +130,11 @@ public class GameControllerFX {
     }
 
     public void endSetup(String initialCard, Boolean showingFront, String myObjectiveCard,
-                         String handCard1, String handCard2, String handCard3) {
+                         String handCard1, String handCard2, String handCard3,
+                         String commonObjective1, String commonObjective2,
+                         String topGoldCard, String topResourceCard,
+                         String revealedResourceCard1, String revealedResourceCard2,
+                         String revealedGoldCard1, String revealedGoldCard2) {
 
         String myinitalcard;
         String hand1 = "/CardsImages/HandCards/" + handCard1 + ".png";
@@ -141,6 +145,14 @@ public class GameControllerFX {
         String gialla = "/pedine/pedina_gialla.png";
         String verde = "/pedine/pedina_verde.png";
         String secretObjective = "/CardsImages/Objective/" + myObjectiveCard + ".png";
+        String commonObj1 = "/CardsImages/Objective/" + commonObjective1 + ".png";
+        String commonObj2 = "/CardsImages/Objective/" + commonObjective2 + ".png";
+        String topRCard;
+        String topGCard;
+        String revealedRC1 = "/CardsImages/HandCards/" + revealedResourceCard1 + ".png";
+        String revealedRC2 = "/CardsImages/HandCards/" + revealedResourceCard2 + ".png";
+        String revealedGC1 = "/CardsImages/HandCards/" + revealedGoldCard1 + ".png";
+        String revealedGC2 = "/CardsImages/HandCards/" + revealedGoldCard2 + ".png";
 
         if(showingFront){
             myinitalcard = "/CardsImages/Initial/fronts/" + initialCard + ".png";
@@ -157,6 +169,12 @@ public class GameControllerFX {
              InputStream hand1Stream = getClass().getResourceAsStream(hand1);
              InputStream hand2Stream = getClass().getResourceAsStream(hand2);
              InputStream hand3Stream = getClass().getResourceAsStream(hand3);
+             InputStream commonObj1Stream = getClass().getResourceAsStream(commonObj1);
+             InputStream commonObj2Stream = getClass().getResourceAsStream(commonObj2);
+             InputStream revealedRC1Stream = getClass().getResourceAsStream(revealedRC1);
+             InputStream revealedRC2Stream = getClass().getResourceAsStream(revealedRC2);
+             InputStream revealedGC1Stream = getClass().getResourceAsStream(revealedGC1);
+             InputStream revealedGC2Stream = getClass().getResourceAsStream(revealedGC2)
         ) {
 
             myInitialCard.setImage(new Image(initialCardStream));
@@ -194,6 +212,14 @@ public class GameControllerFX {
             this.handCard1.setImage(new Image(hand1Stream));
             this.handCard2.setImage(new Image(hand2Stream));
             this.handCard3.setImage(new Image(hand3Stream));
+
+            this.commonObjective1.setImage(new Image(commonObj1Stream));
+            this.commonObjective2.setImage(new Image(commonObj2Stream));
+
+            this.revealedResource1.setImage(new Image(revealedRC1Stream));
+            this.revealedResource2.setImage(new Image(revealedRC2Stream));
+            this.revealedGold1.setImage(new Image(revealedGC1Stream));
+            this.revealedGold2.setImage(new Image(revealedGC2Stream));
 
         } catch (IOException e) {
             e.printStackTrace();

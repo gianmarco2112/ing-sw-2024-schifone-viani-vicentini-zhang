@@ -7,6 +7,7 @@ import ingsw.codex_naturalis.common.events.InitialCardEvent;
 import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
 import ingsw.codex_naturalis.common.immutableModel.ImmGame;
 import ingsw.codex_naturalis.common.immutableModel.ImmObjectiveCard;
+import ingsw.codex_naturalis.common.immutableModel.ImmPlayableCard;
 import ingsw.codex_naturalis.server.model.util.GameEvent;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -96,6 +97,8 @@ public class GraphicalUI extends Application implements UI {
     private ImmGame game;
     private String initialCardID;
     private Boolean initialCardPlayedFront;
+    private ImmObjectiveCard myObjectiveCard;
+    private List<ImmPlayableCard> hand;
     private List<String> readyPlayersList = new ArrayList<>();
     private List<GameSpecs> gamesSpecs;
     private GameControllerFX gameControllerFX;
@@ -249,6 +252,8 @@ public class GraphicalUI extends Application implements UI {
     @Override
     public void endSetup(ImmGame game) {
         this.game = game;
+        myObjectiveCard = game.player().playerArea().objectiveCard();
+        hand = game.player().hand();
         setScene("Game");
     }
 
@@ -397,7 +402,9 @@ public class GraphicalUI extends Application implements UI {
                     gameControllerFX = fxmlLoader.getController();
                     gameControllerFX.setViewGUI(this);
                     gameControllerFX.endSetup(initialCardID,
-                            initialCardPlayedFront);
+                            initialCardPlayedFront,
+                            myObjectiveCard.cardID(),
+                            hand.get(0).cardID(),hand.get(1).cardID(),hand.get(2).cardID());
                     break;
                 case "EndGame":
                     endGameControllerFX = fxmlLoader.getController();

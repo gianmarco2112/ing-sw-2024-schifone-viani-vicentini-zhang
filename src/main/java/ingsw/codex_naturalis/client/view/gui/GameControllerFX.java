@@ -1,6 +1,5 @@
 package ingsw.codex_naturalis.client.view.gui;
 
-import ingsw.codex_naturalis.common.immutableModel.ImmGame;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -130,12 +129,18 @@ public class GameControllerFX {
         this.viewGUI = viewGUI;
     }
 
-    public void endSetup(String initialCard, Boolean showingFront) {
+    public void endSetup(String initialCard, Boolean showingFront, String myObjectiveCard,
+                         String handCard1, String handCard2, String handCard3) {
 
         String myinitalcard;
-        String handCard1;
-        String handCard2;
-        String handCard3;
+        String hand1 = "/CardsImages/HandCards/" + handCard1 + ".png";
+        String hand2 = "/CardsImages/HandCards/" + handCard2 + ".png";
+        String hand3 = "/CardsImages/HandCards/" + handCard3 + ".png";
+        String rossa = "/pedine/pedina_rossa.png";
+        String blu = "/pedine/pedina_blu.png";
+        String gialla = "/pedine/pedina_gialla.png";
+        String verde = "/pedine/pedina_verde.png";
+        String secretObjective = "/CardsImages/Objective/" + myObjectiveCard + ".png";
 
         if(showingFront){
             myinitalcard = "/CardsImages/Initial/fronts/" + initialCard + ".png";
@@ -143,9 +148,53 @@ public class GameControllerFX {
             myinitalcard = "/CardsImages/Initial/backs/" + initialCard + ".png";
         }
 
-        try (InputStream initialCardStream = getClass().getResourceAsStream(myinitalcard)) {
+        try (InputStream initialCardStream = getClass().getResourceAsStream(myinitalcard);
+             InputStream rossaStream = getClass().getResourceAsStream(rossa);
+             InputStream bluStream = getClass().getResourceAsStream(blu);
+             InputStream giallaStream = getClass().getResourceAsStream(gialla);
+             InputStream verdeStream = getClass().getResourceAsStream(verde);
+             InputStream secretObj = getClass().getResourceAsStream(secretObjective);
+             InputStream hand1Stream = getClass().getResourceAsStream(hand1);
+             InputStream hand2Stream = getClass().getResourceAsStream(hand2);
+             InputStream hand3Stream = getClass().getResourceAsStream(hand3);
+        ) {
 
             myInitialCard.setImage(new Image(initialCardStream));
+
+            ImageView pedinaRossa = new ImageView(new Image(rossaStream));
+            pedinaRossa.setFitHeight(33);
+            pedinaRossa.setFitWidth(33);
+            pedinaRossa.setLayoutX(32);
+            pedinaRossa.setLayoutY(323);
+            globalPane.getChildren().add(pedinaRossa);
+
+            ImageView pedinaBlu = new ImageView(new Image(bluStream));
+            pedinaBlu.setFitHeight(33);
+            pedinaBlu.setFitWidth(33);
+            pedinaBlu.setLayoutX(32);
+            pedinaBlu.setLayoutY(323-3);
+            globalPane.getChildren().add(pedinaBlu);
+
+            ImageView pedinaGialla = new ImageView(new Image(giallaStream));
+            pedinaGialla.setFitHeight(33);
+            pedinaGialla.setFitWidth(33);
+            pedinaGialla.setLayoutX(32);
+            pedinaGialla.setLayoutY(323-3-3);
+            globalPane.getChildren().add(pedinaGialla);
+
+            ImageView pedinaVerde = new ImageView(new Image(verdeStream));
+            pedinaVerde.setFitHeight(33);
+            pedinaVerde.setFitWidth(33);
+            pedinaVerde.setLayoutX(32);
+            pedinaVerde.setLayoutY(323-3-3-3);
+            globalPane.getChildren().add(pedinaVerde);
+
+            mySecretObjective.setImage(new Image(secretObj));
+
+            this.handCard1.setImage(new Image(hand1Stream));
+            this.handCard2.setImage(new Image(hand2Stream));
+            this.handCard3.setImage(new Image(hand3Stream));
+
         } catch (IOException e) {
             e.printStackTrace();
         }

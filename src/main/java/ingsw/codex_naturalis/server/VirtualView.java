@@ -767,7 +767,8 @@ public class VirtualView implements GameObserver {
                 showingFront,
                 playableSide.handCardToString(card.getKingdom()),
                 playableSide.playerAreaCardToString(card.getKingdom()),
-                card.getKingdom());
+                card.getKingdom(),
+                card.getPlayableCardType());
     }
 
     private ImmObjectiveCard getImmObjectiveCard(ObjectiveCard card) {

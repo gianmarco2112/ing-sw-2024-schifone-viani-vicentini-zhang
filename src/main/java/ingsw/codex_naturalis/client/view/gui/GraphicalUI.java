@@ -107,6 +107,7 @@ public class GraphicalUI extends Application implements UI {
     private List<ImmPlayableCard> revealedResourceCards;
     private List<ImmPlayableCard> revealedGoldCards;
     private Color myColor;
+    private int indexOfFlippedHandCard;
     private GameControllerFX gameControllerFX;
     private LobbiesControllerFX lobbiesControllerFX;
     private LoginControllerFX loginControllerFX;
@@ -271,7 +272,12 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void cardFlipped(ImmGame game) {
-
+        this.game = game;
+        gameControllerFX.cardFlipped(game.player().hand().get(indexOfFlippedHandCard).cardID(),
+                game.player().hand().get(indexOfFlippedHandCard).showingFront(),
+                game.player().hand().get(indexOfFlippedHandCard).kingdom(),
+                game.player().hand().get(indexOfFlippedHandCard).playableCardType(),
+                indexOfFlippedHandCard);
     }
 
     @Override
@@ -506,5 +512,10 @@ public class GraphicalUI extends Application implements UI {
 
     public void choosedObjective(int i) {
         uiObservableItem.notifyObjectiveCardChoice(i);
+    }
+
+    public void flippingCard(int index) {
+        indexOfFlippedHandCard = index;
+        uiObservableItem.notifyFlipCard(index);
     }
 }

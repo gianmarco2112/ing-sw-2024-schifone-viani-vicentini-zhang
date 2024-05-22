@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.client.view.gui;
 
 import ingsw.codex_naturalis.common.enumerations.Color;
+import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -263,6 +265,57 @@ public class GameControllerFX {
             myPlayerAreaAnchorPane.getChildren().add(myPedina);
 
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    void flipHandCard1(ActionEvent event) {
+        viewGUI.flippingCard(0);
+    }
+
+    @FXML
+    void flipHandCard2(ActionEvent event) {
+        viewGUI.flippingCard(1);
+    }
+
+    @FXML
+    void flipHandCard3(ActionEvent event) {
+        viewGUI.flippingCard(2);
+    }
+
+    public void cardFlipped(String cardId, boolean showingFront, Symbol kingdom, PlayableCardType playableCardType, int indexOfFlippedCard) {
+        String handCard = null;
+
+        if(showingFront){
+            handCard = "/CardsImages/HandCards/" + cardId + ".png";
+        } else {
+            if(playableCardType == PlayableCardType.RESOURCE){
+                switch (kingdom){
+                    case Symbol.ANIMAL -> handCard = "/CardsImages/HandCards/RbackANIMAL.png";
+                    case Symbol.FUNGI -> handCard = "/CardsImages/HandCards/RbackFUNGI.png";
+                    case Symbol.PLANT -> handCard = "/CardsImages/HandCards/RbackPLANT.png";
+                    case Symbol.INSECT -> handCard = "/CardsImages/HandCards/RbackINSECT.png";
+                }
+            }
+            if(playableCardType == PlayableCardType.GOLD){
+                switch (kingdom){
+                    case Symbol.ANIMAL -> handCard = "/CardsImages/HandCards/GbackANIMAL.png";
+                    case Symbol.FUNGI -> handCard = "/CardsImages/HandCards/GbackFUNGI.png";
+                    case Symbol.PLANT -> handCard = "/CardsImages/HandCards/GbackPLANT.png";
+                    case Symbol.INSECT -> handCard = "/CardsImages/HandCards/GbackINSECT.png";
+                }
+            }
+        }
+
+        try(InputStream handCardStream = getClass().getResourceAsStream(handCard)){
+            switch (indexOfFlippedCard){
+                case 0 -> this.handCard1.setImage(new Image(handCardStream));
+                case 1 -> this.handCard2.setImage(new Image(handCardStream));
+                case 2 -> this.handCard3.setImage(new Image(handCardStream));
+            }
+        }catch (IOException e) {
             e.printStackTrace();
         }
     }

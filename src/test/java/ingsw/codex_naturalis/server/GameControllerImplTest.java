@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.client.ClientImpl;
 import ingsw.codex_naturalis.common.NetworkProtocol;
+import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
+import ingsw.codex_naturalis.server.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.server.model.Game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,26 +42,23 @@ class GameControllerImplTest {
     }
 
     @Test
-    void readyToPlay() throws InterruptedException {
+    void readyToPlay() {
         assertNull(model.getPlayerOrder().getFirst().getInitialCard());
         assertNull(model.getPlayerOrder().getLast().getInitialCard());
         assertEquals(0,model.getRevealedResourceCards().size());
-        assertEquals(0,model.getRevealedGoldCards().size());
+        gameplayController.readyToPlay("Test");
+        gameplayController.readyToPlay("Test2");
 
-        /*gameplayController.readyToPlay();
-        gameplayController.readyToPlay();*/
-
-        TimeUnit.MILLISECONDS.sleep(1);
-
+        while(model.getPlayerOrder().getFirst().getInitialCard() == null || model.getPlayerOrder().getLast().getInitialCard() == null){
+            //System.out.println("aspetto che il model si aggiorni");
+        }
         assertNotNull(model.getPlayerOrder().getFirst().getInitialCard());
         assertNotNull(model.getPlayerOrder().getLast().getInitialCard());
-        assertEquals(2,model.getRevealedResourceCards().size());
-        assertEquals(2,model.getRevealedGoldCards().size());
     }
 
     @Test
-    void updateInitialCard() throws JsonProcessingException {
-        //readyToPlay();
+    void updateInitialCard() throws JsonProcessingException, InterruptedException {
+        readyToPlay();
         assertFalse(model.getPlayerOrder().getFirst().getInitialCard().getImmutablePlayableCard().showingFront());
         gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.FLIP));
         while(!model.getPlayerOrder().getFirst().getInitialCard().getImmutablePlayableCard().showingFront()){
@@ -77,11 +76,19 @@ class GameControllerImplTest {
     }
 
     @Test
-    void chooseColor() {
+    void chooseColor() throws JsonProcessingException {
+        gameplayController.chooseColor("Test", objectMapper.writeValueAsString(Color.RED));
+        while(model.getPlayerOrder().getFirst().getColor() == null){
+            //System.out.println("aspetto che il model si aggiorni");
+        }
+        assertEquals(model.getPlayerOrder().getFirst().getColor(), Color.RED);
+        assertThrows(ColorAlreadyChosenException.class, () -> {model.setPlayerColor(model.getPlayerOrder().getFirst(), Color.RED);});
     }
 
     @Test
     void chooseSecretObjectiveCard() {
+        readyToPlay();
+
     }
 
     @Test

@@ -3,10 +3,10 @@ package ingsw.codex_naturalis.client.view.gui;
 import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
+import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +17,8 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 public class GameControllerFX {
     @FXML
@@ -134,8 +136,14 @@ public class GameControllerFX {
     private ImageView selectedCard = null;
     private int selectedCardIndex;
     private String cornerClicked;
-    private int layoutXOfCardClicked;
-    private int layoutYOfCardClicked;
+
+    //posizioni delle anchorPane
+    private Map<Integer, List<Integer>> boardPointsPosition = Map.of(
+            0, List.of(32,312),
+            1,List.of(75,312),
+            2,List.of(118,312)
+    );
+
 
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
@@ -402,191 +410,35 @@ public class GameControllerFX {
     }
 
     public void handlerCornerClick(MouseEvent event, String corner, double layoutX, double layoutY, boolean ok, int points, Color myColor) {
-        cornerClicked = corner;
-        layoutXOfCardClicked = (int) layoutX;
-        layoutYOfCardClicked = (int) layoutY;
-
         //evento play card da notificare
         System.out.println(corner + "Clicked!!");
 
-        if(!ok){
-            switch (corner) {
-                case "TopLeft" -> {
-                    int x = ((9999 - (int) layoutX)/104)-1;
-                    int y = ((9999 - (int) layoutY)/54)+1;
-                    viewGUI.playingCard(selectedCardIndex, x, y, corner,(int) layoutX,(int) layoutY);
-                    System.out.println("carta giocata in (" + x + "," + y + ")");
-                }
-                case "TopRight" -> {
-                    int x = (((int) layoutX - 9999)/104) + 1;
-                    int y = ((9999 - (int) layoutY)/54) + 1;
-                    viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
-                    System.out.println("carta giocata in (" + x + "," + y + ")");
-                }
-                case "BottomLeft" -> {
-                    int x = ((9999 - (int) layoutX)/104) - 1;
-                    int y = (((int) layoutY - 9999)/54) - 1;
-                    viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
-                    System.out.println("carta giocata in (" + x + "," + y + ")");
-                }
-                case "BottomRight" -> {
-                    int x = (((int) layoutX - 9999)/104) + 1;
-                    int y = (((int) layoutY - 9999)/54) - 1;
-                    viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
-                    System.out.println("carta giocata in (" + x + "," + y + ")");
-                }
+        switch (corner) {
+            case "TopLeft" -> {
+                int x = (-(9999 - (int) layoutX)/104) - 1;
+                int y = ((9999 - (int) layoutY)/54) + 1;
+                viewGUI.playingCard(selectedCardIndex, x, y, corner,(int) layoutX,(int) layoutY);
+                System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
+            }
+            case "TopRight" -> {
+                int x = (((int) layoutX - 9999)/104) + 1;
+                int y = ((9999 - (int) layoutY)/54) + 1;
+                viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
+                System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
+            }
+            case "BottomLeft" -> {
+                int x = (-(9999 - (int) layoutX)/104) - 1;
+                int y = (-((int) layoutY - 9999)/54) - 1;
+                viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
+                System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
+            }
+            case "BottomRight" -> {
+                int x = (((int) layoutX - 9999)/104) + 1;
+                int y = (-((int) layoutY - 9999)/54) - 1;
+                viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
+                System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
             }
         }
-
-        Platform.runLater(()->{
-            if(selectedCard != null && ok) {
-                System.out.println(selectedCard);
-                Pane pane;
-                int x, y;
-                //if corner è topLeft allora LayoutX-104 e LayoutY-54
-                //if corner è topRight allora LayoutX+104 e LayoutY-54
-                //if corner è bottomLeft allora LayoutX-104 e LayoutY+54
-                //if corner è bottomRight allora LayoutX+104 e LayoutY+54
-                switch (corner) {
-                    case "TopLeft" -> {
-                        selectedCard.setLayoutX((int) layoutX - 104);
-                        selectedCard.setLayoutY((int) layoutY - 54);
-                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
-                        selectedCard = null;
-
-                        pane = createPaneCard((int) layoutX - 104, (int) layoutY - 54);
-                        myPlayerAreaAnchorPane.getChildren().add(pane);
-
-                        //normalizzare le coordinate (9999,9999) è il mio (0,0) //faccio [(9999 - (int) layoutX)/104]-1 e [(9999 - (int) layoutY)/54]+1
-                        x = ((9999 - (int) layoutX)/104)-1;
-                        y = ((9999 - (int) layoutY)/54)+1;
-                        //chiamo uiObservableItem.notify...
-                        //viewGUI.playingCard(selectedCardIndex, x, y, corner,(int) layoutX,(int) layoutY, selectedCard);//indice carta giocata e posizione (-1,+1) devo avere un modo per normalizzare prima di inserire le coordinate
-                        //TODO ottonere l'indice della carta giocata, normalizzazione delle coordinate
-                        System.out.println("carta giocata in (" + x + "," + y + ")");
-                    }
-                    case "TopRight" -> {
-                        selectedCard.setLayoutX((int) layoutX + 104);
-                        selectedCard.setLayoutY((int) layoutY - 54);
-                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
-                        selectedCard = null;
-
-                        pane = createPaneCard((int) layoutX + 104, (int) layoutY - 54);
-                        myPlayerAreaAnchorPane.getChildren().add(pane);
-
-                        x = (((int) layoutX - 9999)/104) + 1;
-                        y = ((9999 - (int) layoutY)/54) + 1;
-                        //viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY, selectedCard);
-                        System.out.println("carta giocata in (" + x + "," + y + ")");
-                    }
-                    case "BottomLeft" -> {
-                        selectedCard.setLayoutX((int) layoutX - 104);
-                        selectedCard.setLayoutY((int) layoutY + 54);
-                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
-                        selectedCard = null;
-
-                        pane = createPaneCard((int) layoutX - 104, (int) layoutY + 54);
-                        myPlayerAreaAnchorPane.getChildren().add(pane);
-
-                        x = ((9999 - (int) layoutX)/104) - 1;
-                        y = (((int) layoutY - 9999)/54) - 1;
-                        //viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY, selectedCard);
-                        System.out.println("carta giocata in (" + x + "," + y + ")");
-                    }
-                    case "BottomRight" -> {
-                        selectedCard.setLayoutX((int) layoutX + 104);
-                        selectedCard.setLayoutY((int) layoutY + 54);
-                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
-                        selectedCard = null;
-
-                        pane = createPaneCard((int) layoutX + 104, (int) layoutY + 54);
-                        myPlayerAreaAnchorPane.getChildren().add(pane);
-
-                        x = (((int) layoutX - 9999)/104) + 1;
-                        y = (((int) layoutY - 9999)/54) - 1;
-                        //viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY, selectedCard);
-                        System.out.println("carta giocata in (" + x + "," + y + ")");
-                    }
-                }
-
-                /*if(selectedCardIndex==0 || selectedCardIndex==1 || selectedCardIndex==2) {
-                    switch (selectedCardIndex) {
-                        case 0 -> handCard1.setVisible(false);
-                        case 1 -> handCard2.setVisible(false);
-                        case 2 -> handCard3.setVisible(false);
-                    }
-                }*/
-
-                if(points>0){
-                    //aggiorno punteggio sul tabellone
-                    switch (points) {
-                        //TODO la cosa migliore sarebbe spostare le pedine in 0 sopra in endSetup qui, così quando tolgo una pedina in mezzo alle altre posso allineare
-                        case 1 -> {
-                            //cancello la mia pedina da 0
-                            Node nodo = globalPane.lookup("#" + myColor);
-                            if (nodo instanceof ImageView) {
-                                ImageView foundPedina = (ImageView) nodo;
-                                foundPedina.setVisible(false);
-                            }
-                            for(Node node : point1.getChildren()) {
-                                if(node instanceof ImageView) {
-                                    ImageView imageView = (ImageView) node;
-                                    if(imageView.getImage() == null) {
-
-                                        String myColorChosen = null;
-
-                                        switch (myColor){
-                                            case Color.BLUE -> myColorChosen = "/pedine/pedina_blu.png";
-                                            case Color.RED -> myColorChosen = "/pedine/pedina_rossa.png";
-                                            case Color.GREEN -> myColorChosen = "/pedine/pedina_verde.png";
-                                            case Color.YELLOW -> myColorChosen = "/pedine/pedina_gialla.png";
-                                        }
-
-                                        try(InputStream myColorStream = getClass().getResourceAsStream(myColorChosen)){
-                                            imageView.setImage(new Image(myColorStream));
-                                            break;
-                                        }catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                //aggiorno posizioni carte in mano
-                //per pescare una carta in mano vediamo la prima posizione in cui handCard.isVisible == false
-                switch (selectedCardIndex) {
-                    case 0 -> {
-                        handCard3.setVisible(false);
-                        flipCard3.setVisible(false);
-
-
-                        Image handCard2Image = handCard2.getImage();
-                        Image handcard3Image = handCard3.getImage();
-
-                        handCard1.setImage(handCard2Image);
-                        handCard2.setImage(handcard3Image);
-                    }
-                    case 1 -> {
-                        handCard3.setVisible(false);
-                        flipCard3.setVisible(false);
-
-                        Image handcard3Image = handCard3.getImage();
-
-                        handCard2.setImage(handcard3Image);
-                    }
-                    case 2 -> {
-                        handCard3.setVisible(false);
-                        flipCard3.setVisible(false);
-                    }
-                }
-            }
-        });
-
-
     }
 
     private static ImageView copyImageView(ImageView imageToCopie) {
@@ -615,6 +467,42 @@ public class GameControllerFX {
         System.out.println("Voglio giocare la terza carta!");
         selectedCard = copyImageView(handCard3);
         selectedCardIndex = 2;
+    }
+
+    @FXML
+    void drawFromGoldDeck(MouseEvent event) {
+        System.out.println("voglio pescare dal deck di oro");
+        viewGUI.drawingCard(DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);
+    }
+
+    @FXML
+    void drawFromResourceDeck(MouseEvent event) {
+        System.out.println("voglio pescare dal deck di risorse");
+        viewGUI.drawingCard(DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
+    }
+
+    @FXML
+    void drawFromRevealedGold1(MouseEvent event) {
+        System.out.println("voglio pescare la prima carta oro rivelata");
+        viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1);
+    }
+
+    @FXML
+    void drawFromRevealedGold2(MouseEvent event) {
+        System.out.println("voglio pescare la seconda carta oro rivelata");
+        viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2);
+    }
+
+    @FXML
+    void drawFromRevealedResource1(MouseEvent event) {
+        System.out.println("voglio pescare la prima carta risorsa rivelata");
+        viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);
+    }
+
+    @FXML
+    void drawFromRevealedResource2(MouseEvent event) {
+        System.out.println("voglio pescare la prima carta risorsa rivelata");
+        viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);
     }
 
     @FXML
@@ -661,4 +549,291 @@ public class GameControllerFX {
 
     @FXML
     private ImageView point2_4;
+
+    public void cardDrawn(DrawCardEvent drawCardEvent, String topResourceCardId, String topGoldCardId, String drawnCardId, String revR1, String revR2, String revG1, String revG2) {
+        Platform.runLater(()->{
+            switch (drawCardEvent) {
+                case DRAW_FROM_RESOURCE_CARDS_DECK -> {
+                    //scambio la carta pescata con hancard e aggiorno la carta in cima al deck
+                    //Image image = resourceDeck.getImage();
+
+                    String path = "/CardsImages/HandCards/front/" + drawnCardId + ".png";
+
+                    try(InputStream imageStream = getClass().getResourceAsStream(path)){
+                        if(!handCard1.isVisible()) {
+                            handCard1.setImage(new Image(imageStream));
+                            handCard1.setVisible(true);
+                            flipCard1.setVisible(true);
+                            streamTopRGImage(topResourceCardId, topGoldCardId, false);
+                        }
+                        if(!handCard2.isVisible()) {
+                            handCard2.setImage(new Image(imageStream));
+                            handCard2.setVisible(true);
+                            flipCard2.setVisible(true);
+                            streamTopRGImage(topResourceCardId, topGoldCardId, false);
+                        }
+                        if(!handCard3.isVisible()) {
+                            handCard3.setImage(new Image(imageStream));
+                            handCard3.setVisible(true);
+                            flipCard3.setVisible(true);
+                            streamTopRGImage(topResourceCardId, topGoldCardId, false);
+                        }
+                    }catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                case DRAW_FROM_GOLD_CARDS_DECK -> {
+
+                    String path = "/CardsImages/HandCards/front/" + drawnCardId + ".png";
+
+                    //sembra funzionare, ma in realtà se siamo a fine partita e alcuni possono avere solo due carte, creerà casino, meglio mettere il controllo sul giocatore che ha fatto update
+                    try(InputStream imageStream = getClass().getResourceAsStream(path)){
+                        if(!handCard1.isVisible()) {
+                            handCard1.setImage(new Image(imageStream));
+                            handCard1.setVisible(true);
+                            flipCard1.setVisible(true);
+                            streamTopRGImage(topResourceCardId, topGoldCardId, true);
+                        }
+                        if(!handCard2.isVisible()) {
+                            handCard2.setImage(new Image(imageStream));
+                            handCard2.setVisible(true);
+                            flipCard2.setVisible(true);
+                            streamTopRGImage(topResourceCardId, topGoldCardId, true);
+                        }
+                        if(!handCard3.isVisible()) {
+                            handCard3.setImage(new Image(imageStream));
+                            handCard3.setVisible(true);
+                            flipCard3.setVisible(true);
+                            streamTopRGImage(topResourceCardId, topGoldCardId, true);
+                        }
+                    }catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                case DRAW_REVEALED_GOLD_CARD_1, DRAW_REVEALED_GOLD_CARD_2, DRAW_REVEALED_RESOURCE_CARD_1, DRAW_REVEALED_RESOURCE_CARD_2 -> {
+                    String path = "/CardsImages/HandCards/front/" + drawnCardId + ".png";
+
+                    try(InputStream imageStream = getClass().getResourceAsStream(path)){
+                        if(!handCard1.isVisible()) {
+                            handCard1.setImage(new Image(imageStream));
+                            handCard1.setVisible(true);
+                            flipCard1.setVisible(true);
+                            streamRevealedId(revG1,revG2,revR1,revR2);
+                        }
+                        if(!handCard2.isVisible()) {
+                            handCard2.setImage(new Image(imageStream));
+                            handCard2.setVisible(true);
+                            flipCard2.setVisible(true);
+                            streamRevealedId(revG1,revG2,revR1,revR2);
+                        }
+                        if(!handCard3.isVisible()) {
+                            handCard3.setImage(new Image(imageStream));
+                            handCard3.setVisible(true);
+                            flipCard3.setVisible(true);
+                            streamRevealedId(revG1,revG2,revR1,revR2);;
+                        }
+                    }catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void streamTopRGImage(String topResourceCardId, String topGoldCardId, boolean isGold) {
+        String kingdomTopG = null;
+        String kingdomTopR = null;
+
+        if(isGold){
+            kingdomTopG = "/CardsImages/HandCards/back/" + topGoldCardId + ".png";
+
+            try(InputStream topGStream = getClass().getResourceAsStream(kingdomTopG)){
+                this.goldDeck.setImage(new Image(topGStream));
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            kingdomTopR = "/CardsImages/HandCards/back/" + topResourceCardId + ".png";
+
+            try(InputStream topRStream = getClass().getResourceAsStream(kingdomTopR)){
+                this.resourceDeck.setImage(new Image(topRStream));
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void cardPlayed(String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked, int points) {
+        Platform.runLater(()->{
+            if(selectedCard != null) {
+                Pane pane;
+                int x, y;
+                //if corner è topLeft allora LayoutX-104 e LayoutY-54
+                //if corner è topRight allora LayoutX+104 e LayoutY-54
+                //if corner è bottomLeft allora LayoutX-104 e LayoutY+54
+                //if corner è bottomRight allora LayoutX+104 e LayoutY+54
+                switch (cornerClicked) {
+                    case "TopLeft" -> {
+                        selectedCard.setLayoutX((int) layoutXOfCardClicked - 104);
+                        selectedCard.setLayoutY((int) layoutYOfCardClicked - 54);
+                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+                        selectedCard = null;
+
+                        pane = createPaneCard((int) layoutXOfCardClicked - 104, (int) layoutYOfCardClicked - 54);
+                        myPlayerAreaAnchorPane.getChildren().add(pane);
+
+                        //for debugging
+                        x = (-(9999 - (int) layoutXOfCardClicked)/104)-1;
+                        y = ((9999 - (int) layoutYOfCardClicked)/54)+1;
+                        System.out.println("carta posizionata in (" + x + "," + y + ")");
+                    }
+                    case "TopRight" -> {
+                        selectedCard.setLayoutX((int) layoutXOfCardClicked + 104);
+                        selectedCard.setLayoutY((int) layoutYOfCardClicked - 54);
+                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+                        selectedCard = null;
+
+                        pane = createPaneCard((int) layoutXOfCardClicked + 104, (int) layoutYOfCardClicked - 54);
+                        myPlayerAreaAnchorPane.getChildren().add(pane);
+
+                        //for debugging
+                        x = (((int) layoutXOfCardClicked - 9999)/104) + 1;
+                        y = ((9999 - (int) layoutYOfCardClicked)/54) + 1;
+                        System.out.println("carta posizionata in (" + x + "," + y + ")");
+                    }
+                    case "BottomLeft" -> {
+                        selectedCard.setLayoutX((int) layoutXOfCardClicked - 104);
+                        selectedCard.setLayoutY((int) layoutYOfCardClicked + 54);
+                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+                        selectedCard = null;
+
+                        pane = createPaneCard((int) layoutXOfCardClicked - 104, (int) layoutYOfCardClicked + 54);
+                        myPlayerAreaAnchorPane.getChildren().add(pane);
+
+                        //for debugging
+                        x = (-(9999 - (int) layoutXOfCardClicked)/104) - 1;
+                        y = (-((int) layoutYOfCardClicked - 9999)/54) - 1;
+                        System.out.println("carta posizionata in (" + x + "," + y + ")");
+                    }
+                    case "BottomRight" -> {
+                        selectedCard.setLayoutX((int) layoutXOfCardClicked + 104);
+                        selectedCard.setLayoutY((int) layoutYOfCardClicked + 54);
+                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+                        selectedCard = null;
+
+                        pane = createPaneCard((int) layoutXOfCardClicked + 104, (int) layoutYOfCardClicked + 54);
+                        myPlayerAreaAnchorPane.getChildren().add(pane);
+
+                        //for debugging
+                        x = (((int) layoutXOfCardClicked - 9999)/104) + 1;
+                        y = ((-(int) layoutYOfCardClicked - 9999)/54) - 1;
+                        System.out.println("carta posizionata in (" + x + "," + y + ")");
+                    }
+                }
+
+                /*if(points>0){
+                    //aggiorno punteggio sul tabellone
+                    switch (points) {
+                        //TODO la cosa migliore sarebbe spostare le pedine in 0 sopra in endSetup qui, così quando tolgo una pedina in mezzo alle altre posso allineare
+                        case 1 -> {
+                            //cancello la mia pedina da 0
+                            Node nodo = globalPane.lookup("#" + myColor);
+                            if (nodo instanceof ImageView) {
+                                ImageView foundPedina = (ImageView) nodo;
+                                foundPedina.setVisible(false);
+                            }
+                            for(Node node : point1.getChildren()) {
+                                if(node instanceof ImageView) {
+                                    ImageView imageView = (ImageView) node;
+                                    if(imageView.getImage() == null) {
+
+                                        String myColorChosen = null;
+
+                                        switch (myColor){
+                                            case Color.BLUE -> myColorChosen = "/pedine/pedina_blu.png";
+                                            case Color.RED -> myColorChosen = "/pedine/pedina_rossa.png";
+                                            case Color.GREEN -> myColorChosen = "/pedine/pedina_verde.png";
+                                            case Color.YELLOW -> myColorChosen = "/pedine/pedina_gialla.png";
+                                        }
+
+                                        try(InputStream myColorStream = getClass().getResourceAsStream(myColorChosen)){
+                                            imageView.setImage(new Image(myColorStream));
+                                            break;
+                                        }catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }*/
+
+                //aggiorno posizioni carte in mano
+                //per pescare una carta in mano vediamo la prima posizione in cui handCard.isVisible == false
+                switch (selectedCardIndex) {
+                    case 0 -> {
+                        handCard3.setVisible(false);
+                        flipCard3.setVisible(false);
+
+
+                        Image handCard2Image = handCard2.getImage();
+                        Image handcard3Image = handCard3.getImage();
+
+                        handCard1.setImage(handCard2Image);
+                        handCard2.setImage(handcard3Image);
+                    }
+                    case 1 -> {
+                        handCard3.setVisible(false);
+                        flipCard3.setVisible(false);
+
+                        Image handcard3Image = handCard3.getImage();
+
+                        handCard2.setImage(handcard3Image);
+                    }
+                    case 2 -> {
+                        handCard3.setVisible(false);
+                        flipCard3.setVisible(false);
+                    }
+                }
+            }
+        });
+    }
+
+    public void updateOtherAfterCardDrawn(String topGCardId, String topRCardId,
+                                          String revealedR1Id, String revealedR2Id,
+                                          String revealedG1Id, String revealedG2Id) {
+        Platform.runLater(()->{
+            streamTopRGImage(topRCardId,topGCardId,true);
+            streamTopRGImage(topRCardId,topGCardId,false);
+
+            streamRevealedId(revealedG1Id,revealedG2Id,
+                    revealedR1Id,revealedR2Id);
+        });
+
+    }
+
+    private void streamRevealedId(String revealedG1Id, String revealedG2Id, String revealedR1Id, String revealedR2Id) {
+        String revG1 = "/CardsImages/HandCards/front/" + revealedG1Id + ".png";
+        String revG2 = "/CardsImages/HandCards/front/" + revealedG2Id + ".png";
+        String revR1 = "/CardsImages/HandCards/front/" + revealedR1Id + ".png";
+        String revR2 = "/CardsImages/HandCards/front/" + revealedR2Id + ".png";
+
+        try(InputStream revG1Stream = getClass().getResourceAsStream(revG1);
+            InputStream revG2Stream = getClass().getResourceAsStream(revG2);
+            InputStream revR1Stream = getClass().getResourceAsStream(revR1);
+            InputStream revR2Stream = getClass().getResourceAsStream(revR2);){
+
+            this.revealedGold1.setImage(new Image(revG1Stream));
+            this.revealedGold2.setImage(new Image(revG2Stream));
+            this.revealedResource1.setImage(new Image(revR1Stream));
+            this.revealedResource2.setImage(new Image(revR2Stream));
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

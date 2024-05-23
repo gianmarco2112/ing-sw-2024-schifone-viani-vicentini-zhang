@@ -34,12 +34,12 @@
                      </AnchorPane>
                   </content>
                </ScrollPane>
-               <ImageView fx:id="resourceDeck" fitHeight="93.0" fitWidth="133.0" layoutX="221.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="goldDeck" fitHeight="93.0" fitWidth="133.0" layoutX="221.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="revealedGold1" fitHeight="93.0" fitWidth="133.0" layoutX="375.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="revealedResource1" fitHeight="93.0" fitWidth="133.0" layoutX="375.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="revealedResource2" fitHeight="93.0" fitWidth="133.0" layoutX="536.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="revealedGold2" fitHeight="93.0" fitWidth="133.0" layoutX="536.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="resourceDeck" fitHeight="93.0" fitWidth="133.0" layoutX="221.0" layoutY="14.0" onMouseClicked="#drawFromResourceDeck" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="goldDeck" fitHeight="93.0" fitWidth="133.0" layoutX="221.0" layoutY="115.0" onMouseClicked="#drawFromGoldDeck" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="revealedGold1" fitHeight="93.0" fitWidth="133.0" layoutX="375.0" layoutY="115.0" onMouseClicked="#drawFromRevealedGold1" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="revealedResource1" fitHeight="93.0" fitWidth="133.0" layoutX="375.0" layoutY="14.0" onMouseClicked="#drawFromRevealedResource1" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="revealedResource2" fitHeight="93.0" fitWidth="133.0" layoutX="536.0" layoutY="14.0" onMouseClicked="#drawFromRevealedResource2" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="revealedGold2" fitHeight="93.0" fitWidth="133.0" layoutX="536.0" layoutY="115.0" onMouseClicked="#drawFromRevealedGold2" pickOnBounds="true" preserveRatio="true" />
                <ImageView fx:id="handCard1" fitHeight="93.0" fitWidth="133.0" layoutX="218.0" layoutY="598.0" onMouseClicked="#playHandCard1" pickOnBounds="true" preserveRatio="true" />
                <ImageView fx:id="handCard2" fitHeight="93.0" fitWidth="133.0" layoutX="372.0" layoutY="598.0" onMouseClicked="#playHandCard2" pickOnBounds="true" preserveRatio="true" />
                <ImageView fx:id="handCard3" fitHeight="93.0" fitWidth="133.0" layoutX="536.0" layoutY="598.0" onMouseClicked="#playHandCard3" pickOnBounds="true" preserveRatio="true" />

@@ -4,6 +4,7 @@ import ingsw.codex_naturalis.client.view.UI;
 import ingsw.codex_naturalis.client.view.tui.TextualUI;
 import ingsw.codex_naturalis.client.view.util.UIObservableItem;
 import ingsw.codex_naturalis.common.enumerations.Color;
+import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
 import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
 import ingsw.codex_naturalis.common.immutableModel.ImmGame;
@@ -117,6 +118,7 @@ public class GraphicalUI extends Application implements UI {
     private String cornerClicked;
     private int layoutXOfCardClicked;
     private int layoutYOfCardClicked;
+    private DrawCardEvent drawCardEvent;
     private GameControllerFX gameControllerFX;
     private LobbiesControllerFX lobbiesControllerFX;
     private LoginControllerFX loginControllerFX;
@@ -302,14 +304,41 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void cardPlayed(ImmGame immGame, String playerNicknameWhoUpdated) {
+        System.out.println(playerNicknameWhoUpdated + "ha giocato una parta");
         this.game = immGame;
         //devo aggiornare punteggi
-        gameControllerFX.handlerCornerClick(null,cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,
-                true,game.player().playerArea().points(),myColor); //TODO NO myColor, ma è il colore del giocatore che ha giocato la carta, la pedina si deve aggiornare per tutti
+        //gameControllerFX.handlerCornerClick(null,cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,
+                //true,game.player().playerArea().points(),myColor); //TODO NO myColor, ma è il colore del giocatore che ha giocato la carta, la pedina si deve aggiornare per tutti
+
+        if(playerNicknameWhoUpdated.equals(this.game.player().nickname())){
+            gameControllerFX.cardPlayed(cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,
+                    game.player().playerArea().points());
+        }else{
+            //TODO aggiornare i campi degli altri
+        }
+
     }
 
     @Override
     public void cardDrawn(ImmGame immGame, String playerNicknameWhoUpdated) {
+        System.out.println(playerNicknameWhoUpdated + "ha pescato una parta");
+        this.game = immGame;
+        //nel metodo che chiamo successivamente devo usare Platform.runlater!!
+        if(playerNicknameWhoUpdated.equals(this.game.player().nickname())){
+            gameControllerFX.cardDrawn(drawCardEvent,
+                    game.topResourceCard().cardID(),game.topGoldCard().cardID(),
+                    game.player().hand().getLast().cardID(),
+                    game.revealedResourceCards().getFirst().cardID(),game.revealedResourceCards().getLast().cardID(),
+                    game.revealedGoldCards().getFirst().cardID(),game.revealedGoldCards().getLast().cardID());
+        }else{
+            //aggiorno per tutti
+            gameControllerFX.updateOtherAfterCardDrawn(
+                    game.topGoldCard().cardID(),
+                    game.topResourceCard().cardID(),
+                    game.revealedResourceCards().getFirst().cardID(),game.revealedResourceCards().getLast().cardID(),
+                    game.revealedGoldCards().getFirst().cardID(),game.revealedGoldCards().getLast().cardID()
+            );
+        }
 
     }
 
@@ -549,5 +578,13 @@ public class GraphicalUI extends Application implements UI {
         layoutYOfCardClicked = layoutY;
 
         uiObservableItem.notifyPlayCard(selectedCardIndex, x, y);
+    }
+
+    public void drawingCard(DrawCardEvent drawCardEvent) {
+        Platform.runLater(()->{
+            this.drawCardEvent = drawCardEvent;
+        });
+
+        uiObservableItem.notifyDrawCard(drawCardEvent);
     }
 }

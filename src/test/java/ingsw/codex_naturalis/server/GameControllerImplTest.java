@@ -88,7 +88,14 @@ class GameControllerImplTest {
     @Test
     void chooseSecretObjectiveCard() {
         readyToPlay();
-
+        assertTrue(model.getPlayerOrder().getFirst().getSecretObjectiveCards().isEmpty());
+        gameplayController.chooseSecretObjectiveCard("Test", 1);
+        //gameplayController.
+        //gameplayController.chooseSecretObjectiveCard("Test2", 1);
+        while(model.getPlayerOrder().getFirst().getSecretObjectiveCards().size() == 0){
+            //System.out.println("aspetto che il model si aggiorni");
+        }
+        assertEquals(1, model.getPlayerOrder().getFirst().getSecretObjectiveCards().size());
     }
 
     @Test

@@ -100,6 +100,30 @@
                <Button fx:id="flipCard1" layoutX="267.0" layoutY="688.0" mnemonicParsing="false" onAction="#flipHandCard1" text="Flip" />
                <Button fx:id="flipCard2" layoutX="418.0" layoutY="688.0" mnemonicParsing="false" onAction="#flipHandCard2" text="Flip" />
                <Button fx:id="flipCard3" layoutX="582.0" layoutY="688.0" mnemonicParsing="false" onAction="#flipHandCard3" text="Flip" />
+                        <AnchorPane fx:id="point0" layoutX="32.0" layoutY="312.0" prefHeight="44.0" prefWidth="33.0">
+                           <children>
+                              <ImageView fx:id="point0_1" fitHeight="33.0" fitWidth="33.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="point0_2" fitHeight="33.0" fitWidth="33.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="point0_3" fitHeight="33.0" fitWidth="33.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="point0_4" fitHeight="33.0" fitWidth="33.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="point1" layoutX="75.0" layoutY="312.0" prefHeight="44.0" prefWidth="33.0">
+                           <children>
+                              <ImageView fx:id="point1_1" fitHeight="33.0" fitWidth="33.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="point1_2" fitHeight="33.0" fitWidth="33.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="point1_3" fitHeight="33.0" fitWidth="33.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="point1_4" fitHeight="33.0" fitWidth="33.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="point011" layoutX="118.0" layoutY="312.0" prefHeight="44.0" prefWidth="33.0">
+                           <children>
+                              <ImageView fx:id="point2_1" fitHeight="33.0" fitWidth="33.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="point2_2" fitHeight="33.0" fitWidth="33.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="point2_3" fitHeight="33.0" fitWidth="33.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="point2_4" fitHeight="33.0" fitWidth="33.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </AnchorPane>
             </children></AnchorPane>
          </center>
       </BorderPane>

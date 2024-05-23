@@ -303,7 +303,7 @@ public class GraphicalUI extends Application implements UI {
     public void cardPlayed(ImmGame immGame, String playerNicknameWhoUpdated) {
         this.game = immGame;
         //devo aggiornare punteggi
-        gameControllerFX.handlerCornerClick(null,cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,true);
+        gameControllerFX.handlerCornerClick(null,cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,true,game.player().playerArea().points(),myColor);
     }
 
     @Override

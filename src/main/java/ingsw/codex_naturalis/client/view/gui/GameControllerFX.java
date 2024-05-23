@@ -6,6 +6,7 @@ import ingsw.codex_naturalis.common.enumerations.Symbol;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -275,6 +276,7 @@ public class GameControllerFX {
             myPedina.setFitWidth(33);
             myPedina.setLayoutX(9999+50);
             myPedina.setLayoutY(9999-17);
+            myPedina.setId("myPedina");
             myPlayerAreaAnchorPane.getChildren().add(myPedina);
 
         } catch (IOException e) {
@@ -364,16 +366,16 @@ public class GameControllerFX {
         int height = 35;
 
         Rectangle topLeft = createCorner(width, height);
-        topLeft.setOnMouseClicked(event -> handlerCornerClick(event, "TopLeft", card.getLayoutX(), card.getLayoutY(), false));
+        topLeft.setOnMouseClicked(event -> handlerCornerClick(event, "TopLeft", card.getLayoutX(), card.getLayoutY(), false,-1, null));
 
         Rectangle topRight = createCorner(width, height);
-        topRight.setOnMouseClicked(event -> handlerCornerClick(event, "TopRight", card.getLayoutX(), card.getLayoutY(), false));
+        topRight.setOnMouseClicked(event -> handlerCornerClick(event, "TopRight", card.getLayoutX(), card.getLayoutY(), false,-1, null));
 
         Rectangle bottomLeft = createCorner(width, height);
-        bottomLeft.setOnMouseClicked(event -> handlerCornerClick(event, "BottomLeft", card.getLayoutX(), card.getLayoutY(), false));
+        bottomLeft.setOnMouseClicked(event -> handlerCornerClick(event, "BottomLeft", card.getLayoutX(), card.getLayoutY(), false,-1, null));
 
         Rectangle bottomRight = createCorner(width, height);
-        bottomRight.setOnMouseClicked(event -> handlerCornerClick(event, "BottomRight", card.getLayoutX(), card.getLayoutY(), false));
+        bottomRight.setOnMouseClicked(event -> handlerCornerClick(event, "BottomRight", card.getLayoutX(), card.getLayoutY(), false,-1, null));
 
         topLeft.setLayoutX(0);
         topLeft.setLayoutY(0);
@@ -395,7 +397,7 @@ public class GameControllerFX {
         return corner;
     }
 
-    public void handlerCornerClick(MouseEvent event, String corner, double layoutX, double layoutY, boolean ok) {
+    public void handlerCornerClick(MouseEvent event, String corner, double layoutX, double layoutY, boolean ok, int points, Color myColor) {
         cornerClicked = corner;
         layoutXOfCardClicked = (int) layoutX;
         layoutYOfCardClicked = (int) layoutY;
@@ -510,6 +512,44 @@ public class GameControllerFX {
                         case 2 -> handCard3.setVisible(false);
                     }
                 }
+
+                if(points>0){
+                    //aggiorno punteggio sul tabellone
+                    switch (points) {
+                        case 1 -> {
+                            //cancello la mia pedina da 0
+                            Node nodo = myPlayerAreaAnchorPane.lookup("#myPedinaId");
+                            if (nodo instanceof ImageView) {
+                                ImageView foundPedina = (ImageView) nodo;
+                                foundPedina.setVisible(false);
+                            }
+                            for(Node node : point1.getChildren()) {
+                                if(node instanceof ImageView) {
+                                    ImageView imageView = (ImageView) node;
+                                    if(imageView.getImage() == null) {
+
+                                        String myColorChosen = null;
+
+                                        switch (myColor){
+                                            case Color.BLUE -> myColorChosen = "/pedine/pedina_blu.png";
+                                            case Color.RED -> myColorChosen = "/pedine/pedina_rossa.png";
+                                            case Color.GREEN -> myColorChosen = "/pedine/pedina_verde.png";
+                                            case Color.YELLOW -> myColorChosen = "/pedine/pedina_gialla.png";
+                                        }
+
+                                        try(InputStream myColorStream = getClass().getResourceAsStream(myColorChosen)){
+                                            imageView.setImage(new Image(myColorStream));
+                                            break;
+                                        }catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         });
 
@@ -543,4 +583,49 @@ public class GameControllerFX {
         selectedCard = copyImageView(handCard3);
         selectedCardIndex = 2;
     }
+
+    @FXML
+    private AnchorPane point0;
+
+    @FXML
+    private AnchorPane point011;
+
+    @FXML
+    private ImageView point0_1;
+
+    @FXML
+    private ImageView point0_2;
+
+    @FXML
+    private ImageView point0_3;
+
+    @FXML
+    private ImageView point0_4;
+
+    @FXML
+    private AnchorPane point1;
+
+    @FXML
+    private ImageView point1_1;
+
+    @FXML
+    private ImageView point1_2;
+
+    @FXML
+    private ImageView point1_3;
+
+    @FXML
+    private ImageView point1_4;
+
+    @FXML
+    private ImageView point2_1;
+
+    @FXML
+    private ImageView point2_2;
+
+    @FXML
+    private ImageView point2_3;
+
+    @FXML
+    private ImageView point2_4;
 }

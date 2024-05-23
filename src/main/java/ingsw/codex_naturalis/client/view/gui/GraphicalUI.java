@@ -176,6 +176,7 @@ public class GraphicalUI extends Application implements UI {
     private void confirmView() {
         if(waitingRoomControllerFX==null){
             setScene("WaitingRoom");
+            setRunningState(RunningState.WAITING_FOR_UPDATE);
             try {
                 waitForRunLater();
             } catch (InterruptedException ignored) {}
@@ -263,7 +264,7 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void updateColor(Color color) {
-
+        colorSetupControllerFX.selectedColor(color);
     }
 
     @Override
@@ -303,7 +304,8 @@ public class GraphicalUI extends Application implements UI {
     public void cardPlayed(ImmGame immGame, String playerNicknameWhoUpdated) {
         this.game = immGame;
         //devo aggiornare punteggi
-        gameControllerFX.handlerCornerClick(null,cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,true,game.player().playerArea().points(),myColor);
+        gameControllerFX.handlerCornerClick(null,cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,
+                true,game.player().playerArea().points(),myColor); //TODO NO myColor, ma è il colore del giocatore che ha giocato la carta, la pedina si deve aggiornare per tutti
     }
 
     @Override

@@ -231,6 +231,7 @@ public class GameControllerFX {
             pedinaRossa.setFitWidth(33);
             pedinaRossa.setLayoutX(32);
             pedinaRossa.setLayoutY(323);
+            pedinaRossa.setId("RED");
             globalPane.getChildren().add(pedinaRossa);
 
             ImageView pedinaBlu = new ImageView(new Image(bluStream));
@@ -238,6 +239,7 @@ public class GameControllerFX {
             pedinaBlu.setFitWidth(33);
             pedinaBlu.setLayoutX(32);
             pedinaBlu.setLayoutY(323-3);
+            pedinaBlu.setId("BLUE");
             globalPane.getChildren().add(pedinaBlu);
 
             ImageView pedinaGialla = new ImageView(new Image(giallaStream));
@@ -245,6 +247,7 @@ public class GameControllerFX {
             pedinaGialla.setFitWidth(33);
             pedinaGialla.setLayoutX(32);
             pedinaGialla.setLayoutY(323-3-3);
+            pedinaGialla.setId("YELLOW");
             globalPane.getChildren().add(pedinaGialla);
 
             ImageView pedinaVerde = new ImageView(new Image(verdeStream));
@@ -252,6 +255,7 @@ public class GameControllerFX {
             pedinaVerde.setFitWidth(33);
             pedinaVerde.setLayoutX(32);
             pedinaVerde.setLayoutY(323-3-3-3);
+            pedinaVerde.setId("GREEN");
             globalPane.getChildren().add(pedinaVerde);
 
             mySecretObjective.setImage(new Image(secretObj));
@@ -505,20 +509,21 @@ public class GameControllerFX {
                     }
                 }
 
-                if(selectedCardIndex==0 || selectedCardIndex==1 || selectedCardIndex==2) {
+                /*if(selectedCardIndex==0 || selectedCardIndex==1 || selectedCardIndex==2) {
                     switch (selectedCardIndex) {
                         case 0 -> handCard1.setVisible(false);
                         case 1 -> handCard2.setVisible(false);
                         case 2 -> handCard3.setVisible(false);
                     }
-                }
+                }*/
 
                 if(points>0){
                     //aggiorno punteggio sul tabellone
                     switch (points) {
+                        //TODO la cosa migliore sarebbe spostare le pedine in 0 sopra in endSetup qui, così quando tolgo una pedina in mezzo alle altre posso allineare
                         case 1 -> {
                             //cancello la mia pedina da 0
-                            Node nodo = myPlayerAreaAnchorPane.lookup("#myPedinaId");
+                            Node nodo = globalPane.lookup("#" + myColor);
                             if (nodo instanceof ImageView) {
                                 ImageView foundPedina = (ImageView) nodo;
                                 foundPedina.setVisible(false);
@@ -548,6 +553,34 @@ public class GameControllerFX {
                                 }
                             }
                         }
+                    }
+                }
+
+                //aggiorno posizioni carte in mano
+                //per pescare una carta in mano vediamo la prima posizione in cui handCard.isVisible == false
+                switch (selectedCardIndex) {
+                    case 0 -> {
+                        handCard3.setVisible(false);
+                        flipCard3.setVisible(false);
+
+
+                        Image handCard2Image = handCard2.getImage();
+                        Image handcard3Image = handCard3.getImage();
+
+                        handCard1.setImage(handCard2Image);
+                        handCard2.setImage(handcard3Image);
+                    }
+                    case 1 -> {
+                        handCard3.setVisible(false);
+                        flipCard3.setVisible(false);
+
+                        Image handcard3Image = handCard3.getImage();
+
+                        handCard2.setImage(handcard3Image);
+                    }
+                    case 2 -> {
+                        handCard3.setVisible(false);
+                        flipCard3.setVisible(false);
                     }
                 }
             }

@@ -30,22 +30,32 @@ public class CardsSetupControllerFX {
 
     @FXML
     void backInitialSelected(MouseEvent event) {
+        backInitial.setVisible(false);
         viewGUI.playingInitialCard(false);
     }
 
     @FXML
     void frontInitialSelected(MouseEvent event) {
+        frontInitial.setVisible(false);
         viewGUI.playingInitialCard(true);
     }
 
     @FXML
     void objectiveCard1Selected(MouseEvent event) {
+        objectiveCard1.setVisible(false);
         viewGUI.choosedObjective(0);
+
+        objectiveCard2.setDisable(true);
+        objectiveCard1.setDisable(true);
     }
 
     @FXML
     void objectiveCard2Selected(MouseEvent event) {
+        objectiveCard2.setVisible(false);
         viewGUI.choosedObjective(1);
+
+        objectiveCard2.setDisable(true);
+        objectiveCard1.setDisable(true);
     }
 
     @FXML

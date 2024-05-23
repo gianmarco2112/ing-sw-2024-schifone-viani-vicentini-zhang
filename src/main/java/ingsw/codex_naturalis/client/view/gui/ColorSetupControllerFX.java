@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.client.view.gui;
 
 import ingsw.codex_naturalis.common.enumerations.Color;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -73,5 +74,20 @@ public class ColorSetupControllerFX implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void selectedColor(Color color) {
+        Platform.runLater(()->{
+            switch (color){
+                case RED -> redPawn.setVisible(false);
+                case BLUE -> bluePawn.setVisible(false);
+                case GREEN -> greenPawn.setVisible(false);
+                case YELLOW -> yellowPawn.setVisible(false);
+            }
+            redPawn.setDisable(true);
+            bluePawn.setDisable(true);
+            greenPawn.setDisable(true);
+            yellowPawn.setDisable(true);
+        });
     }
 }

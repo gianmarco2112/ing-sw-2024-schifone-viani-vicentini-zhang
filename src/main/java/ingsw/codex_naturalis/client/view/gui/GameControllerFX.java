@@ -4,6 +4,8 @@ import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
+import ingsw.codex_naturalis.common.immutableModel.ImmGame;
+import ingsw.codex_naturalis.common.immutableModel.ImmPlayableCard;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,8 +19,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameControllerFX {
     @FXML
@@ -118,10 +119,19 @@ public class GameControllerFX {
     private ImageView user1Initialcard;
 
     @FXML
+    private AnchorPane user1PlayerArea;
+
+    @FXML
     private ImageView user2Initialcard;
 
     @FXML
+    private AnchorPane user2PlayerArea;
+
+    @FXML
     private ImageView user3Initialcard;
+
+    @FXML
+    private AnchorPane user3PlayerArea;
 
     @FXML
     private Label username1;
@@ -138,11 +148,41 @@ public class GameControllerFX {
     private String cornerClicked;
 
     //posizioni delle anchorPane
-    private Map<Integer, List<Integer>> boardPointsPosition = Map.of(
-            0, List.of(32,312),
-            1,List.of(75,312),
-            2,List.of(118,312)
-    );
+    private HashMap<Integer, List<Integer>> boardPointsPosition = new HashMap<>();
+    private String nickname;
+
+    private void initializeBoard(){
+        boardPointsPosition.put(0, List.of(32,312));
+        boardPointsPosition.put(1, List.of(75,312));
+        boardPointsPosition.put(2, List.of(118,312));
+        boardPointsPosition.put(3, List.of(139, 272));
+        boardPointsPosition.put(4, List.of(96, 272));
+        boardPointsPosition.put(5, List.of(54, 272));
+        boardPointsPosition.put(6, List.of(11, 272));
+        boardPointsPosition.put(7, List.of(11, 234));
+        boardPointsPosition.put(8, List.of(54, 234));
+        boardPointsPosition.put(9, List.of(96, 234));
+        boardPointsPosition.put(10, List.of(139, 234));
+        boardPointsPosition.put(11, List.of(139, 194));
+        boardPointsPosition.put(12, List.of(96, 194));
+        boardPointsPosition.put(13, List.of(54, 194));
+        boardPointsPosition.put(14, List.of(11, 194));
+        boardPointsPosition.put(15, List.of(11, 155));
+        boardPointsPosition.put(16, List.of(54, 155));
+        boardPointsPosition.put(17, List.of(96, 155));
+        boardPointsPosition.put(18, List.of(139, 155));
+        boardPointsPosition.put(19, List.of(139, 116));
+        boardPointsPosition.put(20, List.of(75, 99));
+        boardPointsPosition.put(21, List.of(11, 117));
+        boardPointsPosition.put(22, List.of(11, 77));
+        boardPointsPosition.put(23, List.of(11, 38));
+        boardPointsPosition.put(24, List.of(36, 7));
+        boardPointsPosition.put(25, List.of(75, 0));
+        boardPointsPosition.put(26, List.of(114, 7));
+        boardPointsPosition.put(27, List.of(139, 38));
+        boardPointsPosition.put(28, List.of(139, 78));
+        boardPointsPosition.put(29, List.of(75, 47));
+    }
 
 
     public void setViewGUI(GraphicalUI viewGUI) {
@@ -155,10 +195,95 @@ public class GameControllerFX {
                          String topGoldCard, String topResourceCard, Symbol kingdomG, Symbol kingdomR,
                          String revealedResourceCard1, String revealedResourceCard2,
                          String revealedGoldCard1, String revealedGoldCard2,
-                         Color myColor, String firstPlayer) {
+                         Color myColor, String firstPlayer,
+                         int maxNumOfPlayers, String mynickname, List<String> otherNicknames, List<ImmPlayableCard> initialCards, List<Color> colors) {
+
+        nickname = mynickname;
 
         myPlayerAreaAnchorPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
         myPlayerAreaAnchorPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+
+        user1PlayerArea.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        user1PlayerArea.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        playerArea1.setHvalue(1.0);
+        playerArea1.setVvalue(1.0);
+
+        user1Initialcard.setLayoutX(9999);
+        user1Initialcard.setLayoutY(9999);
+
+        username1.setText(otherNicknames.getFirst());
+
+        String u1InitialCard;
+        if(initialCards.getFirst().showingFront()){
+            u1InitialCard = "/CardsImages/Initial/fronts/" + initialCards.getFirst().cardID() + ".png";
+        }else{
+            u1InitialCard = "/CardsImages/Initial/backs/" + initialCards.getFirst().cardID() + ".png";
+        }
+
+        if(maxNumOfPlayers==2){
+            user2PlayerArea.setVisible(false);
+            playerArea2.setVisible(false);
+            username2.setVisible(false);
+            user3PlayerArea.setVisible(false);
+            playerArea3.setVisible(false);
+            username3.setVisible(false);
+        }else{
+            switch (maxNumOfPlayers) {
+                case 3 -> {
+                    user2PlayerArea.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                    user2PlayerArea.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                    playerArea2.setHvalue(1.0);
+                    playerArea2.setVvalue(1.0);
+                    user3PlayerArea.setVisible(false);
+                    playerArea3.setVisible(false);
+
+                    user2Initialcard.setLayoutX(9999);
+                    user2Initialcard.setLayoutY(9999);
+                    streamInitialCard(initialCards.getLast().cardID(),user2Initialcard,initialCards.getLast().showingFront());
+
+                    ImageView u2Pedina = new ImageView();
+                    streamColor(colors.getLast(),u2Pedina);
+                    u2Pedina.setFitHeight(33);
+                    u2Pedina.setFitWidth(33);
+                    u2Pedina.setLayoutX(9999+37);
+                    u2Pedina.setLayoutY(9999-20);
+                    user2PlayerArea.getChildren().add(u2Pedina);
+                }
+                case 4 -> {
+                    user2PlayerArea.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                    user2PlayerArea.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                    user3PlayerArea.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                    user3PlayerArea.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                    playerArea2.setHvalue(1.0);
+                    playerArea2.setVvalue(1.0);
+                    playerArea3.setHvalue(1.0);
+                    playerArea3.setVvalue(1.0);
+
+                    user2Initialcard.setLayoutX(9999);
+                    user2Initialcard.setLayoutY(9999);
+                    user3Initialcard.setLayoutX(9999);
+                    user3Initialcard.setLayoutY(9999);
+                    streamInitialCard(initialCards.get(1).cardID(), user2Initialcard, initialCards.get(1).showingFront());
+                    streamInitialCard(initialCards.getLast().cardID(), user3Initialcard, initialCards.getLast().showingFront());
+
+                    ImageView u2Pedina = new ImageView();
+                    streamColor(colors.get(1),u2Pedina);
+                    u2Pedina.setFitHeight(33);
+                    u2Pedina.setFitWidth(33);
+                    u2Pedina.setLayoutX(9999+37);
+                    u2Pedina.setLayoutY(9999-20);
+                    user2PlayerArea.getChildren().add(u2Pedina);
+
+                    ImageView u3Pedina = new ImageView();
+                    streamColor(colors.getLast(),u3Pedina);
+                    u3Pedina.setFitHeight(33);
+                    u3Pedina.setFitWidth(33);
+                    u3Pedina.setLayoutX(9999+37);
+                    u3Pedina.setLayoutY(9999-20);
+                    user3PlayerArea.getChildren().add(u3Pedina);
+                }
+            }
+        }
 
         myPlayerArea.setHvalue(1.0);
         myPlayerArea.setVvalue(1.0);
@@ -212,6 +337,7 @@ public class GameControllerFX {
             case Color.YELLOW -> myColorChosen = "/pedine/pedina_gialla.png";
         }
 
+
         try (InputStream initialCardStream = getClass().getResourceAsStream(myinitalcard);
              InputStream rossaStream = getClass().getResourceAsStream(rossa);
              InputStream bluStream = getClass().getResourceAsStream(blu);
@@ -230,9 +356,13 @@ public class GameControllerFX {
              InputStream topRCardStream = getClass().getResourceAsStream(topRCard);
              InputStream topGCardStream = getClass().getResourceAsStream(topGCard);
              InputStream myColorStream = getClass().getResourceAsStream(myColorChosen);
+
+             InputStream u1initialCardStream = getClass().getResourceAsStream(u1InitialCard);
         ) {
 
             myInitialCard.setImage(new Image(initialCardStream));
+
+            user1Initialcard.setImage(new Image(u1initialCardStream));
 
             ImageView pedinaRossa = new ImageView(new Image(rossaStream));
             pedinaRossa.setFitHeight(33);
@@ -288,8 +418,15 @@ public class GameControllerFX {
             myPedina.setFitWidth(33);
             myPedina.setLayoutX(9999+50);
             myPedina.setLayoutY(9999-17);
-            myPedina.setId("myPedina");
             myPlayerAreaAnchorPane.getChildren().add(myPedina);
+
+            ImageView u1Pedina = new ImageView();
+            streamColor(colors.getFirst(),u1Pedina);
+            u1Pedina.setFitHeight(33);
+            u1Pedina.setFitWidth(33);
+            u1Pedina.setLayoutX(9999+37);
+            u1Pedina.setLayoutY(9999-20);
+            user1PlayerArea.getChildren().add(u1Pedina);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -305,6 +442,71 @@ public class GameControllerFX {
         Pane pane = createPaneCard(9999,9999);
         //pane.setStyle("-fx-background-color: lightblue;");
         myPlayerAreaAnchorPane.getChildren().add(pane);
+
+        String pedinanera = "/pedine/pedina_nera.png";
+        try(InputStream neroStream = getClass().getResourceAsStream(pedinanera);){
+            if(mynickname.equals(firstPlayer)){
+                //posiziono la pedina nera sul mio
+                ImageView blackPawn = new ImageView(new Image(neroStream));
+                blackPawn.setFitHeight(33);
+                blackPawn.setFitWidth(33);
+                blackPawn.setLayoutX(9999+50);
+                blackPawn.setLayoutY(9999-17-5);
+                myPlayerAreaAnchorPane.getChildren().add(blackPawn);
+            }else{
+                //posiziono la pedina nera sul campo di un altro giocatore
+                switch (otherNicknames.indexOf(firstPlayer)){
+                    case 0 -> {
+                        ImageView blackPawn = new ImageView(new Image(neroStream));
+                        blackPawn.setFitHeight(33);
+                        blackPawn.setFitWidth(33);
+                        blackPawn.setLayoutX(9999+37);
+                        blackPawn.setLayoutY(9999-20-5);
+                        user1PlayerArea.getChildren().add(blackPawn);
+                    }
+                    case 1 -> {
+                        ImageView blackPawn = new ImageView(new Image(neroStream));
+                        blackPawn.setFitHeight(33);
+                        blackPawn.setFitWidth(33);
+                        blackPawn.setLayoutX(9999+37);
+                        blackPawn.setLayoutY(9999-20-5);
+                        user2PlayerArea.getChildren().add(blackPawn);
+                    }
+                    case 2 -> {
+                        ImageView blackPawn = new ImageView(new Image(neroStream));
+                        blackPawn.setFitHeight(33);
+                        blackPawn.setFitWidth(33);
+                        blackPawn.setLayoutX(9999+37);
+                        blackPawn.setLayoutY(9999-20-5);
+                        user3PlayerArea.getChildren().add(blackPawn);
+                    }
+                }
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void streamInitialCard(String initialCardId, ImageView userInitialcardView, boolean showingFront) {
+        if(showingFront){
+            String path = "/CardsImages/Initial/fronts/" + initialCardId + ".png";
+
+            try(InputStream initialcardStream = getClass().getResourceAsStream(path);){
+                userInitialcardView.setImage(new Image(initialcardStream));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }else{
+            String path = "/CardsImages/Initial/backs/" + initialCardId + ".png";
+
+            try(InputStream initialcardStream = getClass().getResourceAsStream(path);){
+                userInitialcardView.setImage(new Image(initialcardStream));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
     }
 
 
@@ -505,51 +707,6 @@ public class GameControllerFX {
         viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);
     }
 
-    @FXML
-    private AnchorPane point0;
-
-    @FXML
-    private AnchorPane point011;
-
-    @FXML
-    private ImageView point0_1;
-
-    @FXML
-    private ImageView point0_2;
-
-    @FXML
-    private ImageView point0_3;
-
-    @FXML
-    private ImageView point0_4;
-
-    @FXML
-    private AnchorPane point1;
-
-    @FXML
-    private ImageView point1_1;
-
-    @FXML
-    private ImageView point1_2;
-
-    @FXML
-    private ImageView point1_3;
-
-    @FXML
-    private ImageView point1_4;
-
-    @FXML
-    private ImageView point2_1;
-
-    @FXML
-    private ImageView point2_2;
-
-    @FXML
-    private ImageView point2_3;
-
-    @FXML
-    private ImageView point2_4;
-
     public void cardDrawn(DrawCardEvent drawCardEvent, String topResourceCardId, String topGoldCardId, String drawnCardId, String revR1, String revR2, String revG1, String revG2) {
         Platform.runLater(()->{
             switch (drawCardEvent) {
@@ -677,8 +834,8 @@ public class GameControllerFX {
                 //if corner è bottomRight allora LayoutX+104 e LayoutY+54
                 switch (cornerClicked) {
                     case "TopLeft" -> {
-                        selectedCard.setLayoutX((int) layoutXOfCardClicked - 104);
-                        selectedCard.setLayoutY((int) layoutYOfCardClicked - 54);
+                        selectedCard.setLayoutX((int) layoutXOfCardClicked - 104 +1);
+                        selectedCard.setLayoutY((int) layoutYOfCardClicked - 54 -4);
                         myPlayerAreaAnchorPane.getChildren().add(selectedCard);
                         selectedCard = null;
 
@@ -691,8 +848,8 @@ public class GameControllerFX {
                         System.out.println("carta posizionata in (" + x + "," + y + ")");
                     }
                     case "TopRight" -> {
-                        selectedCard.setLayoutX((int) layoutXOfCardClicked + 104);
-                        selectedCard.setLayoutY((int) layoutYOfCardClicked - 54);
+                        selectedCard.setLayoutX((int) layoutXOfCardClicked + 104 +1);
+                        selectedCard.setLayoutY((int) layoutYOfCardClicked - 54 -4);
                         myPlayerAreaAnchorPane.getChildren().add(selectedCard);
                         selectedCard = null;
 
@@ -705,8 +862,8 @@ public class GameControllerFX {
                         System.out.println("carta posizionata in (" + x + "," + y + ")");
                     }
                     case "BottomLeft" -> {
-                        selectedCard.setLayoutX((int) layoutXOfCardClicked - 104);
-                        selectedCard.setLayoutY((int) layoutYOfCardClicked + 54);
+                        selectedCard.setLayoutX((int) layoutXOfCardClicked - 104 +1);
+                        selectedCard.setLayoutY((int) layoutYOfCardClicked + 54 -4);
                         myPlayerAreaAnchorPane.getChildren().add(selectedCard);
                         selectedCard = null;
 
@@ -719,8 +876,8 @@ public class GameControllerFX {
                         System.out.println("carta posizionata in (" + x + "," + y + ")");
                     }
                     case "BottomRight" -> {
-                        selectedCard.setLayoutX((int) layoutXOfCardClicked + 104);
-                        selectedCard.setLayoutY((int) layoutYOfCardClicked + 54);
+                        selectedCard.setLayoutX((int) layoutXOfCardClicked + 104 +1);
+                        selectedCard.setLayoutY((int) layoutYOfCardClicked + 54 -4);
                         myPlayerAreaAnchorPane.getChildren().add(selectedCard);
                         selectedCard = null;
 
@@ -835,5 +992,117 @@ public class GameControllerFX {
         }catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void streamColor(Color color,ImageView imageview){
+        String path = "/pedine/" + color + ".png";
+
+        try(InputStream colorStream = getClass().getResourceAsStream(path);){
+            imageview.setImage(new Image(colorStream));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void updateUardPlayedForOthers(String playerNicknameWhoUpdated, ImmGame immGame, String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked) {
+        Platform.runLater(()->{
+            List<String> nicknames = immGame.playerOrderNicknames();
+            nicknames.remove(nickname);
+            switch (nicknames.indexOf(playerNicknameWhoUpdated)){
+                case 0 -> updateForPlayer1(playerNicknameWhoUpdated, immGame, cornerClicked, layoutXOfCardClicked, layoutYOfCardClicked);
+                case 1 -> updateForPlayer2(playerNicknameWhoUpdated, immGame, cornerClicked, layoutXOfCardClicked, layoutYOfCardClicked);
+                case 2 -> updateForPlayer3(playerNicknameWhoUpdated, immGame, cornerClicked, layoutXOfCardClicked, layoutYOfCardClicked);
+            }
+        });
+    }
+    private void updateForPlayer1(String playerNicknameWhoUpdated, ImmGame immGame, String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked){
+        //devo ottenere che carta è stata giocata dal giocatore sulla base delle coordinate normalizzate con le layout
+        //LinkedHashMap<List<Integer>, ImmPlayableCard> cartePosizionateInOrdine = new LinkedHashMap<>();
+        Map.Entry<List<Integer>, ImmPlayableCard> lastPlaced = null;
+        for (Map.Entry<List<Integer>, ImmPlayableCard> cardAndCoordinates : immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).playerArea().area().entrySet()) {
+            //cartePosizionateInOrdine.put(cardAndCoordinates.getKey(), cardAndCoordinates.getValue());
+            lastPlaced = cardAndCoordinates;
+        }
+        int lastx = lastPlaced.getKey().getFirst();
+        int lasty = lastPlaced.getKey().getLast();
+        String idlast = lastPlaced.getValue().cardID();
+
+        int layoutX = lastx*83 + 9999;
+        int layoutY = 9999 - 43*lasty;
+
+        ImageView toPlace = new ImageView();
+        streamCard(idlast,toPlace,lastPlaced.getValue().showingFront());
+
+        toPlace.setLayoutX(layoutX);
+        toPlace.setLayoutY(layoutY);
+        user1PlayerArea.getChildren().add(toPlace);
+    }
+
+    private void updateForPlayer2(String playerNicknameWhoUpdated, ImmGame immGame, String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked){
+        Map.Entry<List<Integer>, ImmPlayableCard> lastPlaced = null;
+        for (Map.Entry<List<Integer>, ImmPlayableCard> cardAndCoordinates : immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).playerArea().area().entrySet()) {
+            //cartePosizionateInOrdine.put(cardAndCoordinates.getKey(), cardAndCoordinates.getValue());
+            lastPlaced = cardAndCoordinates;
+        }
+        int lastx = lastPlaced.getKey().getFirst();
+        int lasty = lastPlaced.getKey().getLast();
+        String idlast = lastPlaced.getValue().cardID();
+
+        int layoutX = lastx*104 + 9999;
+        int layoutY = 9999 - 54*lasty;
+
+        ImageView toPlace = new ImageView();
+        streamCard(idlast,toPlace,lastPlaced.getValue().showingFront());
+
+        toPlace.setLayoutX(layoutX);
+        toPlace.setLayoutY(layoutY);
+        user2PlayerArea.getChildren().add(toPlace);
+    }
+
+    private void updateForPlayer3(String playerNicknameWhoUpdated, ImmGame immGame, String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked){
+        Map.Entry<List<Integer>, ImmPlayableCard> lastPlaced = null;
+        for (Map.Entry<List<Integer>, ImmPlayableCard> cardAndCoordinates : immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).playerArea().area().entrySet()) {
+            //cartePosizionateInOrdine.put(cardAndCoordinates.getKey(), cardAndCoordinates.getValue());
+            lastPlaced = cardAndCoordinates;
+        }
+        int lastx = lastPlaced.getKey().getFirst();
+        int lasty = lastPlaced.getKey().getLast();
+        String idlast = lastPlaced.getValue().cardID();
+
+        int layoutX = lastx*104 + 9999;
+        int layoutY = 9999 - 54*lasty;
+
+        ImageView toPlace = new ImageView();
+        streamCard(idlast,toPlace,lastPlaced.getValue().showingFront());
+
+        toPlace.setLayoutX(layoutX);
+        toPlace.setLayoutY(layoutY);
+        user3PlayerArea.getChildren().add(toPlace);
+    }
+
+    private void streamCard(String id, ImageView toPlace, boolean showingFront) {
+        if(showingFront){
+            String path = "/CardsImages/HandCards/front/" + id + ".png";
+
+            try(InputStream cardStream = getClass().getResourceAsStream(path);){
+                toPlace.setFitHeight(71);
+                toPlace.setFitWidth(107);
+                toPlace.setImage(new Image(cardStream));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }else{
+            String path = "/CardsImages/HandCards/back" + id + ".png";
+
+            try(InputStream cardStream = getClass().getResourceAsStream(path);){
+                toPlace.setFitHeight(71);
+                toPlace.setFitWidth(107);
+                toPlace.setImage(new Image(cardStream));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+
     }
 }

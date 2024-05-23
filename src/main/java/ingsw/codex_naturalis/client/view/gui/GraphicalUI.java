@@ -119,6 +119,11 @@ public class GraphicalUI extends Application implements UI {
     private int layoutXOfCardClicked;
     private int layoutYOfCardClicked;
     private DrawCardEvent drawCardEvent;
+    private List<String> playerOrder;
+    private String nickname;
+    private List<ImmPlayableCard> initialCards = new ArrayList<>();
+    private int maxNumOfPlayers;
+    private List<Color> colors = new ArrayList<>();
     private GameControllerFX gameControllerFX;
     private LobbiesControllerFX lobbiesControllerFX;
     private LoginControllerFX loginControllerFX;
@@ -205,6 +210,7 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void setNickname(String nickname) {
+        this.nickname = nickname;
         setState(State.LOBBY);
         setRunningState(RunningState.RUNNING);
     }
@@ -287,9 +293,18 @@ public class GraphicalUI extends Application implements UI {
         revealedGoldCards = game.revealedGoldCards();
         myColor = game.player().color();
         firstPlayer = game.playerOrderNicknames().getFirst();
+        playerOrder = game.playerOrderNicknames();
+        maxNumOfPlayers = playerOrder.size();
+        playerOrder.remove(nickname);
+        for(int i = 0; i<playerOrder.size(); i++){
+            initialCards.add(game.otherPlayers().get(i).playerArea().area().get(List.of(0,0)));
+            colors.add(game.otherPlayers().get(i).color());
+        }
+
         setScene("Game");
         setState(State.GAME);
         setRunningState(RunningState.WAITING_FOR_UPDATE);
+
     }
 
     @Override
@@ -315,6 +330,7 @@ public class GraphicalUI extends Application implements UI {
                     game.player().playerArea().points());
         }else{
             //TODO aggiornare i campi degli altri
+            gameControllerFX.updateUardPlayedForOthers(playerNicknameWhoUpdated,immGame, cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked);
         }
 
     }
@@ -471,8 +487,7 @@ public class GraphicalUI extends Application implements UI {
                     stage.setResizable(false);
                     gameControllerFX = fxmlLoader.getController();
                     gameControllerFX.setViewGUI(this);
-                    gameControllerFX.endSetup(initialCardID,
-                            initialCardPlayedFront,
+                    gameControllerFX.endSetup(initialCardID, initialCardPlayedFront,
                             myObjectiveCard.cardID(),
                             hand.get(0).cardID(),hand.get(1).cardID(),hand.get(2).cardID(),
                             commonObjectiveCard.get(0).cardID(),commonObjectiveCard.get(1).cardID(),
@@ -480,7 +495,9 @@ public class GraphicalUI extends Application implements UI {
                             revealedResourceCards.get(0).cardID(),revealedResourceCards.get(1).cardID(),
                             revealedGoldCards.get(0).cardID(),revealedGoldCards.get(1).cardID(),
                             myColor,
-                            firstPlayer
+                            firstPlayer,
+                            maxNumOfPlayers,nickname,playerOrder,initialCards,colors
+
                             );
                     break;
                 case "EndGame":

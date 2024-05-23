@@ -3,12 +3,10 @@ package ingsw.codex_naturalis.client.view.gui;
 import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -133,6 +131,10 @@ public class GameControllerFX {
 
     private GraphicalUI viewGUI;
     private ImageView selectedCard = null;
+    private int selectedCardIndex;
+    private String cornerClicked;
+    private int layoutXOfCardClicked;
+    private int layoutYOfCardClicked;
 
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
@@ -362,16 +364,16 @@ public class GameControllerFX {
         int height = 35;
 
         Rectangle topLeft = createCorner(width, height);
-        topLeft.setOnMouseClicked(event -> handlerCornerClick(event, "TopLeft", card.getLayoutX(), card.getLayoutY()));
+        topLeft.setOnMouseClicked(event -> handlerCornerClick(event, "TopLeft", card.getLayoutX(), card.getLayoutY(), false));
 
         Rectangle topRight = createCorner(width, height);
-        topRight.setOnMouseClicked(event -> handlerCornerClick(event, "TopRight", card.getLayoutX(), card.getLayoutY()));
+        topRight.setOnMouseClicked(event -> handlerCornerClick(event, "TopRight", card.getLayoutX(), card.getLayoutY(), false));
 
         Rectangle bottomLeft = createCorner(width, height);
-        bottomLeft.setOnMouseClicked(event -> handlerCornerClick(event, "BottomLeft", card.getLayoutX(), card.getLayoutY()));
+        bottomLeft.setOnMouseClicked(event -> handlerCornerClick(event, "BottomLeft", card.getLayoutX(), card.getLayoutY(), false));
 
         Rectangle bottomRight = createCorner(width, height);
-        bottomRight.setOnMouseClicked(event -> handlerCornerClick(event, "BottomRight", card.getLayoutX(), card.getLayoutY()));
+        bottomRight.setOnMouseClicked(event -> handlerCornerClick(event, "BottomRight", card.getLayoutX(), card.getLayoutY(), false));
 
         topLeft.setLayoutX(0);
         topLeft.setLayoutY(0);
@@ -393,67 +395,152 @@ public class GameControllerFX {
         return corner;
     }
 
-    private void handlerCornerClick(MouseEvent event, String corner, double layoutX, double layoutY) {
+    public void handlerCornerClick(MouseEvent event, String corner, double layoutX, double layoutY, boolean ok) {
+        cornerClicked = corner;
+        layoutXOfCardClicked = (int) layoutX;
+        layoutYOfCardClicked = (int) layoutY;
+
         //evento play card da notificare
         System.out.println(corner + "Clicked!!");
-        if(selectedCard != null) {
-            Pane pane;
-            //if corner è topLeft allora LayoutX-104 e LayoutY-54
-            //if corner è topRight allora LayoutX+104 e LayoutY-54
-            //if corner è bottomLeft allora LayoutX-104 e LayoutY+54
-            //if corner è bottomRight allora LayoutX+104 e LayoutY+54
+
+        if(!ok){
             switch (corner) {
                 case "TopLeft" -> {
-                    selectedCard.setLayoutX((int) layoutX - 104);
-                    selectedCard.setLayoutY((int) layoutY - 54);
-                    myPlayerAreaAnchorPane.getChildren().add(selectedCard);
-
-                    pane = createPaneCard((int) layoutX - 104, (int) layoutY - 54);
-                    myPlayerAreaAnchorPane.getChildren().add(pane);
+                    int x = ((9999 - (int) layoutX)/104)-1;
+                    int y = ((9999 - (int) layoutY)/54)+1;
+                    viewGUI.playingCard(selectedCardIndex, x, y, corner,(int) layoutX,(int) layoutY);
+                    System.out.println("carta giocata in (" + x + "," + y + ")");
                 }
                 case "TopRight" -> {
-                    selectedCard.setLayoutX((int) layoutX + 104);
-                    selectedCard.setLayoutY((int) layoutY - 54);
-                    myPlayerAreaAnchorPane.getChildren().add(selectedCard);
-
-                    pane = createPaneCard((int) layoutX + 104, (int) layoutY - 54);
-                    myPlayerAreaAnchorPane.getChildren().add(pane);
+                    int x = (((int) layoutX - 9999)/104) + 1;
+                    int y = ((9999 - (int) layoutY)/54) + 1;
+                    viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
+                    System.out.println("carta giocata in (" + x + "," + y + ")");
                 }
                 case "BottomLeft" -> {
-                    selectedCard.setLayoutX((int) layoutX - 104);
-                    selectedCard.setLayoutY((int) layoutY + 54);
-                    myPlayerAreaAnchorPane.getChildren().add(selectedCard);
-
-                    pane = createPaneCard((int) layoutX - 104, (int) layoutY + 54);
-                    myPlayerAreaAnchorPane.getChildren().add(pane);
+                    int x = ((9999 - (int) layoutX)/104) - 1;
+                    int y = (((int) layoutY - 9999)/54) - 1;
+                    viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
+                    System.out.println("carta giocata in (" + x + "," + y + ")");
                 }
                 case "BottomRight" -> {
-                    selectedCard.setLayoutX((int) layoutX + 104);
-                    selectedCard.setLayoutY((int) layoutY + 54);
-                    myPlayerAreaAnchorPane.getChildren().add(selectedCard);
-
-                    pane = createPaneCard((int) layoutX + 104, (int) layoutY + 54);
-                    myPlayerAreaAnchorPane.getChildren().add(pane);
+                    int x = (((int) layoutX - 9999)/104) + 1;
+                    int y = (((int) layoutY - 9999)/54) - 1;
+                    viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
+                    System.out.println("carta giocata in (" + x + "," + y + ")");
                 }
             }
         }
+
+        Platform.runLater(()->{
+            if(selectedCard != null && ok) {
+                System.out.println(selectedCard);
+                Pane pane;
+                int x, y;
+                //if corner è topLeft allora LayoutX-104 e LayoutY-54
+                //if corner è topRight allora LayoutX+104 e LayoutY-54
+                //if corner è bottomLeft allora LayoutX-104 e LayoutY+54
+                //if corner è bottomRight allora LayoutX+104 e LayoutY+54
+                switch (corner) {
+                    case "TopLeft" -> {
+                        selectedCard.setLayoutX((int) layoutX - 104);
+                        selectedCard.setLayoutY((int) layoutY - 54);
+                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+                        selectedCard = null;
+
+                        pane = createPaneCard((int) layoutX - 104, (int) layoutY - 54);
+                        myPlayerAreaAnchorPane.getChildren().add(pane);
+
+                        //normalizzare le coordinate (9999,9999) è il mio (0,0) //faccio [(9999 - (int) layoutX)/104]-1 e [(9999 - (int) layoutY)/54]+1
+                        x = ((9999 - (int) layoutX)/104)-1;
+                        y = ((9999 - (int) layoutY)/54)+1;
+                        //chiamo uiObservableItem.notify...
+                        //viewGUI.playingCard(selectedCardIndex, x, y, corner,(int) layoutX,(int) layoutY, selectedCard);//indice carta giocata e posizione (-1,+1) devo avere un modo per normalizzare prima di inserire le coordinate
+                        //TODO ottonere l'indice della carta giocata, normalizzazione delle coordinate
+                        System.out.println("carta giocata in (" + x + "," + y + ")");
+                    }
+                    case "TopRight" -> {
+                        selectedCard.setLayoutX((int) layoutX + 104);
+                        selectedCard.setLayoutY((int) layoutY - 54);
+                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+                        selectedCard = null;
+
+                        pane = createPaneCard((int) layoutX + 104, (int) layoutY - 54);
+                        myPlayerAreaAnchorPane.getChildren().add(pane);
+
+                        x = (((int) layoutX - 9999)/104) + 1;
+                        y = ((9999 - (int) layoutY)/54) + 1;
+                        //viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY, selectedCard);
+                        System.out.println("carta giocata in (" + x + "," + y + ")");
+                    }
+                    case "BottomLeft" -> {
+                        selectedCard.setLayoutX((int) layoutX - 104);
+                        selectedCard.setLayoutY((int) layoutY + 54);
+                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+                        selectedCard = null;
+
+                        pane = createPaneCard((int) layoutX - 104, (int) layoutY + 54);
+                        myPlayerAreaAnchorPane.getChildren().add(pane);
+
+                        x = ((9999 - (int) layoutX)/104) - 1;
+                        y = (((int) layoutY - 9999)/54) - 1;
+                        //viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY, selectedCard);
+                        System.out.println("carta giocata in (" + x + "," + y + ")");
+                    }
+                    case "BottomRight" -> {
+                        selectedCard.setLayoutX((int) layoutX + 104);
+                        selectedCard.setLayoutY((int) layoutY + 54);
+                        myPlayerAreaAnchorPane.getChildren().add(selectedCard);
+                        selectedCard = null;
+
+                        pane = createPaneCard((int) layoutX + 104, (int) layoutY + 54);
+                        myPlayerAreaAnchorPane.getChildren().add(pane);
+
+                        x = (((int) layoutX - 9999)/104) + 1;
+                        y = (((int) layoutY - 9999)/54) - 1;
+                        //viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY, selectedCard);
+                        System.out.println("carta giocata in (" + x + "," + y + ")");
+                    }
+                }
+
+                if(selectedCardIndex==0 || selectedCardIndex==1 || selectedCardIndex==2) {
+                    switch (selectedCardIndex) {
+                        case 0 -> handCard1.setVisible(false);
+                        case 1 -> handCard2.setVisible(false);
+                        case 2 -> handCard3.setVisible(false);
+                    }
+                }
+            }
+        });
+
+
+    }
+
+    private static ImageView copyImageView(ImageView imageToCopie) {
+        ImageView copy = new ImageView(imageToCopie.getImage());
+        copy.setFitWidth(imageToCopie.getFitWidth());
+        copy.setFitHeight(imageToCopie.getFitHeight());
+        return copy;
     }
 
     @FXML
     void playHandCard1(MouseEvent event) {
         System.out.println("Voglio giocare la prima carta!");
-        selectedCard = handCard1;
+        selectedCard = copyImageView(handCard1);
+        selectedCardIndex = 0;
     }
 
     @FXML
     void playHandCard2(MouseEvent event) {
         System.out.println("Voglio giocare la seconda carta!");
-        selectedCard = handCard2;
+        selectedCard = copyImageView(handCard2);
+        selectedCardIndex = 1;
     }
 
     @FXML
     void playHandCard3(MouseEvent event) {
         System.out.println("Voglio giocare la terza carta!");
-        selectedCard = handCard3;
+        selectedCard = copyImageView(handCard3);
+        selectedCardIndex = 2;
     }
 }

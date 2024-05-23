@@ -1,6 +1,7 @@
 package ingsw.codex_naturalis.client.view.gui;
 
 import ingsw.codex_naturalis.client.view.UI;
+import ingsw.codex_naturalis.client.view.tui.TextualUI;
 import ingsw.codex_naturalis.client.view.util.UIObservableItem;
 import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
@@ -13,6 +14,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -112,6 +114,9 @@ public class GraphicalUI extends Application implements UI {
     private Color myColor;
     private int indexOfFlippedHandCard;
     private String firstPlayer;
+    private String cornerClicked;
+    private int layoutXOfCardClicked;
+    private int layoutYOfCardClicked;
     private GameControllerFX gameControllerFX;
     private LobbiesControllerFX lobbiesControllerFX;
     private LoginControllerFX loginControllerFX;
@@ -137,7 +142,7 @@ public class GraphicalUI extends Application implements UI {
             case LOBBY -> lobbyView();
             case WAIT -> waitView();
             case CONFIRM -> confirmView();
-            case GAME -> gameView();
+            //case GAME -> gameView();
         }
     }
 
@@ -185,7 +190,14 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void reportError(String error) {
-
+        System.out.println(error);
+        Platform.runLater(()-> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(error);
+            alert.showAndWait();
+        });
+        setRunningState(RunningState.RUNNING);
     }
 
     @Override
@@ -273,6 +285,8 @@ public class GraphicalUI extends Application implements UI {
         myColor = game.player().color();
         firstPlayer = game.playerOrderNicknames().getFirst();
         setScene("Game");
+        setState(State.GAME);
+        setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
     @Override
@@ -287,7 +301,9 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void cardPlayed(ImmGame immGame, String playerNicknameWhoUpdated) {
-
+        this.game = immGame;
+        //devo aggiornare punteggi
+        gameControllerFX.handlerCornerClick(null,cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,true);
     }
 
     @Override
@@ -523,5 +539,13 @@ public class GraphicalUI extends Application implements UI {
     public void flippingCard(int index) {
         indexOfFlippedHandCard = index;
         uiObservableItem.notifyFlipCard(index);
+    }
+
+    public void playingCard(int selectedCardIndex, int x, int y, String corner, int layoutX, int layoutY) {
+        cornerClicked = corner;
+        layoutXOfCardClicked = layoutX;
+        layoutYOfCardClicked = layoutY;
+
+        uiObservableItem.notifyPlayCard(selectedCardIndex, x, y);
     }
 }

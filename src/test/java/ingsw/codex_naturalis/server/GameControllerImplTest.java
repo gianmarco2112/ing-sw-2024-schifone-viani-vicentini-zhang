@@ -102,7 +102,16 @@ class GameControllerImplTest {
     }
 
     @Test
-    void flipCard() {
+    void flipCard() throws JsonProcessingException {
+        chooseSecretObjectiveCard();
+        assertEquals(3, model.getPlayerOrder().getFirst().getHand().size());
+        boolean initialIsShowingFront = model.getPlayerOrder().getFirst().getHand().getFirst().isShowingFront();
+        gameplayController.flipCard("Test", 0);
+        gameplayController.flipCard("Test2", 0);
+        while(model.getPlayerOrder().getFirst().getHand().getFirst().isShowingFront() == initialIsShowingFront){
+            //System.out.println("aspetto che il model si aggiorni");
+        }
+        assertEquals(!initialIsShowingFront, model.getPlayerOrder().getFirst().getHand().getFirst().isShowingFront());
     }
 
     @Test

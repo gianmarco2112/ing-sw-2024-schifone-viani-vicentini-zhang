@@ -300,7 +300,7 @@ public class GraphicalUI extends Application implements UI {
         revealedGoldCards = game.revealedGoldCards();
         myColor = game.player().color();
         firstPlayer = game.playerOrderNicknames().getFirst();
-        playerOrder = game.playerOrderNicknames();
+        playerOrder = new ArrayList<>(game.playerOrderNicknames());
         maxNumOfPlayers = playerOrder.size();
         playerOrder.remove(nickname);
         for(int i = 0; i<playerOrder.size(); i++){

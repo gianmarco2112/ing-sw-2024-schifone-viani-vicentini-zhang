@@ -2,6 +2,29 @@
     -fx-font-family: 'fantasy', Luminari;
 }
 
+/* Nasconde le barre di scorrimento verticali e orizzontali */
+.scroll-pane .viewport {
+    -fx-background-color: transparent; /* Rende lo sfondo del contenuto trasparente */
+}
+
+.scroll-pane .scroll-bar:horizontal,
+.scroll-pane .scroll-bar:vertical {
+    -fx-opacity: 0; /* Imposta l'opacità delle barre di scorrimento a 0 per nasconderle */
+    -fx-pref-width: 0; /* Imposta la larghezza preferita della barra di scorrimento orizzontale a 0 */
+    -fx-pref-height: 0; /* Imposta l'altezza preferita della barra di scorrimento verticale a 0 */
+    -fx-max-width: 0; /* Imposta la larghezza massima della barra di scorrimento orizzontale a 0 */
+    -fx-max-height: 0; /* Imposta l'altezza massima della barra di scorrimento verticale a 0 */
+}
+/* Rende trasparente il bordo del ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent; /* Sfondo trasparente */
+    -fx-border-color: transparent;     /* Bordo trasparente */
+    -fx-padding: 0;                    /* Rimuove eventuale padding */
+}
+.scroll-pane .corner {
+    -fx-background-color: transparent; /* Rende trasparente l'angolo */
+}
+
 .CODEX_pion_jaune{
     -fx-background-image: url("pedine/pedina_gialla.png");
     -fx-background-repeat: stretch;

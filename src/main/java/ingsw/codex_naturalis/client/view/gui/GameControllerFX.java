@@ -178,6 +178,8 @@ public class GameControllerFX {
     private String nickname;
     @FXML
     private Text myNickText;
+    private List<AnchorPane> anchorPanesOnBoard = new ArrayList<>();
+    private Color myColor;
 
     private void initializeBoard(){
         boardPointsPosition.put(0, List.of(32,312));
@@ -225,6 +227,34 @@ public class GameControllerFX {
                          String revealedGoldCard1, String revealedGoldCard2,
                          Color myColor, String firstPlayer,
                          int maxNumOfPlayers, String mynickname, List<String> otherNicknames, List<ImmPlayableCard> initialCards, List<Color> colors, ImmGame game) {
+
+        initializeBoard();
+
+        for(int i = 0; i<=29; i++) {
+            AnchorPane anchorPane = createAnchorPaneOnBoard(boardPointsPosition.get(i).get(0),boardPointsPosition.get(i).get(1));
+            anchorPanesOnBoard.add(anchorPane);
+        }
+
+        //colors.add(myColor);
+
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        //per stampare le pedine in ordine uguale per tutti
+        while(colors.size()!=game.playerOrderNicknames().size()){
+            colors.add(colors.getLast());//inserisco un elemento a caso...
+        }
+        int index = game.playerOrderNicknames().indexOf(mynickname);
+        for(int i = index; i<colors.size()-1; i++){
+            colors.set(i+1,colors.get(i));
+        }
+        colors.set(index,myColor);
+
+        posizionaPedine(colors,0,anchorPanesOnBoard.get(0));
+        colors.remove(myColor);
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+
+        this.myColor = myColor;
 
         nickname = mynickname;
         myNickText.setText(mynickname);
@@ -345,10 +375,10 @@ public class GameControllerFX {
         String hand1 = "/CardsImages/HandCards/" + handCard1 + ".png";
         String hand2 = "/CardsImages/HandCards/" + handCard2 + ".png";
         String hand3 = "/CardsImages/HandCards/" + handCard3 + ".png";
-        String rossa = "/pedine/pedina_rossa.png";
-        String blu = "/pedine/pedina_blu.png";
-        String gialla = "/pedine/pedina_gialla.png";
-        String verde = "/pedine/pedina_verde.png";
+        //String rossa = "/pedine/pedina_rossa.png";
+        //String blu = "/pedine/pedina_blu.png";
+        //String gialla = "/pedine/pedina_gialla.png";
+        //String verde = "/pedine/pedina_verde.png";
         String secretObjective = "/CardsImages/Objective/" + myObjectiveCard + ".png";
         String commonObj1 = "/CardsImages/Objective/" + commonObjective1 + ".png";
         String commonObj2 = "/CardsImages/Objective/" + commonObjective2 + ".png";
@@ -389,10 +419,10 @@ public class GameControllerFX {
 
 
         try (InputStream initialCardStream = getClass().getResourceAsStream(myinitalcard);
-             InputStream rossaStream = getClass().getResourceAsStream(rossa);
-             InputStream bluStream = getClass().getResourceAsStream(blu);
-             InputStream giallaStream = getClass().getResourceAsStream(gialla);
-             InputStream verdeStream = getClass().getResourceAsStream(verde);
+             //InputStream rossaStream = getClass().getResourceAsStream(rossa);
+             //InputStream bluStream = getClass().getResourceAsStream(blu);
+             //InputStream giallaStream = getClass().getResourceAsStream(gialla);
+             //InputStream verdeStream = getClass().getResourceAsStream(verde);
              InputStream secretObj = getClass().getResourceAsStream(secretObjective);
              InputStream hand1Stream = getClass().getResourceAsStream(hand1);
              InputStream hand2Stream = getClass().getResourceAsStream(hand2);
@@ -414,7 +444,7 @@ public class GameControllerFX {
 
             user1Initialcard.setImage(new Image(u1initialCardStream));
 
-            ImageView pedinaRossa = new ImageView(new Image(rossaStream));
+            /*ImageView pedinaRossa = new ImageView(new Image(rossaStream));
             pedinaRossa.setFitHeight(33);
             pedinaRossa.setFitWidth(33);
             pedinaRossa.setLayoutX(32);
@@ -444,7 +474,7 @@ public class GameControllerFX {
             pedinaVerde.setLayoutX(32);
             pedinaVerde.setLayoutY(323-3-3-3);
             pedinaVerde.setId("GREEN");
-            globalPane.getChildren().add(pedinaVerde);
+            globalPane.getChildren().add(pedinaVerde);*/
 
             mySecretObjective.setImage(new Image(secretObj));
 
@@ -536,6 +566,307 @@ public class GameControllerFX {
             e.printStackTrace();
         }
 
+    }
+
+    private void posizionaPedine(List<Color> colors, int points, AnchorPane anchorPane) {
+        ImageView view = null;
+        switch (points) {
+            case 0 -> {
+                switch (colors.size()){
+                    case 2 -> {
+                        streamColor(colors.getFirst(),(ImageView) anchorPane.lookup("#pawn1"));
+                        streamColor(colors.getLast(),(ImageView) anchorPane.lookup("#pawn2"));
+                        view = (ImageView) anchorPane.lookup("#pawn1");
+                        view.setId(colors.getFirst() + "pawn1");
+                        view.setVisible(true);
+                        view = (ImageView) anchorPane.lookup("#pawn2");
+                        view.setId(colors.getLast() + "pawn2");
+                        view.setVisible(true);
+                    }
+                    case 3 -> {
+                        streamColor(colors.getFirst(),(ImageView) anchorPane.lookup("#pawn1"));
+                        streamColor(colors.get(1),(ImageView) anchorPane.lookup("#pawn2"));
+                        streamColor(colors.getLast(),(ImageView) anchorPane.lookup("#pawn3"));
+                        view = (ImageView) anchorPane.lookup("#pawn1");
+                        view.setId(colors.getFirst() + "pawn1");
+                        view = (ImageView) anchorPane.lookup("#pawn2");
+                        view.setId(colors.get(1) + "pawn2");
+                        view = (ImageView) anchorPane.lookup("#pawn3");
+                        view.setId(colors.getLast() + "pawn3");
+                    }
+                    case 4 -> {
+                        streamColor(colors.getFirst(),(ImageView) anchorPane.lookup("#pawn1"));
+                        streamColor(colors.get(1),(ImageView) anchorPane.lookup("#pawn2"));
+                        streamColor(colors.get(2),(ImageView) anchorPane.lookup("#pawn3"));
+                        streamColor(colors.getLast(),(ImageView) anchorPane.lookup("#pawn4"));
+                        view = (ImageView) anchorPane.lookup("#pawn1");
+                        view.setId(colors.getFirst() + "pawn1");
+                        view = (ImageView) anchorPane.lookup("#pawn2");
+                        view.setId(colors.get(1) + "pawn2");
+                        view = (ImageView) anchorPane.lookup("#pawn3");
+                        view.setId(colors.get(2) + "pawn3");
+                        view = (ImageView) anchorPane.lookup("#pawn4");
+                        view.setId(colors.getLast() + "pawn3");
+                    }
+                }
+            }
+            case 1 -> {
+                //rimuovo colore dalla sua posizione precedente
+                removeFromBoard(colors.getFirst(),points);
+                //calcolo la prima posizione libera all'interno del anchor pane nella board
+                ImageView firstAvailable = computeFirstAvailablePosition(1,colors.getFirst());
+                //posiziono il colore nella posizione appena trovata prima
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 2 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(2,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 3 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(3,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 4 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(4,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 5 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(5,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 6 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(6,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 7 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(7,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 8 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(8,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 9 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(9,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 10 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(10,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 11 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(11,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 12 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(12,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 13 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(13,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 14 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(14,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 15 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(15,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 16 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(16,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 17 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(17,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 18 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(18,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 19 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(19,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 20 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(20,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 21 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(21,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 22 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(22,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 23 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(23,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 24 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(24,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 25 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(25,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 26 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(26,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 27 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(27,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 28 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(28,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+            case 29 -> {
+                removeFromBoard(colors.getFirst(),points);
+                ImageView firstAvailable = computeFirstAvailablePosition(29,colors.getFirst());
+                streamColor(colors.getFirst(),firstAvailable);
+            }
+        }
+    }
+
+    private void removeFromBoard(Color color, int points) {
+        //se in quella posizione c'è già color, allora non aggiorno
+        ImageView p1 = (ImageView) anchorPanesOnBoard.get(points).lookup("#" + color + "pawn1");
+        ImageView p2 = (ImageView) anchorPanesOnBoard.get(points).lookup("#" + color + "pawn2");
+        ImageView p3 = (ImageView) anchorPanesOnBoard.get(points).lookup("#" + color + "pawn3");
+        ImageView p4 = (ImageView) anchorPanesOnBoard.get(points).lookup("#" + color + "pawn4");
+        if(p1==null && p2==null && p3==null && p4==null) {
+            for(int i = 0; i<=19; i++){
+                ImageView pawn1 = (ImageView) anchorPanesOnBoard.get(i).lookup("#" + color + "pawn1");
+                ImageView pawn2 = (ImageView) anchorPanesOnBoard.get(i).lookup("#" + color + "pawn2");
+                ImageView pawn3 = (ImageView) anchorPanesOnBoard.get(i).lookup("#" + color + "pawn3");
+                ImageView pawn4 = (ImageView) anchorPanesOnBoard.get(i).lookup("#" + color + "pawn4");
+
+                if(pawn1!=null){
+                    pawn1.setId("pawn1");
+                    pawn1.setVisible(false);
+                    break;
+                }
+                if(pawn2!=null){
+                    pawn2.setId("pawn2");
+                    pawn2.setVisible(false);
+                    break;
+                }
+                if(pawn3!=null){
+                    pawn3.setId("pawn2");
+                    pawn3.setVisible(false);
+                    break;
+                }
+                if(pawn4!=null){
+                    pawn4.setId("pawn2");
+                    pawn4.setVisible(false);
+                    break;
+                }
+            }
+        }
+    }
+
+    private AnchorPane createAnchorPaneOnBoard(int x, int y) {
+        int width = 33;
+        int height = 44;
+
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.setLayoutX(x);
+        anchorPane.setLayoutY(y);
+
+        anchorPane.setPrefWidth(width);
+        anchorPane.setPrefHeight(height);
+
+        ImageView pawn1 = new ImageView();
+        pawn1.setFitWidth(33);
+        pawn1.setFitHeight(33);
+        pawn1.setLayoutX(0);
+        pawn1.setLayoutY(11);
+        pawn1.setId("pawn1");
+        ImageView pawn2 = new ImageView();
+        pawn2.setFitWidth(33);
+        pawn2.setFitHeight(33);
+        pawn2.setLayoutX(0);
+        pawn2.setLayoutY(8);
+        pawn2.setId("pawn2");
+        ImageView pawn3 = new ImageView();
+        pawn3.setFitWidth(33);
+        pawn3.setFitHeight(33);
+        pawn3.setLayoutX(0);
+        pawn3.setLayoutY(5);
+        pawn3.setId("pawn3");
+        ImageView pawn4 = new ImageView();
+        pawn4.setFitWidth(33);
+        pawn4.setFitHeight(33);
+        pawn4.setLayoutX(0);
+        pawn4.setLayoutY(2);
+        pawn4.setId("pawn4");
+
+        anchorPane.getChildren().add(pawn1);
+        anchorPane.getChildren().add(pawn2);
+        anchorPane.getChildren().add(pawn3);
+        anchorPane.getChildren().add(pawn4);
+
+        globalPane.getChildren().add(anchorPane);
+
+        return anchorPane;
+    }
+
+    private ImageView computeFirstAvailablePosition(int point,Color color){
+        ImageView pawn1 = (ImageView) anchorPanesOnBoard.get(point).lookup("#pawn1");
+        ImageView pawn2 = (ImageView) anchorPanesOnBoard.get(point).lookup("#pawn2");
+        ImageView pawn3 = (ImageView) anchorPanesOnBoard.get(point).lookup("#pawn3");
+        ImageView pawn4 = (ImageView) anchorPanesOnBoard.get(point).lookup("#pawn4");
+
+        if(pawn1!=null && pawn1.getImage() == null) {
+            pawn1.setId(color+"pawn1");
+            return pawn1;
+        }
+        if(pawn2!=null && pawn2.getImage() == null) {
+            pawn2.setId(color+"pawn2");
+            return pawn2;
+        }
+        if(pawn3!=null && pawn3.getImage() == null) {
+            pawn3.setId(color+"pawn3");
+            return pawn1;
+        }
+        if(pawn4!=null && pawn4.getImage() == null) {
+            pawn4.setId(color+"pawn4");
+            return pawn1;
+        }
+        return null;
     }
 
     private void streamOtherPlayerCard(String id, ImageView userHandCard) {
@@ -1019,6 +1350,9 @@ public class GameControllerFX {
                         flipCard3.setVisible(false);
                     }
                 }
+
+                //aggiorno punteggio
+                posizionaPedine(List.of(myColor),points,anchorPanesOnBoard.get(points));
             }
         });
     }
@@ -1118,6 +1452,7 @@ public class GameControllerFX {
 
         try(InputStream colorStream = getClass().getResourceAsStream(path);){
             imageview.setImage(new Image(colorStream));
+            imageview.setVisible(true);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -1127,11 +1462,27 @@ public class GameControllerFX {
         Platform.runLater(()->{
             List<String> nicknames = immGame.playerOrderNicknames();
             nicknames.remove(nickname);
-            switch (nicknames.indexOf(playerNicknameWhoUpdated)){
-                case 0 -> updateForPlayer1(playerNicknameWhoUpdated, immGame, cornerClicked, layoutXOfCardClicked, layoutYOfCardClicked);
-                case 1 -> updateForPlayer2(playerNicknameWhoUpdated, immGame, cornerClicked, layoutXOfCardClicked, layoutYOfCardClicked);
-                case 2 -> updateForPlayer3(playerNicknameWhoUpdated, immGame, cornerClicked, layoutXOfCardClicked, layoutYOfCardClicked);
+            int indexOfplayerWhoupdated=-1;
+            for(int i = 0; i<immGame.otherPlayers().size();i++){
+                if(immGame.otherPlayers().get(i).nickname().equals(playerNicknameWhoUpdated)){
+                    indexOfplayerWhoupdated=i;
+                    break;
+                }
             }
+            switch (nicknames.indexOf(playerNicknameWhoUpdated)){
+                case 0 -> {
+                    updateForPlayer1(playerNicknameWhoUpdated, immGame, cornerClicked, layoutXOfCardClicked, layoutYOfCardClicked);
+                }
+                case 1 -> {
+                    updateForPlayer2(playerNicknameWhoUpdated, immGame, cornerClicked, layoutXOfCardClicked, layoutYOfCardClicked);
+                }
+                case 2 -> {
+                    updateForPlayer3(playerNicknameWhoUpdated, immGame, cornerClicked, layoutXOfCardClicked, layoutYOfCardClicked);
+                }
+            }
+            posizionaPedine(List.of(immGame.otherPlayers().get(indexOfplayerWhoupdated).color()),
+                    immGame.otherPlayers().get(indexOfplayerWhoupdated).playerArea().points(),
+                    anchorPanesOnBoard.get(immGame.otherPlayers().get(indexOfplayerWhoupdated).playerArea().points()));
         });
     }
     private void updateForPlayer1(String playerNicknameWhoUpdated, ImmGame immGame, String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked){

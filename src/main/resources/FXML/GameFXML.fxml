@@ -28,7 +28,7 @@
                <ImageView fx:id="mySecretObjective" fitHeight="93.0" fitWidth="133.0" layoutX="25.0" layoutY="611.0" pickOnBounds="true" preserveRatio="true" />
                <ScrollPane fx:id="myPlayerArea" layoutX="221.0" layoutY="229.0" prefHeight="363.0" prefWidth="692.0">
                   <content>
-                     <AnchorPane fx:id="myPlayerAreaAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="477.0" prefWidth="829.0" style="-fx-background-color: #FFFFCC;">
+                     <AnchorPane fx:id="myPlayerAreaAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="477.0" prefWidth="829.0">
                         <children>
                            <ImageView fx:id="myInitialCard" fitHeight="93.0" fitWidth="133.0" layoutX="279.0" layoutY="139.0" pickOnBounds="true" preserveRatio="true" />
                         </children>
@@ -61,7 +61,7 @@
                </ScrollPane>
                <ScrollPane fx:id="playerArea1" layoutX="931.0" layoutY="22.0" prefHeight="128.0" prefWidth="335.0">
                   <content>
-                     <AnchorPane fx:id="user1PlayerArea" minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="338.0" style="-fx-background-color: #FFFFCC;">
+                     <AnchorPane fx:id="user1PlayerArea" minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="338.0">
                         <children>
                            <ImageView fx:id="user1Initialcard" fitHeight="71.0" fitWidth="107.0" layoutX="116.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" />
                         </children>
@@ -74,7 +74,7 @@
                <Label fx:id="username1" layoutX="931.0" layoutY="6.0" text="Username" />
                <ScrollPane fx:id="playerArea2" layoutX="931.0" layoutY="258.0" prefHeight="128.0" prefWidth="335.0">
                   <content>
-                     <AnchorPane fx:id="user2PlayerArea" minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="338.0" style="-fx-background-color: #FFFFCC;">
+                     <AnchorPane fx:id="user2PlayerArea" minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="338.0">
                         <children>
                            <ImageView fx:id="user2Initialcard" fitHeight="71.0" fitWidth="107.0" layoutX="116.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
                         </children>
@@ -87,7 +87,7 @@
                <Label fx:id="username2" layoutX="931.0" layoutY="242.0" text="Username" />
                <ScrollPane fx:id="playerArea3" layoutX="931.0" layoutY="491.0" prefHeight="128.0" prefWidth="335.0">
                   <content>
-                     <AnchorPane fx:id="user3PlayerArea" minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="338.0" style="-fx-background-color: #FFFFCC;">
+                     <AnchorPane fx:id="user3PlayerArea" minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="338.0">
                         <children>
                            <ImageView fx:id="user3Initialcard" fitHeight="71.0" fitWidth="107.0" layoutX="123.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" />
                         </children>

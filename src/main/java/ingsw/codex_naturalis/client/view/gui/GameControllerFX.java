@@ -1639,7 +1639,7 @@ public class GameControllerFX {
                 e.printStackTrace();
             }
         }else{
-            String path = "/CardsImages/HandCards/back" + id + ".png";
+            String path = "/CardsImages/HandCards/back/" + id + ".png";
 
             try(InputStream cardStream = getClass().getResourceAsStream(path);){
                 toPlace.setFitHeight(71);

@@ -982,38 +982,41 @@ public class GameControllerFX {
     }
 
     public void cardFlipped(String cardId, boolean showingFront, Symbol kingdom, PlayableCardType playableCardType, int indexOfFlippedCard) {
-        String handCard = null;
+        Platform.runLater(()->{
+            selectedCard = null;
+            String handCard = null;
 
-        if(showingFront){
-            handCard = "/CardsImages/HandCards/" + cardId + ".png";
-        } else {
-            if(playableCardType == PlayableCardType.RESOURCE){
-                switch (kingdom){
-                    case Symbol.ANIMAL -> handCard = "/CardsImages/HandCards/RbackANIMAL.png";
-                    case Symbol.FUNGI -> handCard = "/CardsImages/HandCards/RbackFUNGI.png";
-                    case Symbol.PLANT -> handCard = "/CardsImages/HandCards/RbackPLANT.png";
-                    case Symbol.INSECT -> handCard = "/CardsImages/HandCards/RbackINSECT.png";
+            if(showingFront){
+                handCard = "/CardsImages/HandCards/" + cardId + ".png";
+            } else {
+                if(playableCardType == PlayableCardType.RESOURCE){
+                    switch (kingdom){
+                        case Symbol.ANIMAL -> handCard = "/CardsImages/HandCards/RbackANIMAL.png";
+                        case Symbol.FUNGI -> handCard = "/CardsImages/HandCards/RbackFUNGI.png";
+                        case Symbol.PLANT -> handCard = "/CardsImages/HandCards/RbackPLANT.png";
+                        case Symbol.INSECT -> handCard = "/CardsImages/HandCards/RbackINSECT.png";
+                    }
+                }
+                if(playableCardType == PlayableCardType.GOLD){
+                    switch (kingdom){
+                        case Symbol.ANIMAL -> handCard = "/CardsImages/HandCards/GbackANIMAL.png";
+                        case Symbol.FUNGI -> handCard = "/CardsImages/HandCards/GbackFUNGI.png";
+                        case Symbol.PLANT -> handCard = "/CardsImages/HandCards/GbackPLANT.png";
+                        case Symbol.INSECT -> handCard = "/CardsImages/HandCards/GbackINSECT.png";
+                    }
                 }
             }
-            if(playableCardType == PlayableCardType.GOLD){
-                switch (kingdom){
-                    case Symbol.ANIMAL -> handCard = "/CardsImages/HandCards/GbackANIMAL.png";
-                    case Symbol.FUNGI -> handCard = "/CardsImages/HandCards/GbackFUNGI.png";
-                    case Symbol.PLANT -> handCard = "/CardsImages/HandCards/GbackPLANT.png";
-                    case Symbol.INSECT -> handCard = "/CardsImages/HandCards/GbackINSECT.png";
-                }
-            }
-        }
 
-        try(InputStream handCardStream = getClass().getResourceAsStream(handCard)){
-            switch (indexOfFlippedCard){
-                case 0 -> this.handCard1.setImage(new Image(handCardStream));
-                case 1 -> this.handCard2.setImage(new Image(handCardStream));
-                case 2 -> this.handCard3.setImage(new Image(handCardStream));
+            try(InputStream handCardStream = getClass().getResourceAsStream(handCard)){
+                switch (indexOfFlippedCard){
+                    case 0 -> this.handCard1.setImage(new Image(handCardStream));
+                    case 1 -> this.handCard2.setImage(new Image(handCardStream));
+                    case 2 -> this.handCard3.setImage(new Image(handCardStream));
+                }
+            }catch (IOException e) {
+                e.printStackTrace();
             }
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     private Pane createPaneCard(int x, int y) {
@@ -1070,31 +1073,32 @@ public class GameControllerFX {
     public void handlerCornerClick(MouseEvent event, String corner, double layoutX, double layoutY, boolean ok, int points, Color myColor) {
         //evento play card da notificare
         System.out.println(corner + "Clicked!!");
-
-        switch (corner) {
-            case "TopLeft" -> {
-                int x = (-(9999 - (int) layoutX)/104) - 1;
-                int y = ((9999 - (int) layoutY)/54) + 1;
-                viewGUI.playingCard(selectedCardIndex, x, y, corner,(int) layoutX,(int) layoutY);
-                System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
-            }
-            case "TopRight" -> {
-                int x = (((int) layoutX - 9999)/104) + 1;
-                int y = ((9999 - (int) layoutY)/54) + 1;
-                viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
-                System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
-            }
-            case "BottomLeft" -> {
-                int x = (-(9999 - (int) layoutX)/104) - 1;
-                int y = (-((int) layoutY - 9999)/54) - 1;
-                viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
-                System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
-            }
-            case "BottomRight" -> {
-                int x = (((int) layoutX - 9999)/104) + 1;
-                int y = (-((int) layoutY - 9999)/54) - 1;
-                viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
-                System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
+        if(selectedCard!=null) {
+            switch (corner) {
+                case "TopLeft" -> {
+                    int x = (-(9999 - (int) layoutX)/104) - 1;
+                    int y = ((9999 - (int) layoutY)/54) + 1;
+                    viewGUI.playingCard(selectedCardIndex, x, y, corner,(int) layoutX,(int) layoutY);
+                    System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
+                }
+                case "TopRight" -> {
+                    int x = (((int) layoutX - 9999)/104) + 1;
+                    int y = ((9999 - (int) layoutY)/54) + 1;
+                    viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
+                    System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
+                }
+                case "BottomLeft" -> {
+                    int x = (-(9999 - (int) layoutX)/104) - 1;
+                    int y = (-((int) layoutY - 9999)/54) - 1;
+                    viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
+                    System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
+                }
+                case "BottomRight" -> {
+                    int x = (((int) layoutX - 9999)/104) + 1;
+                    int y = (-((int) layoutY - 9999)/54) - 1;
+                    viewGUI.playingCard(selectedCardIndex,x,y, corner,(int) layoutX,(int) layoutY);
+                    System.out.println("voglio giocare la carta in (" + x + "," + y + ")");
+                }
             }
         }
     }
@@ -1344,7 +1348,7 @@ public class GameControllerFX {
 
                         //for debugging
                         x = (((int) layoutXOfCardClicked - 9999)/104) + 1;
-                        y = ((-(int) layoutYOfCardClicked - 9999)/54) - 1;
+                        y = (-((int) layoutYOfCardClicked - 9999)/54) - 1;
                         System.out.println("carta posizionata in (" + x + "," + y + ")");
                     }
                 }

@@ -146,10 +146,38 @@ public class GameControllerFX {
     private ImageView selectedCard = null;
     private int selectedCardIndex;
     private String cornerClicked;
+    @FXML
+    private ImageView user1HandCard1;
+
+    @FXML
+    private ImageView user1HandCard2;
+
+    @FXML
+    private ImageView user1HandCard3;
+
+    @FXML
+    private ImageView user2HandCard1;
+
+    @FXML
+    private ImageView user2HandCard2;
+
+    @FXML
+    private ImageView user2HandCard3;
+
+    @FXML
+    private ImageView user3HandCard1;
+
+    @FXML
+    private ImageView user3HandCard2;
+
+    @FXML
+    private ImageView user3HandCard3;
 
     //posizioni delle anchorPane
     private HashMap<Integer, List<Integer>> boardPointsPosition = new HashMap<>();
     private String nickname;
+    @FXML
+    private Text myNickText;
 
     private void initializeBoard(){
         boardPointsPosition.put(0, List.of(32,312));
@@ -196,9 +224,10 @@ public class GameControllerFX {
                          String revealedResourceCard1, String revealedResourceCard2,
                          String revealedGoldCard1, String revealedGoldCard2,
                          Color myColor, String firstPlayer,
-                         int maxNumOfPlayers, String mynickname, List<String> otherNicknames, List<ImmPlayableCard> initialCards, List<Color> colors) {
+                         int maxNumOfPlayers, String mynickname, List<String> otherNicknames, List<ImmPlayableCard> initialCards, List<Color> colors, ImmGame game) {
 
         nickname = mynickname;
+        myNickText.setText(mynickname);
 
         myPlayerAreaAnchorPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
         myPlayerAreaAnchorPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
@@ -220,6 +249,10 @@ public class GameControllerFX {
             u1InitialCard = "/CardsImages/Initial/backs/" + initialCards.getFirst().cardID() + ".png";
         }
 
+        streamOtherPlayerCard(game.otherPlayers().getFirst().hand().getFirst().cardID(),user1HandCard1);
+        streamOtherPlayerCard(game.otherPlayers().getFirst().hand().get(1).cardID(),user1HandCard2);
+        streamOtherPlayerCard(game.otherPlayers().getFirst().hand().getLast().cardID(),user1HandCard3);
+
         if(maxNumOfPlayers==2){
             user2PlayerArea.setVisible(false);
             playerArea2.setVisible(false);
@@ -236,6 +269,7 @@ public class GameControllerFX {
                     playerArea2.setVvalue(1.0);
                     user3PlayerArea.setVisible(false);
                     playerArea3.setVisible(false);
+                    username3.setVisible(false);
 
                     user2Initialcard.setLayoutX(9999);
                     user2Initialcard.setLayoutY(9999);
@@ -248,6 +282,12 @@ public class GameControllerFX {
                     u2Pedina.setLayoutX(9999+37);
                     u2Pedina.setLayoutY(9999-20);
                     user2PlayerArea.getChildren().add(u2Pedina);
+
+                    username2.setText(otherNicknames.getLast());
+
+                    streamOtherPlayerCard(game.otherPlayers().getLast().hand().getFirst().cardID(),user2HandCard1);
+                    streamOtherPlayerCard(game.otherPlayers().getLast().hand().get(1).cardID(),user2HandCard2);
+                    streamOtherPlayerCard(game.otherPlayers().getLast().hand().getLast().cardID(),user2HandCard3);
                 }
                 case 4 -> {
                     user2PlayerArea.setPrefWidth(Region.USE_COMPUTED_SIZE);
@@ -261,8 +301,10 @@ public class GameControllerFX {
 
                     user2Initialcard.setLayoutX(9999);
                     user2Initialcard.setLayoutY(9999);
+                    username2.setText(otherNicknames.get(1));
                     user3Initialcard.setLayoutX(9999);
                     user3Initialcard.setLayoutY(9999);
+                    username3.setText(otherNicknames.getLast());
                     streamInitialCard(initialCards.get(1).cardID(), user2Initialcard, initialCards.get(1).showingFront());
                     streamInitialCard(initialCards.getLast().cardID(), user3Initialcard, initialCards.getLast().showingFront());
 
@@ -281,6 +323,14 @@ public class GameControllerFX {
                     u3Pedina.setLayoutX(9999+37);
                     u3Pedina.setLayoutY(9999-20);
                     user3PlayerArea.getChildren().add(u3Pedina);
+
+                    streamOtherPlayerCard(game.otherPlayers().get(1).hand().getFirst().cardID(),user2HandCard1);
+                    streamOtherPlayerCard(game.otherPlayers().get(1).hand().get(1).cardID(),user2HandCard2);
+                    streamOtherPlayerCard(game.otherPlayers().get(1).hand().getLast().cardID(),user2HandCard3);
+
+                    streamOtherPlayerCard(game.otherPlayers().getLast().hand().getFirst().cardID(),user3HandCard1);
+                    streamOtherPlayerCard(game.otherPlayers().getLast().hand().get(1).cardID(),user3HandCard2);
+                    streamOtherPlayerCard(game.otherPlayers().getLast().hand().getLast().cardID(),user3HandCard3);
                 }
             }
         }
@@ -488,6 +538,16 @@ public class GameControllerFX {
 
     }
 
+    private void streamOtherPlayerCard(String id, ImageView userHandCard) {
+        String path = "/CardsImages/Handcards/back/" + id + ".png";
+
+        try(InputStream otherPlayerCardStream = getClass().getResourceAsStream(path);){
+            userHandCard.setImage(new Image(otherPlayerCardStream));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     private void streamInitialCard(String initialCardId, ImageView userInitialcardView, boolean showingFront) {
         if(showingFront){
             String path = "/CardsImages/Initial/fronts/" + initialCardId + ".png";
@@ -506,6 +566,8 @@ public class GameControllerFX {
                 e.printStackTrace();
             }
         }
+
+
 
     }
 
@@ -963,13 +1025,70 @@ public class GameControllerFX {
 
     public void updateOtherAfterCardDrawn(String topGCardId, String topRCardId,
                                           String revealedR1Id, String revealedR2Id,
-                                          String revealedG1Id, String revealedG2Id) {
+                                          String revealedG1Id, String revealedG2Id,
+                                          String playerNicknameWhoUpdated, ImmGame immGame) {
         Platform.runLater(()->{
             streamTopRGImage(topRCardId,topGCardId,true);
             streamTopRGImage(topRCardId,topGCardId,false);
 
             streamRevealedId(revealedG1Id,revealedG2Id,
                     revealedR1Id,revealedR2Id);
+
+
+            //inserisco nella prima posizione libera
+            List<String> nicks = immGame.playerOrderNicknames();
+            nicks.remove(nickname);
+            switch (nicks.indexOf(playerNicknameWhoUpdated)){
+                case 0 -> {
+                    //aggiorno user1
+                    //NB per ottenere la carta pescata basta fare getLast della hand
+                    String card = immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID();
+                    if(!user1HandCard1.isVisible()){
+                        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user1HandCard1);
+                        user1HandCard1.setVisible(true);
+                    }
+                    if(!user1HandCard2.isVisible()){
+                        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user1HandCard2);
+                        user1HandCard2.setVisible(true);
+                    }
+                    if(!user1HandCard3.isVisible()){
+                        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user1HandCard3);
+                        user1HandCard3.setVisible(true);
+                    }
+                }
+                case 1 -> {
+                    //aggiorno user 2
+                    String card = immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID();
+                    if(!user2HandCard1.isVisible()){
+                        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user2HandCard1);
+                        user2HandCard1.setVisible(true);
+                    }
+                    if(!user2HandCard2.isVisible()){
+                        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user2HandCard2);
+                        user2HandCard2.setVisible(true);
+                    }
+                    if(!user2HandCard3.isVisible()){
+                        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user2HandCard3);
+                        user2HandCard3.setVisible(true);
+                    }
+                }
+                case 2 -> {
+                    //aggiorno user 3
+                    String card = immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID();
+                    if(!user3HandCard1.isVisible()){
+                        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user3HandCard1);
+                        user3HandCard1.setVisible(true);
+                    }
+                    if(!user3HandCard2.isVisible()){
+                        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user3HandCard2);
+                        user3HandCard2.setVisible(true);
+                    }
+                    if(!user3HandCard3.isVisible()){
+                        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user3HandCard3);
+                        user3HandCard3.setVisible(true);
+                    }
+                }
+            }
         });
 
     }
@@ -1036,6 +1155,10 @@ public class GameControllerFX {
         toPlace.setLayoutX(layoutX);
         toPlace.setLayoutY(layoutY);
         user1PlayerArea.getChildren().add(toPlace);
+
+        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getFirst().cardID(),user1HandCard1);
+        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user1HandCard2);
+        user1HandCard3.setVisible(false);
     }
 
     private void updateForPlayer2(String playerNicknameWhoUpdated, ImmGame immGame, String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked){
@@ -1057,6 +1180,10 @@ public class GameControllerFX {
         toPlace.setLayoutX(layoutX);
         toPlace.setLayoutY(layoutY);
         user2PlayerArea.getChildren().add(toPlace);
+
+        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getFirst().cardID(),user2HandCard1);
+        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user2HandCard2);
+        user2HandCard3.setVisible(false);
     }
 
     private void updateForPlayer3(String playerNicknameWhoUpdated, ImmGame immGame, String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked){
@@ -1078,6 +1205,10 @@ public class GameControllerFX {
         toPlace.setLayoutX(layoutX);
         toPlace.setLayoutY(layoutY);
         user3PlayerArea.getChildren().add(toPlace);
+
+        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getFirst().cardID(),user3HandCard1);
+        streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),user3HandCard2);
+        user3HandCard3.setVisible(false);
     }
 
     private void streamCard(String id, ImageView toPlace, boolean showingFront) {

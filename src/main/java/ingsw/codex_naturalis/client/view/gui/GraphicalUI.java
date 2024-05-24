@@ -359,7 +359,8 @@ public class GraphicalUI extends Application implements UI {
                     game.topGoldCard().cardID(),
                     game.topResourceCard().cardID(),
                     game.revealedResourceCards().getFirst().cardID(),game.revealedResourceCards().getLast().cardID(),
-                    game.revealedGoldCards().getFirst().cardID(),game.revealedGoldCards().getLast().cardID()
+                    game.revealedGoldCards().getFirst().cardID(),game.revealedGoldCards().getLast().cardID(),
+                    playerNicknameWhoUpdated, immGame
             );
         }
 
@@ -507,7 +508,8 @@ public class GraphicalUI extends Application implements UI {
                             revealedGoldCards.get(0).cardID(),revealedGoldCards.get(1).cardID(),
                             myColor,
                             firstPlayer,
-                            maxNumOfPlayers,nickname,playerOrder,initialCards,colors
+                            maxNumOfPlayers,nickname,playerOrder,initialCards,colors,
+                            game
 
                             );
                     break;

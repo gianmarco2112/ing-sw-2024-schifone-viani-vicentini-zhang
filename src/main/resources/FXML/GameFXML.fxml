@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="globalPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ingsw.codex_naturalis.client.view.gui.GameControllerFX">
    <center>
@@ -67,9 +68,9 @@
                      </AnchorPane>
                   </content>
                </ScrollPane>
-               <ImageView fitHeight="71.0" fitWidth="107.0" layoutX="1159.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="71.0" fitWidth="107.0" layoutX="1045.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="71.0" fitWidth="107.0" layoutX="931.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="user1HandCard3" fitHeight="71.0" fitWidth="107.0" layoutX="1159.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="user1HandCard2" fitHeight="71.0" fitWidth="107.0" layoutX="1045.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="user1HandCard1" fitHeight="71.0" fitWidth="107.0" layoutX="931.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true" />
                <Label fx:id="username1" layoutX="931.0" layoutY="6.0" text="Username" />
                <ScrollPane fx:id="playerArea2" layoutX="931.0" layoutY="258.0" prefHeight="128.0" prefWidth="335.0">
                   <content>
@@ -80,9 +81,9 @@
                      </AnchorPane>
                   </content>
                </ScrollPane>
-               <ImageView fitHeight="71.0" fitWidth="107.0" layoutX="1159.0" layoutY="396.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="71.0" fitWidth="107.0" layoutX="1045.0" layoutY="396.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="71.0" fitWidth="107.0" layoutX="931.0" layoutY="396.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="user2HandCard3" fitHeight="71.0" fitWidth="107.0" layoutX="1159.0" layoutY="396.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="user2HandCard2" fitHeight="71.0" fitWidth="107.0" layoutX="1045.0" layoutY="396.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="user2HandCard1" fitHeight="71.0" fitWidth="107.0" layoutX="931.0" layoutY="396.0" pickOnBounds="true" preserveRatio="true" />
                <Label fx:id="username2" layoutX="931.0" layoutY="242.0" text="Username" />
                <ScrollPane fx:id="playerArea3" layoutX="931.0" layoutY="491.0" prefHeight="128.0" prefWidth="335.0">
                   <content>
@@ -93,9 +94,9 @@
                      </AnchorPane>
                   </content>
                </ScrollPane>
-               <ImageView fitHeight="71.0" fitWidth="107.0" layoutX="1159.0" layoutY="629.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="71.0" fitWidth="107.0" layoutX="1045.0" layoutY="629.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="71.0" fitWidth="107.0" layoutX="931.0" layoutY="629.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="user3HandCard3" fitHeight="71.0" fitWidth="107.0" layoutX="1159.0" layoutY="629.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="user3HandCard2" fitHeight="71.0" fitWidth="107.0" layoutX="1045.0" layoutY="629.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="user3HandCard1" fitHeight="71.0" fitWidth="107.0" layoutX="931.0" layoutY="629.0" pickOnBounds="true" preserveRatio="true" />
                <Label fx:id="username3" layoutX="931.0" layoutY="475.0" text="Username" />
                <Button fx:id="flipCard1" layoutX="267.0" layoutY="688.0" mnemonicParsing="false" onAction="#flipHandCard1" text="Flip" />
                <Button fx:id="flipCard2" layoutX="418.0" layoutY="688.0" mnemonicParsing="false" onAction="#flipHandCard2" text="Flip" />
@@ -124,6 +125,7 @@
                               <ImageView fx:id="point2_4" fitHeight="33.0" fitWidth="33.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                         </AnchorPane>
+                        <Text fx:id="myNickText" layoutX="221.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="myNick" />
             </children></AnchorPane>
          </center>
       </BorderPane>

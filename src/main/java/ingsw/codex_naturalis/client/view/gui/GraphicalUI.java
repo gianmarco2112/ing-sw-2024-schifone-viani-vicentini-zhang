@@ -36,6 +36,7 @@ public class GraphicalUI extends Application implements UI {
         LOBBY,
         WAIT,
         CONFIRM,
+        CONFIRMED,
         GAME,
         REJOINED
     }
@@ -149,8 +150,13 @@ public class GraphicalUI extends Application implements UI {
             case LOBBY -> lobbyView();
             case WAIT -> waitView();
             case CONFIRM -> confirmView();
+            case CONFIRMED -> confirmedView();
             //case GAME -> gameView();
         }
+    }
+
+    private void confirmedView() {
+        waitingRoomControllerFX.setConfirmedView();
     }
 
     private void waitForUpdate() {
@@ -238,6 +244,7 @@ public class GraphicalUI extends Application implements UI {
     public void allPlayersJoined() {
         setState(State.CONFIRM);
         setRunningState(RunningState.RUNNING);
+        //setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
     @Override
@@ -416,6 +423,10 @@ public class GraphicalUI extends Application implements UI {
     @Override
     public void playerIsReady(String playerNickname) {
         System.out.println(playerNickname + " è pronto!");
+        if(playerNickname.equals(nickname)){
+            setState(State.CONFIRMED);
+            setRunningState(RunningState.RUNNING);
+        }
     }
 
     public GraphicalUI() {
@@ -512,6 +523,7 @@ public class GraphicalUI extends Application implements UI {
                 case "WaitingRoom":
                     waitingRoomControllerFX = fxmlLoader.getController();
                     waitingRoomControllerFX.setViewGUI(this);
+                    waitingRoomControllerFX.setNickname(nickname);
                     break;
                 case "ColorSetup":
                     colorSetupControllerFX = fxmlLoader.getController();
@@ -552,13 +564,15 @@ public class GraphicalUI extends Application implements UI {
         this.numOfPlayers = numOfPlayers;
         uiObservableItem.notifyNewGame(numOfPlayers);
         setScene("WaitingRoom");
+        setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
     public void joinGame(int gameID, int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
+        //setRunningState(RunningState.WAITING_FOR_UPDATE);
         uiObservableItem.notifyGameToAccess(gameID);
         setScene("WaitingRoom");
+        setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
     public void playerPressEnter(){

@@ -65,6 +65,7 @@ public class WaitingRoomControllerFX implements Initializable {
 
     @FXML
     private Text waitingForPlayers;
+    private String nickname;
 
     @FXML
     void actionIamLeave(ActionEvent event) {
@@ -94,5 +95,13 @@ public class WaitingRoomControllerFX implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btnReady.setVisible(false);
         pressEnter.setVisible(false);
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setConfirmedView() {
+        btnReady.setVisible(false);
     }
 }

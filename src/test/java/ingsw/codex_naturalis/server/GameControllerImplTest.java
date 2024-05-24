@@ -115,7 +115,15 @@ class GameControllerImplTest {
     }
 
     @Test
-    void playCard() {
+    void playCard() throws JsonProcessingException {
+        chooseSecretObjectiveCard();
+        assertEquals(1, model.getPlayerOrder().getFirst().getPlayerArea().getArea().size());
+        gameplayController.playCard("Test", 1, 1, 1);
+        gameplayController.playCard("Test2", 1, 1, 1);
+        while(model.getPlayerOrder().getFirst().getPlayerArea().getArea().size() == 1){
+            //System.out.println("aspetto che il model si aggiorni");
+        }
+        assertEquals(2, model.getPlayerOrder().getFirst().getPlayerArea().getArea().size());
     }
 
     @Test

@@ -86,16 +86,19 @@ class GameControllerImplTest {
     }
 
     @Test
-    void chooseSecretObjectiveCard() {
+    void chooseSecretObjectiveCard() throws JsonProcessingException {
         readyToPlay();
+        gameplayController.chooseColor("Test", objectMapper.writeValueAsString(Color.RED));
+        gameplayController.chooseColor("Test2", objectMapper.writeValueAsString(Color.BLUE));
+        gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
+        gameplayController.updateInitialCard("Test2", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
         assertTrue(model.getPlayerOrder().getFirst().getSecretObjectiveCards().isEmpty());
         gameplayController.chooseSecretObjectiveCard("Test", 1);
-        //gameplayController.
-        //gameplayController.chooseSecretObjectiveCard("Test2", 1);
-        while(model.getPlayerOrder().getFirst().getSecretObjectiveCards().size() == 0){
+        gameplayController.chooseSecretObjectiveCard("Test2", 1);
+        while(model.getPlayerOrder().getFirst().getPlayerArea().getObjectiveCard() == null){
             //System.out.println("aspetto che il model si aggiorni");
         }
-        assertEquals(1, model.getPlayerOrder().getFirst().getSecretObjectiveCards().size());
+        assertNotNull(model.getPlayerOrder().getFirst().getPlayerArea().getObjectiveCard());
     }
 
     @Test

@@ -7,14 +7,14 @@
     -fx-background-color: transparent; /* Rende lo sfondo del contenuto trasparente */
 }
 
-.scroll-pane .scroll-bar:horizontal,
+/*.scroll-pane .scroll-bar:horizontal,
 .scroll-pane .scroll-bar:vertical {
-    -fx-opacity: 0; /* Imposta l'opacità delle barre di scorrimento a 0 per nasconderle */
-    -fx-pref-width: 0; /* Imposta la larghezza preferita della barra di scorrimento orizzontale a 0 */
-    -fx-pref-height: 0; /* Imposta l'altezza preferita della barra di scorrimento verticale a 0 */
-    -fx-max-width: 0; /* Imposta la larghezza massima della barra di scorrimento orizzontale a 0 */
-    -fx-max-height: 0; /* Imposta l'altezza massima della barra di scorrimento verticale a 0 */
-}
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+    -fx-max-width: 0;
+    -fx-max-height: 0;
+}*/
 /* Rende trasparente il bordo del ScrollPane */
 .scroll-pane {
     -fx-background-color: transparent; /* Sfondo trasparente */
@@ -96,8 +96,7 @@
 }
 
 .table {
-    -fx-background-image: url('inGameResources/table.jpeg');
-    /*<a href="https://it.freepik.com/vettori-gratuito/cornice-di-tipi-di-schizzo-di-vettore-boho-arte-tribale-doodle_35510803.htm#fromView=image_search_similar&page=1&position=0&uuid=20f0f269-4860-465a-aca2-62b39199d69a">Immagine di rawpixel.com su Freepik</a>*/
+    -fx-background-image: url('background.jpg');
     -fx-background-size: cover;
     -fx-background-position: center center;
 }

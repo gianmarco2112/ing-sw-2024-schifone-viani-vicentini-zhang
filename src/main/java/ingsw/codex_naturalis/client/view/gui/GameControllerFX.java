@@ -511,13 +511,14 @@ public class GameControllerFX {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Text testo = new Text();
+        /*Text testo = new Text();
         testo.setText("The game setup ended!\n" + firstPlayer + "'s turn");
         testo.setLayoutY(20);
         testo.setLayoutX(20);
         gameUpdates.getChildren().add(testo);
         testo.wrappingWidthProperty().bind(gameUpdates.maxWidthProperty());
-        testo.wrappingWidthProperty().bind(gameUpdates.maxHeightProperty());
+        testo.wrappingWidthProperty().bind(gameUpdates.maxHeightProperty());*/
+        updateBoxText.setText("The game setup ended!\n" + firstPlayer + "'s turn");
 
         Pane pane = createPaneCard(9999,9999);
         //pane.setStyle("-fx-background-color: lightblue;");
@@ -570,6 +571,7 @@ public class GameControllerFX {
 
     private void posizionaPedine(List<Color> colors, int points, AnchorPane anchorPane) {
         ImageView view = null;
+        Boolean update;
         switch (points) {
             case 0 -> {
                 switch (colors.size()){
@@ -578,10 +580,8 @@ public class GameControllerFX {
                         streamColor(colors.getLast(),(ImageView) anchorPane.lookup("#pawn2"));
                         view = (ImageView) anchorPane.lookup("#pawn1");
                         view.setId(colors.getFirst() + "pawn1");
-                        view.setVisible(true);
                         view = (ImageView) anchorPane.lookup("#pawn2");
                         view.setId(colors.getLast() + "pawn2");
-                        view.setVisible(true);
                     }
                     case 3 -> {
                         streamColor(colors.getFirst(),(ImageView) anchorPane.lookup("#pawn1"));
@@ -612,156 +612,214 @@ public class GameControllerFX {
             }
             case 1 -> {
                 //rimuovo colore dalla sua posizione precedente
-                removeFromBoard(colors.getFirst(),points);
-                //calcolo la prima posizione libera all'interno del anchor pane nella board
-                ImageView firstAvailable = computeFirstAvailablePosition(1,colors.getFirst());
-                //posiziono il colore nella posizione appena trovata prima
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    //calcolo la prima posizione libera all'interno del anchor pane nella board
+                    ImageView firstAvailable = computeFirstAvailablePosition(1,colors.getFirst());
+                    //posiziono il colore nella posizione appena trovata prima
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 2 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(2,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(2,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 3 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(3,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(3,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 4 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(4,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(4,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 5 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(5,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(5,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 6 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(6,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(6,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 7 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(7,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(7,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 8 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(8,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(8,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 9 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(9,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(9,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 10 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(10,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(10,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 11 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(11,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(11,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 12 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(12,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(12,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 13 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(13,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(13,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 14 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(14,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(14,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 15 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(15,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(15,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 16 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(16,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(16,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 17 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(17,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(17,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 18 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(18,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(18,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 19 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(19,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(19,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 20 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(20,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(20,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 21 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(21,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(21,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 22 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(22,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(22,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 23 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(23,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(23,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 24 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(24,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(24,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 25 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(25,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(25,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 26 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(26,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(26,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 27 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(27,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(27,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 28 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(28,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(28,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
             case 29 -> {
-                removeFromBoard(colors.getFirst(),points);
-                ImageView firstAvailable = computeFirstAvailablePosition(29,colors.getFirst());
-                streamColor(colors.getFirst(),firstAvailable);
+                update = removeFromBoard(colors.getFirst(),points);
+                if(update) {
+                    ImageView firstAvailable = computeFirstAvailablePosition(29,colors.getFirst());
+                    streamColor(colors.getFirst(),firstAvailable);
+                }
             }
         }
     }
 
-    private void removeFromBoard(Color color, int points) {
+    private Boolean removeFromBoard(Color color, int points) {
         //se in quella posizione c'è già color, allora non aggiorno
         ImageView p1 = (ImageView) anchorPanesOnBoard.get(points).lookup("#" + color + "pawn1");
         ImageView p2 = (ImageView) anchorPanesOnBoard.get(points).lookup("#" + color + "pawn2");
@@ -776,26 +834,31 @@ public class GameControllerFX {
 
                 if(pawn1!=null){
                     pawn1.setId("pawn1");
+                    pawn1.setImage(null);
                     pawn1.setVisible(false);
-                    break;
+                    return true;
                 }
                 if(pawn2!=null){
                     pawn2.setId("pawn2");
+                    pawn2.setImage(null);
                     pawn2.setVisible(false);
-                    break;
+                    return true;
                 }
                 if(pawn3!=null){
-                    pawn3.setId("pawn2");
+                    pawn3.setId("pawn3");
+                    pawn3.setImage(null);
                     pawn3.setVisible(false);
-                    break;
+                    return true;
                 }
                 if(pawn4!=null){
-                    pawn4.setId("pawn2");
+                    pawn4.setId("pawn4");
+                    pawn4.setImage(null);
                     pawn4.setVisible(false);
-                    break;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     private AnchorPane createAnchorPaneOnBoard(int x, int y) {
@@ -860,11 +923,11 @@ public class GameControllerFX {
         }
         if(pawn3!=null && pawn3.getImage() == null) {
             pawn3.setId(color+"pawn3");
-            return pawn1;
+            return pawn3;
         }
         if(pawn4!=null && pawn4.getImage() == null) {
             pawn4.setId(color+"pawn4");
-            return pawn1;
+            return pawn4;
         }
         return null;
     }
@@ -1184,6 +1247,8 @@ public class GameControllerFX {
                             flipCard3.setVisible(true);
                             streamRevealedId(revG1,revG2,revR1,revR2);;
                         }
+                        streamTopRGImage(topResourceCardId, topGoldCardId, false);
+                        streamTopRGImage(topResourceCardId, topGoldCardId, true);
                     }catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -1585,6 +1650,20 @@ public class GameControllerFX {
             }
         }
 
+
+    }
+
+    @FXML
+    private Text updateBoxText;
+
+    public void turnChanged(String currentPlayer) {
+        Platform.runLater(()->{
+            if(currentPlayer.equals(nickname)){
+                updateBoxText.setText("It's your turn!");
+            }else{
+                updateBoxText.setText("It's " + currentPlayer + "'s turn!");
+            }
+        });
 
     }
 }

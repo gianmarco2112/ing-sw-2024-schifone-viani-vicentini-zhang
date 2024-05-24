@@ -368,7 +368,7 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void turnChanged(String currentPlayer) {
-
+        gameControllerFX.turnChanged(currentPlayer);
     }
 
     @Override

@@ -452,6 +452,7 @@ public class GraphicalUI extends Application implements UI {
             setState(State.CONFIRMED);
             setRunningState(RunningState.RUNNING);
         }
+        waitingRoomControllerFX.showAvatar(playerNickname);
     }
 
     public GraphicalUI() {
@@ -554,6 +555,8 @@ public class GraphicalUI extends Application implements UI {
                     waitingRoomControllerFX = fxmlLoader.getController();
                     waitingRoomControllerFX.setViewGUI(this);
                     waitingRoomControllerFX.setNickname(nickname);
+                    waitingRoomControllerFX.showNicknameAndGameid(nickname,gameID);
+                    waitingRoomControllerFX.showPlayerVan(numOfPlayers);
                     break;
                 case "ColorSetup":
                     colorSetupControllerFX = fxmlLoader.getController();

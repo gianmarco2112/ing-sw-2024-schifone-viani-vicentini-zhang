@@ -56,10 +56,10 @@
                <Button fx:id="sendMessageButton" layoutX="712.0" layoutY="185.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="199.0" text="Send message" visible="false" />
                <Label fx:id="chatLBL" layoutX="712.0" layoutY="6.0" text="Chat" textFill="WHITE" />
                <Label fx:id="secretObjextiveLBL" layoutX="14.0" layoutY="585.0" text="Secret Objective" textFill="WHITE" />
-               <Label fx:id="gameUpdateLBL" layoutX="710.0" layoutY="603.0" text="Game updates" textFill="WHITE" />
-               <ScrollPane layoutX="706.0" layoutY="627.0" prefHeight="73.0" prefWidth="200.0">
+               <Label fx:id="gameUpdateLBL" layoutX="710.0" layoutY="593.0" text="Game updates" textFill="WHITE" />
+               <ScrollPane layoutX="706.0" layoutY="608.0" prefHeight="65.0" prefWidth="219.0">
                   <content>
-                     <AnchorPane fx:id="gameUpdates" minHeight="61.0" minWidth="185.0" prefHeight="69.0" prefWidth="194.0">
+                     <AnchorPane fx:id="gameUpdates" minHeight="56.0" minWidth="185.0" prefHeight="63.0" prefWidth="217.0">
                                  <children>
                                     <Text fx:id="updateBoxText" fill="WHITE" layoutX="13.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                                  </children></AnchorPane>
@@ -90,7 +90,7 @@
                <ImageView fx:id="user2HandCard3" fitHeight="71.0" fitWidth="107.0" layoutX="1159.0" layoutY="396.0" pickOnBounds="true" preserveRatio="true" />
                <ImageView fx:id="user2HandCard2" fitHeight="71.0" fitWidth="107.0" layoutX="1045.0" layoutY="396.0" pickOnBounds="true" preserveRatio="true" />
                <ImageView fx:id="user2HandCard1" fitHeight="71.0" fitWidth="107.0" layoutX="931.0" layoutY="396.0" pickOnBounds="true" preserveRatio="true" />
-               <Label fx:id="username2" layoutX="931.0" layoutY="242.0" text="Username" />
+               <Label fx:id="username2" layoutX="931.0" layoutY="242.0" text="Username" textFill="WHITE" />
                <ScrollPane fx:id="playerArea3" layoutX="931.0" layoutY="491.0" prefHeight="128.0" prefWidth="335.0">
                   <content>
                      <AnchorPane fx:id="user3PlayerArea" minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="338.0">
@@ -143,6 +143,7 @@
                         </ImageView>
                         <ListView fx:id="chatList" layoutX="680.0" layoutY="21.0" prefHeight="151.0" prefWidth="243.0" styleClass="backgroundTransparent" stylesheets="@../style.css" />
                         <TextField fx:id="messageText" layoutX="761.0" layoutY="183.0" onKeyPressed="#actionKeyPressedOnTextMessage" prefHeight="26.0" prefWidth="134.0" />
+                        <Button layoutX="730.0" layoutY="688.0" mnemonicParsing="false" onAction="#leaveButton" text="Leave" />
             </children></AnchorPane>
          </center>
       </BorderPane>

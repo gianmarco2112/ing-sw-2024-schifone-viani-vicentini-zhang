@@ -249,14 +249,16 @@ public class GameControllerFX {
         //////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////
         //per stampare le pedine in ordine uguale per tutti
-        while(colors.size()!=game.playerOrderNicknames().size()){
+        /*while(colors.size()!=game.playerOrderNicknames().size()){
             colors.add(colors.getLast());//inserisco un elemento a caso...
-        }
+        }*/
         int index = game.playerOrderNicknames().indexOf(mynickname);
-        for(int i = index; i<colors.size()-1; i++){
+        /*for(int i = index; i>=0; i--){
+            tmp=colors.get(i+1);
             colors.set(i+1,colors.get(i));
         }
-        colors.set(index,myColor);
+        colors.set(index,myColor);*/
+        colors.add(index,game.player().color());
 
         posizionaPedine(colors,0,anchorPanesOnBoard.get(0));
         colors.remove(myColor);
@@ -2269,5 +2271,10 @@ public class GameControllerFX {
                 e.printStackTrace();
             }
         }
+    }
+
+    @FXML
+    void leaveButton(ActionEvent event) {
+        viewGUI.leaveGame();
     }
 }

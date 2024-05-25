@@ -147,7 +147,6 @@ public class GraphicalUI extends Application implements UI {
             case CONFIRMED -> confirmedView();
             //case GAME -> gameView();
             case REJOINED -> {
-                uiObservableItem.notifyGetGameController();
                 rejoined = true;
                 setScene("Game");
                 setRunningState(RunningState.WAITING_FOR_UPDATE);
@@ -303,6 +302,10 @@ public class GraphicalUI extends Application implements UI {
         playerOrder = new ArrayList<>(game.playerOrderNicknames());
         maxNumOfPlayers = playerOrder.size();
         playerOrder.remove(nickname);
+        //when exit and join another game
+        initialCards.clear();
+        colors.clear();
+        /////////////////////////////////////
         for(int i = 0; i<playerOrder.size(); i++){
             initialCards.add(game.otherPlayers().get(i).playerArea().area().get(List.of(0,0)));
             colors.add(game.otherPlayers().get(i).color());
@@ -402,14 +405,20 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void gameLeft() {
-
+        setState(State.LOBBY);
+        setRunningState(RunningState.RUNNING);
     }
 
     @Override
     public void gameRejoined(ImmGame game) {
         this.game = game;
-        setState(State.REJOINED);
-        setRunningState(RunningState.RUNNING);
+        uiObservableItem.notifyGetGameController();
+        rejoined = true;
+        setScene("Game");
+        setRunningState(RunningState.WAITING_FOR_UPDATE);
+        //setState(State.REJOINED);
+
+        //setRunningState(RunningState.RUNNING);
     }
 
     @Override
@@ -433,6 +442,7 @@ public class GraphicalUI extends Application implements UI {
     @Override
     public void gameResumed() {
         gameControllerFX.gameResumed();
+        turnChanged(game.currentPlayerNickname());
     }
 
     @Override
@@ -641,5 +651,9 @@ public class GraphicalUI extends Application implements UI {
 
     public void sendMessage(String receiver, String text) {
         uiObservableItem.notifySendMessage(receiver,text);
+    }
+
+    public void leaveGame() {
+        uiObservableItem.notifyLeaveGame();
     }
 }

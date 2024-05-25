@@ -4,10 +4,7 @@ import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
-import ingsw.codex_naturalis.common.immutableModel.ImmGame;
-import ingsw.codex_naturalis.common.immutableModel.ImmMessage;
-import ingsw.codex_naturalis.common.immutableModel.ImmObjectiveCard;
-import ingsw.codex_naturalis.common.immutableModel.ImmPlayableCard;
+import ingsw.codex_naturalis.common.immutableModel.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -1767,5 +1764,510 @@ public class GameControllerFX {
                 }
             }
         });
+    }
+
+    public void rejoined(ImmGame game) {
+        nickname = game.player().nickname();
+        myColor = game.player().color();
+
+        user1PlayerArea.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        user1PlayerArea.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        playerArea1.setHvalue(1.0);
+        playerArea1.setVvalue(1.0);
+        user1Initialcard.setLayoutX(9999);
+        user1Initialcard.setLayoutY(9999);
+
+        user2PlayerArea.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        user2PlayerArea.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        playerArea2.setHvalue(1.0);
+        playerArea2.setVvalue(1.0);
+        user2Initialcard.setLayoutX(9999);
+        user2Initialcard.setLayoutY(9999);
+
+        user3PlayerArea.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        user3PlayerArea.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        playerArea3.setHvalue(1.0);
+        playerArea3.setVvalue(1.0);
+        user3Initialcard.setLayoutX(9999);
+        user3Initialcard.setLayoutY(9999);
+
+        myPlayerAreaAnchorPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        myPlayerAreaAnchorPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        myPlayerArea.setHvalue(1.0);
+        myPlayerArea.setVvalue(1.0);
+        myInitialCard.setLayoutX(9999);
+        myInitialCard.setLayoutY(9999);
+
+        ////////////////////////////////////////////////////////
+        ///////tabellone////////////////////////////////////////
+        ////////////////////////////////////////////////////////
+        initializeBoard();
+        for(int i = 0; i<=29; i++) {
+            AnchorPane anchorPane = createAnchorPaneOnBoard(boardPointsPosition.get(i).get(0),boardPointsPosition.get(i).get(1));
+            anchorPanesOnBoard.add(anchorPane);
+        }
+        ///////NB: se più di una pedina sullo stesso punteggio, questo potrebbe essere non visualizzato uguale per il giocatore riconesso
+        List<Color> colorsIn0 = new ArrayList<>();
+        List<String> playersIn0 = new ArrayList<>();
+        if(game.player().playerArea().points()==0){
+            colorsIn0.add(game.player().color());
+            playersIn0.add(game.player().nickname());
+        }
+        for(ImmOtherPlayer p: game.otherPlayers()){
+            if(p.playerArea().points()==0){
+                colorsIn0.add(p.color());
+                playersIn0.add(p.nickname());
+            }
+        }
+        if(!colorsIn0.isEmpty()){
+            ImageView view = null;
+            switch (colorsIn0.size()){
+                case 1 -> {
+                    streamColor(colorsIn0.getFirst(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1"));
+                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1");
+                    view.setId(colorsIn0.getFirst() + "pawn1");
+                }
+                case 2 -> {
+                    streamColor(colorsIn0.getFirst(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1"));
+                    streamColor(colorsIn0.getLast(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2"));
+                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1");
+                    view.setId(colorsIn0.getFirst() + "pawn1");
+                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2");
+                    view.setId(colorsIn0.getLast() + "pawn2");
+                }
+                case 3 -> {
+                    streamColor(colorsIn0.getFirst(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1"));
+                    streamColor(colorsIn0.get(1),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2"));
+                    streamColor(colorsIn0.getLast(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn3"));
+                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1");
+                    view.setId(colorsIn0.getFirst() + "pawn1");
+                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2");
+                    view.setId(colorsIn0.get(1) + "pawn2");
+                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn3");
+                    view.setId(colorsIn0.getLast() + "pawn3");
+                }
+                case 4 -> {
+                    streamColor(colorsIn0.getFirst(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1"));
+                    streamColor(colorsIn0.get(1),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2"));
+                    streamColor(colorsIn0.get(2),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn3"));
+                    streamColor(colorsIn0.getLast(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn4"));
+                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1");
+                    view.setId(colorsIn0.getFirst() + "pawn1");
+                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2");
+                    view.setId(colorsIn0.get(1) + "pawn2");
+                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn3");
+                    view.setId(colorsIn0.get(2) + "pawn3");
+                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn4");
+                    view.setId(colorsIn0.getLast() + "pawn3");
+                }
+            }
+        }
+
+        for(String p: game.playerOrderNicknames()){
+            if(!playersIn0.contains(p)){
+                if(p.equals(game.player().nickname())){
+                    ImageView firstAvailable = computeFirstAvailablePosition(game.player().playerArea().points(),game.player().color());
+                    streamColor(game.player().color(),firstAvailable);
+                }else{
+                    int index = -1;
+                    for(ImmOtherPlayer o: game.otherPlayers()){
+                        if(o.nickname().equals(p)){
+                            index = game.otherPlayers().indexOf(o);
+                            break;
+                        }
+                    }
+                    ImageView firstAvailable = computeFirstAvailablePosition(game.otherPlayers().get(index).playerArea().points(),game.otherPlayers().get(index).color());
+                    streamColor(game.otherPlayers().get(index).color(),firstAvailable);
+                }
+            }
+        }
+
+        ////////////////////////////////////////////////////////
+        ///////mazzi e carte scoperte///////////////////////////
+        ////////////////////////////////////////////////////////
+
+        streamTopRGImage(game.revealedResourceCards().getFirst().cardID(),game.revealedResourceCards().getLast().cardID(),false);
+        streamTopRGImage(game.topResourceCard().cardID(),game.topGoldCard().cardID(),true);
+        streamTopRGImage(game.topResourceCard().cardID(),game.topGoldCard().cardID(),false);
+
+        streamRevealedId(game.revealedGoldCards().get(0).cardID(),game.revealedGoldCards().get(1).cardID(),game.revealedResourceCards().get(0).cardID(),game.revealedResourceCards().get(1).cardID());
+
+        ////////////////////////////////////////////////////////
+        ///////obiettivi comuni e segreti///////////////////////
+        ////////////////////////////////////////////////////////
+        String secretObjective = "/CardsImages/Objective/" + game.player().playerArea().objectiveCard().cardID() + ".png";
+        String commonObj1 = "/CardsImages/Objective/" + game.commonObjectiveCards().getFirst().cardID() + ".png";
+        String commonObj2 = "/CardsImages/Objective/" + game.commonObjectiveCards().getLast().cardID() + ".png";
+
+        try(InputStream secretObj = getClass().getResourceAsStream(secretObjective);
+            InputStream commonObj1Stream = getClass().getResourceAsStream(commonObj1);
+            InputStream commonObj2Stream = getClass().getResourceAsStream(commonObj2);
+        ){
+            this.commonObjective1.setImage(new Image(commonObj1Stream));
+            this.commonObjective2.setImage(new Image(commonObj2Stream));
+
+            mySecretObjective.setImage(new Image(secretObj));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        ////////////////////////////////////////////////////////
+        ///////Chat/////////////////////////////////////////////
+        ////////////////////////////////////////////////////////
+
+        if (comboBoxMessage.getItems().size() == 0) {
+            comboBoxMessage.getItems().add("");
+            for (String p : game.playerOrderNicknames()) {
+                if(!p.equals(game.player().nickname())){
+                    comboBoxMessage.getItems().add(p);
+                }
+            }
+            comboBoxMessage.getSelectionModel().selectFirst();
+        }
+
+        chatList.getItems().clear();
+        for (ImmMessage message : game.chat()) {
+            String m = "[" + message.sentTime() + "]" + message.sender() + ": " + message.content();
+
+            if(message.receivers().size() == game.playerOrderNicknames().size()-1) {
+                chatList.getItems().add(m);
+            }else if(message.receivers().getFirst().equals(nickname)||message.sender().equals(nickname)){
+                chatList.getItems().add("[Private] " + m);
+            }
+        }
+
+        ////////////////////////////////////////////////////////
+        ///////mio campo + carte in mano////////////////////////
+        ////////////////////////////////////////////////////////
+
+        Map.Entry<List<Integer>, ImmPlayableCard> placed = null;
+        for (Map.Entry<List<Integer>, ImmPlayableCard> cardAndCoordinates : game.player().playerArea().area().entrySet()) {
+            placed = cardAndCoordinates;
+
+            int x = placed.getKey().getFirst();
+            int y = placed.getKey().getLast();
+            String idlast = placed.getValue().cardID();
+
+            int layoutX = x*104 + 9999;
+            int layoutY = 9999 - 54*y;
+
+            if(placed.getValue().playableCardType()==PlayableCardType.INITIAL){
+                streamInitialCard(idlast,myInitialCard,placed.getValue().showingFront());
+
+                myInitialCard.setLayoutX(layoutX);
+                myInitialCard.setLayoutY(layoutY);
+                Pane pane = createPaneCard(layoutX,layoutY);
+                myPlayerAreaAnchorPane.getChildren().add(pane);
+                //myPlayerAreaAnchorPane.getChildren().add(toPlace);
+            }else{
+                ImageView toPlace = new ImageView();
+                toPlace.setFitWidth(133);
+                toPlace.setFitHeight(93);
+                streamCardRejoin(idlast,toPlace,placed.getValue().showingFront());
+
+                toPlace.setLayoutX(layoutX);
+                toPlace.setLayoutY(layoutY);
+                myPlayerAreaAnchorPane.getChildren().add(toPlace);
+                Pane pane = createPaneCard(layoutX,layoutY);
+                myPlayerAreaAnchorPane.getChildren().add(pane);
+            }
+
+        }
+
+        streamMyHandcard(game.player().hand().getFirst().cardID(),handCard1,game.player().hand().getFirst().showingFront());
+        streamMyHandcard(game.player().hand().get(1).cardID(),handCard2,game.player().hand().get(1).showingFront());
+        streamMyHandcard(game.player().hand().get(2).cardID(),handCard3,game.player().hand().get(2).showingFront());
+        ////////////////////////////////////////////////////////
+        ///////campo degli altri + carte in mano////////////////
+        ////////////////////////////////////////////////////////
+        List<String> playerOrder = new ArrayList<>(game.playerOrderNicknames());
+        playerOrder.remove(game.player().nickname());
+        List<Color> colors = new ArrayList<>();
+        for(int i = 0; i<playerOrder.size(); i++){
+            colors.add(game.otherPlayers().get(i).color());
+        }
+
+        username1.setText(playerOrder.getLast());
+
+
+        int index1 = -1;
+        int index2 = -1;
+        int index3 = -1;
+        for(String p: game.playerOrderNicknames()){
+            if(!p.equals(game.player().nickname())){
+                for(ImmOtherPlayer o: game.otherPlayers()){
+                    if(o.nickname().equals(p)){
+                        if(index1==-1){
+                            index1 = game.otherPlayers().indexOf(o);
+                        }
+                        if(index2==-1){
+                            index2 = game.otherPlayers().indexOf(o);
+                        }
+                        if(index3==-1){
+                            index3 = game.otherPlayers().indexOf(o);
+                        }
+                    }
+
+                }
+            }
+        }
+
+        streamOtherPlayerarea(user1PlayerArea,game,index1);
+        if(game.otherPlayers().size()==2){
+            streamOtherPlayerarea(user2PlayerArea,game,index2);
+        }else{
+            streamOtherPlayerarea(user2PlayerArea,game,index2);
+            streamOtherPlayerarea(user3PlayerArea,game,index3);
+        }
+
+        streamOtherPlayerCard(game.otherPlayers().getFirst().hand().getFirst().cardID(),user1HandCard1);
+        streamOtherPlayerCard(game.otherPlayers().getFirst().hand().get(1).cardID(),user1HandCard2);
+        streamOtherPlayerCard(game.otherPlayers().getFirst().hand().get(2).cardID(),user1HandCard3);
+
+        if(game.otherPlayers().size()==2){
+            streamOtherPlayerCard(game.otherPlayers().get(1).hand().getFirst().cardID(),user2HandCard1);
+            streamOtherPlayerCard(game.otherPlayers().get(1).hand().get(1).cardID(),user2HandCard2);
+            streamOtherPlayerCard(game.otherPlayers().get(1).hand().get(2).cardID(),user2HandCard3);
+        }else if (game.otherPlayers().size()==3){
+            streamOtherPlayerCard(game.otherPlayers().get(1).hand().getFirst().cardID(),user2HandCard1);
+            streamOtherPlayerCard(game.otherPlayers().get(1).hand().get(1).cardID(),user2HandCard2);
+            streamOtherPlayerCard(game.otherPlayers().get(1).hand().get(2).cardID(),user2HandCard3);
+
+            streamOtherPlayerCard(game.otherPlayers().get(1).hand().getFirst().cardID(),user3HandCard1);
+            streamOtherPlayerCard(game.otherPlayers().get(1).hand().get(1).cardID(),user3HandCard2);
+            streamOtherPlayerCard(game.otherPlayers().get(1).hand().get(2).cardID(),user3HandCard3);
+        }
+
+        //////////posizionare pedine sulle playerarea//////////////////////////////
+        ImageView myPedina = new ImageView();
+        streamColor(myColor,myPedina);
+        myPedina.setFitHeight(33);
+        myPedina.setFitWidth(33);
+        myPedina.setLayoutX(9999+50);
+        myPedina.setLayoutY(9999-17);
+        myPlayerAreaAnchorPane.getChildren().add(myPedina);
+
+        if(game.playerOrderNicknames().size()==2){
+            user2PlayerArea.setVisible(false);
+            playerArea2.setVisible(false);
+            username2.setVisible(false);
+            user3PlayerArea.setVisible(false);
+            playerArea3.setVisible(false);
+            username3.setVisible(false);
+
+            ImageView u1Pedina = new ImageView();
+            streamColor(colors.getFirst(),u1Pedina);
+            u1Pedina.setFitHeight(33);
+            u1Pedina.setFitWidth(33);
+            u1Pedina.setLayoutX(9999+37);
+            u1Pedina.setLayoutY(9999-20);
+            user1PlayerArea.getChildren().add(u1Pedina);
+        }else{
+            switch (game.playerOrderNicknames().size()) {
+                case 3 -> {
+
+                    user3PlayerArea.setVisible(false);
+                    playerArea3.setVisible(false);
+                    username3.setVisible(false);
+
+                    ImageView u2Pedina = new ImageView();
+                    streamColor(colors.getLast(),u2Pedina);
+                    u2Pedina.setFitHeight(33);
+                    u2Pedina.setFitWidth(33);
+                    u2Pedina.setLayoutX(9999+37);
+                    u2Pedina.setLayoutY(9999-20);
+                    user2PlayerArea.getChildren().add(u2Pedina);
+
+                    username2.setText(playerOrder.getLast());
+
+                }
+                case 4 -> {
+
+                    ImageView u2Pedina = new ImageView();
+                    streamColor(colors.get(1),u2Pedina);
+                    u2Pedina.setFitHeight(33);
+                    u2Pedina.setFitWidth(33);
+                    u2Pedina.setLayoutX(9999+37);
+                    u2Pedina.setLayoutY(9999-20);
+                    user2PlayerArea.getChildren().add(u2Pedina);
+
+                    username2.setText(playerOrder.getLast());
+
+                    ImageView u3Pedina = new ImageView();
+                    streamColor(colors.getLast(),u3Pedina);
+                    u3Pedina.setFitHeight(33);
+                    u3Pedina.setFitWidth(33);
+                    u3Pedina.setLayoutX(9999+37);
+                    u3Pedina.setLayoutY(9999-20);
+                    user3PlayerArea.getChildren().add(u3Pedina);
+
+                    username3.setText(playerOrder.getLast());
+                }
+            }
+        }
+
+        String pedinanera = "/pedine/pedina_nera.png";
+        try(InputStream neroStream = getClass().getResourceAsStream(pedinanera);){
+            if(game.player().nickname().equals(game.playerOrderNicknames().getFirst())){
+                //posiziono la pedina nera sul mio
+                ImageView blackPawn = new ImageView(new Image(neroStream));
+                blackPawn.setFitHeight(33);
+                blackPawn.setFitWidth(33);
+                blackPawn.setLayoutX(9999+50);
+                blackPawn.setLayoutY(9999-17-5);
+                myPlayerAreaAnchorPane.getChildren().add(blackPawn);
+            }else{
+                //posiziono la pedina nera sul campo di un altro giocatore
+                int index = -1;
+                for(ImmOtherPlayer p: game.otherPlayers()){
+                    if(p.nickname().equals(game.playerOrderNicknames().getFirst())){
+                        index = game.otherPlayers().indexOf(p);
+                        break;
+                    }
+                }
+                switch (index){
+                    case 0 -> {
+                        ImageView blackPawn = new ImageView(new Image(neroStream));
+                        blackPawn.setFitHeight(33);
+                        blackPawn.setFitWidth(33);
+                        blackPawn.setLayoutX(9999+37);
+                        blackPawn.setLayoutY(9999-20-5);
+                        user1PlayerArea.getChildren().add(blackPawn);
+                    }
+                    case 1 -> {
+                        ImageView blackPawn = new ImageView(new Image(neroStream));
+                        blackPawn.setFitHeight(33);
+                        blackPawn.setFitWidth(33);
+                        blackPawn.setLayoutX(9999+37);
+                        blackPawn.setLayoutY(9999-20-5);
+                        user2PlayerArea.getChildren().add(blackPawn);
+                    }
+                    case 2 -> {
+                        ImageView blackPawn = new ImageView(new Image(neroStream));
+                        blackPawn.setFitHeight(33);
+                        blackPawn.setFitWidth(33);
+                        blackPawn.setLayoutX(9999+37);
+                        blackPawn.setLayoutY(9999-20-5);
+                        user3PlayerArea.getChildren().add(blackPawn);
+                    }
+                }
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        /////////////////////////////////////////////////
+
+        //Platform.runLater(()->{
+
+        //});
+    }
+
+    private void streamCardRejoin(String id, ImageView toPlace, boolean showingFront) {
+        if(showingFront){
+            String path = "/CardsImages/HandCards/front/" + id + ".png";
+
+            try(InputStream cardStream = getClass().getResourceAsStream(path);){
+                toPlace.setImage(new Image(cardStream));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }else{
+            String path = "/CardsImages/HandCards/back/" + id + ".png";
+
+            try(InputStream cardStream = getClass().getResourceAsStream(path);){
+                toPlace.setImage(new Image(cardStream));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void streamOtherPlayerarea(AnchorPane userPlayerArea, ImmGame game, int index) {
+        Map.Entry<List<Integer>, ImmPlayableCard> placed = null;
+        for (Map.Entry<List<Integer>, ImmPlayableCard> cardAndCoordinates : game.otherPlayers().get(index).playerArea().area().entrySet()) {
+            placed = cardAndCoordinates;
+            int x = placed.getKey().getFirst();
+            int y = placed.getKey().getLast();
+            String idlast = placed.getValue().cardID();
+
+            int layoutX = x*83 + 9999;
+            int layoutY = 9999 - 43*y;
+
+            if(cardAndCoordinates.getValue().playableCardType()==PlayableCardType.INITIAL){
+                if(userPlayerArea==user1PlayerArea){
+                    ImageView toPlace = new ImageView();
+                    streamInitialCardRejoin(idlast,user1Initialcard,placed.getValue().showingFront());
+                    user1Initialcard.setLayoutX(layoutX);
+                    user1Initialcard.setLayoutY(layoutY);
+                    //userPlayerArea.getChildren().add(toPlace);
+                }
+                if(userPlayerArea==user2PlayerArea){
+                    ImageView toPlace = new ImageView();
+                    streamInitialCardRejoin(idlast,user2Initialcard,placed.getValue().showingFront());
+                    user2Initialcard.setLayoutX(layoutX);
+                    user2Initialcard.setLayoutY(layoutY);
+                    //userPlayerArea.getChildren().add(toPlace);
+                }
+                if(userPlayerArea==user3PlayerArea){
+                    ImageView toPlace = new ImageView();
+                    streamInitialCardRejoin(idlast,user3Initialcard,placed.getValue().showingFront());
+                    user3Initialcard.setLayoutX(layoutX);
+                    user3Initialcard.setLayoutY(layoutY);
+                    //userPlayerArea.getChildren().add(toPlace);
+                }
+
+            }else{
+                ImageView toPlace = new ImageView();
+                streamCard(idlast,toPlace,placed.getValue().showingFront());
+
+                toPlace.setLayoutX(layoutX);
+                toPlace.setLayoutY(layoutY);
+                userPlayerArea.getChildren().add(toPlace);
+            }
+        }
+    }
+
+    private void streamInitialCardRejoin(String id, ImageView toPlace, boolean showingFront) {
+        if(showingFront){
+            String path = "/CardsImages/Initial/fronts/" + id + ".png";
+
+            try(InputStream cardStream = getClass().getResourceAsStream(path);){
+                toPlace.setFitHeight(71);
+                toPlace.setFitWidth(107);
+                toPlace.setImage(new Image(cardStream));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }else{
+            String path = "/CardsImages/Initial/backs/" + id + ".png";
+
+            try(InputStream cardStream = getClass().getResourceAsStream(path);){
+                toPlace.setFitHeight(71);
+                toPlace.setFitWidth(107);
+                toPlace.setImage(new Image(cardStream));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void streamMyHandcard(String id, ImageView handCard, Boolean showingFront) {
+        if(showingFront){
+            String path = "/CardsImages/Handcards/front/" + id + ".png";
+
+            try(InputStream handCardStream = getClass().getResourceAsStream(path);){
+                handCard.setImage(new Image(handCardStream));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }else{
+            String path = "/CardsImages/Handcards/back/" + id + ".png";
+
+            try(InputStream handCardStream = getClass().getResourceAsStream(path);){
+                handCard.setImage(new Image(handCardStream));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

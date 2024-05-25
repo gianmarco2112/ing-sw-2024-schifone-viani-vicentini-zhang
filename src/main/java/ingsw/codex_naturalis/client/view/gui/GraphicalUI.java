@@ -150,6 +150,7 @@ public class GraphicalUI extends Application implements UI {
                 uiObservableItem.notifyGetGameController();
                 rejoined = true;
                 setScene("Game");
+                setRunningState(RunningState.WAITING_FOR_UPDATE);
             }
         }
     }
@@ -513,23 +514,22 @@ public class GraphicalUI extends Application implements UI {
                     gameControllerFX = fxmlLoader.getController();
                     gameControllerFX.setViewGUI(this);
                     if(rejoined){
-
+                        gameControllerFX.rejoined(this.game);
                     }else{
+                        gameControllerFX.endSetup(initialCardID, initialCardPlayedFront,
+                                myObjectiveCard.cardID(),
+                                hand.get(0).cardID(),hand.get(1).cardID(),hand.get(2).cardID(),
+                                commonObjectiveCard.get(0).cardID(),commonObjectiveCard.get(1).cardID(),
+                                topGoldCard.cardID(),topResourceCard.cardID(), topGoldCard.kingdom(), topResourceCard.kingdom(),
+                                revealedResourceCards.get(0).cardID(),revealedResourceCards.get(1).cardID(),
+                                revealedGoldCards.get(0).cardID(),revealedGoldCards.get(1).cardID(),
+                                myColor,
+                                firstPlayer,
+                                maxNumOfPlayers,nickname,playerOrder,initialCards,colors,
+                                game
 
+                        );
                     }
-                    gameControllerFX.endSetup(initialCardID, initialCardPlayedFront,
-                            myObjectiveCard.cardID(),
-                            hand.get(0).cardID(),hand.get(1).cardID(),hand.get(2).cardID(),
-                            commonObjectiveCard.get(0).cardID(),commonObjectiveCard.get(1).cardID(),
-                            topGoldCard.cardID(),topResourceCard.cardID(), topGoldCard.kingdom(), topResourceCard.kingdom(),
-                            revealedResourceCards.get(0).cardID(),revealedResourceCards.get(1).cardID(),
-                            revealedGoldCards.get(0).cardID(),revealedGoldCards.get(1).cardID(),
-                            myColor,
-                            firstPlayer,
-                            maxNumOfPlayers,nickname,playerOrder,initialCards,colors,
-                            game
-
-                            );
                     break;
                 case "EndGame":
                     endGameControllerFX = fxmlLoader.getController();

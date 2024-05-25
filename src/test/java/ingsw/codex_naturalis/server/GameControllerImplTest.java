@@ -8,6 +8,7 @@ import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
 import ingsw.codex_naturalis.server.exceptions.ColorAlreadyChosenException;
+import ingsw.codex_naturalis.server.exceptions.NotYourTurnException;
 import ingsw.codex_naturalis.server.model.Game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ class GameControllerImplTest {
         gameplayController.readyToPlay("Test2");
 
         while(model.getPlayerOrder().getFirst().getInitialCard() == null || model.getPlayerOrder().getLast().getInitialCard() == null){
-            //System.out.println("aspetto che il model si aggiorni");
+            //System.out.println("waiting for model update");
         }
         assertNotNull(model.getPlayerOrder().getFirst().getInitialCard());
         assertNotNull(model.getPlayerOrder().getLast().getInitialCard());
@@ -62,14 +63,14 @@ class GameControllerImplTest {
         assertFalse(model.getPlayerOrder().getFirst().getInitialCard().getImmutablePlayableCard().showingFront());
         gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.FLIP));
         while(!model.getPlayerOrder().getFirst().getInitialCard().getImmutablePlayableCard().showingFront()){
-            //System.out.println("aspetto che il model si aggiorni");
+            //System.out.println("waiting for model update");
         }
         assertTrue(model.getPlayerOrder().getFirst().getInitialCard().getImmutablePlayableCard().showingFront());
 
         assertFalse(model.getPlayerOrder().getFirst().getPlayerArea().getArea().containsKey(List.of(0,0)));
         gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
         while(!model.getPlayerOrder().getFirst().getPlayerArea().getArea().containsKey(List.of(0,0))){
-            //System.out.println("aspetto che il model si aggiorni");
+            //System.out.println("waiting for model update");
         }
 
         assertTrue(model.getPlayerOrder().getFirst().getPlayerArea().getArea().containsKey(List.of(0,0)));
@@ -79,7 +80,7 @@ class GameControllerImplTest {
     void chooseColor() throws JsonProcessingException {
         gameplayController.chooseColor("Test", objectMapper.writeValueAsString(Color.RED));
         while(model.getPlayerOrder().getFirst().getColor() == null){
-            //System.out.println("aspetto che il model si aggiorni");
+            //System.out.println("waiting for model update");
         }
         assertEquals(model.getPlayerOrder().getFirst().getColor(), Color.RED);
         assertThrows(ColorAlreadyChosenException.class, () -> {model.setPlayerColor(model.getPlayerOrder().getFirst(), Color.RED);});
@@ -96,7 +97,7 @@ class GameControllerImplTest {
         gameplayController.chooseSecretObjectiveCard("Test", 1);
         gameplayController.chooseSecretObjectiveCard("Test2", 1);
         while(model.getPlayerOrder().getFirst().getPlayerArea().getObjectiveCard() == null){
-            //System.out.println("aspetto che il model si aggiorni");
+            //System.out.println("waiting for model update");
         }
         assertNotNull(model.getPlayerOrder().getFirst().getPlayerArea().getObjectiveCard());
     }
@@ -109,7 +110,7 @@ class GameControllerImplTest {
         gameplayController.flipCard("Test", 0);
         gameplayController.flipCard("Test2", 0);
         while(model.getPlayerOrder().getFirst().getHand().getFirst().isShowingFront() == initialIsShowingFront){
-            //System.out.println("aspetto che il model si aggiorni");
+            //System.out.println("waiting for model update");
         }
         assertEquals(!initialIsShowingFront, model.getPlayerOrder().getFirst().getHand().getFirst().isShowingFront());
     }
@@ -118,19 +119,40 @@ class GameControllerImplTest {
     void playCard() throws JsonProcessingException {
         chooseSecretObjectiveCard();
         assertEquals(1, model.getPlayerOrder().getFirst().getPlayerArea().getArea().size());
-        gameplayController.playCard("Test", 1, 1, 1);
-        gameplayController.playCard("Test2", 1, 1, 1);
+        gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 1, 1, 1);
+        gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 1, 1, 1);
         while(model.getPlayerOrder().getFirst().getPlayerArea().getArea().size() == 1){
-            //System.out.println("aspetto che il model si aggiorni");
+            //System.out.println("waiting for model update");
         }
+        assertEquals(1, model.getPlayerOrder().getLast().getPlayerArea().getArea().size());
         assertEquals(2, model.getPlayerOrder().getFirst().getPlayerArea().getArea().size());
     }
 
     @Test
-    void drawCard() {
+    void drawCard() throws JsonProcessingException {
+        playCard();
+        assertEquals(1, model.getPlayerOrder().getLast().getPlayerArea().getArea().size());
+        assertEquals(2, model.getPlayerOrder().getFirst().getPlayerArea().getArea().size());
+        while(model.getPlayerOrder().getFirst().getHand().size() == 3){
+            //System.out.println("waiting for model update");
+        }
+        assertEquals(2, model.getPlayerOrder().getFirst().getHand().size());
+        gameplayController.drawCard(model.getPlayerOrder().getFirst().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1));
+        while(model.getPlayerOrder().getFirst().getHand().size() == 2){
+            //System.out.println("waiting for model update");
+        }
+        assertEquals(3, model.getPlayerOrder().getFirst().getHand().size());
     }
 
     @Test
-    void sendMessage() {
+    void sendMessage() throws JsonProcessingException {
+        chooseSecretObjectiveCard();
+        assertEquals(0 ,model.getChat().size());
+        gameplayController.sendMessage("Test", "Test2", "test");
+        gameplayController.sendMessage("Test", null, "test");
+        while (model.getChat().size() < 2){
+            //System.out.println("waiting for model update");
+        }
+        assertEquals(2 ,model.getChat().size());
     }
 }

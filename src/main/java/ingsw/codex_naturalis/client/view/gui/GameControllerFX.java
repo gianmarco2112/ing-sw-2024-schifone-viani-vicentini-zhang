@@ -5,6 +5,8 @@ import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.immutableModel.ImmGame;
+import ingsw.codex_naturalis.common.immutableModel.ImmMessage;
+import ingsw.codex_naturalis.common.immutableModel.ImmObjectiveCard;
 import ingsw.codex_naturalis.common.immutableModel.ImmPlayableCard;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -12,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -227,6 +231,14 @@ public class GameControllerFX {
                          String revealedGoldCard1, String revealedGoldCard2,
                          Color myColor, String firstPlayer,
                          int maxNumOfPlayers, String mynickname, List<String> otherNicknames, List<ImmPlayableCard> initialCards, List<Color> colors, ImmGame game) {
+
+        if (comboBoxMessage.getItems().size() == 0) {
+            comboBoxMessage.getItems().add("");
+            for (String p : otherNicknames) {
+                comboBoxMessage.getItems().add(p);
+            }
+            comboBoxMessage.getSelectionModel().selectFirst();
+        }
 
         initializeBoard();
 
@@ -826,7 +838,7 @@ public class GameControllerFX {
         ImageView p3 = (ImageView) anchorPanesOnBoard.get(points).lookup("#" + color + "pawn3");
         ImageView p4 = (ImageView) anchorPanesOnBoard.get(points).lookup("#" + color + "pawn4");
         if(p1==null && p2==null && p3==null && p4==null) {
-            for(int i = 0; i<=19; i++){
+            for(int i = 0; i<=29; i++){
                 ImageView pawn1 = (ImageView) anchorPanesOnBoard.get(i).lookup("#" + color + "pawn1");
                 ImageView pawn2 = (ImageView) anchorPanesOnBoard.get(i).lookup("#" + color + "pawn2");
                 ImageView pawn3 = (ImageView) anchorPanesOnBoard.get(i).lookup("#" + color + "pawn3");
@@ -1669,5 +1681,91 @@ public class GameControllerFX {
             }
         });
 
+    }
+
+    public void twentyPointsReached(ImmGame immGame) {
+        Platform.runLater(()->{
+            updateBoxText.setText("20 Points reached!");
+        });
+    }
+
+    public void deckesEmpty(ImmGame immGame) {
+        Platform.runLater(()->{
+            updateBoxText.setText("All decks are empty!");
+        });
+    }
+
+    public void gameEnded(String winner, List<String> players, List<Integer> points, List<ImmObjectiveCard> secretObjectiveCards) {
+        Platform.runLater(()->{
+            updateBoxText.setText("Game ended!\nThe winner is " + winner + "!\nPress LOBBY");
+            //faccio comparire un bottone LOBBY, quando viene schiacciato si torna alla LOBBY
+        });
+    }
+
+    public void gameCanceled() {
+        Platform.runLater(()->{
+            updateBoxText.setText("You won!\nPress LOBBY");
+            //faccio comparire un bottone LOBBY, quando viene schiacciato si torna alla LOBBY
+        });
+    }
+
+    public void updatePlayerInGameStatus(String message, ImmGame immGame, String playerNickname) {
+        Platform.runLater(()->{
+            updateBoxText.setText(playerNickname + " " + message);
+        });
+    }
+
+    public void gamePaused() {
+        Platform.runLater(()->{
+            updateBoxText.setText("Currently, you're the only player connected.\nPlease wait for another player to rejoin within 10 seconds.");
+        });
+    }
+
+    public void gameResumed() {
+        Platform.runLater(()->{
+            updateBoxText.setText("Game resumed!");
+        });
+    }
+    @FXML
+    private TextField messageText;
+    @FXML
+    private ComboBox<String> comboBoxMessage;
+    @FXML
+    private ListView<String> chatList;
+    @FXML
+    void actionSendMessage(MouseEvent event) {
+        if (!messageText.getText().isEmpty()) {
+
+            if (comboBoxMessage.getValue().toString().isEmpty()) {
+                viewGUI.sendMessage(null,messageText.getText());
+            } else {
+                //Player wants to send a private message
+                viewGUI.sendMessage(comboBoxMessage.getValue(), messageText.getText());
+                comboBoxMessage.getSelectionModel().selectFirst();
+            }
+            messageText.setText("");
+
+        }
+    }
+    @FXML
+    public void actionKeyPressedOnTextMessage(KeyEvent ke) {
+        if (ke.getCode().equals(KeyCode.ENTER)) {
+            actionSendMessage(null);
+        }
+    }
+
+    public void messageSent(ImmGame immGame) {
+        Platform.runLater(()->{
+            chatList.getItems().clear();
+            for (ImmMessage message : immGame.chat()) {
+                String m = "[" + message.sentTime() + "]" + message.sender() + ": " + message.content();
+
+                if(message.receivers().size() == immGame.playerOrderNicknames().size()-1) {
+                    chatList.getItems().add(m);
+                }else if(message.receivers().getFirst().equals(nickname)||message.sender().equals(nickname)){
+                    chatList.getItems().add("[Private] " + m);
+                }
+            }
+        });
     }
 }

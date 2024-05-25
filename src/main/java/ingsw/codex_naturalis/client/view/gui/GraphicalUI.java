@@ -1,15 +1,11 @@
 package ingsw.codex_naturalis.client.view.gui;
 
 import ingsw.codex_naturalis.client.view.UI;
-import ingsw.codex_naturalis.client.view.tui.TextualUI;
 import ingsw.codex_naturalis.client.view.util.UIObservableItem;
 import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
-import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
-import ingsw.codex_naturalis.common.immutableModel.ImmGame;
-import ingsw.codex_naturalis.common.immutableModel.ImmObjectiveCard;
-import ingsw.codex_naturalis.common.immutableModel.ImmPlayableCard;
+import ingsw.codex_naturalis.common.immutableModel.*;
 import ingsw.codex_naturalis.server.model.util.GameEvent;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,9 +13,6 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -125,6 +118,7 @@ public class GraphicalUI extends Application implements UI {
     private List<ImmPlayableCard> initialCards = new ArrayList<>();
     private int maxNumOfPlayers;
     private List<Color> colors = new ArrayList<>();
+    private Boolean rejoined = false;
     private GameControllerFX gameControllerFX;
     private LobbiesControllerFX lobbiesControllerFX;
     private LoginControllerFX loginControllerFX;
@@ -139,7 +133,7 @@ public class GraphicalUI extends Application implements UI {
             switch (getRunningState()) {
                 case RUNNING -> running();
                 case WAITING_FOR_UPDATE -> waitForUpdate();
-                case STOP -> { setRunningState(RunningState.RUNNING); }
+                //case STOP -> { setRunningState(RunningState.RUNNING); }
             }
         }
     }
@@ -152,6 +146,11 @@ public class GraphicalUI extends Application implements UI {
             case CONFIRM -> confirmView();
             case CONFIRMED -> confirmedView();
             //case GAME -> gameView();
+            case REJOINED -> {
+                uiObservableItem.notifyGetGameController();
+                rejoined = true;
+                setScene("Game");
+            }
         }
     }
 
@@ -373,27 +372,31 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void messageSent(ImmGame immGame) {
+        this.game = immGame;
 
+        gameControllerFX.messageSent(immGame);
     }
 
     @Override
     public void twentyPointsReached(ImmGame immGame) {
-
+        this.game = immGame;
+        gameControllerFX.twentyPointsReached(immGame);
     }
 
     @Override
     public void decksEmpty(ImmGame immGame) {
-
+        this.game = immGame;
+        gameControllerFX.deckesEmpty(immGame);
     }
 
     @Override
     public void gameEnded(String winner, List<String> players, List<Integer> points, List<ImmObjectiveCard> secretObjectiveCards) {
-
+        gameControllerFX.gameEnded(winner,players,points,secretObjectiveCards);
     }
 
     @Override
     public void gameCanceled() {
-
+        gameControllerFX.gameCanceled();
     }
 
     @Override
@@ -403,22 +406,32 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void gameRejoined(ImmGame game) {
-
+        this.game = game;
+        setState(State.REJOINED);
+        setRunningState(RunningState.RUNNING);
     }
 
     @Override
     public void updatePlayerInGameStatus(ImmGame immGame, String playerNickname, boolean inGame, boolean hasDisconnected) {
-
+        this.game = immGame;
+        if (inGame)
+            gameControllerFX.updatePlayerInGameStatus("has rejoined the game",immGame,playerNickname);
+        else {
+            if (hasDisconnected)
+                gameControllerFX.updatePlayerInGameStatus("has disconnected!",immGame,playerNickname);
+            else
+                gameControllerFX.updatePlayerInGameStatus("has left the game",immGame,playerNickname);
+        }
     }
 
     @Override
     public void gamePaused() {
-
+        gameControllerFX.gamePaused();
     }
 
     @Override
     public void gameResumed() {
-
+        gameControllerFX.gameResumed();
     }
 
     @Override
@@ -499,6 +512,11 @@ public class GraphicalUI extends Application implements UI {
                     stage.setResizable(false);
                     gameControllerFX = fxmlLoader.getController();
                     gameControllerFX.setViewGUI(this);
+                    if(rejoined){
+
+                    }else{
+
+                    }
                     gameControllerFX.endSetup(initialCardID, initialCardPlayedFront,
                             myObjectiveCard.cardID(),
                             hand.get(0).cardID(),hand.get(1).cardID(),hand.get(2).cardID(),
@@ -619,5 +637,9 @@ public class GraphicalUI extends Application implements UI {
         });
 
         uiObservableItem.notifyDrawCard(drawCardEvent);
+    }
+
+    public void sendMessage(String receiver, String text) {
+        uiObservableItem.notifySendMessage(receiver,text);
     }
 }

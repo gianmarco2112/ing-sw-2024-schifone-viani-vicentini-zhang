@@ -181,6 +181,7 @@ public class GameControllerFX {
     private Text myNickText;
     private List<AnchorPane> anchorPanesOnBoard = new ArrayList<>();
     private Color myColor;
+    private ImmGame game;
 
     private void initializeBoard(){
         boardPointsPosition.put(0, List.of(32,312));
@@ -228,6 +229,8 @@ public class GameControllerFX {
                          String revealedGoldCard1, String revealedGoldCard2,
                          Color myColor, String firstPlayer,
                          int maxNumOfPlayers, String mynickname, List<String> otherNicknames, List<ImmPlayableCard> initialCards, List<Color> colors, ImmGame game) {
+
+        this.game = game;
 
         if (comboBoxMessage.getItems().size() == 0) {
             comboBoxMessage.getItems().add("");
@@ -322,6 +325,7 @@ public class GameControllerFX {
                     u2Pedina.setFitWidth(33);
                     u2Pedina.setLayoutX(9999+37);
                     u2Pedina.setLayoutY(9999-20);
+                    u2Pedina.setId("u2Pedina");
                     user2PlayerArea.getChildren().add(u2Pedina);
 
                     username2.setText(otherNicknames.getLast());
@@ -355,6 +359,7 @@ public class GameControllerFX {
                     u2Pedina.setFitWidth(33);
                     u2Pedina.setLayoutX(9999+37);
                     u2Pedina.setLayoutY(9999-20);
+                    u2Pedina.setId("u2Pedina");
                     user2PlayerArea.getChildren().add(u2Pedina);
 
                     ImageView u3Pedina = new ImageView();
@@ -363,6 +368,7 @@ public class GameControllerFX {
                     u3Pedina.setFitWidth(33);
                     u3Pedina.setLayoutX(9999+37);
                     u3Pedina.setLayoutY(9999-20);
+                    u3Pedina.setId("u3Pedina");
                     user3PlayerArea.getChildren().add(u3Pedina);
 
                     streamOtherPlayerCard(game.otherPlayers().get(1).hand().getFirst().cardID(),user2HandCard1);
@@ -517,6 +523,7 @@ public class GameControllerFX {
             u1Pedina.setFitWidth(33);
             u1Pedina.setLayoutX(9999+37);
             u1Pedina.setLayoutY(9999-20);
+            u1Pedina.setId("u1Pedina");
             user1PlayerArea.getChildren().add(u1Pedina);
 
         } catch (IOException e) {
@@ -1696,15 +1703,71 @@ public class GameControllerFX {
 
     public void gameEnded(String winner, List<String> players, List<Integer> points, List<ImmObjectiveCard> secretObjectiveCards) {
         Platform.runLater(()->{
-            updateBoxText.setText("Game ended!\nThe winner is " + winner + "!\nPress LOBBY");
-            //faccio comparire un bottone LOBBY, quando viene schiacciato si torna alla LOBBY
+            updateBoxText.setText("Game ended!\nThe winner is " + winner + "!\nPress LEAVE");
+            //mostro al posto delle carte in mano agli altri giocatori l'obiettivo segreto
+            int index=1;
+            Color color = null;
+            for(int i = 0; i<players.size(); i++){
+                if(!players.get(i).equals(nickname)) {
+                    switch (index){
+                        case 1 -> {
+                            for(ImmOtherPlayer p: game.otherPlayers()){
+                                if(p.nickname().equals(players.get(i))){
+                                    color = p.color();
+                                    break;
+                                }
+                            }
+                            posizionaPedine(List.of(color),points.get(i),anchorPanesOnBoard.get(points.get(i)));
+                            user1HandCard3.setVisible(false);
+                            user1HandCard2.setVisible(false);
+                            streamObjectiveEndGame(secretObjectiveCards.get(i).cardID(),user1HandCard1);
+                        }
+                        case 2 -> {
+                            for(ImmOtherPlayer p: game.otherPlayers()){
+                                if(p.nickname().equals(players.get(i))){
+                                    color = p.color();
+                                    break;
+                                }
+                            }
+                            posizionaPedine(List.of(color),points.get(i),anchorPanesOnBoard.get(points.get(i)));
+                            user1HandCard3.setVisible(false);
+                            user1HandCard2.setVisible(false);
+                            streamObjectiveEndGame(secretObjectiveCards.get(i).cardID(),user2HandCard1);
+                        }
+                        case 3 -> {
+                            for(ImmOtherPlayer p: game.otherPlayers()){
+                                if(p.nickname().equals(players.get(i))){
+                                    color = p.color();
+                                    break;
+                                }
+                            }
+                            posizionaPedine(List.of(color),points.get(i),anchorPanesOnBoard.get(points.get(i)));
+                            user1HandCard3.setVisible(false);
+                            user1HandCard2.setVisible(false);
+                            streamObjectiveEndGame(secretObjectiveCards.get(i).cardID(),user3HandCard1);
+                        }
+                    }
+                    index++;
+                }
+            }
         });
+    }
+
+    private void streamObjectiveEndGame(String id, ImageView userHandCard1) {
+        String path = "/CardsImages/Objective/" + id + ".png";
+
+        try(InputStream cardStream = getClass().getResourceAsStream(path);){
+            userHandCard1.setFitHeight(71);
+            userHandCard1.setFitWidth(107);
+            userHandCard1.setImage(new Image(cardStream));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void gameCanceled() {
         Platform.runLater(()->{
-            updateBoxText.setText("You won!\nPress LOBBY");
-            //faccio comparire un bottone LOBBY, quando viene schiacciato si torna alla LOBBY
+            updateBoxText.setText("You won!\nPress LEAVE");
         });
     }
 
@@ -1769,6 +1832,7 @@ public class GameControllerFX {
     }
 
     public void rejoined(ImmGame game) {
+        this.game = game;
         nickname = game.player().nickname();
         myColor = game.player().color();
 
@@ -2063,6 +2127,7 @@ public class GameControllerFX {
             u1Pedina.setFitWidth(33);
             u1Pedina.setLayoutX(9999+37);
             u1Pedina.setLayoutY(9999-20);
+            u1Pedina.setId("u1Pedina");
             user1PlayerArea.getChildren().add(u1Pedina);
         }else{
             switch (game.playerOrderNicknames().size()) {
@@ -2078,6 +2143,7 @@ public class GameControllerFX {
                     u2Pedina.setFitWidth(33);
                     u2Pedina.setLayoutX(9999+37);
                     u2Pedina.setLayoutY(9999-20);
+                    u2Pedina.setId("u2Pedina");
                     user2PlayerArea.getChildren().add(u2Pedina);
 
                     username2.setText(playerOrder.getLast());
@@ -2091,6 +2157,7 @@ public class GameControllerFX {
                     u2Pedina.setFitWidth(33);
                     u2Pedina.setLayoutX(9999+37);
                     u2Pedina.setLayoutY(9999-20);
+                    u2Pedina.setId("u2Pedina");
                     user2PlayerArea.getChildren().add(u2Pedina);
 
                     username2.setText(playerOrder.getLast());
@@ -2101,6 +2168,7 @@ public class GameControllerFX {
                     u3Pedina.setFitWidth(33);
                     u3Pedina.setLayoutX(9999+37);
                     u3Pedina.setLayoutY(9999-20);
+                    u3Pedina.setId("u3Pedina");
                     user3PlayerArea.getChildren().add(u3Pedina);
 
                     username3.setText(playerOrder.getLast());

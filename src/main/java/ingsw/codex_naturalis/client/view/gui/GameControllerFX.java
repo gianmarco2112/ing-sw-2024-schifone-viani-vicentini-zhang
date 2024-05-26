@@ -951,7 +951,7 @@ public class GameControllerFX {
     }
 
     private void streamOtherPlayerCard(String id, ImageView userHandCard) {
-        String path = "/CardsImages/Handcards/back/" + id + ".png";
+        String path = "/CardsImages/HandCards/back/" + id + ".png";
 
         try(InputStream otherPlayerCardStream = getClass().getResourceAsStream(path);){
             userHandCard.setImage(new Image(otherPlayerCardStream));

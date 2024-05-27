@@ -229,8 +229,11 @@ class PlayerTest {
         assertTrue(secretObjectiveCards.contains(card2));
         player.chooseObjectiveCard(0, objectiveCardsDeck);
         assertEquals(0, player.getSecretObjectiveCards().size());
-        //chooseObjectiveCard will clear the list secretObjectiveCards
+        //chooseObjectiveCard will clear the list secretObjectiveCards (-> size = 0)
         assertEquals(card1, player.getPlayerArea().getObjectiveCard());
+        ObjectiveCard.Immutable card4 = player.getPlayerArea().getObjectiveCard().getImmutableObjectiveCard();
+        assertNotNull(card4);
+
     }
 
     /**

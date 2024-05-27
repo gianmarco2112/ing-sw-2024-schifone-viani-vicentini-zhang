@@ -39,6 +39,66 @@ class PlayerAreaTest {
         );
         return(resourceCard);
     }
+    private PlayableCard fungiTopRightNotCoveredResourceCard(){
+        PlayableCard resourceCard;
+        resourceCard= new PlayableCard(
+                "RTest",
+                PlayableCardType.RESOURCE,
+                Symbol.FUNGI,
+                new PlayableSide(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true)),
+                new Back(
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        List.of(Symbol.FUNGI))
+        );
+        return(resourceCard);
+    }
+    private PlayableCard fungiFullyCoveredResourceCard(){
+        PlayableCard resourceCard;
+        resourceCard= new PlayableCard(
+                "RTest",
+                PlayableCardType.RESOURCE,
+                Symbol.FUNGI,
+                new PlayableSide(
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true)),
+                new Back(
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        List.of(Symbol.FUNGI))
+        );
+        return(resourceCard);
+    }
+    private PlayableCard fungiBottomRightNotCoveredResourceCard(){
+        PlayableCard resourceCard;
+        resourceCard= new PlayableCard(
+                "RTest",
+                PlayableCardType.RESOURCE,
+                Symbol.FUNGI,
+                new PlayableSide(
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,false)),
+                new Back(
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,true),
+                        List.of(Symbol.FUNGI))
+        );
+        return(resourceCard);
+    }
     private PlayableCard initialCard() {
         PlayableCard initialCard;
         initialCard = new PlayableCard(
@@ -111,5 +171,28 @@ class PlayerAreaTest {
         PlayerArea playerArea = playerArea();
         PlayerArea.ImmutableHidden immutableHidden = playerArea.getImmutableHiddenPlayerArea();
         assertNotNull(immutableHidden);
+    }
+
+    @Test
+    void isPlayableTest () {
+        PlayerArea playerArea = playerArea ();
+        ObjectiveCard.Immutable immutableHiddenObjectiveCard = playerArea.getObjectiveCard().getImmutableHiddenPlayableCard();
+        assertNotNull(immutableHiddenObjectiveCard);
+        PlayableCard card1 = fungiResourceCard();
+        assertTrue (card1.isPlayable(playerArea, 5,5));
+/*      PlayableCard coveredCard = fungiFullyCoveredResourceCard();
+        assertFalse (coveredCard.isPlayable(playerArea, -2,-2));
+        coveredCard.play(playerArea, -2,-2);
+        assertEquals (coveredCard, playerArea.getCardOnCoordinates(-2,-2)); */
+        PlayableCard topRightNotCovered = fungiTopRightNotCoveredResourceCard();
+        topRightNotCovered.play(playerArea, -2,-2);
+        assertFalse (card1.isPlayable(playerArea, -3,-3));
+        assertFalse (card1.isPlayable(playerArea, -2,-3));
+        assertFalse (card1.isPlayable(playerArea, -3,-2));
+        assertFalse (card1.isPlayable(playerArea, -1,-1));
+        PlayerArea playerArea1 = playerArea();
+        PlayableCard bottomRightNotCovered = fungiBottomRightNotCoveredResourceCard();
+        bottomRightNotCovered.play(playerArea1, -2,-1);
+        assertFalse (card1.isPlayable(playerArea1, -2,1));
     }
 }

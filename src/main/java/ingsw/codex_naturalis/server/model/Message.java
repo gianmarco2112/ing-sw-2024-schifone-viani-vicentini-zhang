@@ -43,9 +43,6 @@ public class Message {
         this.sentTime = localTime.format(dateTimeFormatter);
     }
 
-    public Message(){}
-
-
     /**
      * Content getter
      * @return Content

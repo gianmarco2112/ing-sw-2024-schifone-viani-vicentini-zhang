@@ -12,17 +12,12 @@ import ingsw.codex_naturalis.common.enumerations.Symbol;
 import ingsw.codex_naturalis.common.enumerations.TurnStatus;
 import ingsw.codex_naturalis.server.model.player.Player;
 import ingsw.codex_naturalis.server.model.cards.objective.ObjectiveCard;
-import ingsw.codex_naturalis.server.model.cards.objective.PatternObjectiveCard;
 import ingsw.codex_naturalis.server.model.cards.objective.SymbolsObjectiveCard;
-import ingsw.codex_naturalis.server.model.player.PlayerArea;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ingsw.codex_naturalis.server.model.Deck;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,7 +44,25 @@ class PlayerTest {
                         List.of(Symbol.EMPTY, Symbol.EMPTY, Symbol.EMPTY)));
         return (initialCard);
     }
-
+    private PlayableCard initialCoveredCard() {
+        PlayableCard initialCard;
+        initialCard = new PlayableCard(
+                "I00",
+                PlayableCardType.INITIAL,
+                Symbol.EMPTY,
+                new PlayableSide(
+                        new Corner(Symbol.EMPTY, true),
+                        new Corner(Symbol.EMPTY, true),
+                        new Corner(Symbol.EMPTY, true),
+                        new Corner(Symbol.EMPTY, true)),
+                new Back(
+                        new Corner(Symbol.EMPTY, true),
+                        new Corner(Symbol.EMPTY, true),
+                        new Corner(Symbol.EMPTY, true),
+                        new Corner(Symbol.EMPTY, true),
+                        List.of(Symbol.EMPTY, Symbol.EMPTY, Symbol.EMPTY)));
+        return (initialCard);
+    }
     private PlayableCard insectResourceCard(){
         PlayableCard resourceCard;
         resourceCard= new PlayableCard(
@@ -159,6 +172,7 @@ class PlayerTest {
         PlayableCard card1 = insectResourceCard();
         PlayableCard card2 = insectResourceCard();
         PlayableCard card3 = initialCard();
+        PlayableCard card4 = initialCoveredCard();
         List<PlayableCard> hand = new ArrayList<>();
         hand.add(card1);
         hand.add(card2);
@@ -166,11 +180,17 @@ class PlayerTest {
         assertEquals (hand, player.getHand());
         player1.setupHand(hand);
         assertEquals (hand, player1.getHand());
+        player1.setInitialCard(card4);
         player.setInitialCard(card3);
         player.playInitialCard();
+        player1.playInitialCard();
         player.playCard(0, 1, 1);
         assertFalse(player.getHand().contains(card1));
         assertEquals(card1, player.getPlayerArea().getCardOnCoordinates(1, 1));
+        player.setTurnStatus(TurnStatus.DRAW);
+        assertThrows(NotYourPlayTurnStatusException.class,()->{player.playCard(1,-1,-1);});
+        assertThrows(NotPlayableException.class, () ->{player1.playCard(0, 1,1);});
+
     }
 
     /**

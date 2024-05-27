@@ -217,6 +217,8 @@ class PlayerTest {
         Deck<ObjectiveCard> objectiveCardsDeck = new Deck (objectiveCards);
         ObjectiveCard playerCard1 = objectiveCardsDeck.drawACard();
         ObjectiveCard playerCard2 = objectiveCardsDeck.drawACard();
+        ObjectiveCard playerCard3 = objectiveCardsDeck.getFirstCard();
+        assertNull(playerCard3);
         List<ObjectiveCard> secretObjectiveCards = new ArrayList<>();
         secretObjectiveCards.add(playerCard1);
         secretObjectiveCards.add(playerCard2);
@@ -226,8 +228,8 @@ class PlayerTest {
         assertTrue(secretObjectiveCards.contains(card1));
         assertTrue(secretObjectiveCards.contains(card2));
         player.chooseObjectiveCard(0, objectiveCardsDeck);
-        assertEquals(1, player.getSecretObjectiveCards().size());
-        assertEquals(card1, player.getSecretObjectiveCards().get(0));
+        assertEquals(0, player.getSecretObjectiveCards().size());
+        //chooseObjectiveCard will clear the list secretObjectiveCards
         assertEquals(card1, player.getPlayerArea().getObjectiveCard());
     }
 

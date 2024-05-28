@@ -353,6 +353,8 @@ public class GameControllerImpl implements GameController {
                     System.err.println("Error while processing json:\n" + e.getMessage());
                 } catch (EmptyDeckException ex) {
                     model.exceptionThrown(player, ex.getMessage());
+                } catch (IndexOutOfBoundsException e) {
+                    model.exceptionThrown(player, "No more revealed card here!");
                 }
             });
         } catch (InterruptedException e) {
@@ -365,23 +367,19 @@ public class GameControllerImpl implements GameController {
      * @param player player who wants to draw
      * @param drawCardEvent card to draw
      */
-    private void drawFromDeck(Player player, DrawCardEvent drawCardEvent) {
+    private void drawFromDeck(Player player, DrawCardEvent drawCardEvent) throws EmptyDeckException {
         PlayableCard drawnCard = null;
-        try {
-            switch (drawCardEvent) {
-                case DRAW_FROM_RESOURCE_CARDS_DECK -> {
-                    drawnCard = model.getResourceCardsDeck().drawACard();
-                    drawnCard.flip();
-                }
-                case DRAW_FROM_GOLD_CARDS_DECK -> {
-                    drawnCard = model.getGoldCardsDeck().drawACard();
-                    drawnCard.flip();
-                }
+        switch (drawCardEvent) {
+            case DRAW_FROM_RESOURCE_CARDS_DECK -> {
+                drawnCard = model.getResourceCardsDeck().drawACard();
+                drawnCard.flip();
             }
-            player.drawCard(drawnCard);
-        } catch (EmptyDeckException e) {
-            model.exceptionThrown(player, e.getMessage());
+            case DRAW_FROM_GOLD_CARDS_DECK -> {
+                drawnCard = model.getGoldCardsDeck().drawACard();
+                drawnCard.flip();
+            }
         }
+        player.drawCard(drawnCard);
     }
 
     /**
@@ -389,47 +387,43 @@ public class GameControllerImpl implements GameController {
      * @param player player who wants to draw
      * @param drawCardEvent card to draw
      */
-    private void drawRevealedCard(Player player, DrawCardEvent drawCardEvent) {
+    private void drawRevealedCard(Player player, DrawCardEvent drawCardEvent) throws IndexOutOfBoundsException {
         PlayableCard drawnCard = null;
-        try {
-            switch (drawCardEvent) {
-                case DRAW_REVEALED_RESOURCE_CARD_1 -> {
-                    drawnCard = model.removeRevealedResourceCard(0);
-                    if (!model.getResourceCardsDeck().isEmpty()) {
-                        PlayableCard cardToReveal = model.getResourceCardsDeck().drawACard();
-                        cardToReveal.flip();
-                        model.addRevealedResourceCard(cardToReveal);
-                    }
-                }
-                case DRAW_REVEALED_RESOURCE_CARD_2 -> {
-                    drawnCard = model.removeRevealedResourceCard(1);
-                    if (!model.getResourceCardsDeck().isEmpty()) {
-                        PlayableCard cardToReveal = model.getResourceCardsDeck().drawACard();
-                        cardToReveal.flip();
-                        model.addRevealedResourceCard(cardToReveal);
-                    }
-                }
-                case DRAW_REVEALED_GOLD_CARD_1 -> {
-                    drawnCard = model.removeRevealedGoldCard(0);
-                    if (!model.getGoldCardsDeck().isEmpty()) {
-                        PlayableCard cardToReveal = model.getGoldCardsDeck().drawACard();
-                        cardToReveal.flip();
-                        model.addRevealedGoldCard(cardToReveal);
-                    }
-                }
-                case DRAW_REVEALED_GOLD_CARD_2 -> {
-                    drawnCard = model.removeRevealedGoldCard(1);
-                    if (!model.getGoldCardsDeck().isEmpty()) {
-                        PlayableCard cardToReveal = model.getGoldCardsDeck().drawACard();
-                        cardToReveal.flip();
-                        model.addRevealedGoldCard(cardToReveal);
-                    }
+        switch (drawCardEvent) {
+            case DRAW_REVEALED_RESOURCE_CARD_1 -> {
+                drawnCard = model.removeRevealedResourceCard(0);
+                if (!model.getResourceCardsDeck().isEmpty()) {
+                    PlayableCard cardToReveal = model.getResourceCardsDeck().drawACard();
+                    cardToReveal.flip();
+                    model.addRevealedResourceCard(cardToReveal);
                 }
             }
-            player.drawCard(drawnCard);
-        } catch (IndexOutOfBoundsException e) {
-            model.exceptionThrown(player, "No more revealed card here!");
+            case DRAW_REVEALED_RESOURCE_CARD_2 -> {
+                drawnCard = model.removeRevealedResourceCard(1);
+                if (!model.getResourceCardsDeck().isEmpty()) {
+                    PlayableCard cardToReveal = model.getResourceCardsDeck().drawACard();
+                    cardToReveal.flip();
+                    model.addRevealedResourceCard(cardToReveal);
+                }
+            }
+            case DRAW_REVEALED_GOLD_CARD_1 -> {
+                drawnCard = model.removeRevealedGoldCard(0);
+                if (!model.getGoldCardsDeck().isEmpty()) {
+                    PlayableCard cardToReveal = model.getGoldCardsDeck().drawACard();
+                    cardToReveal.flip();
+                    model.addRevealedGoldCard(cardToReveal);
+                }
+            }
+            case DRAW_REVEALED_GOLD_CARD_2 -> {
+                drawnCard = model.removeRevealedGoldCard(1);
+                if (!model.getGoldCardsDeck().isEmpty()) {
+                    PlayableCard cardToReveal = model.getGoldCardsDeck().drawACard();
+                    cardToReveal.flip();
+                    model.addRevealedGoldCard(cardToReveal);
+                }
+            }
         }
+        player.drawCard(drawnCard);
     }
 
     /**

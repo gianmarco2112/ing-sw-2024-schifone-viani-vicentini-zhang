@@ -5,6 +5,7 @@ import ingsw.codex_naturalis.server.model.cards.Card;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Deck <T extends Card> {
 
@@ -21,7 +22,11 @@ public class Deck <T extends Card> {
     }
 
     public T drawACard() throws EmptyDeckException {
-        return cards.removeFirst();
+        try {
+            return cards.removeFirst();
+        } catch (NoSuchElementException e) {
+            throw new EmptyDeckException();
+        }
     }
 
     public void discardACard(T cardToDiscard){

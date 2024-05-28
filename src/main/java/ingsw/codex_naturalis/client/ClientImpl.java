@@ -15,6 +15,7 @@ import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
 import ingsw.codex_naturalis.common.NetworkProtocol;
 import ingsw.codex_naturalis.common.Server;
 import ingsw.codex_naturalis.common.enumerations.Color;
+import ingsw.codex_naturalis.common.immutableModel.ImmPlayer;
 import ingsw.codex_naturalis.server.model.util.GameEvent;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
@@ -368,21 +369,14 @@ public class ClientImpl implements Client, ViewObserver {
 
     /**
      * Update from server: game ended
-     * @param winner winner
-     * @param jsonPlayers players
-     * @param jsonPoints points of every player
-     * @param jsonSecretObjectiveCards secret objective card of every player
+     * @param jsonPlayers players with points and secret obj cards
      */
     @Override
-    public void gameEnded(String winner, String jsonPlayers, String jsonPoints, String jsonSecretObjectiveCards) {
+    public void gameEnded(String jsonPlayers) {
         try {
-            List<String> players = objectMapper.readValue(jsonPlayers, new TypeReference<>() {
+            List<ImmPlayer> players = objectMapper.readValue(jsonPlayers, new TypeReference<>() {
             });
-            List<Integer> points = objectMapper.readValue(jsonPoints, new TypeReference<>() {
-            });
-            List<ImmObjectiveCard> secretObjectiveCards = objectMapper.readValue(jsonPlayers, new TypeReference<>() {
-            });
-            view.gameEnded(winner, players, points, secretObjectiveCards);
+            view.gameEnded(players);
             gameController = null;
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");

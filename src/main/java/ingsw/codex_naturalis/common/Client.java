@@ -43,8 +43,7 @@ public interface Client extends Remote {
 
     void decksEmpty(String jsonImmGame) throws RemoteException;
 
-    void gameEnded(String winner, String jsonPlayers, String jsonPoints,
-                   String jsonSecretObjectiveCards) throws RemoteException;
+    void gameEnded(String jsonPlayers) throws RemoteException;
 
     void gameCanceled() throws RemoteException;
 

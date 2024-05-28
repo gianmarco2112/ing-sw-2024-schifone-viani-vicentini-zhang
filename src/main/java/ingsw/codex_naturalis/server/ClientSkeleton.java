@@ -314,15 +314,12 @@ public class ClientSkeleton implements Client {
     }
 
     @Override
-    public void gameEnded(String winner, String jsonPlayers, String jsonPoints, String jsonSecretObjectiveCards) throws RemoteException {
+    public void gameEnded(String jsonPlayers) throws RemoteException {
         try {
             MessageToClient message = new STCGameEnded();
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(winner);
             writer.println(jsonPlayers);
-            writer.println(jsonPoints);
-            writer.println(jsonSecretObjectiveCards);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");

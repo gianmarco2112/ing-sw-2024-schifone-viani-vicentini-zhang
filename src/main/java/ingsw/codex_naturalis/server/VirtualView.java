@@ -216,14 +216,16 @@ public class VirtualView implements GameObserver {
      */
     @Override
     public void updateGameRunningStatus(Game game, GameRunningStatus gameRunningStatus) {
-        try {
-            switch (gameRunningStatus) {
-                case TO_CANCEL_NOW -> client.gameCanceled();
-                case TO_CANCEL_LATER -> client.gameToCancelLater();
-                case RUNNING -> client.gameResumed();
+        if (game.getGameStatus() != GameStatus.ENDGAME) {
+            try {
+                switch (gameRunningStatus) {
+                    case TO_CANCEL_NOW -> client.gameCanceled();
+                    case TO_CANCEL_LATER -> client.gameToCancelLater();
+                    case RUNNING -> client.gameResumed();
+                }
+            } catch (RemoteException e) {
+                System.err.println("Error while updating client\n" + e.getMessage());
             }
-        } catch (RemoteException e) {
-            System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
 
@@ -302,24 +304,14 @@ public class VirtualView implements GameObserver {
     }
 
     private void gameEnded(Game game) {
-        List<String> players = new ArrayList<>();
-        List<Integer> points = new ArrayList<>();
-        List<ImmObjectiveCard> secretObjectiveCards = new ArrayList<>();
-        int maxPoints = 0;
-        Player winner = game.getCurrentPlayer();
-        for (Player p : game.getPlayerOrder()) {
-            secretObjectiveCards.add(getImmObjectiveCard(p.getPlayerArea().getObjectiveCard()));
-            players.add(p.getNickname());
-            points.add(p.getPlayerArea().getExtraPoints() + p.getPlayerArea().getPoints());
-            if (p.getPlayerArea().getExtraPoints() + p.getPlayerArea().getPoints() > maxPoints) {
-                winner = p;
-                maxPoints = p.getPlayerArea().getExtraPoints() + p.getPlayerArea().getPoints();
-            }
+        List<Player> players = game.getPlayerOrder();
+        players.sort(Comparator.comparingInt(o -> o.getPlayerArea().getPoints() + o.getPlayerArea().getExtraPoints()));
+        List<ImmPlayer> immPlayers = new ArrayList<>();
+        for (Player player : players) {
+            immPlayers.add(getImmPlayer(player));
         }
         try {
-            client.gameEnded(winner.getNickname(), objectMapper.writeValueAsString(players),
-                    objectMapper.writeValueAsString(points),
-                    objectMapper.writeValueAsString(secretObjectiveCards));
+            client.gameEnded(objectMapper.writeValueAsString(immPlayers));
         } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating client");
         }
@@ -424,13 +416,13 @@ public class VirtualView implements GameObserver {
         } else
             currentPlayerNickname = model.getCurrentPlayer().getNickname();
 
-        if (model.getResourceCardsDeck().getFirstCard() != null)
+        if (!model.getResourceCardsDeck().isEmpty() && model.getResourceCardsDeck().getFirstCard() != null)
             topResourceCard = getImmPlayableCard(model.getResourceCardsDeck().getFirstCard(), true);
 
         for (PlayableCard card : model.getRevealedResourceCards())
             immRevealedResourceCards.add(getImmPlayableCard(card, true));
 
-        if (model.getGoldCardsDeck().getFirstCard() != null)
+        if (!model.getGoldCardsDeck().isEmpty() && model.getGoldCardsDeck().getFirstCard() != null)
             topGoldCard = getImmPlayableCard(model.getGoldCardsDeck().getFirstCard(), true);
 
         for (PlayableCard card : model.getRevealedGoldCards())

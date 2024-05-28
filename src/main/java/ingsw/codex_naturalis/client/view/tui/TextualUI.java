@@ -618,11 +618,12 @@ public class TextualUI implements UI {
     }
 
     @Override
-    public void gameEnded(String winner, List<String> players, List<Integer> points, List<ImmObjectiveCard> secretObjectiveCards) {
-        System.err.println("\n\n||||||||||| Game ended!. |||||||||||");
-        System.out.println("The winner is " + winner + "!");
-        for (int i = 0; i < players.size(); i++)
-            System.out.println(players.get(i) + "   " + points.get(i) + " points   " + secretObjectiveCards.get(i).tui());
+    public void gameEnded(List<ImmPlayer> players) {
+        System.err.println("\n\n| Game ended!. |");
+        for (ImmPlayer player : players)
+            System.out.println(player.nickname() + "   " +
+                    (player.playerArea().points() + player.playerArea().extraPoints()) + " points   \n"
+                    + player.playerArea().objectiveCard().tui());
         System.err.println("\nPress any key and enter to go back to lobby...");
         setState(State.LOBBY);
         setGameState(null);
@@ -631,7 +632,7 @@ public class TextualUI implements UI {
 
     @Override
     public void gameCanceled() {
-        System.err.println("\n||||||||||| You won! |||||||||||\n\nPress any key and enter to go back to lobby...");
+        System.err.println("\n| You won! |\n\nPress any key and enter to go back to lobby...");
         setState(State.LOBBY);
         setGameState(null);
         setRunningState(RunningState.STOP);
@@ -639,7 +640,7 @@ public class TextualUI implements UI {
 
     @Override
     public void gameLeft() {
-        System.err.println("\n||||||||||| You left the game. |||||||||||\n\nPress any key and enter to go back to lobby...");
+        System.err.println("\n| You left the game. |\n\nPress any key and enter to go back to lobby...");
         setState(State.LOBBY);
         setGameState(null);
         setRunningState(RunningState.STOP);
@@ -673,13 +674,13 @@ public class TextualUI implements UI {
 
     @Override
     public void gamePaused() {
-        System.err.println("\n||||||||||| Currently, you're the only player connected. Please wait for another player to rejoin within 10 seconds.  |||||||||||");
+        System.err.println("\n| Currently, you're the only player connected. Please wait for another player to rejoin within 10 seconds.  |");
         setRunningState(RunningState.STOP);
     }
 
     @Override
     public void gameResumed() {
-        System.err.println("\n||||||||||| Game resumed!  |||||||||||");
+        System.err.println("\n| Game resumed!  |");
         setRunningState(RunningState.RUNNING);
     }
 
@@ -749,18 +750,24 @@ public class TextualUI implements UI {
     private void showCommonCards() {
 
         List<ImmPlayableCard> resourceCards = new ArrayList<>();
-        resourceCards.add(game.topResourceCard());
+        if (game.topResourceCard() != null)
+            resourceCards.add(game.topResourceCard());
         resourceCards.addAll(game.revealedResourceCards());
 
-        System.out.println("\n\nResource cards");
-        System.out.println(listOfPlayableCardsToString(resourceCards));
+        if (!resourceCards.isEmpty()) {
+            System.out.println("\n\nResource cards");
+            System.out.println(listOfPlayableCardsToString(resourceCards));
+        }
 
         List<ImmPlayableCard> goldCards = new ArrayList<>();
-        goldCards.add(game.topGoldCard());
+        if (game.topGoldCard() != null)
+            goldCards.add(game.topGoldCard());
         goldCards.addAll(game.revealedGoldCards());
 
-        System.out.println("\nGold cards");
-        System.out.println(listOfPlayableCardsToString(goldCards));
+        if (!goldCards.isEmpty()) {
+            System.out.println("\nGold cards");
+            System.out.println(listOfPlayableCardsToString(goldCards));
+        }
 
         if (!game.commonObjectiveCards().isEmpty()) {
             System.out.println("\nCommon objective cards");

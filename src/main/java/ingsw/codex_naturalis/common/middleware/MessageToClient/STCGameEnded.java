@@ -10,11 +10,8 @@ public class STCGameEnded implements MessageToClient{
     public void run(ServerStub serverStub) {
         try {
             BufferedReader reader = serverStub.getReader();
-            String winner = reader.readLine();
             String jsonPlayers = reader.readLine();
-            String jsonPoints = reader.readLine();
-            String jsonSecretObjCards = reader.readLine();
-            serverStub.getClient().gameEnded(winner, jsonPlayers, jsonPoints, jsonSecretObjCards);
+            serverStub.getClient().gameEnded(jsonPlayers);
         } catch (IOException e) {
             System.err.println("Error while processing json");
         }

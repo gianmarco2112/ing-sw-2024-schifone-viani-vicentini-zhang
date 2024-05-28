@@ -5,6 +5,7 @@ import ingsw.codex_naturalis.common.immutableModel.ImmObjectiveCard;
 import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
 import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
+import ingsw.codex_naturalis.common.immutableModel.ImmPlayer;
 import ingsw.codex_naturalis.server.model.util.GameEvent;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public interface UI {
 
     void decksEmpty(ImmGame immGame);
 
-    void gameEnded(String winner, List<String> players, List<Integer> points, List<ImmObjectiveCard> secretObjectiveCards);
+    void gameEnded(List<ImmPlayer> players);
 
     void gameCanceled();
 

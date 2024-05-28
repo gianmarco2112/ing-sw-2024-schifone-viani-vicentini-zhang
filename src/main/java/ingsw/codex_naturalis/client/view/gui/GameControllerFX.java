@@ -221,7 +221,7 @@ public class GameControllerFX {
         this.viewGUI = viewGUI;
     }
 
-    public void endSetup(String initialCard, Boolean showingFront, String myObjectiveCard,
+    public void endSetup(Boolean showingFront, String myObjectiveCard,
                          String handCard1, String handCard2, String handCard3,
                          String commonObjective1, String commonObjective2,
                          String topGoldCard, String topResourceCard, Symbol kingdomG, Symbol kingdomR,
@@ -408,9 +408,9 @@ public class GameControllerFX {
         String myColorChosen = null;
 
         if(showingFront){
-            myinitalcard = "/CardsImages/Initial/fronts/" + initialCard + ".png";
+            myinitalcard = "/CardsImages/Initial/fronts/" + game.player().playerArea().area().get(List.of(0, 0)).cardID() + ".png";
         } else {
-            myinitalcard = "/CardsImages/Initial/backs/" + initialCard + ".png";
+            myinitalcard = "/CardsImages/Initial/backs/" + game.player().playerArea().area().get(List.of(0, 0)).cardID() + ".png";
         }
 
         switch (kingdomG){

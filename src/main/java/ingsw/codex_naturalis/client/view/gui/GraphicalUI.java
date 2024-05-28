@@ -200,7 +200,7 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void cardPlayed(ImmGame immGame, String playerNicknameWhoUpdated) {
-        System.out.println(playerNicknameWhoUpdated + "ha giocato una parta");
+        System.out.println(playerNicknameWhoUpdated + "ha giocato una carta");
         this.game = immGame;
         //devo aggiornare punteggi
         //gameControllerFX.handlerCornerClick(null,cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,
@@ -218,7 +218,7 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void cardDrawn(ImmGame immGame, String playerNicknameWhoUpdated) {
-        System.out.println(playerNicknameWhoUpdated + "ha pescato una parta");
+        System.out.println(playerNicknameWhoUpdated + "ha pescato una carta");
         this.game = immGame;
         //nel metodo che chiamo successivamente devo usare Platform.runlater!!
         if(playerNicknameWhoUpdated.equals(this.game.player().nickname())){
@@ -429,7 +429,7 @@ public class GraphicalUI extends Application implements UI {
                     if(rejoined){
                         gameControllerFX.rejoined(this.game);
                     }else{
-                        gameControllerFX.endSetup(initialCardID, initialCardPlayedFront,
+                        gameControllerFX.endSetup(initialCardPlayedFront,
                                 myObjectiveCard.cardID(),
                                 hand.get(0).cardID(),hand.get(1).cardID(),hand.get(2).cardID(),
                                 commonObjectiveCard.get(0).cardID(),commonObjectiveCard.get(1).cardID(),

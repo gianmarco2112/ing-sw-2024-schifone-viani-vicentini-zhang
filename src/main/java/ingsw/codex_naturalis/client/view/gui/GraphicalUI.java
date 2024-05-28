@@ -30,71 +30,8 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class GraphicalUI extends Application implements UI {
-    
+
     private ClientImpl client;
-
-    private enum State {
-        LOGIN,
-        LOBBY,
-        WAIT,
-        CONFIRM,
-        CONFIRMED,
-        GAME,
-        REJOINED
-    }
-    private enum RunningState {
-        RUNNING,
-        WAITING_FOR_UPDATE,
-        STOP
-    }
-    private enum GameState {
-        WAITING_FOR_PLAYERS,
-        READY,
-        SETUP_INITIAL_CARD,
-        SETUP_COLOR,
-        SETUP_OBJECTIVE_CARD,
-        PLAYING,
-    }
-    private State state = GraphicalUI.State.LOGIN;
-    private RunningState runningState = GraphicalUI.RunningState.RUNNING;
-    private GameState gameState = null;
-
-    private final Object lock = new Object();
-
-    private State getState() {
-        synchronized (lock) {
-            return state;
-        }
-    }
-    private void setState(State state) {
-        synchronized (lock) {
-            this.state = state;
-            lock.notifyAll();
-        }
-    }
-    private RunningState getRunningState() {
-        synchronized (lock) {
-            return runningState;
-        }
-    }
-    private void setRunningState(RunningState runningState) {
-        synchronized (lock) {
-            this.runningState = runningState;
-            lock.notifyAll();
-        }
-    }
-    private GameState getGameState() {
-        synchronized (lock) {
-            return gameState;
-        }
-    }
-    private void setGameState(GameState gameState) {
-        synchronized (lock) {
-            this.gameState = gameState;
-            lock.notifyAll();
-        }
-    }
-
     private final HashMap<String, String> scenes;
     private FXMLLoader fxmlLoader;
     private Stage stage;
@@ -133,6 +70,9 @@ public class GraphicalUI extends Application implements UI {
     private WaitingRoomControllerFX waitingRoomControllerFX;
     private ColorSetupControllerFX colorSetupControllerFX;
     private CardsSetupControllerFX cardsSetupControllerFX;
+    private Boolean startFirstSetup = false;
+    private Boolean startSecondSetup = false;
+    private Boolean allPlayersJoined = false;
 
     private static String networkProtocol;
     private static String ipAddress = "localhost";
@@ -141,98 +81,6 @@ public class GraphicalUI extends Application implements UI {
         networkProtocol = args[0];
         ipAddress = args[1];
         launch();
-    }
-    
-    public void run() {
-        while (true) {
-            switch (getRunningState()) {
-                case RUNNING -> running();
-                case WAITING_FOR_UPDATE -> waitForUpdate();
-                //case STOP -> { setRunningState(RunningState.RUNNING); }
-            }
-        }
-    }
-
-    private void running() {
-        switch (getState()) {
-            case LOGIN -> loginView();
-            case LOBBY -> lobbyView();
-            case WAIT -> waitView();
-            case CONFIRM -> confirmView();
-            case CONFIRMED -> confirmedView();
-            //case GAME -> gameView();
-            case REJOINED -> {
-                rejoined = true;
-                setScene("Game");
-                setRunningState(RunningState.WAITING_FOR_UPDATE);
-            }
-        }
-    }
-
-    private void confirmedView() {
-        waitingRoomControllerFX.setConfirmedView();
-    }
-
-    private void waitForUpdate() {
-        while (getRunningState() == RunningState.WAITING_FOR_UPDATE) {
-            synchronized (lock) {
-                try {
-                    lock.wait();
-                } catch (InterruptedException e) {
-                    System.err.println("Error while waiting for server update");
-                }
-            }
-        }
-    }
-
-    private void loginView() {
-        fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource(scenes.get("Login")));
-        try {
-            scene.setRoot(fxmlLoader.load());
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error loading scene Login");
-            return;
-        }
-        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.setFullScreen(false);
-        stage.setMaximized(false);
-        stage.setTitle("Codex Naturalis");
-        stage.setMinWidth(1280);
-        stage.setMinHeight(760);
-        loginControllerFX = fxmlLoader.getController();
-        loginControllerFX.setViewGUI(this);
-        stage.show();
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
-    }
-
-    private void lobbyView() {
-        setScene("Lobbies");
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
-    }
-
-    private void waitView() {
-        setScene("WaitingRoom");
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
-    }
-
-    private void confirmView() {
-        if(waitingRoomControllerFX==null){
-            setScene("WaitingRoom");
-            setRunningState(RunningState.WAITING_FOR_UPDATE);
-            try {
-                waitForRunLater();
-            } catch (InterruptedException ignored) {}
-        }
-        waitingRoomControllerFX.setConfirmView();
-    }
-
-    private void gameView() {
-        setScene("Game");
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
     @Override
@@ -244,14 +92,12 @@ public class GraphicalUI extends Application implements UI {
             alert.setHeaderText(error);
             alert.showAndWait();
         });
-        setRunningState(RunningState.RUNNING);
     }
 
     @Override
     public void setNickname(String nickname) {
         this.nickname = nickname;
-        setState(State.LOBBY);
-        setRunningState(RunningState.RUNNING);
+        setScene("Lobbies");
     }
 
     @Override
@@ -267,17 +113,13 @@ public class GraphicalUI extends Application implements UI {
     @Override
     public void updateGameID(int gameID) {
         this.gameID = gameID;
-
-        setGameState(GameState.WAITING_FOR_PLAYERS);
-        setState(State.WAIT);
-        setRunningState(RunningState.RUNNING);
+        setScene("WaitingRoom");
     }
 
     @Override
     public void allPlayersJoined() {
-        setState(State.CONFIRM);
-        setRunningState(RunningState.RUNNING);
-        //setRunningState(RunningState.WAITING_FOR_UPDATE);
+        allPlayersJoined = true;
+        setScene("WaitingRoom");
     }
 
     @Override
@@ -291,14 +133,12 @@ public class GraphicalUI extends Application implements UI {
 
     private void firstSetup() {
         setScene("CardsSetup");
-        setGameState(GameState.SETUP_INITIAL_CARD);
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
+        startFirstSetup = true;
     }
 
     private void secondSetup() {
         setScene("CardsSetup");
-        setGameState(GameState.SETUP_OBJECTIVE_CARD);
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
+        startSecondSetup = true;
     }
 
     @Override
@@ -306,7 +146,6 @@ public class GraphicalUI extends Application implements UI {
         this.game = game;
         if(initialCardEvent == InitialCardEvent.PLAY) {
             setScene("ColorSetup");
-            setRunningState(RunningState.WAITING_FOR_UPDATE);
         }
     }
 
@@ -346,8 +185,6 @@ public class GraphicalUI extends Application implements UI {
         }
 
         setScene("Game");
-        setState(State.GAME);
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
 
     }
 
@@ -367,7 +204,7 @@ public class GraphicalUI extends Application implements UI {
         this.game = immGame;
         //devo aggiornare punteggi
         //gameControllerFX.handlerCornerClick(null,cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,
-                //true,game.player().playerArea().points(),myColor); //TODO NO myColor, ma è il colore del giocatore che ha giocato la carta, la pedina si deve aggiornare per tutti
+        //true,game.player().playerArea().points(),myColor); //TODO NO myColor, ma è il colore del giocatore che ha giocato la carta, la pedina si deve aggiornare per tutti
 
         if(playerNicknameWhoUpdated.equals(this.game.player().nickname())){
             gameControllerFX.cardPlayed(cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,
@@ -429,14 +266,9 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void gameEnded(List<ImmPlayer> players) {
-        
+        gameControllerFX.gameEnded(players);
     }
 
-    /* @Override
-     public void gameEnded(String winner, List<String> players, List<Integer> points, List<ImmObjectiveCard> secretObjectiveCards) {
-         gameControllerFX.gameEnded(winner,players,points,secretObjectiveCards);
-     }
- */
     @Override
     public void gameCanceled() {
         gameControllerFX.gameCanceled();
@@ -444,8 +276,7 @@ public class GraphicalUI extends Application implements UI {
 
     @Override
     public void gameLeft() {
-        setState(State.LOBBY);
-        setRunningState(RunningState.RUNNING);
+        setScene("Lobbies");
     }
 
     @Override
@@ -454,10 +285,6 @@ public class GraphicalUI extends Application implements UI {
         client.updateGetGameController();
         rejoined = true;
         setScene("Game");
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
-        //setState(State.REJOINED);
-
-        //setRunningState(RunningState.RUNNING);
     }
 
     @Override
@@ -488,8 +315,7 @@ public class GraphicalUI extends Application implements UI {
     public void playerIsReady(String playerNickname) {
         System.out.println(playerNickname + " è pronto!");
         if(playerNickname.equals(nickname)){
-            setState(State.CONFIRMED);
-            setRunningState(RunningState.RUNNING);
+            waitingRoomControllerFX.setConfirmedView();
         }
         waitingRoomControllerFX.showAvatar(playerNickname);
     }
@@ -566,8 +392,7 @@ public class GraphicalUI extends Application implements UI {
         });
         stage.setMinWidth(1280);
         stage.setMinHeight(760);
-        run();
-        //setScene("Login");
+        setScene("Login");
     }
 
 
@@ -634,6 +459,9 @@ public class GraphicalUI extends Application implements UI {
                     waitingRoomControllerFX.setNickname(nickname);
                     waitingRoomControllerFX.showNicknameAndGameid(nickname,gameID);
                     waitingRoomControllerFX.showPlayerVan(numOfPlayers);
+                    if(allPlayersJoined){
+                        waitingRoomControllerFX.setConfirmView();
+                    }
                     break;
                 case "ColorSetup":
                     colorSetupControllerFX = fxmlLoader.getController();
@@ -642,12 +470,14 @@ public class GraphicalUI extends Application implements UI {
                 case "CardsSetup":
                     cardsSetupControllerFX = fxmlLoader.getController();
                     cardsSetupControllerFX.setViewGUI(this);
-                    if(getGameState()==GameState.SETUP_INITIAL_CARD){
+                    if(startFirstSetup) {
                         cardsSetupControllerFX.showInitialCard(game.player().initialCard().cardID());
                         initialCardID = game.player().initialCard().cardID();
+                        startFirstSetup = false;
                     }
-                    if(getGameState()==GameState.SETUP_OBJECTIVE_CARD){
+                    if(startSecondSetup) {
                         cardsSetupControllerFX.chooseObjective(game.player().secretObjectiveCards());
+                        startSecondSetup = false;
                     }
                     break;
             }
@@ -674,15 +504,12 @@ public class GraphicalUI extends Application implements UI {
         this.numOfPlayers = numOfPlayers;
         client.ctsUpdateNewGame(numOfPlayers);
         setScene("WaitingRoom");
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
     public void joinGame(int gameID, int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
-        //setRunningState(RunningState.WAITING_FOR_UPDATE);
         client.ctsUpdateGameToAccess(gameID);
         setScene("WaitingRoom");
-        setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
     public void playerPressEnter(){

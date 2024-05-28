@@ -1446,9 +1446,21 @@ public class GameControllerFX {
         });
     }
 
-    public void gameEnded(String winner, List<String> players, List<Integer> points, List<ImmObjectiveCard> secretObjectiveCards) {
+    public void gameEnded(List<ImmPlayer> players) {
         Platform.runLater(()->{
+            HashMap<String,List<Integer>> pointsMap = new HashMap<>();
+            List<String> playersNick = new ArrayList<>();
+            List<Integer> pointsAndExtraPoints = new ArrayList<>();
+            for(ImmPlayer p: players){
+                pointsAndExtraPoints.add(p.playerArea().points());
+                pointsAndExtraPoints.add(p.playerArea().extraPoints());
+                pointsMap.put(p.nickname(),pointsAndExtraPoints);
+            }
+            String winner = "";
+            //winner = computeWinner(pointsMap);
             updateBoxText.setText("Game ended!\nThe winner is " + winner + "!\nPress LEAVE");
+
+
             //mostro al posto delle carte in mano agli altri giocatori l'obiettivo segreto
             int index=1;
             Color color = null;
@@ -1462,10 +1474,10 @@ public class GameControllerFX {
                                     break;
                                 }
                             }
-                            posizionaPedine(List.of(color),points.get(i),anchorPanesOnBoard.get(points.get(i)));
+                            posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
-                            streamObjectiveEndGame(secretObjectiveCards.get(i).cardID(),user1HandCard1);
+                            streamObjectiveEndGame(players.get(i).playerArea().objectiveCard().cardID(),user1HandCard1);
                         }
                         case 2 -> {
                             for(ImmOtherPlayer p: game.otherPlayers()){
@@ -1474,10 +1486,10 @@ public class GameControllerFX {
                                     break;
                                 }
                             }
-                            posizionaPedine(List.of(color),points.get(i),anchorPanesOnBoard.get(points.get(i)));
+                            posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
-                            streamObjectiveEndGame(secretObjectiveCards.get(i).cardID(),user2HandCard1);
+                            streamObjectiveEndGame(players.get(i).playerArea().objectiveCard().cardID(),user2HandCard1);
                         }
                         case 3 -> {
                             for(ImmOtherPlayer p: game.otherPlayers()){
@@ -1486,16 +1498,20 @@ public class GameControllerFX {
                                     break;
                                 }
                             }
-                            posizionaPedine(List.of(color),points.get(i),anchorPanesOnBoard.get(points.get(i)));
+                            posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
-                            streamObjectiveEndGame(secretObjectiveCards.get(i).cardID(),user3HandCard1);
+                            streamObjectiveEndGame(players.get(i).playerArea().objectiveCard().cardID(),user3HandCard1);
                         }
                     }
                     index++;
                 }
             }
         });
+    }
+
+    private String computeWinner(HashMap<String, List<Integer>> pointsMap) {
+        return null;
     }
 
     private void streamObjectiveEndGame(String id, ImageView userHandCard1) {

@@ -226,14 +226,6 @@ public class Player extends PlayerObservable {
      * Setter of the cards that the Player has in his hand
      * @param hand: a list of the cards in the hand of the Player
      */
-    public void setHand(List<PlayableCard> hand){
-        this.hand = hand;
-    }
-
-    /**
-     * Setter of the cards that the Player has in his hand
-     * @param hand: a list of the cards in the hand of the Player
-     */
     public void setupHand(List<PlayableCard> hand){
         this.hand = hand;
     }

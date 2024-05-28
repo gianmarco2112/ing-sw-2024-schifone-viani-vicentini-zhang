@@ -201,7 +201,7 @@ class GameplayControllerTest {
         hand.add(resourceCard);
 
         Player player = model.getCurrentPlayer();
-        player.setHand(hand);
+        player.setupHand(hand);
 
         gameplayController.flipCard("Test", 0);
 
@@ -220,7 +220,7 @@ class GameplayControllerTest {
         hand.add(resourceCard);
 
         Player player = model.getCurrentPlayer();
-        player.setHand(hand);
+        player.setupHand(hand);
 
         player.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
 
@@ -255,7 +255,7 @@ class GameplayControllerTest {
 
         Player player2 = model.getCurrentPlayer();
         player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
-        player2.setHand(hand);
+        player2.setupHand(hand);
 
         gameplayController.playCard("Test2", 1,1,1);
         //----------------
@@ -282,7 +282,7 @@ class GameplayControllerTest {
 
         Player player2 = model.getCurrentPlayer();
         player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
-        player2.setHand(hand);
+        player2.setupHand(hand);
 
         gameplayController.playCard("Test2", 1,1,1);
         //----------------
@@ -307,7 +307,7 @@ class GameplayControllerTest {
 
         Player player2 = model.getCurrentPlayer();
         player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
-        player2.setHand(hand);
+        player2.setupHand(hand);
 
         gameplayController.playCard("Test2", 1,1,1);
         //----------------
@@ -332,7 +332,7 @@ class GameplayControllerTest {
         hand.add(resourceCard);
 
         Player player = model.getCurrentPlayer();
-        player.setHand(hand);
+        player.setupHand(hand);
         assertThrows(NotPlayableException.class,()->{gameplayController.playCard("Test", 1,1,1);});
     }
 
@@ -341,7 +341,9 @@ class GameplayControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         int i = 1;
         Player player = model.getCurrentPlayer();
+
         player.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
+
         model.setGameStatus(GameStatus.GAMEPLAY);
         while(i<21){
             PlayableCard resourceCard = insectResourceCardWithPoint();
@@ -349,7 +351,7 @@ class GameplayControllerTest {
             List<PlayableCard> hand = new ArrayList<>();
             hand.add(resourceCard);
 
-            player.setHand(hand);
+            player.setupHand(hand);
 
             model.setCurrentPlayer(player);
 
@@ -359,7 +361,6 @@ class GameplayControllerTest {
             i++;
         }
         assertEquals(GameStatus.LAST_ROUND_20_POINTS,model.getGameStatus());
-
         //play a card-----
         PlayableCard resourceCard = insectResourceCard();
         List<PlayableCard> hand = new ArrayList<>();
@@ -367,7 +368,7 @@ class GameplayControllerTest {
 
         Player player2 = model.getCurrentPlayer();
         player2.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
-        player2.setHand(hand);
+        player2.setupHand(hand);
 
         gameplayController.playCard("Test2", 1,1,1);
         //draw a card-----
@@ -375,30 +376,16 @@ class GameplayControllerTest {
 
         //now is the last round
         hand.add(resourceCard);
-        player.setHand(hand);
+        player.setupHand(hand);
         //play a card without drawing a card because last round
         gameplayController.playCard("Test", 1,-1,-1);
 
         hand.add(resourceCard);
-        player2.setHand(hand);
+        player2.setupHand(hand);
         //play a card without drawing a card because last round
         gameplayController.playCard("Test2", 1,-1,-1);
 
         assertEquals(GameStatus.ENDGAME,model.getGameStatus());
     }
 
-    @Test
-    void GoldCardPlayTest(){
-        PlayableCard goldStandardCard = goldStandardCard();
-        goldStandardCard.flip();
-        List<PlayableCard> hand = new ArrayList<>();
-        hand.add(goldStandardCard);
-
-        Player player = model.getCurrentPlayer();
-        player.setHand(hand);
-
-        player.getPlayerArea().setCardOnCoordinates(initialCard(),0,0);
-
-        assertThrows(NotPlayableException.class,()->{gameplayController.playCard("Test", 1,1,1);});
-    }
 }

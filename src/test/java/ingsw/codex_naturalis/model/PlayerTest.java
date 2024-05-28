@@ -131,7 +131,7 @@ class PlayerTest {
         List<PlayableCard> hand = new ArrayList<>();
         hand.add(card1);
         hand.add(card2);
-        player.setHand(hand);
+        player.setupHand(hand);
 
         player.flipCard(0);
         assertTrue(card1.getImmutablePlayableCard().showingFront());
@@ -176,7 +176,7 @@ class PlayerTest {
         List<PlayableCard> hand = new ArrayList<>();
         hand.add(card1);
         hand.add(card2);
-        player.setHand(hand);
+        player.setupHand(hand);
         assertEquals (hand, player.getHand());
         player1.setupHand(hand);
         assertEquals (hand, player1.getHand());

@@ -1887,45 +1887,24 @@ public class GameControllerFX {
         }
         if(!colorsIn0.isEmpty()){
             ImageView view = null;
-            switch (colorsIn0.size()){
-                case 1 -> {
-                    streamColor(colorsIn0.getFirst(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1"));
-                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1");
-                    view.setId(colorsIn0.getFirst() + "pawn1");
-                }
-                case 2 -> {
-                    streamColor(colorsIn0.getFirst(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1"));
-                    streamColor(colorsIn0.getLast(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2"));
-                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1");
-                    view.setId(colorsIn0.getFirst() + "pawn1");
-                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2");
-                    view.setId(colorsIn0.getLast() + "pawn2");
-                }
-                case 3 -> {
-                    streamColor(colorsIn0.getFirst(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1"));
-                    streamColor(colorsIn0.get(1),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2"));
-                    streamColor(colorsIn0.getLast(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn3"));
-                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1");
-                    view.setId(colorsIn0.getFirst() + "pawn1");
-                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2");
-                    view.setId(colorsIn0.get(1) + "pawn2");
-                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn3");
-                    view.setId(colorsIn0.getLast() + "pawn3");
-                }
-                case 4 -> {
-                    streamColor(colorsIn0.getFirst(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1"));
-                    streamColor(colorsIn0.get(1),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2"));
-                    streamColor(colorsIn0.get(2),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn3"));
-                    streamColor(colorsIn0.getLast(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn4"));
-                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1");
-                    view.setId(colorsIn0.getFirst() + "pawn1");
-                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2");
-                    view.setId(colorsIn0.get(1) + "pawn2");
-                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn3");
-                    view.setId(colorsIn0.get(2) + "pawn3");
-                    view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn4");
-                    view.setId(colorsIn0.getLast() + "pawn3");
-                }
+
+            streamColor(colorsIn0.getFirst(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1"));
+            view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn1");
+            view.setId(colorsIn0.getFirst() + "pawn1");
+            if (colorsIn0.size() >= 2 ){
+                streamColor(colorsIn0.getLast(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2"));
+                view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn2");
+                view.setId(colorsIn0.getLast() + "pawn2");
+            }
+            if (colorsIn0.size() >= 3 ){
+                streamColor(colorsIn0.getLast(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn3"));
+                view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn3");
+                view.setId(colorsIn0.getLast() + "pawn3");
+            }
+            if (colorsIn0.size() == 4 ){
+                streamColor(colorsIn0.getLast(),(ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn4"));
+                view = (ImageView) anchorPanesOnBoard.getFirst().lookup("#pawn4");
+                view.setId(colorsIn0.getLast() + "pawn4");
             }
         }
 

@@ -27,10 +27,10 @@ public class CardTUIRepresentationTest {
     void setup(){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String initialCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/initialCards.json";
-            String resourceCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/resourceCards.json";
-            String goldCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/goldCards.json";
-            String objectiveCardsJsonFilePath = "src/main/resources/ingsw/codex_naturalis/resources/objectiveCards.json";
+            String initialCardsJsonFilePath = "src/main/resources/jsonCards/initialCards.json";
+            String resourceCardsJsonFilePath = "src/main/resources/jsonCards/resourceCards.json";
+            String goldCardsJsonFilePath = "src/main/resources/jsonCards/goldCards.json";
+            String objectiveCardsJsonFilePath = "src/main/resources/jsonCards/objectiveCards.json";
 
             List<PlayableCard> initialCards = objectMapper.readValue(new File(initialCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});
             List<PlayableCard> resourceCards = objectMapper.readValue(new File(resourceCardsJsonFilePath), new TypeReference<List<PlayableCard>>() {});

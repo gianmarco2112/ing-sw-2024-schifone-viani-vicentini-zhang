@@ -394,10 +394,15 @@ public class GraphicalUI extends Application implements UI {
     }
 
     @Override
-    public void gameEnded(String winner, List<String> players, List<Integer> points, List<ImmObjectiveCard> secretObjectiveCards) {
-        gameControllerFX.gameEnded(winner,players,points,secretObjectiveCards);
+    public void gameEnded(List<ImmPlayer> players) {
+        
     }
 
+    /* @Override
+     public void gameEnded(String winner, List<String> players, List<Integer> points, List<ImmObjectiveCard> secretObjectiveCards) {
+         gameControllerFX.gameEnded(winner,players,points,secretObjectiveCards);
+     }
+ */
     @Override
     public void gameCanceled() {
         gameControllerFX.gameCanceled();

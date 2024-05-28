@@ -90,9 +90,7 @@ public class Player extends PlayerObservable {
     }
 
     public void flipCard(int index) {
-        System.out.println(hand.get(index).getImmutablePlayableCard().showingFront());
         hand.get(index).flip();
-        System.out.println(hand.get(index).getImmutablePlayableCard().showingFront());
         notifyObservers(this, PlayerEvent.HAND_CARD_FLIPPED);
     }
 

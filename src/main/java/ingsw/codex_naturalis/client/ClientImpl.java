@@ -61,7 +61,8 @@ public class ClientImpl implements Client, ViewObserver {
     private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
 
-    public ClientImpl(Server server, NetworkProtocol networkProtocol) throws RemoteException {
+    public ClientImpl(Server server, NetworkProtocol networkProtocol, UI view) throws RemoteException {
+        this.view = view;
         this.server = server;
         switch (networkProtocol) {
             case RMI -> server.register((Client) UnicastRemoteObject.exportObject(this, 0));
@@ -77,65 +78,6 @@ public class ClientImpl implements Client, ViewObserver {
         }, 0, 5, TimeUnit.SECONDS);
     }
 
-
-    /**
-     * Asks for the UI choice
-     * @return UI choice
-     */
-    private UIChoice askUIChoice() {
-
-        Scanner s = new Scanner(System.in);
-
-        System.out.print("\n\nWelcome to ");
-
-        //red, green, blue, purple
-        String[] colors = {"\u001B[31m", "\u001B[32m", "\u001B[34m", "\u001B[35m"};
-        String text = "Codex Naturalis!";
-
-        //print fancy codex naturalis text
-        for (int i = 0; i < text.length(); i++) {
-            int colorIndex = i % colors.length;
-            String color = colors[colorIndex];
-            System.out.print(color + text.charAt(i));
-        }
-
-        //color reset
-        System.out.println("\u001B[0m");
-
-        System.out.println("""
-                                
-                --------------------------------------------------------
-                Please choose your preferred user interface (UI) option:
-                                
-                (1) Textual User interface - TUI
-                (2) Graphical User Interface - GUI
-                --------------------------------------------------------
-                                
-                                
-                """);
-
-        Map<Integer, UIChoice> uiChoices = new LinkedHashMap<>();
-
-        String input;
-        while (true) {
-            input = s.next();
-            try {
-                int option = Integer.parseInt(input);
-                switch (option) {
-                    case 1 -> {
-                        return UIChoice.TUI;
-                    }
-                    case 2 -> {
-                        return UIChoice.GUI;
-                    }
-                    default -> System.err.println("Invalid option");
-                }
-            } catch (NumberFormatException e) {
-                System.err.println("Invalid option");
-            }
-        }
-
-    }
 
 
     @Override
@@ -631,26 +573,9 @@ public class ClientImpl implements Client, ViewObserver {
         }
     }
 
-
-    public void runView() {
-
-        UIObservableItem uiObservableItem = new UIObservableItem();
-        uiObservableItem.addObserver(this);
-        view = askUIChoice().createView(uiObservableItem);
-
-        try {
-            server.viewIsReady(this);
-        } catch (RemoteException e) {
-            System.err.println("Error while updating server");
-        }
-
-        view.run();
-
-    }
-
-    public void setViewTest(){
+ /*   public void setViewTest(){
         UIObservableItem uiObservableItem = new UIObservableItem();
         view = new TextualUI(uiObservableItem);
-    }
+    }*/
 
 }

@@ -127,43 +127,31 @@ public class ServerImpl implements Server {
     @Override
     public synchronized void chooseNickname(Client client, String nickname) {
         try {
-            //if there is a user with that nickname in lobby
-            if (inLobbyUsers.contains(nickname)) {
-                client.reportException("This nickname is already in use, please choose an other one.");
-                return;
-            }
-            if (userToGame.containsKey(nickname)) {
-                //if there is a user with that nickname in game and he is connected
-                if (userToGame.get(nickname).getModel().getPlayerByNickname(nickname).isInGame())
-                    client.reportException("This nickname is already in use, please choose an other one.");
-                    //if there is a user with that nickname in game and he is NOT connected
-                else
-                    reconnect(client, nickname, userToGame.get(nickname));
-                return;
-            }
-
-            //otherwise, set the client's nickname
-            inLobbyUsers.add(nickname);
-            loggedOutClients.remove(client);
-            clientNicknameBiMap.put(client, nickname);
-            client.setNickname(nickname);
-        } catch (RemoteException e) {
-            System.err.println("Error while updating client");
-        }
-    }
-
-    /**
-     * Method called from the client when his view started, used to receive the list of existing games.
-     * @param client client caller
-     */
-    @Override
-    public synchronized void viewIsReady(Client client) {
-        try {
-            updatesQueue.put(() -> {
+            updatesQueue.put( () -> {
                 try {
+                    //if there is a user with that nickname in lobby
+                    if (inLobbyUsers.contains(nickname)) {
+                        client.reportException("This nickname is already in use, please choose an other one.");
+                        return;
+                    }
+                    if (userToGame.containsKey(nickname)) {
+                        //if there is a user with that nickname in game and he is connected
+                        if (userToGame.get(nickname).getModel().getPlayerByNickname(nickname).isInGame())
+                            client.reportException("This nickname is already in use, please choose an other one.");
+                            //if there is a user with that nickname in game and he is NOT connected
+                        else
+                            reconnect(client, nickname, userToGame.get(nickname));
+                        return;
+                    }
+
+                    //otherwise, set the client's nickname
+                    inLobbyUsers.add(nickname);
+                    loggedOutClients.remove(client);
+                    clientNicknameBiMap.put(client, nickname);
+                    client.setNickname(nickname);
                     client.updateGamesSpecs(objectMapper.writeValueAsString(getGamesSpecs()));
                 } catch (RemoteException | JsonProcessingException e) {
-                    System.err.println("Error while trying to update client's lobby UIState");
+                    System.err.println("Error while updating client");
                 }
             });
         } catch (InterruptedException e) {

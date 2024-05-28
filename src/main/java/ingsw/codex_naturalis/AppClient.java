@@ -1,6 +1,10 @@
 package ingsw.codex_naturalis;
 
 import ingsw.codex_naturalis.client.ClientImpl;
+import ingsw.codex_naturalis.client.UIChoice;
+import ingsw.codex_naturalis.client.view.UI;
+import ingsw.codex_naturalis.client.view.gui.GraphicalUI;
+import ingsw.codex_naturalis.client.view.tui.TextualUI;
 import ingsw.codex_naturalis.common.NetworkProtocol;
 import ingsw.codex_naturalis.common.Server;
 import ingsw.codex_naturalis.client.ServerStub;
@@ -10,111 +14,84 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AppClient {
 
 
     public static void main(String[] args) {
-        String ipAddress = "localhost";
 
-        //ASK FOR IP ADDRESS
-
-        /*Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert IP address");
-        ipAddress = scanner.next();*/
-
-        NetworkProtocol networkProtocol = askNetworkProtocol();
-        try {
-            switch (networkProtocol) {
-                case RMI -> runRMIClient(ipAddress);
-                case SOCKET -> runSocketClient(ipAddress);
+        UIChoice uiChoice = askUIChoice();
+        switch (uiChoice) {
+            case TUI -> {
+                new TextualUI().run(args);
             }
-        } catch (RemoteException e) {
-            System.err.println("Error while creating client");
+            case GUI -> {
+                GraphicalUI.main(args);
+            }
         }
 
     }
 
-    private static void runRMIClient(String ipAddress) throws RemoteException {
-
-        Registry registry = LocateRegistry.getRegistry(ipAddress, 1235);
-        Server server;
-        try {
-            server = (Server) registry.lookup("Server");
-        } catch (NotBoundException e) {
-            throw new RemoteException();
-        }
-
-        ClientImpl client = new ClientImpl(server, NetworkProtocol.RMI);
-        client.runView();
-
-    }
-
-    private static void runSocketClient(String ipAddress) throws RemoteException {
-
-        ServerStub serverStub = new ServerStub(ipAddress, 1234);
-        ClientImpl client = new ClientImpl(serverStub, NetworkProtocol.SOCKET);
-
-        new Thread(() -> {
-            while (true) {
-                try {
-                    serverStub.receive();
-                } catch (IOException e) {
-                    System.err.println("Error: won't receive from server\n" + e.getMessage());
-                    try {
-                        serverStub.close();
-                    } catch (RemoteException ex) {
-                        System.err.println("Error while closing connection with server");
-                    }
-                    System.exit(1);
-                }
-            }
-        }).start();
-
-        client.runView();
-    }
-
-
-    private static NetworkProtocol askNetworkProtocol() {
+    /**
+     * Asks for the UI choice
+     * @return UI choice
+     */
+    private static UIChoice askUIChoice() {
 
         Scanner s = new Scanner(System.in);
 
-        System.out.println("""
-                
-                
-                --------------------------------------------------------------
-                Before we begin, please choose your preferred network protocol:
-                
-                (1) Remote Method Interface - RMI
-                (2) Socket - TCP/IP
-                --------------------------------------------------------------
-                
-                
-                To navigate the menu, simply enter the number corresponding to the option you'd like to select and press Enter. Here's how it works:
+        System.out.print("\n\nWelcome to ");
 
-                To use RMI, type '1' and press Enter.
-                To use Sockets, type '2' and press Enter.
-                
-                
-                
+        //red, green, blue, purple
+        String[] colors = {"\u001B[31m", "\u001B[32m", "\u001B[34m", "\u001B[35m"};
+        String text = "Codex Naturalis!";
+
+        //print fancy codex naturalis text
+        for (int i = 0; i < text.length(); i++) {
+            int colorIndex = i % colors.length;
+            String color = colors[colorIndex];
+            System.out.print(color + text.charAt(i));
+        }
+
+        //color reset
+        System.out.println("\u001B[0m");
+
+        System.out.println("""
+                                
+                --------------------------------------------------------
+                Please choose your preferred user interface (UI) option:
+                                
+                (1) Textual User interface - TUI
+                (2) Graphical User Interface - GUI
+                --------------------------------------------------------
+                                
+                                
                 """);
 
-        String input;
+        Map<Integer, UIChoice> uiChoices = new LinkedHashMap<>();
 
+        String input;
         while (true) {
             input = s.next();
-            try{
+            try {
                 int option = Integer.parseInt(input);
                 switch (option) {
-                    case 1 -> { return NetworkProtocol.RMI; }
-                    case 2 -> { return NetworkProtocol.SOCKET; }
+                    case 1 -> {
+                        return UIChoice.TUI;
+                    }
+                    case 2 -> {
+                        return UIChoice.GUI;
+                    }
                     default -> System.err.println("Invalid option");
                 }
             } catch (NumberFormatException e) {
                 System.err.println("Invalid option");
             }
         }
+
     }
 
 }

@@ -78,19 +78,6 @@ public class ServerStub implements Server, GameController {
     }
 
     @Override
-    public void viewIsReady(Client client) throws RemoteException {
-        try {
-            MessageToServer message = new CTSViewIsReady();
-            String jsonMessage = objectMapper.writeValueAsString(message);
-            writer.println(jsonMessage);
-            writer.flush();
-        } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
-        }
-    }
-
-
-    @Override
     public void accessExistingGame(Client client, int gameID) throws RemoteException {
         try {
             MessageToServer message = new CTSAccessExistingGame();

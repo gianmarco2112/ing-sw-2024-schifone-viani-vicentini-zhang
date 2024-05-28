@@ -43,7 +43,7 @@ public class CardsSetupControllerFX {
     @FXML
     void objectiveCard1Selected(MouseEvent event) {
         objectiveCard1.setVisible(false);
-        viewGUI.choosedObjective(0);
+        viewGUI.objectiveChosen(0);
 
         objectiveCard2.setDisable(true);
         objectiveCard1.setDisable(true);
@@ -52,7 +52,7 @@ public class CardsSetupControllerFX {
     @FXML
     void objectiveCard2Selected(MouseEvent event) {
         objectiveCard2.setVisible(false);
-        viewGUI.choosedObjective(1);
+        viewGUI.objectiveChosen(1);
 
         objectiveCard2.setDisable(true);
         objectiveCard1.setDisable(true);

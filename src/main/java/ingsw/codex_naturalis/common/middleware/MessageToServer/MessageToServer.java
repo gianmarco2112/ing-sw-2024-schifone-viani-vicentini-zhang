@@ -10,7 +10,6 @@ import ingsw.codex_naturalis.server.ClientSkeleton;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = CTSViewIsReady.class, name = "CTSViewIsReady"),
         @JsonSubTypes.Type(value = CTSChooseNickname.class, name = "CTSChooseNickname"),
         @JsonSubTypes.Type(value = CTSAccessNewGame.class, name = "CTSAccessNewGame"),
         @JsonSubTypes.Type(value = CTSAccessExistingGame.class, name = "CTSAccessExistingGame"),

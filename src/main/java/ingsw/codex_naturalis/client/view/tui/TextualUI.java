@@ -1,7 +1,10 @@
 package ingsw.codex_naturalis.client.view.tui;
 
+import ingsw.codex_naturalis.client.ClientImpl;
+import ingsw.codex_naturalis.client.ServerStub;
 import ingsw.codex_naturalis.client.view.UI;
-import ingsw.codex_naturalis.client.view.util.UIObservableItem;
+import ingsw.codex_naturalis.common.NetworkProtocol;
+import ingsw.codex_naturalis.common.Server;
 import ingsw.codex_naturalis.common.immutableModel.*;
 import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.enumerations.ExtremeCoordinate;
@@ -11,12 +14,19 @@ import ingsw.codex_naturalis.server.exceptions.NoExistingGamesAvailable;
 import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
 import ingsw.codex_naturalis.server.model.util.GameEvent;
 
+import java.io.IOException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.*;
 
 /**
  * Textual User Interface
  */
 public class TextualUI implements UI {
+
+    private ClientImpl client;
 
     /**
      * View state
@@ -107,10 +117,8 @@ public class TextualUI implements UI {
         }
     }
 
-    /**
-     * Used to notify the client
-     */
-    private final UIObservableItem uiObservableItem;
+    private static String networkProtocol;
+    private static String ipAddress = "localhost";
 
     private final InputRequesterTUI inputRequesterTUI = new InputRequesterTUI();
     private final Scanner scanner = new Scanner(System.in);
@@ -118,27 +126,64 @@ public class TextualUI implements UI {
     private List<GameSpecs> gamesSpecs = null;
     private int gameID;
     private ImmGame game = null;
+    
+    
 
+    public void run(String[] args) {
 
-    
-    public TextualUI(UIObservableItem uiObservableItem) {
-        this.uiObservableItem = uiObservableItem;
-    }
-    
-    
-    
-    @Override
-    public void run() {
-
+        networkProtocol = args[0];
+        ipAddress = args[1];
+        try {
+            switch (networkProtocol) {
+                case "RMI" -> {
+                    createRMIClient();
+                }
+                case "socket" -> {
+                    createSocketClient();
+                }
+            }
+        } catch (RemoteException e) {
+            throw new RuntimeException();
+        }
         while (true) {
             switch (getRunningState()) {
                 case RUNNING -> running();
                 case WAITING_FOR_UPDATE -> waitForUpdate();
                 case STOP -> { setRunningState(RunningState.RUNNING); }
             }
+        }
+    }
 
+    private void createRMIClient() throws RemoteException {
+        Registry registry = LocateRegistry.getRegistry(ipAddress, 1235);
+        Server server;
+        try {
+            server = (Server) registry.lookup("Server");
+        } catch (NotBoundException e) {
+            throw new RemoteException();
         }
 
+        this.client = new ClientImpl(server, NetworkProtocol.RMI, this);
+    }
+
+    private void createSocketClient() throws RemoteException {
+        ServerStub serverStub = new ServerStub(ipAddress, 1234);
+        this.client = new ClientImpl(serverStub, NetworkProtocol.SOCKET, this);
+        new Thread(() -> {
+            while (true) {
+                try {
+                    serverStub.receive();
+                } catch (IOException e) {
+                    System.err.println("Error: won't receive from server\n" + e.getMessage());
+                    try {
+                        serverStub.close();
+                    } catch (RemoteException ex) {
+                        System.err.println("Error while closing connection with server");
+                    }
+                    System.exit(1);
+                }
+            }
+        }).start();
     }
 
     private void running() {
@@ -148,7 +193,7 @@ public class TextualUI implements UI {
             case LOBBY -> lobbyView();
             case GAME -> gameView();
             case REJOINED -> {
-                uiObservableItem.notifyGetGameController();
+                client.updateGetGameController();
                 setState(State.GAME);
                 setGameState(GameState.PLAYING);
             }
@@ -179,7 +224,7 @@ public class TextualUI implements UI {
         inputRequesterTUI.nickname();
         String nickname = askNickname();
         setRunningState(RunningState.WAITING_FOR_UPDATE);
-        uiObservableItem.notifyNickname(nickname);
+        client.ctsUpdateNickname(nickname);
     }
 
 
@@ -210,7 +255,7 @@ public class TextualUI implements UI {
             return;
 
         setRunningState(RunningState.WAITING_FOR_UPDATE);
-        uiObservableItem.notifyNewGame(numOfPlayers);
+        client.ctsUpdateNewGame(numOfPlayers);
 
     }
 
@@ -233,7 +278,7 @@ public class TextualUI implements UI {
         int gameID = gamesSpecs.get(option-1).ID();
 
         setRunningState(RunningState.WAITING_FOR_UPDATE);
-        uiObservableItem.notifyGameToAccess(gameID);
+        client.ctsUpdateGameToAccess(gameID);
 
     }
 
@@ -264,9 +309,9 @@ public class TextualUI implements UI {
                     return;
                 setRunningState(RunningState.WAITING_FOR_UPDATE);
                 switch (getGameState()) {
-                    case WAITING_FOR_PLAYERS -> uiObservableItem.notifyLeaveGame();
+                    case WAITING_FOR_PLAYERS -> client.updateLeaveGame();
                     case READY -> {
-                        uiObservableItem.notifyReady();
+                        client.ctsUpdateReady();
                         System.out.println("You are ready to play. Please wait for the other players to be ready");
                     }
                 }
@@ -286,8 +331,8 @@ public class TextualUI implements UI {
             return;
         setRunningState(RunningState.WAITING_FOR_UPDATE);
         switch (option) {
-            case 1 -> uiObservableItem.notifyInitialCard(InitialCardEvent.FLIP);
-            case 2 -> uiObservableItem.notifyInitialCard(InitialCardEvent.PLAY);
+            case 1 -> client.ctsUpdateInitialCard(InitialCardEvent.FLIP);
+            case 2 -> client.ctsUpdateInitialCard(InitialCardEvent.PLAY);
         }
     }
 
@@ -298,10 +343,10 @@ public class TextualUI implements UI {
             return;
         setRunningState(RunningState.WAITING_FOR_UPDATE);
         switch (option) {
-            case 1 -> uiObservableItem.notifyColor(Color.RED);
-            case 2 -> uiObservableItem.notifyColor(Color.BLUE);
-            case 3 -> uiObservableItem.notifyColor(Color.GREEN);
-            case 4 -> uiObservableItem.notifyColor(Color.YELLOW);
+            case 1 -> client.ctsUpdateColor(Color.RED);
+            case 2 -> client.ctsUpdateColor(Color.BLUE);
+            case 3 -> client.ctsUpdateColor(Color.GREEN);
+            case 4 -> client.ctsUpdateColor(Color.YELLOW);
         }
     }
 
@@ -311,7 +356,7 @@ public class TextualUI implements UI {
         if (option == 0)
             return;
         setRunningState(RunningState.WAITING_FOR_UPDATE);
-        uiObservableItem.notifyObjectiveCardChoice(option-1);
+        client.ctsUpdateObjectiveCardChoice(option-1);
     }
 
     private void playing() {
@@ -331,7 +376,7 @@ public class TextualUI implements UI {
         int option = askForOptionInput(1, game.player().hand().size(), true);
         if (option == 0)
             return;
-        uiObservableItem.notifyFlipCard(option-1);
+        client.ctsUpdateFlipCard(option-1);
     }
 
     private void playingCard() {
@@ -354,19 +399,19 @@ public class TextualUI implements UI {
         if (y == -100)
             return;
 
-        uiObservableItem.notifyPlayCard(option-1, x, y);
+        client.ctsUpdatePlayCard(option-1, x, y);
     }
 
     private void drawingCard() {
         inputRequesterTUI.drawingCardOption();
         int option = askForOptionInput(1, 6, true);
         switch (option) {
-            case 1 -> uiObservableItem.notifyDrawCard(DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
-            case 2 -> uiObservableItem.notifyDrawCard(DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);
-            case 3 -> uiObservableItem.notifyDrawCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);
-            case 4 -> uiObservableItem.notifyDrawCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);
-            case 5 -> uiObservableItem.notifyDrawCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1);
-            case 6 -> uiObservableItem.notifyDrawCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2);
+            case 1 -> client.ctsUpdateDrawCard(DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
+            case 2 -> client.ctsUpdateDrawCard(DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);
+            case 3 -> client.ctsUpdateDrawCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);
+            case 4 -> client.ctsUpdateDrawCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);
+            case 5 -> client.ctsUpdateDrawCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1);
+            case 6 -> client.ctsUpdateDrawCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2);
         }
     }
 
@@ -390,7 +435,7 @@ public class TextualUI implements UI {
         String content = askForMessageContent();
         if (content.equals("/"))
             return;
-        uiObservableItem.notifySendMessage(receiver, content);
+        client.ctsUpdateSendMessage(receiver, content);
     }
 
     private void leaveGame() {
@@ -398,7 +443,7 @@ public class TextualUI implements UI {
         int option = askForOptionInput(1, 1, true);
         if (option == 0)
             return;
-        uiObservableItem.notifyLeaveGame();
+        client.updateLeaveGame();
     }
 
 

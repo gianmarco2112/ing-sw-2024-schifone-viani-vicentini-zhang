@@ -33,22 +33,22 @@ public class ColorSetupControllerFX implements Initializable {
 
     @FXML
     void blueSelected(MouseEvent event) {
-        viewGUI.colorChoosed(Color.BLUE);
+        viewGUI.colorChosen(Color.BLUE);
     }
 
     @FXML
     void greenSelected(MouseEvent event) {
-        viewGUI.colorChoosed(Color.GREEN);
+        viewGUI.colorChosen(Color.GREEN);
     }
 
     @FXML
     void redSelected(MouseEvent event) {
-        viewGUI.colorChoosed(Color.RED);
+        viewGUI.colorChosen(Color.RED);
     }
 
     @FXML
     void yellowSelected(MouseEvent event) {
-        viewGUI.colorChoosed(Color.YELLOW);
+        viewGUI.colorChosen(Color.YELLOW);
     }
 
     public void setViewGUI(GraphicalUI viewGUI) {

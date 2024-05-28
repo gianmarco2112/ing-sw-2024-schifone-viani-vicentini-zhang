@@ -15,9 +15,6 @@ import java.util.List;
  */
 public interface UI {
 
-    void run();
-
-
     void reportError(String error);
 
     void setNickname(String nickname);

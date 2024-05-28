@@ -1,7 +1,10 @@
 package ingsw.codex_naturalis.client.view.gui;
 
+import ingsw.codex_naturalis.client.ClientImpl;
+import ingsw.codex_naturalis.client.ServerStub;
 import ingsw.codex_naturalis.client.view.UI;
-import ingsw.codex_naturalis.client.view.util.UIObservableItem;
+import ingsw.codex_naturalis.common.NetworkProtocol;
+import ingsw.codex_naturalis.common.Server;
 import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
@@ -17,12 +20,18 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class GraphicalUI extends Application implements UI {
+    
+    private ClientImpl client;
 
     private enum State {
         LOGIN,
@@ -86,8 +95,6 @@ public class GraphicalUI extends Application implements UI {
         }
     }
 
-    private static GraphicalUI instance;
-    private UIObservableItem uiObservableItem;
     private final HashMap<String, String> scenes;
     private FXMLLoader fxmlLoader;
     private Stage stage;
@@ -127,7 +134,15 @@ public class GraphicalUI extends Application implements UI {
     private ColorSetupControllerFX colorSetupControllerFX;
     private CardsSetupControllerFX cardsSetupControllerFX;
 
-    @Override
+    private static String networkProtocol;
+    private static String ipAddress = "localhost";
+
+    public static void main(String[] args){
+        networkProtocol = args[0];
+        ipAddress = args[1];
+        launch();
+    }
+    
     public void run() {
         while (true) {
             switch (getRunningState()) {
@@ -171,7 +186,26 @@ public class GraphicalUI extends Application implements UI {
     }
 
     private void loginView() {
-        setScene("Login");
+        fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource(scenes.get("Login")));
+        try {
+            scene.setRoot(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading scene Login");
+            return;
+        }
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setFullScreen(false);
+        stage.setMaximized(false);
+        stage.setTitle("Codex Naturalis");
+        stage.setMinWidth(1280);
+        stage.setMinHeight(760);
+        loginControllerFX = fxmlLoader.getController();
+        loginControllerFX.setViewGUI(this);
+        stage.show();
         setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
@@ -417,7 +451,7 @@ public class GraphicalUI extends Application implements UI {
     @Override
     public void gameRejoined(ImmGame game) {
         this.game = game;
-        uiObservableItem.notifyGetGameController();
+        client.updateGetGameController();
         rejoined = true;
         setScene("Game");
         setRunningState(RunningState.WAITING_FOR_UPDATE);
@@ -461,6 +495,18 @@ public class GraphicalUI extends Application implements UI {
     }
 
     public GraphicalUI() {
+        try {
+            switch (networkProtocol) {
+                case "RMI" -> {
+                    createRMIClient();
+                }
+                case "socket" -> {
+                    createSocketClient();
+                }
+            }
+        } catch (RemoteException e) {
+            throw new RuntimeException();
+        }
         scenes = new HashMap<>();
         scenes.put("Game", "/FXML/GameFXML.fxml");
         scenes.put("EndGame", "/FXML/EndGameFXML.fxml");
@@ -478,9 +524,40 @@ public class GraphicalUI extends Application implements UI {
         }
     }
 
+    private void createRMIClient() throws RemoteException {
+        Registry registry = LocateRegistry.getRegistry(ipAddress, 1235);
+        Server server;
+        try {
+            server = (Server) registry.lookup("Server");
+        } catch (NotBoundException e) {
+            throw new RemoteException();
+        }
+
+        this.client = new ClientImpl(server, NetworkProtocol.RMI, this);
+    }
+
+    private void createSocketClient() throws RemoteException {
+        ServerStub serverStub = new ServerStub(ipAddress, 1234);
+        this.client = new ClientImpl(serverStub, NetworkProtocol.SOCKET, this);
+        new Thread(() -> {
+            while (true) {
+                try {
+                    serverStub.receive();
+                } catch (IOException e) {
+                    System.err.println("Error: won't receive from server\n" + e.getMessage());
+                    try {
+                        serverStub.close();
+                    } catch (RemoteException ex) {
+                        System.err.println("Error while closing connection with server");
+                    }
+                    System.exit(1);
+                }
+            }
+        }).start();
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
-        instance = this;
         this.stage = stage;
         stage.getIcons().add(new Image(getClass().getResource("/lobbiesPageResources/title.png").toString()));
         stage.setOnCloseRequest((WindowEvent t) -> {
@@ -489,15 +566,10 @@ public class GraphicalUI extends Application implements UI {
         });
         stage.setMinWidth(1280);
         stage.setMinHeight(760);
+        run();
+        //setScene("Login");
     }
 
-    public static GraphicalUI getInstance() {
-        return instance;
-    }
-
-    public void setUIObservableItem(UIObservableItem uiObservableItem) {
-        this.uiObservableItem = uiObservableItem;
-    }
 
     private void setScene(String sceneName) {
         Platform.runLater(() -> {
@@ -595,12 +667,12 @@ public class GraphicalUI extends Application implements UI {
     }
 
     public void endLoginPhase(String nickname) {
-        uiObservableItem.notifyNickname(nickname);
+        client.ctsUpdateNickname(nickname);
     }
 
     public void endLobbiesPhase(int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
-        uiObservableItem.notifyNewGame(numOfPlayers);
+        client.ctsUpdateNewGame(numOfPlayers);
         setScene("WaitingRoom");
         setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
@@ -608,37 +680,37 @@ public class GraphicalUI extends Application implements UI {
     public void joinGame(int gameID, int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
         //setRunningState(RunningState.WAITING_FOR_UPDATE);
-        uiObservableItem.notifyGameToAccess(gameID);
+        client.ctsUpdateGameToAccess(gameID);
         setScene("WaitingRoom");
         setRunningState(RunningState.WAITING_FOR_UPDATE);
     }
 
     public void playerPressEnter(){
-        uiObservableItem.notifyReady();
+        client.ctsUpdateReady();
     }
 
     public void playingInitialCard(boolean front) {
         if(front) {
             initialCardPlayedFront = true;
-            uiObservableItem.notifyInitialCard(InitialCardEvent.FLIP);
-            uiObservableItem.notifyInitialCard(InitialCardEvent.PLAY);
+            client.ctsUpdateInitialCard(InitialCardEvent.FLIP);
+            client.ctsUpdateInitialCard(InitialCardEvent.PLAY);
         }else {
             initialCardPlayedFront = false;
-            uiObservableItem.notifyInitialCard(InitialCardEvent.PLAY);
+            client.ctsUpdateInitialCard(InitialCardEvent.PLAY);
         }
     }
 
-    public void colorChoosed(Color color) {
-        uiObservableItem.notifyColor(color);
+    public void colorChosen(Color color) {
+        client.ctsUpdateColor(color);
     }
 
-    public void choosedObjective(int i) {
-        uiObservableItem.notifyObjectiveCardChoice(i);
+    public void objectiveChosen(int i) {
+        client.ctsUpdateObjectiveCardChoice(i);
     }
 
     public void flippingCard(int index) {
         indexOfFlippedHandCard = index;
-        uiObservableItem.notifyFlipCard(index);
+        client.ctsUpdateFlipCard(index);
     }
 
     public void playingCard(int selectedCardIndex, int x, int y, String corner, int layoutX, int layoutY) {
@@ -646,7 +718,7 @@ public class GraphicalUI extends Application implements UI {
         layoutXOfCardClicked = layoutX;
         layoutYOfCardClicked = layoutY;
 
-        uiObservableItem.notifyPlayCard(selectedCardIndex, x, y);
+        client.ctsUpdatePlayCard(selectedCardIndex, x, y);
     }
 
     public void drawingCard(DrawCardEvent drawCardEvent) {
@@ -654,14 +726,14 @@ public class GraphicalUI extends Application implements UI {
             this.drawCardEvent = drawCardEvent;
         });
 
-        uiObservableItem.notifyDrawCard(drawCardEvent);
+        client.ctsUpdateDrawCard(drawCardEvent);
     }
 
     public void sendMessage(String receiver, String text) {
-        uiObservableItem.notifySendMessage(receiver,text);
+        client.ctsUpdateSendMessage(receiver,text);
     }
 
     public void leaveGame() {
-        uiObservableItem.notifyLeaveGame();
+        client.updateLeaveGame();
     }
 }

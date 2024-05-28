@@ -10,8 +10,6 @@ public interface Server extends Remote {
 
     void chooseNickname(Client client, String nickname) throws RemoteException;
 
-    void viewIsReady(Client client) throws RemoteException;
-
 
     void accessExistingGame(Client client, int gameID) throws RemoteException;
     void accessNewGame(Client client, int numOfPlayers) throws RemoteException;

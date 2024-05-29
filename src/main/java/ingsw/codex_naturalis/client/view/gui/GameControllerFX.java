@@ -221,12 +221,7 @@ public class GameControllerFX {
         this.viewGUI = viewGUI;
     }
 
-    public void endSetup(String handCard1, String handCard2, String handCard3,
-                         String commonObjective1, String commonObjective2,
-                         String topGoldCard, String topResourceCard, Symbol kingdomG, Symbol kingdomR,
-                         String revealedResourceCard1, String revealedResourceCard2,
-                         String revealedGoldCard1, String revealedGoldCard2,
-                         Color myColor, String firstPlayer,
+    public void endSetup(Color myColor, String firstPlayer,
                          int maxNumOfPlayers, String mynickname, List<String> otherNicknames, List<ImmPlayableCard> initialCards, List<Color> colors, ImmGame game) {
 
         this.game = game;
@@ -388,22 +383,23 @@ public class GameControllerFX {
         myInitialCard.setLayoutY(9999);
 
         String myinitalcard;
-        String hand1 = "/CardsImages/HandCards/" + handCard1 + ".png";
-        String hand2 = "/CardsImages/HandCards/" + handCard2 + ".png";
-        String hand3 = "/CardsImages/HandCards/" + handCard3 + ".png";
+        String hand1 = "/CardsImages/HandCards/" + game.player().hand().get(0).cardID() + ".png";
+        String hand2 = "/CardsImages/HandCards/" + game.player().hand().get(1).cardID() + ".png";
+        String hand3 = "/CardsImages/HandCards/" + game.player().hand().get(2).cardID() + ".png";
         //String rossa = "/pedine/pedina_rossa.png";
         //String blu = "/pedine/pedina_blu.png";
         //String gialla = "/pedine/pedina_gialla.png";
         //String verde = "/pedine/pedina_verde.png";
         String secretObjective = "/CardsImages/Objective/" + game.player().playerArea().objectiveCard().cardID() + ".png";
-        String commonObj1 = "/CardsImages/Objective/" + commonObjective1 + ".png";
-        String commonObj2 = "/CardsImages/Objective/" + commonObjective2 + ".png";
+        String commonObj1 = "/CardsImages/Objective/" + game.commonObjectiveCards().getFirst().cardID() + ".png";
+        String commonObj2 = "/CardsImages/Objective/" + game.commonObjectiveCards().getFirst().cardID() + ".png";
         String topRCard = null;
         String topGCard = null;
-        String revealedRC1 = "/CardsImages/HandCards/" + revealedResourceCard1 + ".png";
-        String revealedRC2 = "/CardsImages/HandCards/" + revealedResourceCard2 + ".png";
-        String revealedGC1 = "/CardsImages/HandCards/" + revealedGoldCard1 + ".png";
-        String revealedGC2 = "/CardsImages/HandCards/" + revealedGoldCard2 + ".png";
+
+        String revealedRC1 = "/CardsImages/HandCards/" + game.revealedResourceCards().get(0).cardID() + ".png";
+        String revealedRC2 = "/CardsImages/HandCards/" + game.revealedResourceCards().get(1).cardID() + ".png";
+        String revealedGC1 = "/CardsImages/HandCards/" + game.revealedGoldCards().get(0).cardID() + ".png";
+        String revealedGC2 = "/CardsImages/HandCards/" + game.revealedGoldCards().get(1).cardID() + ".png";
         String myColorChosen = null;
 
         if(game.player().playerArea().area().get(List.of(0, 0)).showingFront()){
@@ -412,14 +408,14 @@ public class GameControllerFX {
             myinitalcard = "/CardsImages/Initial/backs/" + game.player().playerArea().area().get(List.of(0, 0)).cardID() + ".png";
         }
 
-        switch (kingdomG){
+        switch (game.topGoldCard().kingdom()){
             case Symbol.ANIMAL -> topGCard = "/CardsImages/HandCards/GbackANIMAL.png";
             case Symbol.FUNGI -> topGCard = "/CardsImages/HandCards/GbackFUNGI.png";
             case Symbol.PLANT -> topGCard = "/CardsImages/HandCards/GbackPLANT.png";
             case Symbol.INSECT -> topGCard = "/CardsImages/HandCards/GbackINSECT.png";
         }
 
-        switch (kingdomR){
+        switch (game.topResourceCard().kingdom()){
             case Symbol.ANIMAL -> topRCard = "/CardsImages/HandCards/RbackANIMAL.png";
             case Symbol.FUNGI -> topRCard = "/CardsImages/HandCards/RbackFUNGI.png";
             case Symbol.PLANT -> topRCard = "/CardsImages/HandCards/RbackPLANT.png";

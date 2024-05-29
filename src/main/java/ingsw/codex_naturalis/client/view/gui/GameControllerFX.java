@@ -221,8 +221,7 @@ public class GameControllerFX {
         this.viewGUI = viewGUI;
     }
 
-    public void endSetup(Color myColor, String firstPlayer,
-                         int maxNumOfPlayers, String mynickname, List<String> otherNicknames, List<ImmPlayableCard> initialCards, List<Color> colors, ImmGame game) {
+    public void endSetup(String mynickname, List<String> otherNicknames, List<ImmPlayableCard> initialCards, List<Color> colors, ImmGame game) {
 
         this.game = game;
 
@@ -258,11 +257,11 @@ public class GameControllerFX {
         colors.add(index,game.player().color());
 
         posizionaPedine(colors,0,anchorPanesOnBoard.get(0));
-        colors.remove(myColor);
+        colors.remove(game.player().color());
         //////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////
 
-        this.myColor = myColor;
+        this.myColor = game.player().color();
 
         nickname = mynickname;
         myNickText.setText(mynickname);
@@ -291,7 +290,7 @@ public class GameControllerFX {
         streamOtherPlayerCard(game.otherPlayers().getFirst().hand().get(1).cardID(),user1HandCard2);
         streamOtherPlayerCard(game.otherPlayers().getFirst().hand().getLast().cardID(),user1HandCard3);
 
-        if(maxNumOfPlayers==2){
+        if(game.playerOrderNicknames().size() == 2){
             user2PlayerArea.setVisible(false);
             playerArea2.setVisible(false);
             username2.setVisible(false);
@@ -299,7 +298,7 @@ public class GameControllerFX {
             playerArea3.setVisible(false);
             username3.setVisible(false);
         }else{
-            switch (maxNumOfPlayers) {
+            switch (game.playerOrderNicknames().size()) {
                 case 3 -> {
                     user2PlayerArea.setPrefWidth(Region.USE_COMPUTED_SIZE);
                     user2PlayerArea.setPrefHeight(Region.USE_COMPUTED_SIZE);
@@ -422,7 +421,7 @@ public class GameControllerFX {
             case Symbol.INSECT -> topRCard = "/CardsImages/HandCards/RbackINSECT.png";
         }
 
-        switch (myColor){
+        switch (game.player().color()){
             case Color.BLUE -> myColorChosen = "/pedine/pedina_blu.png";
             case Color.RED -> myColorChosen = "/pedine/pedina_rossa.png";
             case Color.GREEN -> myColorChosen = "/pedine/pedina_verde.png";
@@ -499,7 +498,7 @@ public class GameControllerFX {
         gameUpdates.getChildren().add(testo);
         testo.wrappingWidthProperty().bind(gameUpdates.maxWidthProperty());
         testo.wrappingWidthProperty().bind(gameUpdates.maxHeightProperty());*/
-        updateBoxText.setText("The game setup ended!\n" + firstPlayer + "'s turn");
+        updateBoxText.setText("The game setup ended!\n" + game.playerOrderNicknames().getFirst() + "'s turn");
 
         Pane pane = createPaneCard(9999,9999);
         //pane.setStyle("-fx-background-color: lightblue;");
@@ -507,7 +506,7 @@ public class GameControllerFX {
 
         String pedinanera = "/pedine/pedina_nera.png";
         try(InputStream neroStream = getClass().getResourceAsStream(pedinanera);){
-            if(mynickname.equals(firstPlayer)){
+            if(mynickname.equals(game.playerOrderNicknames().getFirst())){
                 //posiziono la pedina nera sul mio
                 ImageView blackPawn = new ImageView(new Image(neroStream));
                 blackPawn.setFitHeight(33);
@@ -522,7 +521,7 @@ public class GameControllerFX {
                 blackPawn.setFitWidth(33);
                 blackPawn.setLayoutX(9999 + 37);
                 blackPawn.setLayoutY(9999 - 20 - 5);
-                switch (otherNicknames.indexOf(firstPlayer)) {
+                switch (otherNicknames.indexOf(game.playerOrderNicknames().getFirst())) {
                     case 0 -> {
                         user1PlayerArea.getChildren().add(blackPawn);
                     }

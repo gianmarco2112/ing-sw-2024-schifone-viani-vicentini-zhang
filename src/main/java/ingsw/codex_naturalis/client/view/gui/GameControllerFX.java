@@ -221,13 +221,13 @@ public class GameControllerFX {
         this.viewGUI = viewGUI;
     }
 
-    public void endSetup(String mynickname, List<String> otherNicknames, List<ImmPlayableCard> initialCards, List<Color> colors, ImmGame game) {
+    public void endSetup(List<ImmPlayableCard> initialCards, List<Color> colors, ImmGame game) {
 
         this.game = game;
 
         if (comboBoxMessage.getItems().isEmpty()) {
             comboBoxMessage.getItems().add("");
-            for (String p : otherNicknames) {
+            for (String p : game.playerOrderNicknames()) {
                 comboBoxMessage.getItems().add(p);
             }
             comboBoxMessage.getSelectionModel().selectFirst();
@@ -248,7 +248,7 @@ public class GameControllerFX {
         /*while(colors.size()!=game.playerOrderNicknames().size()){
             colors.add(colors.getLast());//inserisco un elemento a caso...
         }*/
-        int index = game.playerOrderNicknames().indexOf(mynickname);
+        int index = game.playerOrderNicknames().indexOf(game.player().nickname());
         /*for(int i = index; i>=0; i--){
             tmp=colors.get(i+1);
             colors.set(i+1,colors.get(i));
@@ -263,8 +263,8 @@ public class GameControllerFX {
 
         this.myColor = game.player().color();
 
-        nickname = mynickname;
-        myNickText.setText(mynickname);
+        nickname = game.player().nickname();
+        myNickText.setText(game.player().nickname());
 
         myPlayerAreaAnchorPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
         myPlayerAreaAnchorPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
@@ -277,7 +277,7 @@ public class GameControllerFX {
         user1Initialcard.setLayoutX(9999);
         user1Initialcard.setLayoutY(9999);
 
-        username1.setText(otherNicknames.getFirst());
+        username1.setText(game.playerOrderNicknames().getFirst());
 
         String u1InitialCard;
         if(initialCards.getFirst().showingFront()){
@@ -321,7 +321,7 @@ public class GameControllerFX {
                     u2Pedina.setId("u2Pedina");
                     user2PlayerArea.getChildren().add(u2Pedina);
 
-                    username2.setText(otherNicknames.getLast());
+                    username2.setText(game.playerOrderNicknames().getLast());
 
                     streamOtherPlayerCard(game.otherPlayers().getLast().hand().getFirst().cardID(),user2HandCard1);
                     streamOtherPlayerCard(game.otherPlayers().getLast().hand().get(1).cardID(),user2HandCard2);
@@ -339,10 +339,10 @@ public class GameControllerFX {
 
                     user2Initialcard.setLayoutX(9999);
                     user2Initialcard.setLayoutY(9999);
-                    username2.setText(otherNicknames.get(1));
+                    username2.setText(game.playerOrderNicknames().get(1));
                     user3Initialcard.setLayoutX(9999);
                     user3Initialcard.setLayoutY(9999);
-                    username3.setText(otherNicknames.getLast());
+                    username3.setText(game.playerOrderNicknames().getLast());
                     streamInitialCard(initialCards.get(1).cardID(), user2Initialcard, initialCards.get(1).showingFront());
                     streamInitialCard(initialCards.getLast().cardID(), user3Initialcard, initialCards.getLast().showingFront());
 
@@ -506,7 +506,7 @@ public class GameControllerFX {
 
         String pedinanera = "/pedine/pedina_nera.png";
         try(InputStream neroStream = getClass().getResourceAsStream(pedinanera);){
-            if(mynickname.equals(game.playerOrderNicknames().getFirst())){
+            if(game.player().nickname().equals(game.playerOrderNicknames().getFirst())){
                 //posiziono la pedina nera sul mio
                 ImageView blackPawn = new ImageView(new Image(neroStream));
                 blackPawn.setFitHeight(33);
@@ -521,7 +521,7 @@ public class GameControllerFX {
                 blackPawn.setFitWidth(33);
                 blackPawn.setLayoutX(9999 + 37);
                 blackPawn.setLayoutY(9999 - 20 - 5);
-                switch (otherNicknames.indexOf(game.playerOrderNicknames().getFirst())) {
+                switch (game.playerOrderNicknames().indexOf(game.playerOrderNicknames().getFirst())) {
                     case 0 -> {
                         user1PlayerArea.getChildren().add(blackPawn);
                     }

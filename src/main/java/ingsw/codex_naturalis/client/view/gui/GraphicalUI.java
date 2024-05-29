@@ -429,7 +429,7 @@ public class GraphicalUI extends Application implements UI {
                     if(rejoined){
                         gameControllerFX.rejoined(this.game);
                     }else{
-                        gameControllerFX.endSetup(initialCards, colors, game);
+                        gameControllerFX.endSetup(game);
                     }
                     break;
                 case "EndGame":

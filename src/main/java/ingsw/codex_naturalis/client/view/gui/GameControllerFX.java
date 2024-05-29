@@ -5,6 +5,7 @@ import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.immutableModel.*;
+import ingsw.codex_naturalis.server.model.player.Player;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -221,7 +222,15 @@ public class GameControllerFX {
         this.viewGUI = viewGUI;
     }
 
-    public void endSetup(List<ImmPlayableCard> initialCards, List<Color> colors, ImmGame game) {
+    public void endSetup(ImmGame game) {
+
+        List<ImmPlayableCard> initialCards = new ArrayList<>();
+        List<Color> colors = new ArrayList<>();
+
+        for(int i = 0; i<game.playerOrderNicknames().size() - 1 ; i++){
+            initialCards.add(game.otherPlayers().get(i).playerArea().area().get(List.of(0,0)));
+            colors.add(game.otherPlayers().get(i).color());
+        }
 
         this.game = game;
 

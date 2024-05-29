@@ -429,9 +429,7 @@ public class GraphicalUI extends Application implements UI {
                     if(rejoined){
                         gameControllerFX.rejoined(this.game);
                     }else{
-                        gameControllerFX.endSetup(initialCardPlayedFront,
-                                myObjectiveCard.cardID(),
-                                hand.get(0).cardID(),hand.get(1).cardID(),hand.get(2).cardID(),
+                        gameControllerFX.endSetup(hand.get(0).cardID(),hand.get(1).cardID(),hand.get(2).cardID(),
                                 commonObjectiveCard.get(0).cardID(),commonObjectiveCard.get(1).cardID(),
                                 topGoldCard.cardID(),topResourceCard.cardID(), topGoldCard.kingdom(), topResourceCard.kingdom(),
                                 revealedResourceCards.get(0).cardID(),revealedResourceCards.get(1).cardID(),

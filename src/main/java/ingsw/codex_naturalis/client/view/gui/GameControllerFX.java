@@ -221,8 +221,7 @@ public class GameControllerFX {
         this.viewGUI = viewGUI;
     }
 
-    public void endSetup(Boolean showingFront, String myObjectiveCard,
-                         String handCard1, String handCard2, String handCard3,
+    public void endSetup(String handCard1, String handCard2, String handCard3,
                          String commonObjective1, String commonObjective2,
                          String topGoldCard, String topResourceCard, Symbol kingdomG, Symbol kingdomR,
                          String revealedResourceCard1, String revealedResourceCard2,
@@ -396,7 +395,7 @@ public class GameControllerFX {
         //String blu = "/pedine/pedina_blu.png";
         //String gialla = "/pedine/pedina_gialla.png";
         //String verde = "/pedine/pedina_verde.png";
-        String secretObjective = "/CardsImages/Objective/" + myObjectiveCard + ".png";
+        String secretObjective = "/CardsImages/Objective/" + game.player().playerArea().objectiveCard().cardID() + ".png";
         String commonObj1 = "/CardsImages/Objective/" + commonObjective1 + ".png";
         String commonObj2 = "/CardsImages/Objective/" + commonObjective2 + ".png";
         String topRCard = null;
@@ -407,7 +406,7 @@ public class GameControllerFX {
         String revealedGC2 = "/CardsImages/HandCards/" + revealedGoldCard2 + ".png";
         String myColorChosen = null;
 
-        if(showingFront){
+        if(game.player().playerArea().area().get(List.of(0, 0)).showingFront()){
             myinitalcard = "/CardsImages/Initial/fronts/" + game.player().playerArea().area().get(List.of(0, 0)).cardID() + ".png";
         } else {
             myinitalcard = "/CardsImages/Initial/backs/" + game.player().playerArea().area().get(List.of(0, 0)).cardID() + ".png";

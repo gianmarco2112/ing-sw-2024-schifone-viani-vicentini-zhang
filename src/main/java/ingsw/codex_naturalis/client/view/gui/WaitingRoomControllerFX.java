@@ -90,11 +90,13 @@ public class WaitingRoomControllerFX implements Initializable {
     }
 
     public void setConfirmView() {
-        btnReady.setVisible(true);
-        pressEnter.setVisible(true);
+        Platform.runLater(()->{
+            btnReady.setVisible(true);
+            pressEnter.setVisible(true);
 
-        waitingForPlayers.setVisible(false);
-        spinner.setVisible(false);
+            waitingForPlayers.setVisible(false);
+            spinner.setVisible(false);
+        });
     }
 
     @Override

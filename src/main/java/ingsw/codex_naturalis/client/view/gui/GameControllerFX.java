@@ -5,6 +5,7 @@ import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.immutableModel.*;
+import ingsw.codex_naturalis.server.model.player.Player;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -221,20 +222,21 @@ public class GameControllerFX {
         this.viewGUI = viewGUI;
     }
 
-    public void endSetup(String initialCard, Boolean showingFront, String myObjectiveCard,
-                         String handCard1, String handCard2, String handCard3,
-                         String commonObjective1, String commonObjective2,
-                         String topGoldCard, String topResourceCard, Symbol kingdomG, Symbol kingdomR,
-                         String revealedResourceCard1, String revealedResourceCard2,
-                         String revealedGoldCard1, String revealedGoldCard2,
-                         Color myColor, String firstPlayer,
-                         int maxNumOfPlayers, String mynickname, List<String> otherNicknames, List<ImmPlayableCard> initialCards, List<Color> colors, ImmGame game) {
+    public void endSetup(ImmGame game) {
+
+        List<ImmPlayableCard> initialCards = new ArrayList<>();
+        List<Color> colors = new ArrayList<>();
+
+        for(int i = 0; i<game.playerOrderNicknames().size() - 1 ; i++){
+            initialCards.add(game.otherPlayers().get(i).playerArea().area().get(List.of(0,0)));
+            colors.add(game.otherPlayers().get(i).color());
+        }
 
         this.game = game;
 
         if (comboBoxMessage.getItems().isEmpty()) {
             comboBoxMessage.getItems().add("");
-            for (String p : otherNicknames) {
+            for (String p : game.playerOrderNicknames()) {
                 comboBoxMessage.getItems().add(p);
             }
             comboBoxMessage.getSelectionModel().selectFirst();
@@ -255,7 +257,7 @@ public class GameControllerFX {
         /*while(colors.size()!=game.playerOrderNicknames().size()){
             colors.add(colors.getLast());//inserisco un elemento a caso...
         }*/
-        int index = game.playerOrderNicknames().indexOf(mynickname);
+        int index = game.playerOrderNicknames().indexOf(game.player().nickname());
         /*for(int i = index; i>=0; i--){
             tmp=colors.get(i+1);
             colors.set(i+1,colors.get(i));
@@ -264,14 +266,14 @@ public class GameControllerFX {
         colors.add(index,game.player().color());
 
         posizionaPedine(colors,0,anchorPanesOnBoard.get(0));
-        colors.remove(myColor);
+        colors.remove(game.player().color());
         //////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////
 
-        this.myColor = myColor;
+        this.myColor = game.player().color();
 
-        nickname = mynickname;
-        myNickText.setText(mynickname);
+        nickname = game.player().nickname();
+        myNickText.setText(game.player().nickname());
 
         myPlayerAreaAnchorPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
         myPlayerAreaAnchorPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
@@ -284,7 +286,7 @@ public class GameControllerFX {
         user1Initialcard.setLayoutX(9999);
         user1Initialcard.setLayoutY(9999);
 
-        username1.setText(otherNicknames.getFirst());
+        username1.setText(game.playerOrderNicknames().getFirst());
 
         String u1InitialCard;
         if(initialCards.getFirst().showingFront()){
@@ -297,7 +299,7 @@ public class GameControllerFX {
         streamOtherPlayerCard(game.otherPlayers().getFirst().hand().get(1).cardID(),user1HandCard2);
         streamOtherPlayerCard(game.otherPlayers().getFirst().hand().getLast().cardID(),user1HandCard3);
 
-        if(maxNumOfPlayers==2){
+        if(game.playerOrderNicknames().size() == 2){
             user2PlayerArea.setVisible(false);
             playerArea2.setVisible(false);
             username2.setVisible(false);
@@ -305,7 +307,7 @@ public class GameControllerFX {
             playerArea3.setVisible(false);
             username3.setVisible(false);
         }else{
-            switch (maxNumOfPlayers) {
+            switch (game.playerOrderNicknames().size()) {
                 case 3 -> {
                     user2PlayerArea.setPrefWidth(Region.USE_COMPUTED_SIZE);
                     user2PlayerArea.setPrefHeight(Region.USE_COMPUTED_SIZE);
@@ -328,7 +330,7 @@ public class GameControllerFX {
                     u2Pedina.setId("u2Pedina");
                     user2PlayerArea.getChildren().add(u2Pedina);
 
-                    username2.setText(otherNicknames.getLast());
+                    username2.setText(game.playerOrderNicknames().getLast());
 
                     streamOtherPlayerCard(game.otherPlayers().getLast().hand().getFirst().cardID(),user2HandCard1);
                     streamOtherPlayerCard(game.otherPlayers().getLast().hand().get(1).cardID(),user2HandCard2);
@@ -346,10 +348,10 @@ public class GameControllerFX {
 
                     user2Initialcard.setLayoutX(9999);
                     user2Initialcard.setLayoutY(9999);
-                    username2.setText(otherNicknames.get(1));
+                    username2.setText(game.playerOrderNicknames().get(1));
                     user3Initialcard.setLayoutX(9999);
                     user3Initialcard.setLayoutY(9999);
-                    username3.setText(otherNicknames.getLast());
+                    username3.setText(game.playerOrderNicknames().getLast());
                     streamInitialCard(initialCards.get(1).cardID(), user2Initialcard, initialCards.get(1).showingFront());
                     streamInitialCard(initialCards.getLast().cardID(), user3Initialcard, initialCards.getLast().showingFront());
 
@@ -389,45 +391,46 @@ public class GameControllerFX {
         myInitialCard.setLayoutY(9999);
 
         String myinitalcard;
-        String hand1 = "/CardsImages/HandCards/" + handCard1 + ".png";
-        String hand2 = "/CardsImages/HandCards/" + handCard2 + ".png";
-        String hand3 = "/CardsImages/HandCards/" + handCard3 + ".png";
+        String hand1 = "/CardsImages/HandCards/" + game.player().hand().get(0).cardID() + ".png";
+        String hand2 = "/CardsImages/HandCards/" + game.player().hand().get(1).cardID() + ".png";
+        String hand3 = "/CardsImages/HandCards/" + game.player().hand().get(2).cardID() + ".png";
         //String rossa = "/pedine/pedina_rossa.png";
         //String blu = "/pedine/pedina_blu.png";
         //String gialla = "/pedine/pedina_gialla.png";
         //String verde = "/pedine/pedina_verde.png";
-        String secretObjective = "/CardsImages/Objective/" + myObjectiveCard + ".png";
-        String commonObj1 = "/CardsImages/Objective/" + commonObjective1 + ".png";
-        String commonObj2 = "/CardsImages/Objective/" + commonObjective2 + ".png";
+        String secretObjective = "/CardsImages/Objective/" + game.player().playerArea().objectiveCard().cardID() + ".png";
+        String commonObj1 = "/CardsImages/Objective/" + game.commonObjectiveCards().getFirst().cardID() + ".png";
+        String commonObj2 = "/CardsImages/Objective/" + game.commonObjectiveCards().getFirst().cardID() + ".png";
         String topRCard = null;
         String topGCard = null;
-        String revealedRC1 = "/CardsImages/HandCards/" + revealedResourceCard1 + ".png";
-        String revealedRC2 = "/CardsImages/HandCards/" + revealedResourceCard2 + ".png";
-        String revealedGC1 = "/CardsImages/HandCards/" + revealedGoldCard1 + ".png";
-        String revealedGC2 = "/CardsImages/HandCards/" + revealedGoldCard2 + ".png";
+
+        String revealedRC1 = "/CardsImages/HandCards/" + game.revealedResourceCards().get(0).cardID() + ".png";
+        String revealedRC2 = "/CardsImages/HandCards/" + game.revealedResourceCards().get(1).cardID() + ".png";
+        String revealedGC1 = "/CardsImages/HandCards/" + game.revealedGoldCards().get(0).cardID() + ".png";
+        String revealedGC2 = "/CardsImages/HandCards/" + game.revealedGoldCards().get(1).cardID() + ".png";
         String myColorChosen = null;
 
-        if(showingFront){
-            myinitalcard = "/CardsImages/Initial/fronts/" + initialCard + ".png";
+        if(game.player().playerArea().area().get(List.of(0, 0)).showingFront()){
+            myinitalcard = "/CardsImages/Initial/fronts/" + game.player().playerArea().area().get(List.of(0, 0)).cardID() + ".png";
         } else {
-            myinitalcard = "/CardsImages/Initial/backs/" + initialCard + ".png";
+            myinitalcard = "/CardsImages/Initial/backs/" + game.player().playerArea().area().get(List.of(0, 0)).cardID() + ".png";
         }
 
-        switch (kingdomG){
+        switch (game.topGoldCard().kingdom()){
             case Symbol.ANIMAL -> topGCard = "/CardsImages/HandCards/GbackANIMAL.png";
             case Symbol.FUNGI -> topGCard = "/CardsImages/HandCards/GbackFUNGI.png";
             case Symbol.PLANT -> topGCard = "/CardsImages/HandCards/GbackPLANT.png";
             case Symbol.INSECT -> topGCard = "/CardsImages/HandCards/GbackINSECT.png";
         }
 
-        switch (kingdomR){
+        switch (game.topResourceCard().kingdom()){
             case Symbol.ANIMAL -> topRCard = "/CardsImages/HandCards/RbackANIMAL.png";
             case Symbol.FUNGI -> topRCard = "/CardsImages/HandCards/RbackFUNGI.png";
             case Symbol.PLANT -> topRCard = "/CardsImages/HandCards/RbackPLANT.png";
             case Symbol.INSECT -> topRCard = "/CardsImages/HandCards/RbackINSECT.png";
         }
 
-        switch (myColor){
+        switch (game.player().color()){
             case Color.BLUE -> myColorChosen = "/pedine/pedina_blu.png";
             case Color.RED -> myColorChosen = "/pedine/pedina_rossa.png";
             case Color.GREEN -> myColorChosen = "/pedine/pedina_verde.png";
@@ -504,7 +507,7 @@ public class GameControllerFX {
         gameUpdates.getChildren().add(testo);
         testo.wrappingWidthProperty().bind(gameUpdates.maxWidthProperty());
         testo.wrappingWidthProperty().bind(gameUpdates.maxHeightProperty());*/
-        updateBoxText.setText("The game setup ended!\n" + firstPlayer + "'s turn");
+        updateBoxText.setText("The game setup ended!\n" + game.playerOrderNicknames().getFirst() + "'s turn");
 
         Pane pane = createPaneCard(9999,9999);
         //pane.setStyle("-fx-background-color: lightblue;");
@@ -512,7 +515,7 @@ public class GameControllerFX {
 
         String pedinanera = "/pedine/pedina_nera.png";
         try(InputStream neroStream = getClass().getResourceAsStream(pedinanera);){
-            if(mynickname.equals(firstPlayer)){
+            if(game.player().nickname().equals(game.playerOrderNicknames().getFirst())){
                 //posiziono la pedina nera sul mio
                 ImageView blackPawn = new ImageView(new Image(neroStream));
                 blackPawn.setFitHeight(33);
@@ -527,7 +530,7 @@ public class GameControllerFX {
                 blackPawn.setFitWidth(33);
                 blackPawn.setLayoutX(9999 + 37);
                 blackPawn.setLayoutY(9999 - 20 - 5);
-                switch (otherNicknames.indexOf(firstPlayer)) {
+                switch (game.playerOrderNicknames().indexOf(game.playerOrderNicknames().getFirst())) {
                     case 0 -> {
                         user1PlayerArea.getChildren().add(blackPawn);
                     }
@@ -1446,9 +1449,21 @@ public class GameControllerFX {
         });
     }
 
-    public void gameEnded(String winner, List<String> players, List<Integer> points, List<ImmObjectiveCard> secretObjectiveCards) {
+    public void gameEnded(List<ImmPlayer> players) {
         Platform.runLater(()->{
+            HashMap<String,List<Integer>> pointsMap = new HashMap<>();
+            List<String> playersNick = new ArrayList<>();
+            List<Integer> pointsAndExtraPoints = new ArrayList<>();
+            for(ImmPlayer p: players){
+                pointsAndExtraPoints.add(p.playerArea().points());
+                pointsAndExtraPoints.add(p.playerArea().extraPoints());
+                pointsMap.put(p.nickname(),pointsAndExtraPoints);
+            }
+            String winner = "";
+            //winner = computeWinner(pointsMap);
             updateBoxText.setText("Game ended!\nThe winner is " + winner + "!\nPress LEAVE");
+
+
             //mostro al posto delle carte in mano agli altri giocatori l'obiettivo segreto
             int index=1;
             Color color = null;
@@ -1462,10 +1477,10 @@ public class GameControllerFX {
                                     break;
                                 }
                             }
-                            posizionaPedine(List.of(color),points.get(i),anchorPanesOnBoard.get(points.get(i)));
+                            posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
-                            streamObjectiveEndGame(secretObjectiveCards.get(i).cardID(),user1HandCard1);
+                            streamObjectiveEndGame(players.get(i).playerArea().objectiveCard().cardID(),user1HandCard1);
                         }
                         case 2 -> {
                             for(ImmOtherPlayer p: game.otherPlayers()){
@@ -1474,10 +1489,10 @@ public class GameControllerFX {
                                     break;
                                 }
                             }
-                            posizionaPedine(List.of(color),points.get(i),anchorPanesOnBoard.get(points.get(i)));
+                            posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
-                            streamObjectiveEndGame(secretObjectiveCards.get(i).cardID(),user2HandCard1);
+                            streamObjectiveEndGame(players.get(i).playerArea().objectiveCard().cardID(),user2HandCard1);
                         }
                         case 3 -> {
                             for(ImmOtherPlayer p: game.otherPlayers()){
@@ -1486,16 +1501,20 @@ public class GameControllerFX {
                                     break;
                                 }
                             }
-                            posizionaPedine(List.of(color),points.get(i),anchorPanesOnBoard.get(points.get(i)));
+                            posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
-                            streamObjectiveEndGame(secretObjectiveCards.get(i).cardID(),user3HandCard1);
+                            streamObjectiveEndGame(players.get(i).playerArea().objectiveCard().cardID(),user3HandCard1);
                         }
                     }
                     index++;
                 }
             }
         });
+    }
+
+    private String computeWinner(HashMap<String, List<Integer>> pointsMap) {
+        return null;
     }
 
     private void streamObjectiveEndGame(String id, ImageView userHandCard1) {

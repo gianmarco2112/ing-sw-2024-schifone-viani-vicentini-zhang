@@ -400,7 +400,7 @@ public class GameControllerFX {
         //String verde = "/pedine/pedina_verde.png";
         String secretObjective = "/CardsImages/Objective/" + game.player().playerArea().objectiveCard().cardID() + ".png";
         String commonObj1 = "/CardsImages/Objective/" + game.commonObjectiveCards().getFirst().cardID() + ".png";
-        String commonObj2 = "/CardsImages/Objective/" + game.commonObjectiveCards().getFirst().cardID() + ".png";
+        String commonObj2 = "/CardsImages/Objective/" + game.commonObjectiveCards().getLast().cardID() + ".png";
         String topRCard = null;
         String topGCard = null;
 

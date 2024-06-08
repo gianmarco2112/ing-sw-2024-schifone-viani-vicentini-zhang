@@ -4,7 +4,7 @@ Progetto Ingegneria del Software 2024
 ---
 
 ## Requirements met
-We have `implemented`, in addiction to the `Game Specific` and `Game Agnostic` requirements,  the following requirements:
+We have implemented, in addiction to the `game-specific` and `game-agnostic` requirements,  the following requirements:
 - Complete rules
 - TUI
 - GUI
@@ -61,25 +61,26 @@ java -jar server.jar
     ```
 
 2. Start the client:
-   - **RMI client:**
+   - **RMI Client:**
      ```sh
      java -jar RMI localhost
      ```
-   - **Socket client:**
+   - **Socket Client:**
      ```sh
      java -jar socket localhost
      ```
 
 ##### On Other Operating Systems
 
-1. **RMI Client:**
-   ```sh
-   java -jar RMI localhost
-   ```
-2. **Socket Client:**
-   ```sh
-   java -jar socket localhost
-   ```
+- **RMI Client:**
+     ```sh
+     java -jar RMI localhost
+     ```
+
+- **Socket Client:**
+  ```sh
+  java -jar socket localhost
+  ```
 
 
 
@@ -134,11 +135,11 @@ You will need the server's IP address. Use the appropriate command for your oper
 
 2. Start the client:
 
-   - **RMI client:**
+   - **RMI Client:**
      ```sh
      java -jar RMI <server-ip-address>
      ```
-   - **Socket client:**
+   - **Socket Client:**
      ```sh
      java -jar socket <server-ip-address>
      ```

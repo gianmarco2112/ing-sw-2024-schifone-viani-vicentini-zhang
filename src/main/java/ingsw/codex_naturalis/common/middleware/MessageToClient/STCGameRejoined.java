@@ -2,19 +2,37 @@ package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+public class STCGameRejoined implements MessageToClient {
 
-public class STCGameRejoined implements MessageToClient{
+    private String jsonImmGame;
+    private String nickname;
+
+    public STCGameRejoined() {
+    }
+
+    public STCGameRejoined(String jsonImmGame, String nickname) {
+        this.jsonImmGame = jsonImmGame;
+        this.nickname = nickname;
+    }
+
     @Override
     public void run(ServerStub serverStub) {
-        try {
-            BufferedReader reader = serverStub.getReader();
-            String jsonImmGame = reader.readLine();
-            String nickname = reader.readLine();
-            serverStub.getClient().gameRejoined(jsonImmGame, nickname);
-        } catch (IOException e) {
-            System.err.println("Error while processing json");
-        }
+        serverStub.getClient().gameRejoined(jsonImmGame, nickname);
+    }
+
+    public String getJsonImmGame() {
+        return jsonImmGame;
+    }
+
+    public void setJsonImmGame(String jsonImmGame) {
+        this.jsonImmGame = jsonImmGame;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

@@ -2,20 +2,37 @@ package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
 public class STCSetupUpdated implements MessageToClient {
+
+    private String jsonImmGame;
+    private String jsonGameEvent;
+
+    public STCSetupUpdated() {
+    }
+
+    public STCSetupUpdated(String jsonImmGame, String jsonGameEvent) {
+        this.jsonImmGame = jsonImmGame;
+        this.jsonGameEvent = jsonGameEvent;
+    }
 
     @Override
     public void run(ServerStub serverStub) {
-        try {
-            BufferedReader reader = serverStub.getReader();
-            String jsonImmGame = reader.readLine();
-            String jsonGameEvent = reader.readLine();
-            serverStub.getClient().setupUpdated(jsonImmGame, jsonGameEvent);
-        } catch (IOException e) {
-            System.err.println("Error while receiving from server\n"+e.getMessage());
-        }
+        serverStub.getClient().setupUpdated(jsonImmGame, jsonGameEvent);
+    }
+
+    public String getJsonImmGame() {
+        return jsonImmGame;
+    }
+
+    public void setJsonImmGame(String jsonImmGame) {
+        this.jsonImmGame = jsonImmGame;
+    }
+
+    public String getJsonGameEvent() {
+        return jsonGameEvent;
+    }
+
+    public void setJsonGameEvent(String jsonGameEvent) {
+        this.jsonGameEvent = jsonGameEvent;
     }
 }

@@ -2,18 +2,27 @@ package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+public class STCTurnChanged implements MessageToClient {
 
-public class STCTurnChanged implements MessageToClient{
+    private String currentPlayer;
+
+    public STCTurnChanged() {
+    }
+
+    public STCTurnChanged(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
     @Override
     public void run(ServerStub serverStub) {
-        try {
-            BufferedReader reader = serverStub.getReader();
-            String currentPlayer = reader.readLine();
-            serverStub.getClient().turnChanged(currentPlayer);
-        } catch (IOException e) {
-            System.err.println("Error while processing json");
-        }
+        serverStub.getClient().turnChanged(currentPlayer);
+    }
+
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 }

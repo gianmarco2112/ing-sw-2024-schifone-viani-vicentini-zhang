@@ -9,15 +9,26 @@ import java.io.IOException;
 import static java.lang.Integer.parseInt;
 
 public class CTSChooseNickname implements MessageToServer{
+
+    private String nickname;
+
+    public CTSChooseNickname() {}
+
+    public CTSChooseNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
-        try {
-            BufferedReader reader = clientSkeleton.getReader();
-            String nickname = reader.readLine();
-            ServerImpl server = clientSkeleton.getServerImpl();
-            server.chooseNickname(clientSkeleton, nickname);
-        } catch (IOException e) {
-            System.err.println("Error while receiving from client\n"+e.getMessage());
-        }
+        ServerImpl server = clientSkeleton.getServerImpl();
+        server.chooseNickname(clientSkeleton, nickname);
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

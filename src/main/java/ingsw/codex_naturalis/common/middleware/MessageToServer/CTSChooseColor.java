@@ -7,14 +7,25 @@ import java.io.IOException;
 
 public class CTSChooseColor implements MessageToServer {
 
+    private String jsonColor;
+
+    public CTSChooseColor() {
+    }
+
+    public CTSChooseColor(String jsonColor) {
+        this.jsonColor = jsonColor;
+    }
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
-        try {
-            BufferedReader reader = clientSkeleton.getReader();
-            String jsonColor = reader.readLine();
-            clientSkeleton.getGameControllerImpl().chooseColor(clientSkeleton.getNickname(), jsonColor);
-        } catch (IOException e) {
-            System.err.println("Error while receiving from client\n"+e.getMessage());
-        }
+        clientSkeleton.getGameControllerImpl().chooseColor(clientSkeleton.getNickname(), jsonColor);
+    }
+
+    public String getJsonColor() {
+        return jsonColor;
+    }
+
+    public void setJsonColor(String jsonColor) {
+        this.jsonColor = jsonColor;
     }
 }

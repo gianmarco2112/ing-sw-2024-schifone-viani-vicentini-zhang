@@ -2,18 +2,27 @@ package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+public class STCPlayerIsReady implements MessageToClient {
 
-public class STCPlayerIsReady implements MessageToClient{
+    private String playerNickname;
+
+    public STCPlayerIsReady() {
+    }
+
+    public STCPlayerIsReady(String playerNickname) {
+        this.playerNickname = playerNickname;
+    }
+
     @Override
     public void run(ServerStub serverStub) {
-        try {
-            BufferedReader reader = serverStub.getReader();
-            String nickname = reader.readLine();
-            serverStub.getClient().playerIsReady(nickname);
-        } catch (IOException e) {
-            System.err.println("Error while receiving from server\n"+e.getMessage());
-        }
+        serverStub.getClient().playerIsReady(playerNickname);
+    }
+
+    public String getPlayerNickname() {
+        return playerNickname;
+    }
+
+    public void setPlayerNickname(String playerNickname) {
+        this.playerNickname = playerNickname;
     }
 }

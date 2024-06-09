@@ -9,15 +9,27 @@ import java.io.IOException;
 import static java.lang.Integer.parseInt;
 
 public class CTSAccessExistingGame implements MessageToServer {
+
+    private int gameID;
+
+    public CTSAccessExistingGame() {
+    }
+
+    public CTSAccessExistingGame(int gameID) {
+        this.gameID = gameID;
+    }
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
-        try {
-            BufferedReader reader = clientSkeleton.getReader();
-            int gameID = parseInt(reader.readLine());
-            ServerImpl server = clientSkeleton.getServerImpl();
-            server.accessExistingGame(clientSkeleton, gameID);
-        } catch (IOException e) {
-            System.err.println("Error while receiving from client\n"+e.getMessage());
-        }
+        ServerImpl server = clientSkeleton.getServerImpl();
+        server.accessExistingGame(clientSkeleton, gameID);
+    }
+
+    public int getGameID() {
+        return gameID;
+    }
+
+    public void setGameID(int gameID) {
+        this.gameID = gameID;
     }
 }

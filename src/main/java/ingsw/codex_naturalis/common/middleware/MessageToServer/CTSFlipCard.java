@@ -8,14 +8,26 @@ import java.io.IOException;
 import static java.lang.Integer.parseInt;
 
 public class CTSFlipCard implements MessageToServer {
+
+    private int index;
+
+    public CTSFlipCard() {
+    }
+
+    public CTSFlipCard(int index) {
+        this.index = index;
+    }
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
-        try {
-            BufferedReader reader = clientSkeleton.getReader();
-            int index = parseInt(reader.readLine());
-            clientSkeleton.getGameControllerImpl().flipCard(clientSkeleton.getNickname(), index);
-        } catch (IOException e) {
-            System.err.println("Error while receiving from client\n"+e.getMessage());
-        }
+        clientSkeleton.getGameControllerImpl().flipCard(clientSkeleton.getNickname(), index);
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

@@ -67,10 +67,9 @@ public class ServerStub implements Server, GameController {
     @Override
     public void chooseNickname(Client client, String nickname) throws RemoteException {
         try {
-            MessageToServer message = new CTSChooseNickname();
+            MessageToServer message = new CTSChooseNickname(nickname);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(nickname);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -80,10 +79,9 @@ public class ServerStub implements Server, GameController {
     @Override
     public void accessExistingGame(Client client, int gameID) throws RemoteException {
         try {
-            MessageToServer message = new CTSAccessExistingGame();
+            MessageToServer message = new CTSAccessExistingGame(gameID);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(gameID);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -93,10 +91,9 @@ public class ServerStub implements Server, GameController {
     @Override
     public void accessNewGame(Client client, int numOfPlayers) throws RemoteException {
         try {
-            MessageToServer message = new CTSAccessNewGame();
+            MessageToServer message = new CTSAccessNewGame(numOfPlayers);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(numOfPlayers);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -157,10 +154,9 @@ public class ServerStub implements Server, GameController {
     @Override
     public void updateInitialCard(String nickname, String jsonInitialCardEvent) throws RemoteException {
         try {
-            MessageToServer message = new CTSUpdateInitialCard();
+            MessageToServer message = new CTSUpdateInitialCard(jsonInitialCardEvent);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonInitialCardEvent);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -170,10 +166,9 @@ public class ServerStub implements Server, GameController {
     @Override
     public void chooseColor(String nickname, String jsonColor) throws RemoteException {
         try {
-            MessageToServer message = new CTSChooseColor();
+            MessageToServer message = new CTSChooseColor(jsonColor);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonColor);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -183,10 +178,9 @@ public class ServerStub implements Server, GameController {
     @Override
     public void chooseSecretObjectiveCard(String nickname, int index) throws RemoteException {
         try {
-            MessageToServer message = new CTSObjectiveCardChoiceUpdate();
+            MessageToServer message = new CTSObjectiveCardChoiceUpdate(index);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(index);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -197,10 +191,9 @@ public class ServerStub implements Server, GameController {
     @Override
     public void flipCard(String nickname, int index) throws RemoteException {
         try {
-            MessageToServer message = new CTSFlipCard();
+            MessageToServer message = new CTSFlipCard(index);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(index);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -210,12 +203,9 @@ public class ServerStub implements Server, GameController {
     @Override
     public void playCard(String nickname, int index, int x, int y) throws NotYourTurnException, RemoteException {
         try {
-            MessageToServer message = new CTSPlayCard();
+            MessageToServer message = new CTSPlayCard(index, x, y);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(index);
-            writer.println(x);
-            writer.println(y);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -225,10 +215,9 @@ public class ServerStub implements Server, GameController {
     @Override
     public void drawCard(String nickname, String jsonDrawCardEvent) throws NotYourTurnException, NotYourDrawTurnStatusException, RemoteException {
         try {
-            MessageToServer message = new CTSDrawCard();
+            MessageToServer message = new CTSDrawCard(jsonDrawCardEvent);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonDrawCardEvent);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -238,11 +227,9 @@ public class ServerStub implements Server, GameController {
     @Override
     public void sendMessage(String nickname, String receiver, String content) throws RemoteException {
         try {
-            MessageToServer message = new CTSSendMessage();
+            MessageToServer message = new CTSSendMessage(receiver, content);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(receiver);
-            writer.println(content);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");

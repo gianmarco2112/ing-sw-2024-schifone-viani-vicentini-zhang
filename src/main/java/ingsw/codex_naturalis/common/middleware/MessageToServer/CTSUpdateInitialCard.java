@@ -6,14 +6,25 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class CTSUpdateInitialCard implements MessageToServer {
+
+    private String jsonInitialCardEvent;
+
+    public CTSUpdateInitialCard() {}
+
+    public CTSUpdateInitialCard(String jsonInitialCardEvent) {
+        this.jsonInitialCardEvent = jsonInitialCardEvent;
+    }
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
-        try {
-            BufferedReader reader = clientSkeleton.getReader();
-            String jsonInitialCardEvent = reader.readLine();
-            clientSkeleton.getGameControllerImpl().updateInitialCard(clientSkeleton.getNickname(), jsonInitialCardEvent);;
-        } catch (IOException e) {
-            System.err.println("Error while receiving from client" + e.getMessage());
-        }
+        clientSkeleton.getGameControllerImpl().updateInitialCard(clientSkeleton.getNickname(), jsonInitialCardEvent);;
+    }
+
+    public String getJsonInitialCardEvent() {
+        return jsonInitialCardEvent;
+    }
+
+    public void setJsonInitialCardEvent(String jsonInitialCardEvent) {
+        this.jsonInitialCardEvent = jsonInitialCardEvent;
     }
 }

@@ -1,20 +1,28 @@
 package ingsw.codex_naturalis.common.middleware.MessageToServer;
 
-import ingsw.codex_naturalis.server.GameControllerImpl;
 import ingsw.codex_naturalis.server.ClientSkeleton;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
 public class CTSDrawCard implements MessageToServer {
+
+    private String jsonDrawCardUpdate;
+
+    public CTSDrawCard() {
+    }
+
+    public CTSDrawCard(String jsonDrawCardUpdate) {
+        this.jsonDrawCardUpdate = jsonDrawCardUpdate;
+    }
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
-        try {
-            BufferedReader reader = clientSkeleton.getReader();
-            String jsonDrawCardUpdate = reader.readLine();
-            clientSkeleton.getGameControllerImpl().drawCard(clientSkeleton.getNickname(), jsonDrawCardUpdate);
-        } catch (IOException e) {
-            System.err.println("Error while receiving from client" + e.getMessage());
-        }
+        clientSkeleton.getGameControllerImpl().drawCard(clientSkeleton.getNickname(), jsonDrawCardUpdate);
+    }
+
+    public String getJsonDrawCardUpdate() {
+        return jsonDrawCardUpdate;
+    }
+
+    public void setJsonDrawCardUpdate(String jsonDrawCardUpdate) {
+        this.jsonDrawCardUpdate = jsonDrawCardUpdate;
     }
 }

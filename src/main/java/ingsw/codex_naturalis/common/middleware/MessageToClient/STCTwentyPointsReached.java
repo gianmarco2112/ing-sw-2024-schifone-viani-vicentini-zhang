@@ -2,18 +2,27 @@ package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+public class STCTwentyPointsReached implements MessageToClient {
 
-public class STCTwentyPointsReached implements MessageToClient{
+    private String jsonImmGame;
+
+    public STCTwentyPointsReached() {
+    }
+
+    public STCTwentyPointsReached(String jsonImmGame) {
+        this.jsonImmGame = jsonImmGame;
+    }
+
     @Override
     public void run(ServerStub serverStub) {
-        try {
-            BufferedReader reader = serverStub.getReader();
-            String jsonImmGame = reader.readLine();
-            serverStub.getClient().twentyPointsReached(jsonImmGame);
-        } catch (IOException e) {
-            System.err.println("Error while processing json");
-        }
+        serverStub.getClient().twentyPointsReached(jsonImmGame);
+    }
+
+    public String getJsonImmGame() {
+        return jsonImmGame;
+    }
+
+    public void setJsonImmGame(String jsonImmGame) {
+        this.jsonImmGame = jsonImmGame;
     }
 }

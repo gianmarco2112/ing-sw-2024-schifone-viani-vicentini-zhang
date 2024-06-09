@@ -69,10 +69,9 @@ public class ClientSkeleton implements Client {
     public void setNickname(String nickname) throws RemoteException {
         this.nickname = nickname;
         try {
-            MessageToClient message = new STCNicknameChosen();
+            MessageToClient message = new STCNicknameChosen(nickname);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(nickname);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -81,10 +80,6 @@ public class ClientSkeleton implements Client {
 
     public ServerImpl getServerImpl(){
         return serverImpl;
-    }
-
-    public BufferedReader getReader() {
-        return reader;
     }
 
     public GameControllerImpl getGameControllerImpl() {
@@ -100,10 +95,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void updateGamesSpecs(String jsonGamesSpecs) throws RemoteException {
         try {
-            MessageToClient message = new STCGamesSpecsUpdated();
+            MessageToClient message = new STCGamesSpecsUpdated(jsonGamesSpecs);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonGamesSpecs);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -113,10 +107,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void reportException(String error) throws RemoteException {
         try {
-            MessageToClient message = new STCReportException();
+            MessageToClient message = new STCReportException(error);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(error);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -127,10 +120,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void gameJoined(int gameID) throws RemoteException {
         try {
-            MessageToClient message = new STCGameJoined();
+            MessageToClient message = new STCGameJoined(gameID);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(gameID);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -154,11 +146,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void setupUpdated(String jsonImmGame, String jsonGameEvent) {
         try {
-            MessageToClient message = new STCSetupUpdated();
+            MessageToClient message = new STCSetupUpdated(jsonImmGame, jsonGameEvent);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
-            writer.println(jsonGameEvent);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -168,11 +158,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void initialCardUpdated(String jsonImmGame, String jsonInitialCardEvent) {
         try {
-            MessageToClient message = new STCInitialCardUpdated();
+            MessageToClient message = new STCInitialCardUpdated(jsonImmGame, jsonInitialCardEvent);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
-            writer.println(jsonInitialCardEvent);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -182,10 +170,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void colorUpdated(String jsonColor) throws RemoteException {
         try {
-            MessageToClient message = new STCColorUpdated();
+            MessageToClient message = new STCColorUpdated(jsonColor);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonColor);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -195,10 +182,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void objectiveCardChosen(String jsonImmGame) throws RemoteException {
         try {
-            MessageToClient message = new STCObjectiveCardChosen();
+            MessageToClient message = new STCObjectiveCardChosen(jsonImmGame);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -209,10 +195,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void setupEnded(String jsonImmGame) throws RemoteException {
         try {
-            MessageToClient message = new STCSetupEnded();
+            MessageToClient message = new STCSetupEnded(jsonImmGame);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -223,10 +208,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void cardFlipped(String jsonImmGame) throws RemoteException {
         try {
-            MessageToClient message = new STCCardFlipped();
+            MessageToClient message = new STCCardFlipped(jsonImmGame);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -236,11 +220,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void cardPlayed(String jsonImmGame, String playerNicknameWhoUpdated) throws RemoteException {
         try {
-            MessageToClient message = new STCCardPlayed();
+            MessageToClient message = new STCCardPlayed(jsonImmGame, playerNicknameWhoUpdated);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
-            writer.println(playerNicknameWhoUpdated);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -250,11 +232,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void cardDrawn(String jsonImmGame, String playerNicknameWhoUpdated) throws RemoteException {
         try {
-            MessageToClient message = new STCCardDrawn();
+            MessageToClient message = new STCCardDrawn(jsonImmGame, playerNicknameWhoUpdated);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
-            writer.println(playerNicknameWhoUpdated);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -264,10 +244,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void turnChanged(String currentPlayer) throws RemoteException {
         try {
-            MessageToClient message = new STCTurnChanged();
+            MessageToClient message = new STCTurnChanged(currentPlayer);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(currentPlayer);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -277,10 +256,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void messageSent(String jsonImmGame) {
         try {
-            MessageToClient message = new STCMessageSent();
+            MessageToClient message = new STCMessageSent(jsonImmGame);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -290,10 +268,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void twentyPointsReached(String jsonImmGame) throws RemoteException {
         try {
-            MessageToClient message = new STCTwentyPointsReached();
+            MessageToClient message = new STCTwentyPointsReached(jsonImmGame);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -303,10 +280,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void decksEmpty(String jsonImmGame) throws RemoteException {
         try {
-            MessageToClient message = new STCDecksEmpty();
+            MessageToClient message = new STCDecksEmpty(jsonImmGame);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -316,10 +292,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void gameEnded(String jsonPlayers) throws RemoteException {
         try {
-            MessageToClient message = new STCGameEnded();
+            MessageToClient message = new STCGameEnded(jsonPlayers);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonPlayers);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -353,11 +328,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void gameRejoined(String jsonImmGame, String nickname) throws RemoteException {
         try {
-            MessageToClient message = new STCGameRejoined();
+            MessageToClient message = new STCGameRejoined(jsonImmGame, nickname);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
-            writer.println(nickname);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -367,13 +340,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void updatePlayerInGameStatus(String jsonImmGame, String playerNickname, String jsonInGame, String jsonHasDisconnected) throws RemoteException {
         try {
-            MessageToClient message = new STCUpdatePlayerInGameStatus();
+            MessageToClient message = new STCUpdatePlayerInGameStatus(jsonImmGame, playerNickname, jsonInGame, jsonHasDisconnected);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(jsonImmGame);
-            writer.println(playerNickname);
-            writer.println(jsonInGame);
-            writer.println(jsonHasDisconnected);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");
@@ -407,10 +376,9 @@ public class ClientSkeleton implements Client {
     @Override
     public void playerIsReady(String playerNickname) throws RemoteException {
         try {
-            MessageToClient message = new STCPlayerIsReady();
+            MessageToClient message = new STCPlayerIsReady(playerNickname);
             String jsonMessage = objectMapper.writeValueAsString(message);
             writer.println(jsonMessage);
-            writer.println(playerNickname);
             writer.flush();
         } catch (JsonProcessingException e) {
             System.err.println("Error while processing json");

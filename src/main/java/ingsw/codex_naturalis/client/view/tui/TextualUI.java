@@ -491,7 +491,7 @@ public class TextualUI implements UI {
 
     @Override
     public void reportError(String error) {
-        System.err.println(error);
+        System.out.println("\u001B[31m" + error + "\u001B[0m");
         setRunningState(RunningState.RUNNING);
     }
 

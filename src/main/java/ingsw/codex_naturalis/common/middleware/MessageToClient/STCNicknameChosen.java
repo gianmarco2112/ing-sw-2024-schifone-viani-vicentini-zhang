@@ -7,15 +7,27 @@ import java.io.IOException;
 
 import static java.lang.Integer.parseInt;
 
-public class STCNicknameChosen implements MessageToClient{
+public class STCNicknameChosen implements MessageToClient {
+
+    private String nickname;
+
+    public STCNicknameChosen() {
+    }
+
+    public STCNicknameChosen(String nickname) {
+        this.nickname = nickname;
+    }
+
     @Override
     public void run(ServerStub serverStub) {
-        try {
-            BufferedReader reader = serverStub.getReader();
-            String nickname = reader.readLine();
-            serverStub.getClient().setNickname(nickname);
-        } catch (IOException e) {
-            System.err.println("Error while receiving from server\n"+e.getMessage());
-        }
+        serverStub.getClient().setNickname(nickname);
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

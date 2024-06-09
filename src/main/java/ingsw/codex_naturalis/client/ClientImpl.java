@@ -260,10 +260,9 @@ public class ClientImpl implements Client, ViewObserver {
     /**
      * Update from server: turn changed
      * @param currentPlayer current player
-     * @throws RemoteException remote exc
      */
     @Override
-    public void turnChanged(String currentPlayer) throws RemoteException {
+    public void turnChanged(String currentPlayer) {
         view.turnChanged(currentPlayer);
     }
 
@@ -396,7 +395,7 @@ public class ClientImpl implements Client, ViewObserver {
     }
 
     @Override
-    public void playerIsReady(String playerNickname) throws RemoteException {
+    public void playerIsReady(String playerNickname) {
         view.playerIsReady(playerNickname);
     }
 

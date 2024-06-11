@@ -277,6 +277,7 @@ public class GraphicalUI extends Application implements UI {
     @Override
     public void gameLeft() {
         setScene("Lobbies");
+        allPlayersJoined = false;
     }
 
     @Override
@@ -428,6 +429,7 @@ public class GraphicalUI extends Application implements UI {
                     gameControllerFX.setViewGUI(this);
                     if(rejoined){
                         gameControllerFX.rejoined(this.game);
+                        rejoined = false;
                     }else{
                         gameControllerFX.endSetup(game);
                     }
@@ -550,5 +552,10 @@ public class GraphicalUI extends Application implements UI {
 
     public void leaveGame() {
         client.updateLeaveGame();
+    }
+
+    public void returnToLobby() {
+        setScene("Lobbies");
+        allPlayersJoined = false;
     }
 }

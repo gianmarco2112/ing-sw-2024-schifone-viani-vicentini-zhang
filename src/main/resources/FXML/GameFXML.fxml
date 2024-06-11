@@ -146,7 +146,8 @@
                         </ImageView>
                         <ListView fx:id="chatList" layoutX="680.0" layoutY="21.0" prefHeight="151.0" prefWidth="243.0" styleClass="backgroundTransparent" stylesheets="@../style.css" />
                         <TextField fx:id="messageText" layoutX="761.0" layoutY="183.0" onKeyPressed="#actionKeyPressedOnTextMessage" prefHeight="26.0" prefWidth="134.0" />
-                        <Button layoutX="730.0" layoutY="688.0" mnemonicParsing="false" onAction="#leaveButton" text="Leave" />
+                        <Button fx:id="leaveButton" layoutX="730.0" layoutY="688.0" mnemonicParsing="false" onAction="#leaveButton" text="Leave" />
+                        <Button fx:id="lobbyButton" layoutX="792.0" layoutY="688.0" mnemonicParsing="false" onAction="#lobbyButton" text="LOBBY" />
             </children></AnchorPane>
          </center>
       </BorderPane>

@@ -199,6 +199,9 @@ public class GameControllerFX {
 
     public void endSetup(ImmGame game) {
 
+        leaveButton.setVisible(true);
+        lobbyButton.setVisible(false);
+
         List<ImmPlayableCard> initialCards = new ArrayList<>();
         List<Color> colors = new ArrayList<>();
 
@@ -1481,59 +1484,73 @@ public class GameControllerFX {
         });
     }
 
+    @FXML
+    private Button leaveButton;
+    @FXML
+    private Button lobbyButton;
     public void gameEnded(List<ImmPlayer> players) {
         Platform.runLater(()->{
+            leaveButton.setVisible(false);
+            lobbyButton.setVisible(true);
+
             HashMap<String,List<Integer>> pointsMap = new HashMap<>();
             List<String> playersNick = new ArrayList<>();
-            List<Integer> pointsAndExtraPoints = new ArrayList<>();
+
             for(ImmPlayer p: players){
+                List<Integer> pointsAndExtraPoints = new ArrayList<>();
+                pointsAndExtraPoints.clear();
                 pointsAndExtraPoints.add(p.playerArea().points());
                 pointsAndExtraPoints.add(p.playerArea().extraPoints());
                 pointsMap.put(p.nickname(),pointsAndExtraPoints);
             }
-            String winner = "";
-            //winner = computeWinner(pointsMap);
-            setUpdateText(List.of("Game ended!\nThe winner is " + winner + "!\nPress LEAVE"));
+            String winner = computeWinner(pointsMap);
+            setUpdateText(List.of("Game ended!\nThe winner " + (winner.contains(" ") ? "are" : "is") + " " + winner + "!\nPress LOBBY"));
 
 
             //mostro al posto delle carte in mano agli altri giocatori l'obiettivo segreto
             int index=1;
             Color color = null;
             for(int i = 0; i<players.size(); i++){
-                if(!players.get(i).equals(nickname)) {
+                if(!players.get(i).nickname().equals(nickname)) {
                     switch (index){
                         case 1 -> {
                             for(ImmOtherPlayer p: game.otherPlayers()){
-                                if(p.nickname().equals(players.get(i))){
+                                if(p.nickname().equals(players.get(i).nickname())){
                                     color = p.color();
                                     break;
                                 }
                             }
-                            posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
+                            if(color!=null){
+                                posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
+                            }
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
                             streamObjectiveEndGame(players.get(i).playerArea().objectiveCard().cardID(),user1HandCard1);
                         }
                         case 2 -> {
                             for(ImmOtherPlayer p: game.otherPlayers()){
-                                if(p.nickname().equals(players.get(i))){
+                                if(p.nickname().equals(players.get(i).nickname())){
                                     color = p.color();
                                     break;
                                 }
                             }
-                            posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
+                            if(color!=null){
+                                posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
+                            }
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
                             streamObjectiveEndGame(players.get(i).playerArea().objectiveCard().cardID(),user2HandCard1);
                         }
                         case 3 -> {
                             for(ImmOtherPlayer p: game.otherPlayers()){
-                                if(p.nickname().equals(players.get(i))){
+                                if(p.nickname().equals(players.get(i).nickname())){
                                     color = p.color();
                                     break;
                                 }
                             }
-                            posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
+                            if(color!=null){
+                                posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
+                            }
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
                             streamObjectiveEndGame(players.get(i).playerArea().objectiveCard().cardID(),user3HandCard1);
@@ -1546,7 +1563,33 @@ public class GameControllerFX {
     }
 
     private String computeWinner(HashMap<String, List<Integer>> pointsMap) {
-        return null;
+        String winner = "";
+        int maxPoints = Integer.MIN_VALUE;
+        int maxExtraPoints = Integer.MIN_VALUE;
+        List<String> winners = new ArrayList<>();
+
+        for (Map.Entry<String, List<Integer>> entry : pointsMap.entrySet()) {
+            String player = entry.getKey();
+            List<Integer> points = entry.getValue();
+            int totalPoints = points.get(0) + points.get(1);
+            int extraPoints = points.get(1);
+
+            if (totalPoints > maxPoints || (totalPoints == maxPoints && extraPoints > maxExtraPoints)) {
+                winner = player;
+                maxPoints = totalPoints;
+                maxExtraPoints = extraPoints;
+                winners.clear();
+                winners.add(player);
+            } else if (totalPoints == maxPoints && extraPoints == maxExtraPoints) {
+                winners.add(player);
+            }
+        }
+
+        if (winners.size() == 1) {
+            return winner;
+        } else {
+            return String.join(" ", winners);
+        }
     }
 
     private void streamObjectiveEndGame(String id, ImageView userHandCard1) {
@@ -1563,7 +1606,9 @@ public class GameControllerFX {
 
     public void gameCanceled() {
         Platform.runLater(()->{
-            setUpdateText(List.of("You won!\nPress LEAVE"));
+            leaveButton.setVisible(false);
+            lobbyButton.setVisible(true);
+            setUpdateText(List.of("You won!\nPress LOBBY"));
         });
     }
 
@@ -2120,6 +2165,11 @@ public class GameControllerFX {
     @FXML
     void leaveButton(ActionEvent event) {
         viewGUI.leaveGame();
+    }
+
+    @FXML
+    void lobbyButton(ActionEvent event) {
+        viewGUI.returnToLobby();
     }
 
     public void setUpdateText (List<String> updatesText) {

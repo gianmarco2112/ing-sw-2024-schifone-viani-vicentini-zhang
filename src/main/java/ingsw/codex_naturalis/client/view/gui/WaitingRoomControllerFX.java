@@ -75,7 +75,7 @@ public class WaitingRoomControllerFX implements Initializable {
 
     @FXML
     void actionIamLeave(ActionEvent event) {
-
+        viewGUI.leaveGame();
     }
 
     @FXML
@@ -103,6 +103,8 @@ public class WaitingRoomControllerFX implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btnReady.setVisible(false);
         pressEnter.setVisible(false);
+
+        btnLeave.setVisible(true);
     }
 
     public void setNickname(String nickname) {
@@ -152,5 +154,11 @@ public class WaitingRoomControllerFX implements Initializable {
                 ready.get(i).setVisible(false);
             }
         }
+    }
+
+    public void setLeaveNotAllowed() {
+        Platform.runLater(()->{
+            btnLeave.setVisible(false);
+        });
     }
 }

@@ -451,6 +451,7 @@ public class GraphicalUI extends Application implements UI {
                     waitingRoomControllerFX.showPlayerVan(numOfPlayers);
                     if(allPlayersJoined){
                         waitingRoomControllerFX.setConfirmView();
+                        waitingRoomControllerFX.setLeaveNotAllowed();
                     }
                     break;
                 case "ColorSetup":

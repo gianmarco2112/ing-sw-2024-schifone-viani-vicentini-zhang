@@ -637,5 +637,19 @@
     -fx-background-size: cover;
 }
 
+.image-view {
+    -fx-border-color: transparent; /* Default state without border */
+    -fx-border-width: 2; /* Default border width */
+}
+
+.image-view.selected {
+    -fx-border-color: yellow; /* Color of the illuminated border */
+    -fx-border-width: 2; /* Border width */
+    -fx-effect: dropshadow(gaussian, yellow, 10, 0.5, 0, 0); /* Optional: adds a glow effect */
+}
+
+.image-view:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,255,0,1), 10, 0, 0, 0);
+}
 
 

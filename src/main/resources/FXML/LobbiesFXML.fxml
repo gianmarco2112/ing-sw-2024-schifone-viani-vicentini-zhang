@@ -34,11 +34,11 @@
                   <Label />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="247.0" spacing="10.0">
                      <children>
-                        <Label prefHeight="26.0" prefWidth="138.0" style="-fx-font-family: luminari;" text="Number of players" />
+                        <Label prefHeight="26.0" prefWidth="138.0" text="Number of players" />
                         <ChoiceBox fx:id="Players_CB" prefHeight="26.0" prefWidth="77.0" />
                      </children>
                   </HBox>
-                  <Button fx:id="CreateGame_BTN" mnemonicParsing="false" onAction="#createGame" prefHeight="36.0" prefWidth="127.0" style="-fx-font-family: luminari;" text="Create Game" />
+                  <Button fx:id="CreateGame_BTN" mnemonicParsing="false" onAction="#createGame" prefHeight="36.0" prefWidth="127.0" text="Create Game" />
                   <ImageView fitHeight="60.0" fitWidth="370.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../loginPageResources/fascia1conSfrondoTrasparente.png" />
@@ -64,9 +64,9 @@
                         <Image url="@../loginPageResources/fascia2conSfondoTrasparente.png" />
                      </image>
                   </ImageView>
-                  <Label style="-fx-font-family: luminari;" text="Choose the game you want to join or create a new game!">
+                  <Label text="Choose the game you want to join or create a new game!">
                      <font>
-                        <Font size="22.0" />
+                        <Font name="System Bold" size="22.0" />
                      </font></Label>
                   <ImageView fitHeight="48.0" fitWidth="269.0" pickOnBounds="true" preserveRatio="true">
                      <image>

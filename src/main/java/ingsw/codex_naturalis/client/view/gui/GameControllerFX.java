@@ -5,7 +5,6 @@ import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.immutableModel.*;
-import ingsw.codex_naturalis.server.model.player.Player;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,20 +23,6 @@ import java.io.InputStream;
 import java.util.*;
 
 public class GameControllerFX {
-    @FXML
-    private ImageView board;
-
-    @FXML
-    private ScrollPane chatBox;
-
-    @FXML
-    private Label chatLBL;
-
-    @FXML
-    private TextField chatTextField;
-
-    @FXML
-    private VBox chatbox;
 
     @FXML
     private ImageView commonObjective1;
@@ -53,12 +38,6 @@ public class GameControllerFX {
 
     @FXML
     private Button flipCard3;
-
-    @FXML
-    private Label gameUpdateLBL;
-
-    @FXML
-    private AnchorPane gameUpdates;
 
     @FXML
     private BorderPane globalPane;
@@ -112,12 +91,6 @@ public class GameControllerFX {
     private ImageView revealedResource2;
 
     @FXML
-    private Label secretObjextiveLBL;
-
-    @FXML
-    private Button sendMessageButton;
-
-    @FXML
     private ImageView user1Initialcard;
 
     @FXML
@@ -147,7 +120,6 @@ public class GameControllerFX {
     private GraphicalUI viewGUI;
     private ImageView selectedCard = null;
     private int selectedCardIndex;
-    private String cornerClicked;
     @FXML
     private ImageView user1HandCard1;
 
@@ -175,12 +147,15 @@ public class GameControllerFX {
     @FXML
     private ImageView user3HandCard3;
 
+    @FXML
+    private ListView importantEventsList;
+
     //posizioni delle anchorPane
-    private HashMap<Integer, List<Integer>> boardPointsPosition = new HashMap<>();
+    private final HashMap<Integer, List<Integer>> boardPointsPosition = new HashMap<>();
     private String nickname;
     @FXML
     private Text myNickText;
-    private List<AnchorPane> anchorPanesOnBoard = new ArrayList<>();
+    private final List<AnchorPane> anchorPanesOnBoard = new ArrayList<>();
     private Color myColor;
     private ImmGame game;
 
@@ -500,14 +475,8 @@ public class GameControllerFX {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*Text testo = new Text();
-        testo.setText("The game setup ended!\n" + firstPlayer + "'s turn");
-        testo.setLayoutY(20);
-        testo.setLayoutX(20);
-        gameUpdates.getChildren().add(testo);
-        testo.wrappingWidthProperty().bind(gameUpdates.maxWidthProperty());
-        testo.wrappingWidthProperty().bind(gameUpdates.maxHeightProperty());*/
-        updateBoxText.setText("The game setup ended!\n" + game.playerOrderNicknames().getFirst() + "'s turn");
+        setUpdateText(List.of("The game setup ended!\n" + game.playerOrderNicknames().getFirst() + "'s turn"));
+
 
         Pane pane = createPaneCard(9999,9999);
         //pane.setStyle("-fx-background-color: lightblue;");
@@ -734,16 +703,28 @@ public class GameControllerFX {
 
     @FXML
     void flipHandCard1(ActionEvent event) {
+        handCard1.getStyleClass().remove("selected");
+        handCard2.getStyleClass().remove("selected");
+        handCard3.getStyleClass().remove("selected");
+
         viewGUI.flippingCard(0);
     }
 
     @FXML
     void flipHandCard2(ActionEvent event) {
+        handCard1.getStyleClass().remove("selected");
+        handCard2.getStyleClass().remove("selected");
+        handCard3.getStyleClass().remove("selected");
+
         viewGUI.flippingCard(1);
     }
 
     @FXML
     void flipHandCard3(ActionEvent event) {
+        handCard1.getStyleClass().remove("selected");
+        handCard2.getStyleClass().remove("selected");
+        handCard3.getStyleClass().remove("selected");
+
         viewGUI.flippingCard(2);
     }
 
@@ -782,6 +763,10 @@ public class GameControllerFX {
             }catch (IOException e) {
                 e.printStackTrace();
             }
+
+            handCard1.getStyleClass().remove("selected");
+            handCard2.getStyleClass().remove("selected");
+            handCard3.getStyleClass().remove("selected");
         });
     }
 
@@ -880,6 +865,11 @@ public class GameControllerFX {
     void playHandCard1(MouseEvent event) {
         System.out.println("Voglio giocare la prima carta!");
         selectedCard = copyImageView(handCard1);
+
+        handCard1.getStyleClass().add("selected");
+        handCard2.getStyleClass().remove("selected");
+        handCard3.getStyleClass().remove("selected");
+
         selectedCardIndex = 0;
     }
 
@@ -887,6 +877,11 @@ public class GameControllerFX {
     void playHandCard2(MouseEvent event) {
         System.out.println("Voglio giocare la seconda carta!");
         selectedCard = copyImageView(handCard2);
+
+        handCard1.getStyleClass().remove("selected");
+        handCard2.getStyleClass().add("selected");
+        handCard3.getStyleClass().remove("selected");
+
         selectedCardIndex = 1;
     }
 
@@ -894,42 +889,78 @@ public class GameControllerFX {
     void playHandCard3(MouseEvent event) {
         System.out.println("Voglio giocare la terza carta!");
         selectedCard = copyImageView(handCard3);
+
+        handCard1.getStyleClass().remove("selected");
+        handCard2.getStyleClass().remove("selected");
+        handCard3.getStyleClass().add("selected");
+
         selectedCardIndex = 2;
     }
 
     @FXML
     void drawFromGoldDeck(MouseEvent event) {
         System.out.println("voglio pescare dal deck di oro");
+
+        handCard1.getStyleClass().remove("selected");
+        handCard2.getStyleClass().remove("selected");
+        handCard3.getStyleClass().remove("selected");
+
+
         viewGUI.drawingCard(DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);
     }
 
     @FXML
     void drawFromResourceDeck(MouseEvent event) {
         System.out.println("voglio pescare dal deck di risorse");
+
+        handCard1.getStyleClass().remove("selected");
+        handCard2.getStyleClass().remove("selected");
+        handCard3.getStyleClass().remove("selected");
+
         viewGUI.drawingCard(DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
     }
 
     @FXML
     void drawFromRevealedGold1(MouseEvent event) {
         System.out.println("voglio pescare la prima carta oro rivelata");
+
+        handCard1.getStyleClass().remove("selected");
+        handCard2.getStyleClass().remove("selected");
+        handCard3.getStyleClass().remove("selected");
+
         viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1);
     }
 
     @FXML
     void drawFromRevealedGold2(MouseEvent event) {
         System.out.println("voglio pescare la seconda carta oro rivelata");
+
+        handCard1.getStyleClass().remove("selected");
+        handCard2.getStyleClass().remove("selected");
+        handCard3.getStyleClass().remove("selected");
+
         viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2);
     }
 
     @FXML
     void drawFromRevealedResource1(MouseEvent event) {
         System.out.println("voglio pescare la prima carta risorsa rivelata");
+
+        handCard1.getStyleClass().remove("selected");
+        handCard2.getStyleClass().remove("selected");
+        handCard3.getStyleClass().remove("selected");
+
         viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);
     }
 
     @FXML
     void drawFromRevealedResource2(MouseEvent event) {
         System.out.println("voglio pescare la prima carta risorsa rivelata");
+
+        handCard1.getStyleClass().remove("selected");
+        handCard2.getStyleClass().remove("selected");
+        handCard3.getStyleClass().remove("selected");
+
         viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);
     }
 
@@ -1186,6 +1217,10 @@ public class GameControllerFX {
                     }
                 }
 
+                handCard1.getStyleClass().remove("selected");
+                handCard2.getStyleClass().remove("selected");
+                handCard3.getStyleClass().remove("selected");
+
                 //aggiorno punteggio
                 posizionaPedine(List.of(myColor),points,anchorPanesOnBoard.get(points));
             }
@@ -1423,15 +1458,12 @@ public class GameControllerFX {
 
     }
 
-    @FXML
-    private Text updateBoxText;
-
     public void turnChanged(String currentPlayer) {
         Platform.runLater(()->{
             if(currentPlayer.equals(nickname)){
-                updateBoxText.setText("It's your turn!");
+                setUpdateText(List.of("It's your turn!"));
             }else{
-                updateBoxText.setText("It's " + currentPlayer + "'s turn!");
+                setUpdateText(List.of("It's " + currentPlayer + "'s turn!"));
             }
         });
 
@@ -1439,13 +1471,13 @@ public class GameControllerFX {
 
     public void twentyPointsReached(ImmGame immGame) {
         Platform.runLater(()->{
-            updateBoxText.setText("20 Points reached!");
+            setUpdateText(List.of("20 Points reached!"));
         });
     }
 
     public void deckesEmpty(ImmGame immGame) {
         Platform.runLater(()->{
-            updateBoxText.setText("All decks are empty!");
+            setUpdateText(List.of("All decks are empty!"));
         });
     }
 
@@ -1461,7 +1493,7 @@ public class GameControllerFX {
             }
             String winner = "";
             //winner = computeWinner(pointsMap);
-            updateBoxText.setText("Game ended!\nThe winner is " + winner + "!\nPress LEAVE");
+            setUpdateText(List.of("Game ended!\nThe winner is " + winner + "!\nPress LEAVE"));
 
 
             //mostro al posto delle carte in mano agli altri giocatori l'obiettivo segreto
@@ -1531,25 +1563,26 @@ public class GameControllerFX {
 
     public void gameCanceled() {
         Platform.runLater(()->{
-            updateBoxText.setText("You won!\nPress LEAVE");
+            setUpdateText(List.of("You won!\nPress LEAVE"));
         });
     }
 
     public void updatePlayerInGameStatus(String message, ImmGame immGame, String playerNickname) {
         Platform.runLater(()->{
-            updateBoxText.setText(playerNickname + " " + message);
+            setUpdateText(List.of(playerNickname + " " + message));
+
         });
     }
 
     public void gamePaused() {
         Platform.runLater(()->{
-            updateBoxText.setText("Currently, you're the only player connected.\nPlease wait for another player to rejoin within 10 seconds.");
+            setUpdateText(List.of("Currently, you're the only player connected.\nPlease wait for another player to rejoin within 10 seconds."));
         });
     }
 
     public void gameResumed() {
         Platform.runLater(()->{
-            updateBoxText.setText("Game resumed!");
+            setUpdateText(List.of("Game resumed!"));
         });
     }
     @FXML
@@ -2087,5 +2120,13 @@ public class GameControllerFX {
     @FXML
     void leaveButton(ActionEvent event) {
         viewGUI.leaveGame();
+    }
+
+    public void setUpdateText (List<String> updatesText) {
+        importantEventsList.getItems().clear();
+        for (String s : updatesText) {
+            importantEventsList.getItems().add(s);
+        }
+        importantEventsList.scrollTo(importantEventsList.getItems().size());
     }
 }

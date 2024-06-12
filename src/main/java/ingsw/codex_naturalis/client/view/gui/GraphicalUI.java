@@ -220,20 +220,45 @@ public class GraphicalUI extends Application implements UI {
     public void cardDrawn(ImmGame immGame, String playerNicknameWhoUpdated) {
         System.out.println(playerNicknameWhoUpdated + "ha pescato una carta");
         this.game = immGame;
+        List<String> resourceCards = new ArrayList<>();
+        if (game.topResourceCard() != null) {
+            resourceCards.add(game.topResourceCard().cardID());
+        }else{
+            resourceCards.add("empty");
+        }
+        for(ImmPlayableCard c : game.revealedResourceCards()){
+            resourceCards.add(c.cardID());
+        }
+        while(resourceCards.size()!=3){
+            resourceCards.add("empty");
+        }
+
+        List<String> goldCards = new ArrayList<>();
+        if(game.topGoldCard() != null) {
+            goldCards.add(game.topGoldCard().cardID());
+        }else{
+            goldCards.add("empty");
+        }
+        for(ImmPlayableCard c : game.revealedGoldCards()){
+            goldCards.add(c.cardID());
+        }
+        while(goldCards.size()!=3){
+            goldCards.add("empty");
+        }
         //nel metodo che chiamo successivamente devo usare Platform.runlater!!
         if(playerNicknameWhoUpdated.equals(this.game.player().nickname())){
             gameControllerFX.cardDrawn(drawCardEvent,
-                    game.topResourceCard().cardID(),game.topGoldCard().cardID(),
+                    resourceCards.getFirst(),goldCards.getFirst(),
                     game.player().hand().getLast().cardID(),
-                    game.revealedResourceCards().getFirst().cardID(),game.revealedResourceCards().getLast().cardID(),
-                    game.revealedGoldCards().getFirst().cardID(),game.revealedGoldCards().getLast().cardID());
+                    resourceCards.get(1),resourceCards.getLast(),
+                    goldCards.get(1),goldCards.getLast());
         }else{
             //aggiorno per tutti
             gameControllerFX.updateOtherAfterCardDrawn(
-                    game.topGoldCard().cardID(),
-                    game.topResourceCard().cardID(),
-                    game.revealedResourceCards().getFirst().cardID(),game.revealedResourceCards().getLast().cardID(),
-                    game.revealedGoldCards().getFirst().cardID(),game.revealedGoldCards().getLast().cardID(),
+                    goldCards.getFirst(),
+                    resourceCards.getFirst(),
+                    resourceCards.get(1),resourceCards.getLast(),
+                    goldCards.get(1),goldCards.getLast(),
                     playerNicknameWhoUpdated, immGame
             );
         }

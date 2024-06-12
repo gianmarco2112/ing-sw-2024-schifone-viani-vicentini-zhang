@@ -958,7 +958,7 @@ public class GameControllerFX {
         String kingdomTopG;
         String kingdomTopR;
 
-        if(isGold){
+        if(isGold && !topGoldCardId.equals("empty")){
             kingdomTopG = "/CardsImages/HandCards/back/" + topGoldCardId + ".png";
 
             try(InputStream topGStream = getClass().getResourceAsStream(kingdomTopG)){
@@ -966,7 +966,7 @@ public class GameControllerFX {
             }catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
+        }else if(!topResourceCardId.equals("empty")){
             kingdomTopR = "/CardsImages/HandCards/back/" + topResourceCardId + ".png";
 
             try(InputStream topRStream = getClass().getResourceAsStream(kingdomTopR)){
@@ -974,6 +974,12 @@ public class GameControllerFX {
             }catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        if(isGold && topGoldCardId.equals("empty")){
+            this.goldDeck.setVisible(false);
+        }else if(topResourceCardId.equals("empty")){
+            this.resourceDeck.setVisible(false);
         }
     }
 
@@ -1127,22 +1133,48 @@ public class GameControllerFX {
     }
 
     private void streamRevealedId(String revealedG1Id, String revealedG2Id, String revealedR1Id, String revealedR2Id) {
-        String revG1 = "/CardsImages/HandCards/front/" + revealedG1Id + ".png";
-        String revG2 = "/CardsImages/HandCards/front/" + revealedG2Id + ".png";
-        String revR1 = "/CardsImages/HandCards/front/" + revealedR1Id + ".png";
-        String revR2 = "/CardsImages/HandCards/front/" + revealedR2Id + ".png";
+        if(revealedG1Id.equals("empty")){
+            this.revealedGold1.setVisible(false);
+        }else{
+            String revG1 = "/CardsImages/HandCards/front/" + revealedG1Id + ".png";
+            try(InputStream revG1Stream = getClass().getResourceAsStream(revG1)){
+                this.revealedGold1.setImage(new Image(revG1Stream));
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-        try(InputStream revG1Stream = getClass().getResourceAsStream(revG1);
-            InputStream revG2Stream = getClass().getResourceAsStream(revG2);
-            InputStream revR1Stream = getClass().getResourceAsStream(revR1);
-            InputStream revR2Stream = getClass().getResourceAsStream(revR2)){
+        if(revealedG2Id.equals("empty")){
+            this.revealedGold2.setVisible(false);
+        }else{
+            String revG2 = "/CardsImages/HandCards/front/" + revealedG2Id + ".png";
+            try(InputStream revG2Stream = getClass().getResourceAsStream(revG2)){
+                this.revealedGold2.setImage(new Image(revG2Stream));
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-            this.revealedGold1.setImage(new Image(revG1Stream));
-            this.revealedGold2.setImage(new Image(revG2Stream));
-            this.revealedResource1.setImage(new Image(revR1Stream));
-            this.revealedResource2.setImage(new Image(revR2Stream));
-        }catch (IOException e) {
-            e.printStackTrace();
+        if(revealedR1Id.equals("empty")){
+            this.revealedResource1.setVisible(false);
+        }else{
+            String revR1 = "/CardsImages/HandCards/front/" + revealedR1Id + ".png";
+            try(InputStream revR1Stream = getClass().getResourceAsStream(revR1)){
+                this.revealedResource1.setImage(new Image(revR1Stream));
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(revealedR2Id.equals("empty")){
+            this.revealedResource2.setVisible(false);
+        }else{
+            String revR2 = "/CardsImages/HandCards/front/" + revealedR2Id + ".png";
+            try(InputStream revR2Stream = getClass().getResourceAsStream(revR2)){
+                this.revealedResource2.setImage(new Image(revR2Stream));
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -1313,6 +1345,10 @@ public class GameControllerFX {
             leaveButton.setVisible(false);
             lobbyButton.setVisible(true);
 
+            flipCard1.setVisible(false);
+            flipCard2.setVisible(false);
+            flipCard3.setVisible(false);
+
             HashMap<String,List<Integer>> pointsMap = new HashMap<>();
 
             for(ImmPlayer p: players){
@@ -1340,7 +1376,7 @@ public class GameControllerFX {
                                 }
                             }
                             if(color!=null){
-                                posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
+                                posizionaPedine(List.of(color),players.get(i).playerArea().points()+players.get(i).playerArea().extraPoints(),anchorPanesOnBoard.get(players.get(i).playerArea().points()+players.get(i).playerArea().extraPoints()));
                             }
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
@@ -1354,7 +1390,7 @@ public class GameControllerFX {
                                 }
                             }
                             if(color!=null){
-                                posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
+                                posizionaPedine(List.of(color),players.get(i).playerArea().points()+players.get(i).playerArea().extraPoints(),anchorPanesOnBoard.get(players.get(i).playerArea().points()+players.get(i).playerArea().extraPoints()));
                             }
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
@@ -1368,7 +1404,7 @@ public class GameControllerFX {
                                 }
                             }
                             if(color!=null){
-                                posizionaPedine(List.of(color),players.get(i).playerArea().points(),anchorPanesOnBoard.get(players.get(i).playerArea().points()));
+                                posizionaPedine(List.of(color),players.get(i).playerArea().points()+players.get(i).playerArea().extraPoints(),anchorPanesOnBoard.get(players.get(i).playerArea().points()+players.get(i).playerArea().extraPoints()));
                             }
                             user1HandCard3.setVisible(false);
                             user1HandCard2.setVisible(false);
@@ -1376,6 +1412,9 @@ public class GameControllerFX {
                         }
                     }
                     index++;
+                }else{
+                    //aggiorno posizione della mia pedina
+                    posizionaPedine(List.of(myColor),players.get(i).playerArea().points()+players.get(i).playerArea().extraPoints(),anchorPanesOnBoard.get(players.get(i).playerArea().points()+players.get(i).playerArea().extraPoints()));
                 }
             }
         });
@@ -1581,11 +1620,37 @@ public class GameControllerFX {
         ///////mazzi e carte scoperte///////////////////////////
         ////////////////////////////////////////////////////////
 
-        streamTopRGImage(game.revealedResourceCards().getFirst().cardID(),game.revealedResourceCards().getLast().cardID(),false);
-        streamTopRGImage(game.topResourceCard().cardID(),game.topGoldCard().cardID(),true);
-        streamTopRGImage(game.topResourceCard().cardID(),game.topGoldCard().cardID(),false);
+        List<String> resourceCards = new ArrayList<>();
+        if (game.topResourceCard() != null) {
+            resourceCards.add(game.topResourceCard().cardID());
+        }else{
+            resourceCards.add("empty");
+        }
+        for(ImmPlayableCard c : game.revealedResourceCards()){
+            resourceCards.add(c.cardID());
+        }
+        while(resourceCards.size()!=3){
+            resourceCards.add("empty");
+        }
 
-        streamRevealedId(game.revealedGoldCards().get(0).cardID(),game.revealedGoldCards().get(1).cardID(),game.revealedResourceCards().get(0).cardID(),game.revealedResourceCards().get(1).cardID());
+        List<String> goldCards = new ArrayList<>();
+        if(game.topGoldCard() != null) {
+            goldCards.add(game.topGoldCard().cardID());
+        }else{
+            goldCards.add("empty");
+        }
+        for(ImmPlayableCard c : game.revealedGoldCards()){
+            goldCards.add(c.cardID());
+        }
+        while(goldCards.size()!=3){
+            goldCards.add("empty");
+        }
+
+        //streamTopRGImage(game.revealedResourceCards().getFirst().cardID(),game.revealedResourceCards().getLast().cardID(),false);//????
+        streamTopRGImage(resourceCards.getFirst(),goldCards.getFirst(),true);
+        streamTopRGImage(resourceCards.getFirst(),goldCards.getFirst(),false);
+
+        streamRevealedId(goldCards.get(1),goldCards.getLast(),resourceCards.get(1),resourceCards.getLast());
 
         ////////////////////////////////////////////////////////
         ///////obiettivi comuni e segreti///////////////////////

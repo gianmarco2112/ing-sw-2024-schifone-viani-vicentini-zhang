@@ -1668,6 +1668,7 @@ public class GameControllerFX {
             }
 
         }
+        myNickText.setText(game.player().nickname());
 
         streamMyHandcard(game.player().hand().getFirst().cardID(),handCard1,game.player().hand().getFirst().showingFront());
         streamMyHandcard(game.player().hand().get(1).cardID(),handCard2,game.player().hand().get(1).showingFront());
@@ -1914,7 +1915,7 @@ public class GameControllerFX {
 
     private void streamMyHandcard(String id, ImageView handCard, Boolean showingFront) {
         if(showingFront){
-            String path = "/CardsImages/Handcards/front/" + id + ".png";
+            String path = "/CardsImages/HandCards/front/" + id + ".png";
 
             try(InputStream handCardStream = getClass().getResourceAsStream(path)){
                 handCard.setImage(new Image(handCardStream));
@@ -1922,7 +1923,7 @@ public class GameControllerFX {
                 e.printStackTrace();
             }
         }else{
-            String path = "/CardsImages/Handcards/back/" + id + ".png";
+            String path = "/CardsImages/HandCards/back/" + id + ".png";
 
             try(InputStream handCardStream = getClass().getResourceAsStream(path)){
                 handCard.setImage(new Image(handCardStream));

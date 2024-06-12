@@ -66,7 +66,6 @@ public class GraphicalUI extends Application implements UI {
     private GameControllerFX gameControllerFX;
     private LobbiesControllerFX lobbiesControllerFX;
     private LoginControllerFX loginControllerFX;
-    private EndGameControllerFX endGameControllerFX;
     private WaitingRoomControllerFX waitingRoomControllerFX;
     private ColorSetupControllerFX colorSetupControllerFX;
     private CardsSetupControllerFX cardsSetupControllerFX;
@@ -361,7 +360,6 @@ public class GraphicalUI extends Application implements UI {
         }
         scenes = new HashMap<>();
         scenes.put("Game", "/FXML/GameFXML.fxml");
-        scenes.put("EndGame", "/FXML/EndGameFXML.fxml");
         scenes.put("Lobbies", "/FXML/LobbiesFXML.fxml");
         scenes.put("Login", "/FXML/LoginFXML.fxml");
         scenes.put("WaitingRoom", "/FXML/WaitingForPlayersFXML.fxml");
@@ -458,10 +456,6 @@ public class GraphicalUI extends Application implements UI {
                     }else{
                         gameControllerFX.endSetup(game);
                     }
-                    break;
-                case "EndGame":
-                    endGameControllerFX = fxmlLoader.getController();
-                    endGameControllerFX.setViewGUI(this);
                     break;
                 case "Lobbies":
                     lobbiesControllerFX = fxmlLoader.getController();

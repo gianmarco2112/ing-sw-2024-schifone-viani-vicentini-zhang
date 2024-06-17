@@ -24,13 +24,17 @@ public class AppClient {
     public static void main(String[] args) {
 
         UIChoice uiChoice = askUIChoice();
-        switch (uiChoice) {
-            case TUI -> {
-                new TextualUI().run(args);
+        try {
+            switch (uiChoice) {
+                case TUI -> {
+                    new TextualUI().run(args);
+                }
+                case GUI -> {
+                    GraphicalUI.main(args);
+                }
             }
-            case GUI -> {
-                GraphicalUI.main(args);
-            }
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
         }
 
     }

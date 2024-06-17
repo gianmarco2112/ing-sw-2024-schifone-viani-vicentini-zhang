@@ -60,7 +60,7 @@ public class ServerStub implements Server, GameController {
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             this.reader = new BufferedReader(inputStreamReader);
         } catch (IOException e) {
-            throw new RemoteException("Error while registering to server");
+            throw new RemoteException("Error while registering to server\n" + e.getMessage());
         }
     }
 

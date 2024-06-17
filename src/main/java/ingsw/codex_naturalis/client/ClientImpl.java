@@ -4,13 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.client.view.UI;
-import ingsw.codex_naturalis.client.view.tui.TextualUI;
-import ingsw.codex_naturalis.client.view.util.UIObservableItem;
-import ingsw.codex_naturalis.client.view.util.ViewObserver;
 import ingsw.codex_naturalis.common.Client;
 import ingsw.codex_naturalis.common.GameController;
 import ingsw.codex_naturalis.common.immutableModel.ImmGame;
-import ingsw.codex_naturalis.common.immutableModel.ImmObjectiveCard;
 import ingsw.codex_naturalis.common.immutableModel.GameSpecs;
 import ingsw.codex_naturalis.common.NetworkProtocol;
 import ingsw.codex_naturalis.common.Server;
@@ -28,7 +24,7 @@ import java.util.concurrent.*;
 /**
  * Client implementation
  */
-public class ClientImpl implements Client, ViewObserver {
+public class ClientImpl implements Client {
 
     /**
      * Nickname
@@ -43,7 +39,7 @@ public class ClientImpl implements Client, ViewObserver {
     /**
      * View
      */
-    private UI view;
+    private final UI view;
 
     /**
      * Server reference
@@ -73,7 +69,7 @@ public class ClientImpl implements Client, ViewObserver {
             try {
                 server.imAlive(this);
             } catch (RemoteException e) {
-                System.err.println("Error while sending heart beat");
+                System.err.println("Error while sending heart beat\n" + e.getMessage());
             }
         }, 0, 5, TimeUnit.SECONDS);
     }
@@ -404,7 +400,6 @@ public class ClientImpl implements Client, ViewObserver {
      * Called to choose a nickname
      * @param nickname nickname
      */
-    @Override
     public void ctsUpdateNickname(String nickname) {
         try {
             server.chooseNickname(this, nickname);
@@ -417,7 +412,6 @@ public class ClientImpl implements Client, ViewObserver {
      * Called to join an existing game
      * @param gameID game id
      */
-    @Override
     public void ctsUpdateGameToAccess(int gameID) {
         try {
             server.accessExistingGame(this, gameID);
@@ -430,7 +424,6 @@ public class ClientImpl implements Client, ViewObserver {
      * Called to create a new game
      * @param numOfPlayers number of players for the game
      */
-    @Override
     public void ctsUpdateNewGame(int numOfPlayers) {
         try {
             server.accessNewGame(this, numOfPlayers);
@@ -443,7 +436,6 @@ public class ClientImpl implements Client, ViewObserver {
     /**
      * Called if the client's ready
      */
-    @Override
     public void ctsUpdateReady() {
         try {
             gameController = server.getGameController(this);
@@ -457,7 +449,6 @@ public class ClientImpl implements Client, ViewObserver {
      * Called to update the initial card (play or flip)
      * @param initialCardEvent play or flip
      */
-    @Override
     public void ctsUpdateInitialCard(InitialCardEvent initialCardEvent) {
         try {
             gameController.updateInitialCard(nickname, objectMapper.writeValueAsString(initialCardEvent));
@@ -470,7 +461,6 @@ public class ClientImpl implements Client, ViewObserver {
      * Called to choose a color
      * @param color color
      */
-    @Override
     public void ctsUpdateColor(Color color) {
         try {
             gameController.chooseColor(nickname, objectMapper.writeValueAsString(color));
@@ -483,7 +473,6 @@ public class ClientImpl implements Client, ViewObserver {
      * Called to choose a secret objective card
      * @param index card index
      */
-    @Override
     public void ctsUpdateObjectiveCardChoice(int index) {
         try {
             gameController.chooseSecretObjectiveCard(nickname, index);
@@ -497,7 +486,6 @@ public class ClientImpl implements Client, ViewObserver {
      * Called to flip a hand card
      * @param index hand card index
      */
-    @Override
     public void ctsUpdateFlipCard(int index) {
         try {
             gameController.flipCard(nickname, index);
@@ -512,7 +500,6 @@ public class ClientImpl implements Client, ViewObserver {
      * @param x coordinate x of the play area
      * @param y coordinate y of the play area
      */
-    @Override
     public void ctsUpdatePlayCard(int index, int x, int y) {
         try {
             gameController.playCard(nickname, index, x, y);
@@ -525,7 +512,6 @@ public class ClientImpl implements Client, ViewObserver {
      * Called to draw a card
      * @param drawCardEvent card to draw
      */
-    @Override
     public void ctsUpdateDrawCard(DrawCardEvent drawCardEvent) {
         try {
             gameController.drawCard(nickname, objectMapper.writeValueAsString(drawCardEvent));
@@ -539,7 +525,6 @@ public class ClientImpl implements Client, ViewObserver {
      * @param receiver message receiver (null if it's a global message)
      * @param content message content
      */
-    @Override
     public void ctsUpdateSendMessage(String receiver, String content) {
         try {
             gameController.sendMessage(nickname, receiver, content);
@@ -551,7 +536,6 @@ public class ClientImpl implements Client, ViewObserver {
     /**
      * Called to leave the current game.
      */
-    @Override
     public void updateLeaveGame() {
         try {
             server.leaveGame(this);
@@ -563,7 +547,6 @@ public class ClientImpl implements Client, ViewObserver {
     /**
      * Called to get his game controller.
      */
-    @Override
     public void updateGetGameController() {
         try {
             this.gameController = server.getGameController(this);

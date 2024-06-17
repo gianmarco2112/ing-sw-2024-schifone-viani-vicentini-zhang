@@ -282,7 +282,7 @@ public class ServerImpl implements Server {
             timeoutTaskToCancel.cancel(false);
         ScheduledFuture<?> timeoutTask = executorService.schedule(() -> {
             disconnect(client);
-        }, 10, TimeUnit.SECONDS);
+        }, 20, TimeUnit.SECONDS);
         clientToTimeout.put(client, timeoutTask);
     }
 

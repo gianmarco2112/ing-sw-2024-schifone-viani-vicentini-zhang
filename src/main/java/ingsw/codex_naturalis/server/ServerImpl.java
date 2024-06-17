@@ -170,29 +170,24 @@ public class ServerImpl implements Server {
             updatesQueue.put(() -> {
                 GameControllerImpl gameController;
                 gameController = gameIDToGame.get(gameID);
-                if (!notStartedGames.contains(gameController))
+                if (!notStartedGames.contains(gameController)) {
                     try {
                         client.reportException("No existing game found!");
+                        return;
                     } catch (RemoteException ex) {
                         System.err.println("Error while updating client\n" + ex.getMessage());
                     }
-                try {
-                    boolean isGameStarted = gameController.addPlayer(client, clientNicknameBiMap.get(client));
-                    if (isGameStarted) {
-                        startedGames.add(gameController);
-                        notStartedGames.remove(gameController);
-                        gameIDToGame.remove(gameID);
-                    }
-                    inLobbyUsers.remove(clientNicknameBiMap.get(client));
-                    userToGame.put(clientNicknameBiMap.get(client), gameController);
-                    updateInLobbyUsersGamesSpecs();
-                } catch (MaxNumOfPlayersInException e) {
-                    try {
-                        client.reportException(e.getMessage());
-                    } catch (RemoteException ex) {
-                        System.err.println("Error while updating client\n" + e.getMessage());
-                    }
                 }
+                boolean isGameStarted = gameController.addPlayer(client, clientNicknameBiMap.get(client));
+                if (isGameStarted) {
+                    startedGames.add(gameController);
+                    notStartedGames.remove(gameController);
+                    gameIDToGame.remove(gameID);
+                }
+                inLobbyUsers.remove(clientNicknameBiMap.get(client));
+                userToGame.put(clientNicknameBiMap.get(client), gameController);
+                updateInLobbyUsersGamesSpecs();
+
             });
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -295,7 +290,7 @@ public class ServerImpl implements Server {
      * Method called when a client's timeout expires, it removes the client from the game.
      * @param client disconnected client
      */
-    private synchronized void disconnect(Client client) {
+    public synchronized void disconnect(Client client) {
         //don't care about his heartbeat
         clientToTimeout.remove(client);
         //don't care if he disconnected before logging in

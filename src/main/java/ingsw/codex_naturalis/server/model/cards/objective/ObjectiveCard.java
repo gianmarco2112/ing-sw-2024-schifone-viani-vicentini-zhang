@@ -41,29 +41,6 @@ public abstract class ObjectiveCard extends Card {
     private boolean showingFront;
 
     /**
-     * Getter of the ObjectiveCard
-     */
-    public ObjectiveCard.Immutable getImmutableObjectiveCard(){
-        return new ObjectiveCard.Immutable(getCardID(), showingFront, cardToString());
-    }
-
-    /**
-     * Getter of the immutable ObjectiveCard (flipped to the back side in order to be hidden)
-     */
-    public ObjectiveCard.Immutable getImmutableHiddenPlayableCard(){
-        return new ObjectiveCard.Immutable(getCardID(), false, cardToString());
-    }
-
-    /**
-     * Part of the model's view: immutable view of the Objective card
-     */
-
-    public record Immutable(String cardID, boolean showingFront, String card) implements Serializable {
-        @Serial
-        private static final long serialVersionUID = 9L;
-    }
-
-    /**
      * The points that the objective card gives to the Player each time the objective is achieved
      */
     private final int points;

@@ -129,21 +129,17 @@ public class TextualUI implements UI {
     
     
 
-    public void run(String[] args) {
+    public void run(String[] args) throws RemoteException {
 
         networkProtocol = args[0];
         ipAddress = args[1];
-        try {
-            switch (networkProtocol) {
-                case "RMI" -> {
-                    createRMIClient();
-                }
-                case "socket" -> {
-                    createSocketClient();
-                }
+        switch (networkProtocol) {
+            case "RMI" -> {
+                createRMIClient();
             }
-        } catch (RemoteException e) {
-            throw new RuntimeException();
+            case "socket" -> {
+                createSocketClient();
+            }
         }
         while (true) {
             switch (getRunningState()) {
@@ -160,7 +156,7 @@ public class TextualUI implements UI {
         try {
             server = (Server) registry.lookup("Server");
         } catch (NotBoundException e) {
-            throw new RemoteException();
+            throw new RemoteException(e.getMessage());
         }
 
         this.client = new ClientImpl(server, NetworkProtocol.RMI, this);
@@ -178,7 +174,7 @@ public class TextualUI implements UI {
                     try {
                         serverStub.close();
                     } catch (RemoteException ex) {
-                        System.err.println("Error while closing connection with server");
+                        System.err.println("Error while closing connection with server\n" + ex.getMessage());
                     }
                     System.exit(1);
                 }

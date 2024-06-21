@@ -3,13 +3,17 @@ package ingsw.codex_naturalis.server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.client.ClientImpl;
+import ingsw.codex_naturalis.client.view.tui.TextualUI;
 import ingsw.codex_naturalis.common.NetworkProtocol;
-import ingsw.codex_naturalis.common.enumerations.Color;
+import ingsw.codex_naturalis.common.enumerations.*;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
 import ingsw.codex_naturalis.server.exceptions.ColorAlreadyChosenException;
-import ingsw.codex_naturalis.server.exceptions.NotYourTurnException;
+import ingsw.codex_naturalis.server.exceptions.MaxNumOfPlayersInException;
+import ingsw.codex_naturalis.server.exceptions.NotPlayableException;
+import ingsw.codex_naturalis.server.model.Deck;
 import ingsw.codex_naturalis.server.model.Game;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,10 +34,8 @@ class GameControllerImplTest {
     void setUp() throws RemoteException {
         server = new ServerImpl();
 
-        client1 = new ClientImpl(server, NetworkProtocol.RMI);
-        client1.setViewTest();
-        client2 = new ClientImpl(server, NetworkProtocol.RMI);
-        client2.setViewTest();
+        client1 = new ClientImpl(server, NetworkProtocol.RMI, new TextualUI());
+        client2 = new ClientImpl(server, NetworkProtocol.RMI, new TextualUI());
 
         gameplayController = new GameControllerImpl(server,100,2,client1,"Test");
         gameplayController.addPlayer(client2, "Test2");
@@ -60,12 +62,12 @@ class GameControllerImplTest {
     @Test
     void updateInitialCard() throws JsonProcessingException, InterruptedException {
         readyToPlay();
-        assertFalse(model.getPlayerOrder().getFirst().getInitialCard().getImmutablePlayableCard().showingFront());
+        assertFalse(model.getPlayerOrder().getFirst().getInitialCard().isShowingFront());
         gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.FLIP));
-        while(!model.getPlayerOrder().getFirst().getInitialCard().getImmutablePlayableCard().showingFront()){
+        while(!model.getPlayerOrder().getFirst().getInitialCard().isShowingFront()){
             //System.out.println("waiting for model update");
         }
-        assertTrue(model.getPlayerOrder().getFirst().getInitialCard().getImmutablePlayableCard().showingFront());
+        assertTrue(model.getPlayerOrder().getFirst().getInitialCard().isShowingFront());
 
         assertFalse(model.getPlayerOrder().getFirst().getPlayerArea().getArea().containsKey(List.of(0,0)));
         gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
@@ -91,6 +93,8 @@ class GameControllerImplTest {
         readyToPlay();
         gameplayController.chooseColor("Test", objectMapper.writeValueAsString(Color.RED));
         gameplayController.chooseColor("Test2", objectMapper.writeValueAsString(Color.BLUE));
+        gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.FLIP));
+        gameplayController.updateInitialCard("Test2", objectMapper.writeValueAsString(InitialCardEvent.FLIP));
         gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
         gameplayController.updateInitialCard("Test2", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
         assertTrue(model.getPlayerOrder().getFirst().getSecretObjectiveCards().isEmpty());
@@ -103,7 +107,7 @@ class GameControllerImplTest {
     }
 
     @Test
-    void flipCard() throws JsonProcessingException {
+    void flipCard() throws JsonProcessingException, InterruptedException {
         chooseSecretObjectiveCard();
         assertEquals(3, model.getPlayerOrder().getFirst().getHand().size());
         boolean initialIsShowingFront = model.getPlayerOrder().getFirst().getHand().getFirst().isShowingFront();
@@ -113,12 +117,20 @@ class GameControllerImplTest {
             //System.out.println("waiting for model update");
         }
         assertEquals(!initialIsShowingFront, model.getPlayerOrder().getFirst().getHand().getFirst().isShowingFront());
+
+        gameplayController.flipCard("Test", 4);//line 244
+        TimeUnit.MILLISECONDS.sleep(200);
     }
 
     @Test
-    void playCard() throws JsonProcessingException {
+    void playCard() throws JsonProcessingException, InterruptedException {
         chooseSecretObjectiveCard();
+        TimeUnit.MILLISECONDS.sleep(200);
         assertEquals(1, model.getPlayerOrder().getFirst().getPlayerArea().getArea().size());
+
+        gameplayController.drawCard(model.getPlayerOrder().getFirst().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1));//line 343
+        TimeUnit.MILLISECONDS.sleep(200);
+
         gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 1, 1, 1);
         gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 1, 1, 1);
         while(model.getPlayerOrder().getFirst().getPlayerArea().getArea().size() == 1){
@@ -126,10 +138,15 @@ class GameControllerImplTest {
         }
         assertEquals(1, model.getPlayerOrder().getLast().getPlayerArea().getArea().size());
         assertEquals(2, model.getPlayerOrder().getFirst().getPlayerArea().getArea().size());
+
+        gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 1, 1, 1); //line 274
+        TimeUnit.MILLISECONDS.sleep(200);
+        gameplayController.drawCard(model.getPlayerOrder().getLast().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1));//line 339
+        TimeUnit.MILLISECONDS.sleep(200);
     }
 
     @Test
-    void drawCard() throws JsonProcessingException {
+    void drawCard() throws JsonProcessingException, InterruptedException {
         playCard();
         assertEquals(1, model.getPlayerOrder().getLast().getPlayerArea().getArea().size());
         assertEquals(2, model.getPlayerOrder().getFirst().getPlayerArea().getArea().size());
@@ -155,4 +172,165 @@ class GameControllerImplTest {
         }
         assertEquals(2 ,model.getChat().size());
     }
+
+    @Test
+    void endGame() throws JsonProcessingException, InterruptedException {
+        chooseSecretObjectiveCard();
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        model.getPlayerOrder().getFirst().getPlayerArea().setPoints(20);
+
+        gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        assertEquals(GameStatus.LAST_ROUND_20_POINTS, model.getGameStatus());
+
+        gameplayController.drawCard(model.getPlayerOrder().getFirst().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1));
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.drawCard(model.getPlayerOrder().getLast().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2));
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 2, -1, -1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+
+        gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, 1, -1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 0, 1, -1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        assertEquals(GameStatus.ENDGAME, model.getGameStatus());
+    }
+
+    @Test
+    void deckEmptyAndEndGame() throws JsonProcessingException, InterruptedException {
+        chooseSecretObjectiveCard();
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        Deck<PlayableCard> resourceCardsDeck = model.getResourceCardsDeck();
+        Deck<PlayableCard> goldCradsDeck = model.getGoldCardsDeck();
+
+        model.getPlayerOrder().getFirst().getPlayerArea().setPoints(20);
+        model.getPlayerOrder().getLast().getPlayerArea().setPoints(21);
+
+        for(int i = 0; i < 34; i++) {
+            resourceCardsDeck.drawACard();
+        }
+
+        for(int i = 0; i < 36; i ++) {
+            goldCradsDeck.drawACard();
+        }
+
+        for(int i = 0; i < 2; i ++) {
+            PlayableCard p1 = model.removeRevealedGoldCard(0);
+        }
+        PlayableCard p2 = model.removeRevealedResourceCard(0);
+
+        //lascio un'ultima carta da pescare per fare scatenare fine dei mazzi
+        gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+        gameplayController.drawCard(model.getPlayerOrder().getFirst().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1));
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        assertEquals(GameStatus.LAST_ROUND_DECKS_EMPTY, model.getGameStatus());
+
+        gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, -1, -1);
+        TimeUnit.MILLISECONDS.sleep(200);
+        gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 0, -1, -1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, 1, -1);
+        TimeUnit.MILLISECONDS.sleep(200);
+        gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 0, 1, -1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        assertEquals(GameStatus.ENDGAME, model.getGameStatus());
+    }
+
+    @Test
+    void drawFromDecks() throws JsonProcessingException, InterruptedException {
+        chooseSecretObjectiveCard();
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.drawCard(model.getPlayerOrder().getFirst().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK));
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        assertEquals(PlayableCardType.RESOURCE, model.getPlayerOrder().getFirst().getHand().getLast().getPlayableCardType());
+
+
+        gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.drawCard(model.getPlayerOrder().getLast().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK));
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        assertEquals(PlayableCardType.GOLD, model.getPlayerOrder().getLast().getHand().getLast().getPlayableCardType());
+
+        gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 2, -1, -1);
+        TimeUnit.MILLISECONDS.sleep(200);
+    }
+
+    @Test
+    void drawFromRevealedGold() throws JsonProcessingException, InterruptedException {
+        chooseSecretObjectiveCard();
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, 1, 1);
+        //gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.drawCard(model.getPlayerOrder().getFirst().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1));
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        assertEquals(PlayableCardType.GOLD, model.getPlayerOrder().getFirst().getHand().getLast().getPlayableCardType());
+
+        //gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, 1, 1);
+        gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.drawCard(model.getPlayerOrder().getLast().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2));
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        assertEquals(PlayableCardType.GOLD, model.getPlayerOrder().getLast().getHand().getLast().getPlayableCardType());
+
+        //gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, -1, -1);
+        gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 0, -1, -1);
+        TimeUnit.MILLISECONDS.sleep(200);
+    }
+
+    @Test
+    void maxNumOfPlayer() {
+        assertThrows(MaxNumOfPlayersInException.class,()->{gameplayController.addPlayer(new ClientImpl(new ServerImpl(), NetworkProtocol.RMI, new TextualUI()), "Test3");});
+    }
+
+    @Test
+    void colorAlreadyChoosed() throws JsonProcessingException, InterruptedException {
+        gameplayController.chooseColor("Test", objectMapper.writeValueAsString(Color.RED));
+        TimeUnit.MILLISECONDS.sleep(200);
+        gameplayController.chooseColor("Test2", objectMapper.writeValueAsString(Color.RED));
+        TimeUnit.MILLISECONDS.sleep(200);
+    }
+
+    @Test
+    void chooseSecretOutOfBound() throws JsonProcessingException, InterruptedException {//line 219
+        readyToPlay();
+        gameplayController.chooseColor("Test", objectMapper.writeValueAsString(Color.RED));
+        gameplayController.chooseColor("Test2", objectMapper.writeValueAsString(Color.BLUE));
+        gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.FLIP));
+        gameplayController.updateInitialCard("Test2", objectMapper.writeValueAsString(InitialCardEvent.FLIP));
+        gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
+        gameplayController.updateInitialCard("Test2", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
+        assertTrue(model.getPlayerOrder().getFirst().getSecretObjectiveCards().isEmpty());
+        gameplayController.chooseSecretObjectiveCard("Test", 2);
+        TimeUnit.MILLISECONDS.sleep(200);
+    }
+
 }

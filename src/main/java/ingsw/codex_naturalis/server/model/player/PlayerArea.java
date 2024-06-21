@@ -16,67 +16,6 @@ import java.util.*;
 public class PlayerArea {
 
     /**
-     * Part of the model's view: immutable overview of the Player's Area
-     * (intended for the Controller in order to manage the game)
-     */
-
-    public record Immutable(@JsonDeserialize(keyUsing = ListKeyDeserializer.class)Map<List<Integer>,PlayableCard.Immutable> area,
-                            Map<ExtremeCoordinate, Integer> extremeCoordinates,
-                            Map<Symbol, Integer> numOfSymbols, ObjectiveCard.Immutable objectiveCard,
-                            int points, int extraPoints) {}
-    /**
-     * Part of the model's view: immutable overview of the Player's Area
-     * (intended for the View -> the player's secret objective card and the points it gives are hidden)
-     */
-
-    public record ImmutableHidden(@JsonDeserialize(keyUsing = ListKeyDeserializer.class)Map<List<Integer>,PlayableCard.Immutable> area,
-                            Map<ExtremeCoordinate, Integer> extremeCoordinates,
-                            Map<Symbol, Integer> numOfSymbols,
-                            int points) {}
-
-    /**
-     * Getter of the immutable Player's Area
-     */
-    public PlayerArea.Immutable getImmutablePlayerArea(){
-
-        ObjectiveCard.Immutable immObjectiveCard = null;
-        if (objectiveCard != null)
-            immObjectiveCard = objectiveCard.getImmutableObjectiveCard();
-
-        Map<List<Integer>, PlayableCard.Immutable> immutableArea = new LinkedHashMap<>();
-        for (List<Integer> key : area.keySet()) {
-            immutableArea.put(key, area.get(key).getImmutablePlayableCard());
-        }
-
-        Map<Symbol,Integer> noCornerNumOfSymbols = new HashMap<>();
-        for (Map.Entry<Symbol,Integer> entry : numOfSymbols.entrySet())
-            if (entry.getKey() != Symbol.COVERED)
-                noCornerNumOfSymbols.put(entry.getKey(), entry.getValue());
-
-        return new PlayerArea.Immutable(immutableArea, new HashMap<>(extremeCoordinates), noCornerNumOfSymbols,
-                immObjectiveCard, points, extraPoints);
-
-    }
-    /**
-     * Getter of the immutable Player's Area
-     * (without the secret objective cards and the relative points)
-     */
-    public PlayerArea.ImmutableHidden getImmutableHiddenPlayerArea(){
-
-        Map<List<Integer>, PlayableCard.Immutable> immutableArea = new LinkedHashMap<>();
-        for (List<Integer> key : area.keySet())
-            immutableArea.put(key, area.get(key).getImmutablePlayableCard());
-
-        Map<Symbol,Integer> noCornerNumOfSymbols = new HashMap<>();
-        for (Map.Entry<Symbol,Integer> entry : numOfSymbols.entrySet())
-            if (entry.getKey() != Symbol.COVERED)
-                noCornerNumOfSymbols.put(entry.getKey(), entry.getValue());
-
-        return new PlayerArea.ImmutableHidden(immutableArea, new HashMap<>(extremeCoordinates), noCornerNumOfSymbols, points);
-
-    }
-
-    /**
      * This Map represents the player's area with all the cards he has placed
      * The key represents the coordinates, the value represents the card played
      */

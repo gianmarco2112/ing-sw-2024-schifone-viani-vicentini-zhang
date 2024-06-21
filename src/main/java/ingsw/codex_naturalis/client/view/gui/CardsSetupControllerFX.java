@@ -3,6 +3,7 @@ package ingsw.codex_naturalis.client.view.gui;
 import ingsw.codex_naturalis.common.immutableModel.ImmObjectiveCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -14,7 +15,9 @@ import java.util.List;
 public class CardsSetupControllerFX {
     private GraphicalUI viewGUI;
     @FXML
-    private Button ConfirmBtn;
+    private Label objectiveCardLBL;
+    @FXML
+    private Label initialCardLBL;
 
     @FXML
     private ImageView backInitial;
@@ -68,6 +71,7 @@ public class CardsSetupControllerFX {
     }
 
     public void showInitialCard(String s) {
+        objectiveCardLBL.setVisible(false);
 
         System.out.println("initial card " + s);
 
@@ -94,6 +98,8 @@ public class CardsSetupControllerFX {
     }
 
     public void chooseObjective(List<ImmObjectiveCard> immObjectiveCards) {
+        initialCardLBL.setVisible(false);
+
         String objective1 = "/CardsImages/Objective/" + immObjectiveCards.get(0).cardID() + ".png";
         String objective2 = "/CardsImages/Objective/" + immObjectiveCards.get(1).cardID() + ".png";
 

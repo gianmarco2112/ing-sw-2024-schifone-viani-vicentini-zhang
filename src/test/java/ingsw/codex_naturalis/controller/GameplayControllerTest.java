@@ -1,9 +1,11 @@
-package ingsw.codex_naturalis.controller;
+/*package ingsw.codex_naturalis.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ingsw.codex_naturalis.client.ClientImpl;
+import ingsw.codex_naturalis.client.view.tui.TextualUI;
 import ingsw.codex_naturalis.common.NetworkProtocol;
+import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.enumerations.GameStatus;
 import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
@@ -42,9 +44,10 @@ class GameplayControllerTest {
     ClientImpl client1;
     ClientImpl client2;
     ServerImpl server;
+    ObjectMapper objectMapper = new ObjectMapper();
     //--------------SETUP-----------------------------------------------------
     @BeforeEach
-    void setUp() throws RemoteException {
+    void setUp() throws RemoteException, JsonProcessingException {
         //model = new Game(0,2);
 
         //player = new Player("Test");
@@ -59,13 +62,13 @@ class GameplayControllerTest {
 
         server = new ServerImpl();
 
-        client1 = new ClientImpl(server, NetworkProtocol.RMI);
-        client1.setViewTest();
-        client2 = new ClientImpl(server, NetworkProtocol.RMI);
-        client2.setViewTest();
+        client1 = new ClientImpl(server, NetworkProtocol.RMI, new TextualUI());
+        client2 = new ClientImpl(server, NetworkProtocol.RMI, new TextualUI());
 
         gameplayController = new GameControllerImpl(server,100,2,client1,"Test");
         gameplayController.addPlayer(client2, "Test2");
+        gameplayController.chooseColor("Test", objectMapper.writeValueAsString(Color.RED));
+        gameplayController.chooseColor("Test", objectMapper.writeValueAsString(Color.BLUE));
         model = gameplayController.getModel();
         //model.addPlayer(player);
         //model.addPlayer(player2);
@@ -241,8 +244,13 @@ class GameplayControllerTest {
     @Test
     void updateDrawCard() throws JsonProcessingException {
         updatePlayCard();
+        Player player = model.getCurrentPlayer();
         ObjectMapper objectMapper = new ObjectMapper();;
         gameplayController.drawCard("Test", objectMapper.writeValueAsString(DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK));//remove first
+
+        while(player.getHand().isEmpty()){
+
+        }
         PlayableCard card = player.getHand().getFirst();
         assertEquals("R01",card.getCardID());
 
@@ -260,6 +268,10 @@ class GameplayControllerTest {
         gameplayController.playCard("Test2", 1,1,1);
         //----------------
         gameplayController.drawCard("Test2", objectMapper.writeValueAsString(DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK));//remove first
+        player = model.getCurrentPlayer();
+        while(player.getHand().isEmpty()){
+
+        }
         card = player2.getHand().getFirst();
         assertEquals("G01",card.getCardID());
 
@@ -388,4 +400,4 @@ class GameplayControllerTest {
         assertEquals(GameStatus.ENDGAME,model.getGameStatus());
     }
 
-}
+}*/

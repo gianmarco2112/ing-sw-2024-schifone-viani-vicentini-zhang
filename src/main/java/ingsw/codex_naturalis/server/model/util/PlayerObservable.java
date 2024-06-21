@@ -21,11 +21,6 @@ public class PlayerObservable {
         }
     }
 
-    public synchronized void deleteObservers() {
-        obs.clear();
-    }
-
-
 
     public void notifyObservers(Player player, PlayerEvent playerEvent) {
         for (PlayerObserver o : obs) {

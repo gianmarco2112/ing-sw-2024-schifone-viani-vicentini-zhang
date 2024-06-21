@@ -14,22 +14,6 @@ import ingsw.codex_naturalis.common.enumerations.Symbol;
 public class PlayableCard extends Card {
 
     /**
-     * Getter of the immutable hidden PlayableCard
-     */
-    public PlayableCard.Immutable getImmutablePlayableCard(){
-        return new PlayableCard.Immutable(getCardID(), showingFront, playerAreaCardToString(kingdom), handCardToString(kingdom), getCurrentPlayableSide());
-    }
-
-    /**
-     * Part of the model's view: immutable view of the INITIAL, GOLD or RESOURCE card
-     */
-
-    public record Immutable(String cardID, boolean showingFront, String description, String handCard, PlayableSide currentPlayableSide) {}
-
-
-
-
-    /**
      * Card type, can be INITIAL, RESOURCE or GOLD
      */
     private final PlayableCardType playableCardType;

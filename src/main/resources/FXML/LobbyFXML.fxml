@@ -13,19 +13,19 @@
          <image>
             <Image url="@../lobbiesPageResources/title.png" />
          </image></ImageView>
-      <Label fx:id="GameNameJoin_LB" alignment="TOP_LEFT" maxWidth="500.0" minWidth="160.0" prefHeight="17.0" prefWidth="500.0" style="-fx-font-family: luminari;" styleClass="h4" text="GameID">
+      <Label fx:id="GameNameJoin_LB" alignment="TOP_LEFT" maxWidth="500.0" minWidth="160.0" prefHeight="17.0" prefWidth="500.0" styleClass="h4" text="GameID">
          <padding>
             <Insets left="15.0" />
          </padding>
       </Label>
       <HBox alignment="CENTER" minWidth="180.0" prefHeight="100.0" spacing="5.0">
          <children>
-            <Label prefHeight="17.0" style="-fx-font-family: luminari;" text="Players:" />
-            <Label fx:id="NumPlayersConnected_LB" style="-fx-font-family: luminari;" text="1" />
+            <Label prefHeight="17.0" text="Players:" />
+            <Label fx:id="NumPlayersConnected_LB" text="1" />
             <Label text="/" />
-            <Label fx:id="MaxNumPlayers_LB" style="-fx-font-family: luminari;" text="1" />
+            <Label fx:id="MaxNumPlayers_LB" text="1" />
          </children>
       </HBox>
-      <Button fx:id="JoinGame_BTN" mnemonicParsing="false" prefHeight="54.0" prefWidth="80.0" style="-fx-font-family: luminari;" styleClass="shiny-orange" stylesheets="@../style.css" text="Join" />
+      <Button fx:id="JoinGame_BTN" mnemonicParsing="false" prefHeight="54.0" prefWidth="96.0" styleClass="shiny-orange" stylesheets="@../style.css" text="Join" />
    </children>
 </HBox>

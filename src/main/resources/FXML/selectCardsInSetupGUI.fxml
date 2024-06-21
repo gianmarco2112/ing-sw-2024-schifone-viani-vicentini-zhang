@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ingsw.codex_naturalis.client.view.gui.CardsSetupControllerFX">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="ipad-grey" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ingsw.codex_naturalis.client.view.gui.CardsSetupControllerFX">
    <children>
-      <VBox layoutX="10.0" layoutY="10.0" prefHeight="720.0" prefWidth="1280.0">
+      <VBox layoutX="406.0" layoutY="209.0" prefHeight="381.0" prefWidth="437.0">
          <children>
-            <Label text="Seleziona da che lato giocare la carta iniziale" />
+            <Label fx:id="initialCardLBL" text="Select which side to play the initial card on!" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <ImageView fx:id="frontInitial" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#frontInitialSelected" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="backInitial" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#backInitialSelected" pickOnBounds="true" preserveRatio="true" />
                </children>
             </HBox>
-            <Label text="Seleziona la tua carta obbiettivo" />
+            <Label fx:id="objectiveCardLBL" text="Choose your secret objective card!" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <ImageView fx:id="objectiveCard1" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#objectiveCard1Selected" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="objectiveCard2" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#objectiveCard2Selected" pickOnBounds="true" preserveRatio="true" />
                </children>
             </HBox>
-            <Button fx:id="ConfirmBtn" mnemonicParsing="false" onMouseClicked="#cardChoiceConfirmed" text="Conferma" />
          </children>
       </VBox>
    </children>

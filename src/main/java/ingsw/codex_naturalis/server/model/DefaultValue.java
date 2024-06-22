@@ -2,22 +2,67 @@ package ingsw.codex_naturalis.server.model;
 
 import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
-
+/**
+ * This class contains all the default values
+ */
 public class DefaultValue {
+    /**
+     * Max number of player in a game
+     */
     public final static int maxNumOfPlayer = 4;
+    /**
+     * Min number of player in a game
+     */
     public final static int minNumOfPlayer = 2;
+    /**
+     * Total number of Resource cards in the game
+     */
     public final static int totNumOfResourceCards = 40;
+    /**
+     * Total number of Gold cards in the game
+     */
     public final static int totNumOfGoldCards = 40;
+    /**
+     * Total number of Objective cards in the game
+     */
     public final static int totNumOfObjectiveCards = 16;
+    /**
+     * Total number of Initial cards in the game
+     */
     public final static int totNumOfInitialCards = 6;
+    /**
+     * To reset the text's color to default
+     */
     public static final String ANSI_RESET = "\u001B[0m";
+    /**
+     * To set the text's color to red (color of resource "FUNGI")
+     */
     public static final String FungiColor = "\u001B[31m";
+    /**
+     * To set the text's color to green (color of resource "PLANT")
+     */
     public static final String PlantColor = "\u001B[32m";
+    /**
+     * To set the text's color to gold
+     */
     public static final String GoldColor = "\u001B[33m";
+    /**
+     * To set the text's color to light-blue (color of resource "ANIMAL")
+     */
     public static final String AnimalColor = "\u001B[34m";
+    /**
+     * To set the text's color to purple (color of resource "INSECT")
+     */
     public static final String InsectColor = "\u001B[35m";
+    /**
+     * To set the text's color to white
+     */
     public static final String WHITE = "\u001B[37m";
-
+    /**
+     * To draw the cards in TUI (with the view used to draw the cards in player's hand)
+     * @param side : the side (of the card) to draw
+     * @param kingdom : the central symbol of the card (used to know the color to use to draw the card)
+     */
     public static String getTUIHandCardSideTemplate(PlayableSide side, Symbol kingdom){
         String cardTemplate = "";
         boolean tl_is_covered = side.getTopLeftCorner().isCovered();
@@ -173,7 +218,11 @@ public class DefaultValue {
 
         return cardTemplate;
     }
-
+    /**
+     * To draw the cards in TUI (with the view used to draw the cards into the player's area)
+     * @param side : the side (of the card) to draw
+     * @param kingdom : the central symbol of the card (used to know the color to use to draw the card)
+     */
     public static String getTUIPlayerAreaCardSideTemplate(PlayableSide side, Symbol kingdom){
         String cardTemplate = "";
         boolean tl_is_covered = (side.getTopLeftCorner().getSymbol() == Symbol.COVERED);

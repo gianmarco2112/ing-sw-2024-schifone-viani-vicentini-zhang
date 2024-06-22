@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
- * MessageEvent class
+ * MessageEvent's class
  */
 public class Message {
 
@@ -14,7 +14,7 @@ public class Message {
      */
     private String content;
     /**
-     * Sent time
+     * Time the message was sent
      */
     private String sentTime;
 
@@ -29,10 +29,10 @@ public class Message {
 
 
     /**
-     * Constructor
-     * @param content Content
-     * @param sender Sender
-     * @param receivers Receivers
+     * Message's constructor
+     * @param content: Content of the message
+     * @param sender: Sender of the message
+     * @param receivers: Receivers of the message
      */
     public Message(String content, String sender, List<String> receivers){
         this.content = content;
@@ -44,15 +44,15 @@ public class Message {
     }
 
     /**
-     * Content getter
-     * @return Content
+     * Content's getter
+     * @return Content of the message
      */
     public String getContent() {
         return content;
     }
 
     /**
-     * Sent time getter
+     * Sent time's getter
      * @return Sent time
      */
     public String getSentTime(){
@@ -60,7 +60,7 @@ public class Message {
     }
 
     /**
-     * Receivers getter
+     * Receivers' getter
      * @return List of receivers
      */
     public List<String> getReceivers() {
@@ -68,7 +68,7 @@ public class Message {
     }
 
     /**
-     * Sender getter
+     * Sender's getter
      * @return Sender
      */
     public String getSender() {

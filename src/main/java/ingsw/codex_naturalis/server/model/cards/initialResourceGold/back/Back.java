@@ -18,7 +18,12 @@ public class Back extends PlayableSide {
      */
     private final List<Symbol> permanentResources;
     /**
-     * Constructor
+     * Back side's constructor
+     * @param bottomRightCorner of the back side of the card
+     * @param bottomLeftCorner of the back side of the card
+     * @param topRightCorner of the back side of the card
+     * @param topLeftCorner of the back side of the card
+     * @param permanentResources : central symbol of the card
      */
 
     //----------------------------------------------------------------------------------
@@ -35,7 +40,7 @@ public class Back extends PlayableSide {
     //----------------------------------------------------------------------------------
     /**
      * This method updates the Symbol's counters of the Player with the Permanent Symbols of the card
-     * @param playerArea
+     * @param playerArea of the player
      */
     @Override
     protected void gainSymbols(PlayerArea playerArea){
@@ -55,7 +60,10 @@ public class Back extends PlayableSide {
             playerArea.incrNumOfSymbol(getBottomRightCorner().getSymbol());
         }
     }
-
+    /**
+     * To draw the cards in TUI (with the view used to draw the cards in player's hand)
+     * @param kingdom : the central symbol of the card (used to know the color to use to draw the card)
+     */
     @Override
     public String handCardToString(Symbol kingdom) {
         StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(this, kingdom));
@@ -88,7 +96,10 @@ public class Back extends PlayableSide {
         return outString.toString();
     }
 
-
+    /**
+     * To draw the cards in TUI (with the view used to draw the cards into the player's area)
+     * @param kingdom : the central symbol of the card (used to know the color to use to draw the card)
+     */
     @Override
     public String playerAreaCardToString(Symbol kingdom){
         StringBuilder outString = new StringBuilder(DefaultValue.getTUIPlayerAreaCardSideTemplate(this, kingdom));

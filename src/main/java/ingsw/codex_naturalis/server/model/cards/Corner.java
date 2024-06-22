@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
 
 /**
- * Corner class: each card would have 4 corners
+ * Corner's class: each card would have 4 corners
  */
 public class Corner {
     /**

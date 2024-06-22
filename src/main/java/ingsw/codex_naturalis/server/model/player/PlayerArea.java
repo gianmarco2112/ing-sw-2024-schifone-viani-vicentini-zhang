@@ -44,13 +44,12 @@ public class PlayerArea {
 
     /**
      * Counts the total number of extra points from the fulfilment of the
-     * objectives on the Objective cards.
-     *
+     * objectives on the Objective cards
      */
     private int extraPoints;
 
     /**
-     * Constructor
+     * PlayerArea's constructor
      */
     public PlayerArea(){
         this.objectiveCard = null;
@@ -86,21 +85,25 @@ public class PlayerArea {
         this.numOfSymbols.put(Symbol.COVERED,0);
     }
     /**
-     * Getter of the Extreme Coordinates
+     * Getter of a specified Extreme Coordinate
+     * @param extremeCoordinate to get
      * @return extremeCoordinates
      */
     public int getExtremeCoordinate(ExtremeCoordinate extremeCoordinate) {
         return extremeCoordinates.get(extremeCoordinate);
     }
     /**
-     * Setter of the Extreme Coordinates
-     * @param extremeCoordinate: list of the previous extreme coordinates
-     * @param value : the value of the new extreme coordinates
+     * Setter of a specified Extreme Coordinate
+     * @param extremeCoordinate to set
+     * @param value to set
      */
     private void setExtremeCoordinate(ExtremeCoordinate extremeCoordinate, Integer value) {
         extremeCoordinates.put(extremeCoordinate, value);
     }
-
+    /**
+     * Getter of the Extreme Coordinates
+     * @return extremeCoordinates
+     */
     public Map<ExtremeCoordinate, Integer> getExtremeCoordinates() {
         return new HashMap<>(extremeCoordinates);
     }
@@ -132,7 +135,7 @@ public class PlayerArea {
     }
 
     /**
-     *  Getter of the Player's extra points
+     * Getter of the Player's extra points
      * @return Extra points
      */
     public int getExtraPoints() {
@@ -166,7 +169,7 @@ public class PlayerArea {
     }
     /**
      * Returns the count of the specified Symbol
-     * @param symbol
+     * @param symbol: the symbol
      * @return the count
      */
     public Integer getNumOfSymbol(Symbol symbol){
@@ -188,7 +191,7 @@ public class PlayerArea {
     }
     /**
      * Put the initial card (on the side chosen by the Player) at the origin of the Player's Area
-     * @param initialCard
+     * @param initialCard : the initial card
      */
     public void setInitialCard(PlayableCard initialCard) {
 

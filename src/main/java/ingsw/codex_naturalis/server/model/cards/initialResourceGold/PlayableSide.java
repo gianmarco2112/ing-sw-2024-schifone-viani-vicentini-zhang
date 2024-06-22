@@ -50,10 +50,10 @@ public class PlayableSide {
 
     /**
      * Side's constructor
-     * @param topLeftCorner
-     * @param topRightCorner
-     * @param bottomLeftCorner
-     * @param bottomRightCorner
+     * @param topLeftCorner of the side of the card
+     * @param topRightCorner of the side of the card
+     * @param bottomLeftCorner of the side of the card
+     * @param bottomRightCorner of the side of the card
      */
 
     //-------------------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ public class PlayableSide {
 
     /**
      * This method updates the Symbol's counters of the Player with the Symbols on the played card
-     * @param playerArea
+     * @param playerArea: the playerArea where to add symbols
      */
     protected void gainSymbols(PlayerArea playerArea){
         if(topLeftCorner.getSymbol() != Symbol.EMPTY){
@@ -215,12 +215,18 @@ public class PlayableSide {
             playerArea.incrNumOfSymbol(bottomRightCorner.getSymbol());
         }
     }
-
+    /**
+     * To draw the cards in TUI (with the view used to draw the cards in player's hand)
+     * @param kingdom : the central symbol of the card (used to know the color to use to draw the card)
+     */
     public String handCardToString(Symbol kingdom) {
         StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(this, kingdom));
         return outString.toString();
     }
-
+    /**
+     * To draw the cards in TUI (with the view used to draw the cards into the player's area)
+     * @param kingdom : the central symbol of the card (used to know the color to use to draw the card)
+     */
     public String playerAreaCardToString(Symbol kingdom){
         StringBuilder outString = new StringBuilder(DefaultValue.getTUIPlayerAreaCardSideTemplate(this, kingdom));
         return outString.toString();

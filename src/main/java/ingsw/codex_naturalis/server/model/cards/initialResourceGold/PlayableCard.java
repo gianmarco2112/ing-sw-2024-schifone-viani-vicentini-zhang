@@ -9,7 +9,7 @@ import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
 
 /**
- * Card type, can be INITIAL, RESOURCE or GOLD
+ * PlayableCard's class
  */
 public class PlayableCard extends Card {
 
@@ -40,11 +40,11 @@ public class PlayableCard extends Card {
 
     /**
      * Constructor of the card
-     * @param cardID
-     * @param playableCardType
-     * @param kingdom
-     * @param front
-     * @param back
+     * @param cardID: the ID of the card
+     * @param playableCardType : the cardType of the card
+     * @param kingdom: the kingdom of the card
+     * @param front: the front side of the card
+     * @param back: the back side of the card
      */
 
     //---------------------------------------------------------------------------------
@@ -109,19 +109,24 @@ public class PlayableCard extends Card {
         }
     }
     /**
-     * Set to front the side that the card is showing
+     * Set to "front" the side that the card is showing
      */
     private void showFront() {
         showingFront = true;
         currentPlayableSide = front;
     }
     /**
-     * Set to back the side that the card is showing
+     * Set to "back" the side that the card is showing
      */
     private void showBack() {
         showingFront = false;
         currentPlayableSide = back;
     }
+    /**
+     * Getter of the side currently showed by the card
+     * @return showingFront: true is the card is showing the front side,
+     *                       false otherwise
+     */
     public boolean isShowingFront() {
         return showingFront;
     }
@@ -139,11 +144,17 @@ public class PlayableCard extends Card {
     public PlayableSide getBack() {
         return back;
     }
-
+    /**
+     * To draw the cards in TUI (with the view used to draw the cards in player's hand)
+     * @param kingdom : the central symbol of the card (used to know the color to use to draw the card)
+     */
     public String handCardToString(Symbol kingdom) {
         return currentPlayableSide.handCardToString(kingdom);
     }
-
+    /**
+     * To draw the cards in TUI (with the view used to draw the cards into the player's area)
+     * @param kingdom : the central symbol of the card (used to know the color to use to draw the card)
+     */
     public String playerAreaCardToString(Symbol kingdom){
         return currentPlayableSide.playerAreaCardToString(kingdom);
     }
@@ -169,7 +180,7 @@ public class PlayableCard extends Card {
     public Corner getBottomRightCorner() { return currentPlayableSide.getBottomRightCorner(); }
 
     /**
-     * Method to increment the counters of each Symbol related to the played card.
+     * Method to increment the counters of each Symbol related to the played card
      * @param playerArea: of the player whose counters are incremented
      */
     public void play(PlayerArea playerArea){

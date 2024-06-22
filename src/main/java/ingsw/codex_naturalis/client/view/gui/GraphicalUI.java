@@ -320,8 +320,10 @@ public class GraphicalUI extends Application implements UI {
         else {
             if (hasDisconnected)
                 gameControllerFX.updatePlayerInGameStatus("has disconnected!",immGame,playerNickname);
-            else
-                gameControllerFX.updatePlayerInGameStatus("has left the game",immGame,playerNickname);
+            else {
+                gameControllerFX.updatePlayerInGameStatus("has left the game", immGame, playerNickname);
+                gameControllerFX.updateChatComboBox(playerNickname);
+            }
         }
     }
 

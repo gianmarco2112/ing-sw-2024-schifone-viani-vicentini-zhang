@@ -60,8 +60,6 @@ module ingsw.codex_naturalis {
     opens ingsw.codex_naturalis.client.view to javafx.fxml;
     exports ingsw.codex_naturalis.common.immutableModel;
     opens ingsw.codex_naturalis.common.immutableModel to com.fasterxml.jackson.databind, javafx.fxml;
-    exports ingsw.codex_naturalis.client.view.util;
-    opens ingsw.codex_naturalis.client.view.util to javafx.fxml;
     exports ingsw.codex_naturalis.client.view.tui;
     opens ingsw.codex_naturalis.client.view.tui to javafx.fxml;
     exports ingsw.codex_naturalis.common.events;

@@ -24,7 +24,7 @@ public class Player extends PlayerObservable {
     private final String nickname;
 
     /**
-     * Ready state of the player
+     * Ready state of the player (initialized to false)
      */
     private boolean ready = false;
 
@@ -59,10 +59,12 @@ public class Player extends PlayerObservable {
     private List<ObjectiveCard> secretObjectiveCards;
 
     /**
-     * Player area
+     * Player's area
      */
     private final PlayerArea playerArea;
-
+    /**
+     * boolean: true if the player is currently in game, false otherwise
+     */
     private boolean inGame = true;
 
 
@@ -88,7 +90,9 @@ public class Player extends PlayerObservable {
         initialCard.flip();
         notifyObservers(this, PlayerEvent.INITIAL_CARD_FLIPPED);
     }
-
+    /**
+     * This method allows the player to flip resource/gold cards
+     */
     public void flipCard(int index) {
         hand.get(index).flip();
         notifyObservers(this, PlayerEvent.HAND_CARD_FLIPPED);
@@ -197,7 +201,7 @@ public class Player extends PlayerObservable {
 
     /**
      * Setter of the color of the Player
-     * @param color
+     * @param color of the player
      */
     public void setColor(Color color) {
         this.color = color;
@@ -235,16 +239,28 @@ public class Player extends PlayerObservable {
     public void setupSecretObjectiveCards(List<ObjectiveCard> secretObjectiveCards) {
         this.secretObjectiveCards = secretObjectiveCards;
     }
-
+    /**
+     * Getter of the isInGame boolean of the player
+     * @return inGame : true if the player is in game,
+     *                  false otherwise
+     */
     public boolean isInGame() {
         return inGame;
     }
-
+    /**
+     * Setter of the isInGame boolean of the player
+     * @param inGame : true if the player is in game,
+     *                  false otherwise
+     */
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
         notifyPlayerInGameStatus(this, inGame);
     }
-
+    /**
+     * Setter of the ready status of the player
+     * @param ready : true if the player is ready,
+     *                  false otherwise
+     */
     public void setReady(boolean ready){
         this.ready = ready;
         notifyReady(this);

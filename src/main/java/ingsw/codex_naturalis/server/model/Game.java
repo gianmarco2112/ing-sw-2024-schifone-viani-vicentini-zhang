@@ -24,27 +24,27 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
- * Game class
+ * Game's class
  */
 public class Game extends GameObservable implements PlayerObserver {
 
     /**
-     * Game ID is necessary in order to have multiple game
+     * Game ID 8is necessary in order to have multiple game)
      */
     private final int gameID;
 
     /**
-     * Game status
+     * Game's status
      */
     private GameStatus gameStatus;
 
     /**
-     * Max number of players of the game, the game creator decides this parameter
+     * Max number of players in the game, the game creator decides this parameter when creating a new game
      */
     private int numOfPlayers;
 
     /**
-     * Contains all the players of the game, ordered by the turn they play
+     * Contains a list of all the players in the game, sorted by the turn they are playing
      */
     private List<Player> playerOrder;
     /**
@@ -58,22 +58,22 @@ public class Game extends GameObservable implements PlayerObserver {
     private Player currentPlayer;
 
     /**
-     * Initial cards deck1
+     * Deck of initial cards
      */
     private Deck<PlayableCard> initialCardsDeck;
 
     /**
-     * Resource cards deck
+     * Deck of resource cards
      */
     private Deck<PlayableCard> resourceCardsDeck;
 
     /**
-     * Gold cards deck
+     * Deck of gold cards
      */
     private Deck<PlayableCard> goldCardsDeck;
 
     /**
-     * Objective cards deck
+     * Deck of objective cards
      */
     private Deck<ObjectiveCard> objectiveCardsDeck;
 
@@ -96,12 +96,12 @@ public class Game extends GameObservable implements PlayerObserver {
      */
     private final List<Message> chat;
     /**
-     * The status of the game (when the game is created is initialized to running)
+     * The status of the game (when the game is created, the status is initialized to "RUNNING")
      */
     private GameRunningStatus gameRunningStatus = GameRunningStatus.RUNNING;
 
     /**
-     * Constructor
+     * Game's constructor
      * @param gameID : the ID of the game
      * @param numOfPlayers : number of players in the game
      */
@@ -177,7 +177,7 @@ public class Game extends GameObservable implements PlayerObserver {
         return gameStatus;
     }
     /**
-     * Setter if the current status of the game
+     * Setter of the current status of the game
      * @param gameStatus : the status I want to set
      */
     public void setGameStatus(GameStatus gameStatus){
@@ -193,7 +193,7 @@ public class Game extends GameObservable implements PlayerObserver {
     }
     /**
      * Getter of the Players' order
-     * @return playerOrder : a list of the players in the order they're playing
+     * @return playerOrder : list of the players in the order they're playing
      */
     public List<Player> getPlayerOrder() {
         return new ArrayList<>(playerOrder);
@@ -303,14 +303,14 @@ public class Game extends GameObservable implements PlayerObserver {
         return revealedGoldCards.remove(index);
     }
     /**
-     * Getter of the 2 revealed resource card in the centre of the board
+     * Getter of the 2 revealed resource cards in the centre of the board
      * @return revealedResourceCards: an arraylist with all the revealed resource cards
      */
     public List<PlayableCard> getRevealedResourceCards() {
         return new ArrayList<>(revealedResourceCards);
     }
     /**
-     * Getter of the 2 revealed gold card in the centre of the board
+     * Getter of the 2 revealed gold cards in the centre of the board
      * @return revealedGoldCards: an arraylist with all the revealed gold cards
      */
     public List<PlayableCard> getRevealedGoldCards() {
@@ -406,7 +406,10 @@ public class Game extends GameObservable implements PlayerObserver {
         this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());
         this.commonObjectiveCards.add(objectiveCardsDeck.drawACard());
     }
-
+    /**
+     * This method sets up the secret objective card of each player,
+     * giving them 2 objective cards to choose from
+     */
     public void setupSecretObjectiveCards(){
         for (Player player : playerOrder) {
             List<ObjectiveCard> secretObjectiveCards = new ArrayList<>();
@@ -419,14 +422,17 @@ public class Game extends GameObservable implements PlayerObserver {
         gameStatus = GameStatus.SETUP_2;
         notifyGameEvent(this, GameEvent.SETUP_2);
     }
-
+    /**
+     * This method shuffle the player's list placing them in a random order
+     */
     public void shufflePlayerList(){
         Collections.shuffle(this.playerOrder);
         currentPlayer = playerOrder.getFirst();
     }
 
     /**
-     * Sets the new current player
+     * Setter of the new current player (at the end of each turn,
+     * the current player become the next one in the player's list)
      */
     public void nextPlayer() {
         Player nextPlayer;
@@ -441,26 +447,43 @@ public class Game extends GameObservable implements PlayerObserver {
         setCurrentPlayer(nextPlayer);
         notifyTurnChanged(nextPlayer.getNickname());
     }
-
+    /**
+     * Getter of the GameRunningStatus
+     * @return gameRunningStatus
+     */
     public GameRunningStatus getGameRunningStatus() {
         return gameRunningStatus;
     }
-
+    /**
+     * Setter of the GameRunnigStatus
+     * @param gameRunningStatus : the gameRunningStatus I want to set
+     */
     public void setGameRunningStatus(GameRunningStatus gameRunningStatus) {
         this.gameRunningStatus = gameRunningStatus;
         notifyGameRunningStatus(this, gameRunningStatus);
     }
-
+    /**
+     * This method is used to notify observers that an event has occurred to the player
+     * @param player : the player who generated the event
+     * @param playerEvent : the event that the player has generated
+     */
     @Override
     public void update(Player player, PlayerEvent playerEvent) {
         notifyPlayerEvent(this, playerEvent, player, player.getNickname());
     }
-
+    /**
+     * This method is used to update the connection status of a player
+     * @param player : the player who generated the event
+     * @param inGame : true if the player is still in game, false otherwise
+     */
     @Override
     public void updatePlayerConnectionStatus(Player player, boolean inGame) {
         notifyPlayerConnectionStatus(this, player.getNickname(), inGame);
     }
-
+    /**
+     * This method is used to update the status of the player to ready (in the initial setup of the game)
+     * @param player : the player who is ready to play
+     */
     @Override
     public void updateReady(Player player) {
         notifyPlayerReady(player.getNickname());

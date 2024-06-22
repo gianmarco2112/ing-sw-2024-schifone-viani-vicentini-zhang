@@ -422,21 +422,21 @@ public class GameControllerFX {
         if (points == 0){
             if (colors.size() >= 2){
                 streamColor(colors.getFirst(),(ImageView) anchorPane.lookup("#pawn1"));
-                streamColor(colors.getLast(),(ImageView) anchorPane.lookup("#pawn2"));
+                streamColor(colors.get(1),(ImageView) anchorPane.lookup("#pawn2"));
                 view = (ImageView) anchorPane.lookup("#pawn1");
                 view.setId(colors.getFirst() + "pawn1");
                 view = (ImageView) anchorPane.lookup("#pawn2");
-                view.setId(colors.getLast() + "pawn2");
+                view.setId(colors.get(1) + "pawn2");
             }
             if (colors.size() >= 3){
-                streamColor(colors.getLast(),(ImageView) anchorPane.lookup("#pawn3"));
+                streamColor(colors.get(2),(ImageView) anchorPane.lookup("#pawn3"));
                 view = (ImageView) anchorPane.lookup("#pawn3");
-                view.setId(colors.getLast() + "pawn3");
+                view.setId(colors.get(2) + "pawn3");
             }
             if (colors.size() == 4){
-                streamColor(colors.getLast(),(ImageView) anchorPane.lookup("#pawn4"));
+                streamColor(colors.get(3),(ImageView) anchorPane.lookup("#pawn4"));
                 view = (ImageView) anchorPane.lookup("#pawn4");
-                view.setId(colors.getLast() + "pawn4");
+                view.setId(colors.get(3) + "pawn4");
             }
         }
         else{
@@ -1536,6 +1536,8 @@ public class GameControllerFX {
         nickname = game.player().nickname();
         myColor = game.player().color();
 
+        lobbyButton.setVisible(false);
+
         setAreaSize(user1PlayerArea,playerArea1);
         setAreaSize(user2PlayerArea,playerArea2);
         setAreaSize(user3PlayerArea,playerArea3);
@@ -2015,4 +2017,9 @@ public class GameControllerFX {
         }
         importantEventsList.scrollTo(importantEventsList.getItems().size());
     }
+
+    public void updateChatComboBox(String playerNickname) {
+        comboBoxMessage.getItems().remove(playerNickname);
+    }
+
 }

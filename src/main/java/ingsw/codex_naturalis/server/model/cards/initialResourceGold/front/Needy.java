@@ -8,12 +8,25 @@ import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableCard
 import ingsw.codex_naturalis.common.enumerations.Symbol;
 
 import java.util.*;
-
+/**
+ * Needy's class (to implements gold cards)
+ */
 public abstract class Needy extends PointsGiver{
-
+    /**
+     * List of the type and the number of symbols of that type that the player needs to play the card
+     */
     private final Map<Symbol, Integer> requirements;
 
     //-------------------------------------------------------------------------------------------
+    /**
+     * Needy's constructor
+     * @param topRightCorner of the card
+     * @param topLeftCorner of the card
+     * @param bottomLeftCorner of the card
+     * @param bottomRightCorner of the card
+     * @param requirements needed to play the card
+     * @param points given by the card
+     */
     @JsonCreator
     public Needy(
             @JsonProperty("topLeftCorner") Corner topLeftCorner,
@@ -27,10 +40,20 @@ public abstract class Needy extends PointsGiver{
     }
 
     //----------------------------------------------------------------------------------------
+    /**
+     * Requirements' getter
+     * @return requirements: list of symbol (each with his number) needed to play the card
+     */
     public Map<Symbol, Integer> getRequirements(){
         return requirements;
     }
-
+    /**
+     * To know if the card is playable on the specified coordinates
+     * @param playerArea of the player that wants to play the card
+     * @param x the x coordinate where the player wants to play the card
+     * @param y the y coordinate where the player wants to play the card
+     * @return true is the card is playable on the specified coordinates, false otherwise
+     */
     @Override
     public boolean isPlayable(PlayerArea playerArea, int x, int y){
 
@@ -86,7 +109,12 @@ public abstract class Needy extends PointsGiver{
         }
         return true;
     }
-
+    /**
+     * This method adds the requirements to the user's screen the visual representation of the card
+     * @param cardString the  visual representation of the card
+     * @param kingdom of the card
+     * @return outString: the visual representation (implemented as a string) of the card
+     */
     // Requires a string formatted as in DefaultValue
     public String addRequirementsToHandCardString(String cardString, Symbol kingdom){
         StringBuilder lineBuilder = new StringBuilder();

@@ -10,18 +10,19 @@ import ingsw.codex_naturalis.common.enumerations.Symbol;
 import java.util.*;
 
 /**
- * class SymbolObjectiveCard
+ * SymbolObjectiveCard's class
  */
 public class SymbolsObjectiveCard extends ObjectiveCard{
 
     /**
-     * contains the List of Symbol
+     * Contains the List of Symbol
      */
     private final Map<Symbol,Integer> symbolsForPoints;
 
 
     /**
-     * Constructor
+     * Symbol objective card's constructor
+     * @param cardID : the ID of the card
      * @param symbolsForPoints List of the Symbol for extra Points
      * @param points extra points giver by the card
      */
@@ -37,7 +38,8 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
 
 
     /**
-     * this algorithm counts the extra points to assign to the player
+     * This method counts the extra points to give to the players
+     * @param playerAreas : list of the playerAreas of all the players in the game
      */
     public void gainPoints(List<PlayerArea> playerAreas){
         for (PlayerArea playerArea : playerAreas) {
@@ -54,7 +56,10 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
             playerArea.setExtraPoints(playerArea.getExtraPoints() + getPoints() * Collections.min(count));
         }
     }
-
+    /**
+     * This method prints to the user's screen the visual representation of the card
+     * @return outString: the visual representation (implemented as a string) of the card
+     */
     @Override
     public String cardToString() {
         // bc is "border color"
@@ -83,6 +88,7 @@ public class SymbolsObjectiveCard extends ObjectiveCard{
 
     /**
      * Method to get the number of symbols to write for cardToString()
+     * @return sum
      */
     private int getNumOfSymbols(){
         int sum = 0;

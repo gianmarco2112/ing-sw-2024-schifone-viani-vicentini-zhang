@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * class PatternObjectiveCard
+ * PatternObjectiveCard's class
  */
 public class PatternObjectiveCard extends ObjectiveCard {
 
@@ -24,12 +24,15 @@ public class PatternObjectiveCard extends ObjectiveCard {
      */
     private final Map<List<Integer>, Symbol> pattern;
     /**
-     * constructor
-     * @param points points given by the pattern
-     * @param positions positions of the pattern
-     * @param kingdoms kingdom in the pattern's positions
-     * @param maxX max row of the pattern
-     * @param maxY max column of the pattern
+     * Pattern objective card's constructor
+     * @param cardID: the ID of the card
+     * @param points: points given by the pattern
+     * @param positions: positions of the pattern
+     * @param kingdoms: kingdom in the pattern's positions
+     * @param maxX: max row of the pattern
+     * @param maxY: max column of the pattern
+     * @param minX: min row of the pattern
+     * @param minY: min column of the pattern
      */
     @JsonCreator
     public PatternObjectiveCard(
@@ -58,13 +61,17 @@ public class PatternObjectiveCard extends ObjectiveCard {
         setExtremeCoordinate(ExtremeCoordinate.MIN_Y, minY);
     }
     /**
-     * Getter of the extreme coordinates
+     * Getter of a specified extreme coordinate
+     * @param extremeCoordinate to get
+     * @return extremeCoordinate
      */
     private int getExtremeCoordinate(ExtremeCoordinate extremeCoordinate) {
         return extremeCoordinates.get(extremeCoordinate);
     }
     /**
-     * Setter of the extreme coordinates
+     * Setter of a specified extreme coordinate
+     * @param extremeCoordinate to set
+     * @param value to set
      */
     private void setExtremeCoordinate(ExtremeCoordinate extremeCoordinate, Integer value) {
         extremeCoordinates.put(extremeCoordinate, value);
@@ -95,10 +102,9 @@ public class PatternObjectiveCard extends ObjectiveCard {
         return patternCopy;
     }
     /**
-     * This method prints to the user's screen the visual representation of the cards
+     * This method prints to the user's screen the visual representation of the card
      * (the pattern is always represented with a 3x3 matrix)
      * @return outString: the visual representation (implemented as a string) of the card
-     *
      */
     @Override
     public String cardToString() {
@@ -317,6 +323,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
     /**
      * Method to check if (and how many times) the objective card's specific pattern is present
      * in the current player's area and to give to the current player the relative points
+     * @param playerAreas list of the playerAreas of all players in the game
      * @param i player index
      */
     private void checkPatternOnPlayer(List<PlayerArea> playerAreas, int i){
@@ -347,6 +354,7 @@ public class PatternObjectiveCard extends ObjectiveCard {
      * @param yArea y
      * @param i player index
      * @param markedArea marked area
+     * @param playerAreas : the list of the playerAreas of all the player in the game
      * @return true if the pattern is overlapping on the area, false if it isn't
      */
     private boolean checkPatternOnCoordinates(List<PlayerArea> playerAreas, int xArea, int yArea, int i, Map<List<Integer>,Boolean> markedArea){
@@ -402,6 +410,8 @@ public class PatternObjectiveCard extends ObjectiveCard {
     /**
      * Getter of the central symbol (that represents the card's color)
      * of the card at the specified coordinates
+     * @param x : x coordinate
+     * @param y : y coordinate
      * @return : card's central symbol
      */
     private Symbol getSymbolAt(int x, int y){

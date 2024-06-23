@@ -46,8 +46,9 @@ public abstract class ObjectiveCard extends Card {
     private final int points;
 
     /**
-     * Constructor
+     * Objective card's constructor
      * @param points points of ObjectiveCard
+     * @param cardID the ID of the card
      */
     @JsonCreator
     public ObjectiveCard(
@@ -59,7 +60,7 @@ public abstract class ObjectiveCard extends Card {
     }
 
     /**
-     * Getter
+     * Getter of the objective card's points
      * @return points: how many points the card gives each time the objective is achieved
      */
     public int getPoints() {
@@ -81,7 +82,11 @@ public abstract class ObjectiveCard extends Card {
      * To print the card on the screen (the visual representation of the card is a string)
      */
     public abstract String cardToString();
-
+    /**
+     * To know is the card is currently showing the front of back side
+     * @return true if the card is showing front,
+     *         false otherwise
+     */
     public boolean isShowingFront() {
         return showingFront;
     }

@@ -7,9 +7,15 @@ import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableCard
 import ingsw.codex_naturalis.server.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
 
 import java.util.List;
-
+/**
+ * CornerStrategy's class
+ */
 public class CornerStrategy implements Strategy {
-
+    /**
+     * This method counts the points given by the card
+     * @param playerArea where to add the points
+     * @param playedCard: the gold card
+     */
     @Override
     public void gainPoints(PlayerArea playerArea, PointsGiverAndPointsGiverForCorner playedCard) {
 
@@ -45,6 +51,12 @@ public class CornerStrategy implements Strategy {
 
         playerArea.setPoints(playerArea.getPoints() + playedCard.getPoints() * cornersCovered);
     }
+    /**
+     * This method prints to the user's screen the visual representation of the card
+     * @param kingdom of the card
+     * @param cardSide the gold card
+     * @return outString: the visual representation (implemented as a string) of the card
+     */
     @Override
     public String handCardToString(Symbol kingdom, PointsGiverAndPointsGiverForCorner cardSide) {
         StringBuilder outString = new StringBuilder(DefaultValue.getTUIHandCardSideTemplate(cardSide, kingdom));

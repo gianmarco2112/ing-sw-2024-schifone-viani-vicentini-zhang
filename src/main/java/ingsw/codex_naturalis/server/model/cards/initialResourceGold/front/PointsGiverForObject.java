@@ -14,7 +14,9 @@ import java.util.HashMap;
  * of the specified type present in the PlayerArea when the gold card is played
  */
 public class PointsGiverForObject extends Needy {
-
+    /**
+     * the object that gives points
+     */
     private final Symbol object;
 
     //-------------------------------------------------------------------------------------------

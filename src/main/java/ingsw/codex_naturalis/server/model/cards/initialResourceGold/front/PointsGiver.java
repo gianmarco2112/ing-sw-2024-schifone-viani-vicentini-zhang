@@ -8,11 +8,11 @@ import ingsw.codex_naturalis.server.model.DefaultValue;
 import ingsw.codex_naturalis.server.model.cards.Corner;
 import ingsw.codex_naturalis.server.model.player.PlayerArea;
 /**
- * PointsGiver's class
+ * PointsGiver's class: to calculate the points given by the gold card
  */
 public class PointsGiver extends PlayableSide {
     /**
-     * Points given by the card
+     * Points given by the gold card
      */
     private final int points;
 
@@ -73,7 +73,7 @@ public class PointsGiver extends PlayableSide {
         gainPoints(playerArea);
     }
     /**
-     * To add the point given by the card to the player's area
+     * To add the point given by the gold card to the player's area
      * @param playerArea of the player that has played the card
      */
     protected void gainPoints(PlayerArea playerArea){

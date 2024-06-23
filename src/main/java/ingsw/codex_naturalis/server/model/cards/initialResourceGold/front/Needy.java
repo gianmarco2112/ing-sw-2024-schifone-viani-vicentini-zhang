@@ -13,7 +13,7 @@ import java.util.*;
  */
 public abstract class Needy extends PointsGiver{
     /**
-     * List of the type and the number of symbols of that type that the player needs to play the card
+     * List of the types (each with his number) of symbols needed to play the card
      */
     private final Map<Symbol, Integer> requirements;
 

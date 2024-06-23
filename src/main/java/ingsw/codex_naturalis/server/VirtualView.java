@@ -172,8 +172,6 @@ public class VirtualView implements GameObserver {
                     client.updatePlayerInGameStatus(objectMapper.writeValueAsString(getImmGame(game)),
                             playerNickname, objectMapper.writeValueAsString(false),
                             objectMapper.writeValueAsString(true));
-                    if (game.getCurrentPlayer().getNickname().equals(playerNickname))
-                        game.nextPlayer();
                 }
             }
         } catch (RemoteException | JsonProcessingException e) {
@@ -198,11 +196,6 @@ public class VirtualView implements GameObserver {
                         playerNicknameWhoLeft,
                     objectMapper.writeValueAsString(false),
                     objectMapper.writeValueAsString(false));
-            if ((game.getGameStatus() == GameStatus.GAMEPLAY ||
-                    game.getGameStatus() == GameStatus.LAST_ROUND_DECKS_EMPTY ||
-                    game.getGameStatus() == GameStatus.LAST_ROUND_20_POINTS) &&
-                    (game.getCurrentPlayer().getNickname().equals(playerNicknameWhoLeft)))
-                game.nextPlayer();
         } catch (RemoteException | JsonProcessingException e) {
             System.err.println("Error while updating client\n"+e.getMessage());
         }
@@ -281,7 +274,7 @@ public class VirtualView implements GameObserver {
                     System.err.println("Error while updating client");
                 }
             }
-            case LAST_ROUND_20_POINTS -> {
+            case SECOND_TO_LAST_ROUND_20_POINTS -> {
                 try {
                     ImmGame immGame = getImmGame(game);
                     client.twentyPointsReached(objectMapper.writeValueAsString(immGame));
@@ -289,7 +282,7 @@ public class VirtualView implements GameObserver {
                     System.err.println("Error while updating client");
                 }
             }
-            case LAST_ROUND_DECKS_EMPTY -> {
+            case SECOND_TO_LAST_ROUND_DECKS_EMPTY -> {
                 try {
                     ImmGame immGame = getImmGame(game);
                     client.decksEmpty(objectMapper.writeValueAsString(immGame));

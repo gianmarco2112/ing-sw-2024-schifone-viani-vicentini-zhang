@@ -660,7 +660,7 @@ public class TextualUI implements UI {
 
     @Override
     public void gameEnded(List<ImmPlayer> players) {
-        System.err.println("\n\n| Game ended!. |");
+        System.out.println("\n\n| Game ended!. |\n");
         for (ImmPlayer player : players) {
             System.out.println("Nickname: " + player.nickname());
             System.out.println("Points: " + player.playerArea().points());
@@ -668,7 +668,7 @@ public class TextualUI implements UI {
             System.out.println(player.playerArea().objectiveCard().tui());
             System.out.println("\n");
         }
-        System.err.println("\nPress any key and enter to go back to lobby...");
+        System.out.println("\nPress any key and enter to go back to lobby...");
         setState(State.LOBBY);
         setGameState(null);
         setRunningState(RunningState.STOP);

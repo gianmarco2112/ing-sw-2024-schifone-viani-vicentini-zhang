@@ -215,7 +215,9 @@ public class GameControllerFX {
         if (comboBoxMessage.getItems().isEmpty()) {
             comboBoxMessage.getItems().add("");
             for (String p : game.playerOrderNicknames()) {
-                comboBoxMessage.getItems().add(p);
+                if (!p.equals(game.player().nickname())) {
+                    comboBoxMessage.getItems().add(p);
+                }
             }
             comboBoxMessage.getSelectionModel().selectFirst();
         }

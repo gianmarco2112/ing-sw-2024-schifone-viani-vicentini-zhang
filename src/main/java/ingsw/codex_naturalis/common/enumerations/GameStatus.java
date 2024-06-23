@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.common.enumerations;
-
+/**
+ * Enumeration of possible Game states
+ */
 public enum GameStatus {
 
     WAITING_FOR_PLAYERS,

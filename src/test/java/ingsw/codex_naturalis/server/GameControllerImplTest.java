@@ -10,7 +10,6 @@ import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
 import ingsw.codex_naturalis.server.exceptions.ColorAlreadyChosenException;
 import ingsw.codex_naturalis.server.exceptions.MaxNumOfPlayersInException;
-import ingsw.codex_naturalis.server.exceptions.NotPlayableException;
 import ingsw.codex_naturalis.server.model.Deck;
 import ingsw.codex_naturalis.server.model.Game;
 import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableCard;
@@ -183,7 +182,7 @@ class GameControllerImplTest {
         gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, 1, 1);
         TimeUnit.MILLISECONDS.sleep(200);
 
-        assertEquals(GameStatus.LAST_ROUND_20_POINTS, model.getGameStatus());
+        assertEquals(GameStatus.SECOND_TO_LAST_ROUND_20_POINTS, model.getGameStatus());
 
         gameplayController.drawCard(model.getPlayerOrder().getFirst().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1));
         TimeUnit.MILLISECONDS.sleep(200);
@@ -237,7 +236,7 @@ class GameControllerImplTest {
         gameplayController.drawCard(model.getPlayerOrder().getFirst().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1));
         TimeUnit.MILLISECONDS.sleep(200);
 
-        assertEquals(GameStatus.LAST_ROUND_DECKS_EMPTY, model.getGameStatus());
+        assertEquals(GameStatus.SECOND_TO_LAST_ROUND_DECKS_EMPTY, model.getGameStatus());
 
         gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, -1, -1);
         TimeUnit.MILLISECONDS.sleep(200);

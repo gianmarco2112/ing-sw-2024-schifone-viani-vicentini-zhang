@@ -432,20 +432,25 @@ public class Game extends GameObservable implements PlayerObserver {
 
     /**
      * Setter of the new current player (at the end of each turn,
-     * the current player become the next one in the player's list)
+     * the current player becomes the next one in the player's list)
      */
-    public void nextPlayer() {
+    public boolean nextPlayer() {
         Player nextPlayer;
+        boolean newRound;
         do {
             int index = getPlayerOrder().indexOf(getCurrentPlayer());
             if (index < getPlayerOrder().size() - 1) {
                 nextPlayer = getPlayerOrder().get(index + 1);
+                newRound = false;
             } else {
                 nextPlayer = getPlayerOrder().getFirst();
+                newRound = true;
             }
         } while (!nextPlayer.isInGame());
         setCurrentPlayer(nextPlayer);
-        notifyTurnChanged(nextPlayer.getNickname());
+        if (gameStatus != GameStatus.LAST_ROUND || !newRound)
+            notifyTurnChanged(nextPlayer.getNickname());
+        return newRound;
     }
     /**
      * Getter of the GameRunningStatus

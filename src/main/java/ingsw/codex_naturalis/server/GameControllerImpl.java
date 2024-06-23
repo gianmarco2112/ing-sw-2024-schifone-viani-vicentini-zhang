@@ -56,18 +56,6 @@ public class GameControllerImpl implements GameController {
     private int readyPlayers = 0;
 
     /**
-     * Turns left in second to last rond count, used when all decks are empty or a player
-     * reaches 20 points (in this case, his round is also included).
-     */
-    private int turnsLeftInSecondToLastRound;
-
-    /**
-     * Turns left in last round, used when all decks are empty or a player
-     * reaches 20 points.
-     */
-    private int turnsLeftInLastRound;
-
-    /**
      * Jackson object mapper.
      */
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -77,8 +65,6 @@ public class GameControllerImpl implements GameController {
     public GameControllerImpl(ServerImpl server, int gameID, int numOfPlayers, Client client, String nickname) {
         this.server = server;
         this.model = new Game(gameID, numOfPlayers);
-        turnsLeftInLastRound = model.getNumOfPlayers();
-        turnsLeftInSecondToLastRound = model.getNumOfPlayers();
         new Thread(() -> {
             while (true) {
                 try {
@@ -285,38 +271,39 @@ public class GameControllerImpl implements GameController {
      * @param player player that has just played his card
      */
     private void checkGameStatus(Player player) {
-        if (player.getPlayerArea().getPoints() >= 20 && model.getGameStatus() == GameStatus.GAMEPLAY) {
-            turnsLeftInSecondToLastRound = model.getNumOfPlayers() - model.getPlayerOrder().indexOf(player);
-            model.setGameStatus(GameStatus.LAST_ROUND_20_POINTS);
-        }
-
-        if (turnsLeftInSecondToLastRound > 0 && model.getGameStatus() != GameStatus.LAST_ROUND_DECKS_EMPTY)
-            player.setTurnStatus(TurnStatus.DRAW);
-
-        if (turnsLeftInSecondToLastRound == 0) {
-            turnsLeftInLastRound--;
-            model.nextPlayer();
-        }
-
-        if (turnsLeftInSecondToLastRound > 0 && model.getGameStatus() == GameStatus.LAST_ROUND_DECKS_EMPTY) {
-            turnsLeftInSecondToLastRound--;
-            model.nextPlayer();
-        }
-
-        if (turnsLeftInLastRound == 0) {
-            //secret obj cards
-            for (Player p : model.getPlayerOrder())
-                p.getPlayerArea().getObjectiveCard().gainPoints(new ArrayList<>(List.of(p.getPlayerArea())));
-            //common obj cards
-            for (ObjectiveCard card : model.getCommonObjectiveCards()) {
-                List<PlayerArea> playerAreas = new ArrayList<>();
-                for (Player p : model.getPlayerOrder())
-                    playerAreas.add(p.getPlayerArea());
-                card.gainPoints(playerAreas);
+        switch (model.getGameStatus()) {
+            case GAMEPLAY -> {
+                if (player.getPlayerArea().getPoints() >= 20)
+                    model.setGameStatus(GameStatus.SECOND_TO_LAST_ROUND_20_POINTS);
+                player.setTurnStatus(TurnStatus.DRAW);
             }
-            model.setGameStatus(GameStatus.ENDGAME);
-            endGame();
+            case SECOND_TO_LAST_ROUND_20_POINTS -> player.setTurnStatus(TurnStatus.DRAW);
+            case SECOND_TO_LAST_ROUND_DECKS_EMPTY -> {
+                boolean newRound = model.nextPlayer();
+                if (newRound)
+                    model.setGameStatus(GameStatus.LAST_ROUND);
+            }
+            case LAST_ROUND -> {
+                boolean newRound = model.nextPlayer();
+                if (newRound)
+                    prepareEndGame();
+            }
         }
+    }
+
+    private void prepareEndGame() {
+        //secret obj cards
+        for (Player p : model.getPlayerOrder())
+            p.getPlayerArea().getObjectiveCard().gainPoints(new ArrayList<>(List.of(p.getPlayerArea())));
+        //common obj cards
+        for (ObjectiveCard card : model.getCommonObjectiveCards()) {
+            List<PlayerArea> playerAreas = new ArrayList<>();
+            for (Player p : model.getPlayerOrder())
+                playerAreas.add(p.getPlayerArea());
+            card.gainPoints(playerAreas);
+        }
+        model.setGameStatus(GameStatus.ENDGAME);
+        endGame();
     }
 
     /**
@@ -347,8 +334,8 @@ public class GameControllerImpl implements GameController {
                         case DRAW_FROM_RESOURCE_CARDS_DECK, DRAW_FROM_GOLD_CARDS_DECK -> drawFromDeck(player, drawCardEvent);
                         default -> drawRevealedCard(player, drawCardEvent);
                     }
-                    model.nextPlayer();
-                    checkTurnsLeftInSecondToLastRound(player);
+                    boolean newRound = model.nextPlayer();
+                    checkTurnsLeftInSecondToLastRound(player, newRound);
                 } catch (JsonProcessingException e) {
                     System.err.println("Error while processing json:\n" + e.getMessage());
                 } catch (EmptyDeckException ex) {
@@ -387,7 +374,7 @@ public class GameControllerImpl implements GameController {
      * @param player player who wants to draw
      * @param drawCardEvent card to draw
      */
-    private void drawRevealedCard(Player player, DrawCardEvent drawCardEvent) throws IndexOutOfBoundsException {
+    private void drawRevealedCard(Player player, DrawCardEvent drawCardEvent) throws IndexOutOfBoundsException, EmptyDeckException {
         PlayableCard drawnCard = null;
         switch (drawCardEvent) {
             case DRAW_REVEALED_RESOURCE_CARD_1 -> {
@@ -427,19 +414,22 @@ public class GameControllerImpl implements GameController {
     }
 
     /**
-     * Method called after a players has drawn a card, it is used for turns managing.
+     * Method called after a player has drawn a card, it is used for turns managing.
      * @param player player that has drawn a card
      */
-    private void checkTurnsLeftInSecondToLastRound(Player player) {
+    private void checkTurnsLeftInSecondToLastRound(Player player, boolean newRound) {
         if (model.getResourceCardsDeck().isEmpty() &&
                 model.getGoldCardsDeck().isEmpty() &&
                 model.getRevealedResourceCards().isEmpty() &&
-                model.getRevealedGoldCards().isEmpty()) {
-            turnsLeftInSecondToLastRound = model.getNumOfPlayers() - model.getPlayerOrder().indexOf(player) - 1;
-            model.setGameStatus(GameStatus.LAST_ROUND_DECKS_EMPTY);
+                model.getRevealedGoldCards().isEmpty() &&
+                model.getGameStatus() != GameStatus.SECOND_TO_LAST_ROUND_DECKS_EMPTY &&
+                model.getGameStatus() != GameStatus.LAST_ROUND) {
+            model.setGameStatus(GameStatus.SECOND_TO_LAST_ROUND_DECKS_EMPTY);
         }
-        if (model.getGameStatus() == GameStatus.LAST_ROUND_20_POINTS)
-            turnsLeftInSecondToLastRound--;
+        if ((model.getGameStatus() == GameStatus.SECOND_TO_LAST_ROUND_20_POINTS ||
+                model.getGameStatus() == GameStatus.SECOND_TO_LAST_ROUND_DECKS_EMPTY) && newRound) {
+            model.setGameStatus(GameStatus.LAST_ROUND);
+        }
         player.setTurnStatus(TurnStatus.PLAY);
     }
 
@@ -477,7 +467,61 @@ public class GameControllerImpl implements GameController {
      */
     public synchronized void removePlayer(String nickname) {
         model.removePlayer(model.getPlayerByNickname(nickname));
+        if (model.getGameStatus() == GameStatus.GAMEPLAY ||
+                model.getGameStatus() == GameStatus.SECOND_TO_LAST_ROUND_20_POINTS ||
+                model.getGameStatus() == GameStatus.SECOND_TO_LAST_ROUND_DECKS_EMPTY ||
+                model.getGameStatus() == GameStatus.LAST_ROUND) {
+            if (getPlayersConnectionStatus() == GameRunningStatus.RUNNING)
+                skipTurn();
+        }
         removeView(nickname);
+    }
+
+    /**
+     * Method used to manage the turns after the current player has disconnected.
+     * @param nickname disconnected player
+     */
+    private void checkPlayerTurn(String nickname) {
+        if (model.getCurrentPlayer().getNickname().equals(nickname)) {
+            Player player = model.getPlayerByNickname(nickname);
+            switch (player.getTurnStatus()) {
+                case DRAW -> drawRandomCard(player);
+                case PLAY -> skipTurn();
+            }
+        }
+    }
+
+    /**
+     * Method used to skip the current turn when a player leaves or disconnects before playing a card.
+     */
+    private void skipTurn() {
+        boolean newRound = model.nextPlayer();
+        if (newRound) {
+            switch (model.getGameStatus()) {
+                case SECOND_TO_LAST_ROUND_20_POINTS, SECOND_TO_LAST_ROUND_DECKS_EMPTY ->
+                        model.setGameStatus(GameStatus.LAST_ROUND);
+                case LAST_ROUND -> prepareEndGame();
+            }
+        }
+    }
+
+    /**
+     * Method used to draw a random card when a player disconnects after playing a card, so he won't have
+     * only 2 cards in case he reconnects.
+     * @param player disconnected player
+     */
+    private void drawRandomCard(Player player) {
+        if (!model.getResourceCardsDeck().isEmpty())
+            drawFromDeck(player, DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
+        else if (!model.getGoldCardsDeck().isEmpty())
+            drawFromDeck(player, DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);
+        else if (!model.getRevealedResourceCards().isEmpty())
+            drawFromDeck(player, DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);
+        else if (!model.getRevealedGoldCards().isEmpty())
+            drawFromDeck(player, DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1);
+
+        boolean newRound = model.nextPlayer();
+        checkTurnsLeftInSecondToLastRound(player, newRound);
     }
 
     /**
@@ -486,13 +530,16 @@ public class GameControllerImpl implements GameController {
      */
     public synchronized void disconnectPlayer(String nickname) {
         removeView(nickname);
-        if (model.getGameStatus() == GameStatus.GAMEPLAY ||
-                model.getGameStatus() == GameStatus.LAST_ROUND_20_POINTS ||
-                model.getGameStatus() == GameStatus.LAST_ROUND_DECKS_EMPTY)
-            model.getPlayerByNickname(nickname).setInGame(false);
-        else if (model.getGameStatus() == GameStatus.WAITING_FOR_PLAYERS) {
-            model.silentlyRemovePlayer(model.getPlayerByNickname(nickname));
-        } else model.removePlayer(model.getPlayerByNickname(nickname));
+        switch (model.getGameStatus()) {
+            case GAMEPLAY, SECOND_TO_LAST_ROUND_20_POINTS,
+                    SECOND_TO_LAST_ROUND_DECKS_EMPTY, LAST_ROUND -> {
+                model.getPlayerByNickname(nickname).setInGame(false);
+                if (getPlayersConnectionStatus() == GameRunningStatus.RUNNING)
+                    checkPlayerTurn(nickname);
+            }
+            case WAITING_FOR_PLAYERS -> model.silentlyRemovePlayer(model.getPlayerByNickname(nickname));
+            default -> model.removePlayer(model.getPlayerByNickname(nickname));
+        }
     }
 
     /**

@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.server.model.util;
 
 import ingsw.codex_naturalis.server.model.player.Player;
-
+/**
+ * Enumeration of all the possible playerEvents
+ */
 public enum PlayerEvent {
 
     INITIAL_CARD_FLIPPED,

@@ -1,5 +1,7 @@
 package ingsw.codex_naturalis.server.model.util;
-
+/**
+ * Enumeration of possible gameEvents
+ */
 public enum GameEvent {
 
     SETUP_1,

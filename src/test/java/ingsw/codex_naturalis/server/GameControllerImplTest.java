@@ -27,6 +27,7 @@ class GameControllerImplTest {
     Game model;
     ClientImpl client1;
     ClientImpl client2;
+    ClientImpl client3;
     ServerImpl server;
     ObjectMapper objectMapper = new ObjectMapper();
     @BeforeEach
@@ -35,6 +36,7 @@ class GameControllerImplTest {
 
         client1 = new ClientImpl(server, NetworkProtocol.RMI, new TextualUI());
         client2 = new ClientImpl(server, NetworkProtocol.RMI, new TextualUI());
+        client3 = new ClientImpl(server, NetworkProtocol.RMI, new TextualUI());
 
         gameplayController = new GameControllerImpl(server,100,2,client1,"Test");
         gameplayController.addPlayer(client2, "Test2");
@@ -332,4 +334,122 @@ class GameControllerImplTest {
         TimeUnit.MILLISECONDS.sleep(200);
     }
 
+    @Test
+    void drawCardRandomTest() throws JsonProcessingException, InterruptedException {
+        //ho bisogno di 3 giocatori almeno
+        setupForThreePlayers();
+
+        model.setCurrentPlayer(model.getPlayerByNickname("Test"));
+        gameplayController.playCard(model.getCurrentPlayer().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+        assertEquals(2, model.getCurrentPlayer().getHand().size());
+        gameplayController.disconnectPlayer("Test");
+        assertEquals(3, model.getPlayerByNickname("Test").getHand().size());
+
+        setupForThreePlayers();
+        Deck<PlayableCard> resourceCardsDeck = model.getResourceCardsDeck();
+
+        for(int i = 0; i < 32; i++) {
+            resourceCardsDeck.drawACard();
+        }
+        model.setCurrentPlayer(model.getPlayerByNickname("Test"));
+        gameplayController.playCard(model.getCurrentPlayer().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+        assertEquals(2, model.getCurrentPlayer().getHand().size());
+        gameplayController.disconnectPlayer("Test");
+        assertEquals(3, model.getPlayerByNickname("Test").getHand().size());
+
+        setupForThreePlayers();
+        resourceCardsDeck = model.getResourceCardsDeck();
+        Deck<PlayableCard> goldCradsDeck = model.getGoldCardsDeck();
+
+        for(int i = 0; i < 32; i++) {
+            resourceCardsDeck.drawACard();
+        }
+        for(int i = 0; i < 35; i ++) {
+            goldCradsDeck.drawACard();
+        }
+        model.setCurrentPlayer(model.getPlayerByNickname("Test"));
+        gameplayController.playCard(model.getCurrentPlayer().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+        assertEquals(2, model.getCurrentPlayer().getHand().size());
+        gameplayController.disconnectPlayer("Test");
+        assertEquals(3, model.getPlayerByNickname("Test").getHand().size());
+
+
+        setupForThreePlayers();
+        resourceCardsDeck = model.getResourceCardsDeck();
+        goldCradsDeck = model.getGoldCardsDeck();
+
+        for(int i = 0; i < 32; i++) {
+            resourceCardsDeck.drawACard();
+        }
+        for(int i = 0; i < 35; i ++) {
+            goldCradsDeck.drawACard();
+        }
+        for(int i = 0; i < 2; i ++) {
+            model.removeRevealedResourceCard(0);
+        }
+        model.setCurrentPlayer(model.getPlayerByNickname("Test"));
+        gameplayController.playCard(model.getCurrentPlayer().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+        assertEquals(2, model.getCurrentPlayer().getHand().size());
+        gameplayController.disconnectPlayer("Test");
+        assertEquals(3, model.getPlayerByNickname("Test").getHand().size());
+
+    }
+
+    private void setupForThreePlayers() throws InterruptedException, JsonProcessingException {
+        gameplayController = new GameControllerImpl(server,100,3,client1,"Test");
+        gameplayController.addPlayer(client2, "Test2");
+        model = gameplayController.getModel();
+        model.setCurrentPlayer(model.getPlayerByNickname("Test"));
+        gameplayController.addPlayer(client3, "Test3");
+
+        gameplayController.readyToPlay("Test");
+        gameplayController.readyToPlay("Test2");
+        gameplayController.readyToPlay("Test3");
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.chooseColor("Test", objectMapper.writeValueAsString(Color.RED));
+        gameplayController.chooseColor("Test2", objectMapper.writeValueAsString(Color.BLUE));
+        gameplayController.chooseColor("Test3", objectMapper.writeValueAsString(Color.YELLOW));
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.FLIP));
+        gameplayController.updateInitialCard("Test2", objectMapper.writeValueAsString(InitialCardEvent.FLIP));
+        gameplayController.updateInitialCard("Test3", objectMapper.writeValueAsString(InitialCardEvent.FLIP));
+        gameplayController.updateInitialCard("Test", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
+        gameplayController.updateInitialCard("Test2", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
+        gameplayController.updateInitialCard("Test3", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        gameplayController.chooseSecretObjectiveCard("Test", 1);
+        gameplayController.chooseSecretObjectiveCard("Test2", 1);
+        gameplayController.chooseSecretObjectiveCard("Test3", 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+    }
+
+    @Test
+    void skipTurn() throws InterruptedException, JsonProcessingException {
+        setupForThreePlayers();
+
+        model.setGameStatus(GameStatus.SECOND_TO_LAST_ROUND_20_POINTS);
+        model.setCurrentPlayer(model.getPlayerOrder().getLast());
+        gameplayController.disconnectPlayer(model.getPlayerOrder().getLast().getNickname());
+        assertEquals(model.getPlayerOrder().getFirst(), model.getCurrentPlayer());
+        assertEquals(GameStatus.LAST_ROUND, model.getGameStatus());
+        gameplayController.playCard(model.getCurrentPlayer().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        setupForThreePlayers();
+
+        model.setGameStatus(GameStatus.LAST_ROUND);
+        model.setCurrentPlayer(model.getPlayerOrder().getLast());
+        gameplayController.disconnectPlayer(model.getPlayerOrder().getLast().getNickname());
+        assertEquals(model.getPlayerOrder().getFirst(), model.getCurrentPlayer());
+        assertEquals(GameStatus.ENDGAME, model.getGameStatus());
+        gameplayController.playCard(model.getCurrentPlayer().getNickname(), 0, 1, 1);
+        TimeUnit.MILLISECONDS.sleep(200);
+    }
 }

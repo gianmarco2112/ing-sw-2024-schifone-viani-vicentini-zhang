@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.client.view.tui;
 
+import ingsw.codex_naturalis.client.ClientCreation;
 import ingsw.codex_naturalis.client.ClientImpl;
 import ingsw.codex_naturalis.client.ServerStub;
 import ingsw.codex_naturalis.client.view.UI;
@@ -26,10 +27,13 @@ import java.util.*;
  */
 public class TextualUI implements UI {
 
+    /**
+     * Client
+     */
     private ClientImpl client;
 
     /**
-     * View state
+     * View main states
      */
     private enum State {
         LOGIN,
@@ -39,7 +43,7 @@ public class TextualUI implements UI {
     }
 
     /**
-     * Used to update the not started games in lobby while the user is in that state.
+     * Used to update the not started games while the user is in lobby, seeing the possible games.
      */
     private boolean askingWhichGameToAccess = false;
 
@@ -117,30 +121,35 @@ public class TextualUI implements UI {
         }
     }
 
-    private static String networkProtocol;
-    private static String ipAddress = "localhost";
-
+    /**
+     * Used to print the requests
+     */
     private final InputRequesterTUI inputRequesterTUI = new InputRequesterTUI();
     private final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Games that can be accessed
+     */
     private List<GameSpecs> gamesSpecs = null;
+    /**
+     * Game ID of the joined game
+     */
     private int gameID;
+    /**
+     * Immutable game
+     */
     private ImmGame game = null;
-    
-    
 
+
+    /**
+     * Main method, called at the start
+     * @param args main args
+     * @throws RemoteException remote exception
+     */
     public void run(String[] args) throws RemoteException {
-
-        networkProtocol = args[0];
-        ipAddress = args[1];
-        switch (networkProtocol) {
-            case "RMI" -> {
-                createRMIClient();
-            }
-            case "socket" -> {
-                createSocketClient();
-            }
-        }
+        String networkProtocol = args[0];
+        String ipAddress = args[1];
+        this.client = ClientCreation.createClient(this, networkProtocol, ipAddress);
         while (true) {
             switch (getRunningState()) {
                 case RUNNING -> running();
@@ -150,38 +159,9 @@ public class TextualUI implements UI {
         }
     }
 
-    private void createRMIClient() throws RemoteException {
-        Registry registry = LocateRegistry.getRegistry(ipAddress, 1235);
-        Server server;
-        try {
-            server = (Server) registry.lookup("Server");
-        } catch (NotBoundException e) {
-            throw new RemoteException(e.getMessage());
-        }
-
-        this.client = new ClientImpl(server, NetworkProtocol.RMI, this);
-    }
-
-    private void createSocketClient() throws RemoteException {
-        ServerStub serverStub = new ServerStub(ipAddress, 1234);
-        this.client = new ClientImpl(serverStub, NetworkProtocol.SOCKET, this);
-        new Thread(() -> {
-            while (true) {
-                try {
-                    serverStub.receive();
-                } catch (IOException e) {
-                    System.err.println("Error: won't receive from server\n" + e.getMessage());
-                    try {
-                        serverStub.close();
-                    } catch (RemoteException ex) {
-                        System.err.println("Error while closing connection with server\n" + ex.getMessage());
-                    }
-                    System.exit(1);
-                }
-            }
-        }).start();
-    }
-
+    /**
+     * Main running state of the view, the player has to insert inputs
+     */
     private void running() {
 
         switch (getState()) {
@@ -197,9 +177,17 @@ public class TextualUI implements UI {
 
     }
 
+    /**
+     * Invalid option printer
+     */
     private void printErrInvalidOption(){
         System.err.println("Invalid option");
     }
+
+    /**
+     * Method used when the player has to wait for un update. For example, after ending the setup phase,
+     * he has to wait for the other players.
+     */
     private void waitForUpdate() {
         while (getRunningState() == RunningState.WAITING_FOR_UPDATE) {
             synchronized (lock) {
@@ -214,7 +202,7 @@ public class TextualUI implements UI {
 
 
     /**
-     * Asks for nickname
+     * Login view, used to choose a nickname
      */
     private void loginView() {
         inputRequesterTUI.nickname();
@@ -223,7 +211,9 @@ public class TextualUI implements UI {
         client.ctsUpdateNickname(nickname);
     }
 
-
+    /**
+     * Lobby view, used to join a game
+     */
     private void lobbyView() {
         gameAccessOption();
     }
@@ -278,6 +268,10 @@ public class TextualUI implements UI {
 
     }
 
+    /**
+     * Ask to insert a nickname, while in login view.
+     * @return nickname
+     */
     private String askNickname()  {
         while (true) {
             String input = scanner.nextLine();
@@ -293,6 +287,9 @@ public class TextualUI implements UI {
     }
 
 
+    /**
+     * Game view, used while in a game
+     */
     private void gameView() {
 
         switch (gameState) {
@@ -320,6 +317,9 @@ public class TextualUI implements UI {
 
     }
 
+    /**
+     * To flip or play the initial card
+     */
     private void playingInitialCard() {
         inputRequesterTUI.initialCardOption();
         int option = askForOptionInput(1, 2, false);
@@ -332,6 +332,9 @@ public class TextualUI implements UI {
         }
     }
 
+    /**
+     * To choose a color
+     */
     private void choosingColor() {
         inputRequesterTUI.colorOption();
         int option = askForOptionInput(1, 4, false);
@@ -346,6 +349,9 @@ public class TextualUI implements UI {
         }
     }
 
+    /**
+     * To choose an objective card
+     */
     private void choosingObjectiveCard() {
         inputRequesterTUI.objectiveCardOption(listOfObjectiveCardsToString(game.player().secretObjectiveCards()));
         int option = askForOptionInput(1, 2, false);
@@ -355,6 +361,9 @@ public class TextualUI implements UI {
         client.ctsUpdateObjectiveCardChoice(option-1);
     }
 
+    /**
+     * Main method while playing, from where the player can do all the actions
+     */
     private void playing() {
         inputRequesterTUI.playing();
         int option = askForOptionInput(1, 5, false);
@@ -367,6 +376,9 @@ public class TextualUI implements UI {
         }
     }
 
+    /**
+     * To flip a card (no initial card) during the game
+     */
     private void flippingCard() {
         inputRequesterTUI.flippingCardOption(game.player().hand());
         int option = askForOptionInput(1, game.player().hand().size(), true);
@@ -375,6 +387,9 @@ public class TextualUI implements UI {
         client.ctsUpdateFlipCard(option-1);
     }
 
+    /**
+     * To play a card (no initial card) during the game
+     */
     private void playingCard() {
         inputRequesterTUI.playingCardOption(game.player().hand());
         int option = askForOptionInput(1, game.player().hand().size(), true);
@@ -398,6 +413,9 @@ public class TextualUI implements UI {
         client.ctsUpdatePlayCard(option-1, x, y);
     }
 
+    /**
+     * To draw a card
+     */
     private void drawingCard() {
         inputRequesterTUI.drawingCardOption();
         int option = askForOptionInput(1, 6, true);
@@ -411,6 +429,9 @@ public class TextualUI implements UI {
         }
     }
 
+    /**
+     * To send a chat message
+     */
     private void sendingMessage() {
         List<String> playersToText = new ArrayList<>(game.playerOrderNicknames());
         playersToText.remove(game.player().nickname());
@@ -434,6 +455,9 @@ public class TextualUI implements UI {
         client.ctsUpdateSendMessage(receiver, content);
     }
 
+    /**
+     * To leave a game
+     */
     private void leaveGame() {
         inputRequesterTUI.leaveGame();
         int option = askForOptionInput(1, 1, true);
@@ -443,7 +467,13 @@ public class TextualUI implements UI {
     }
 
 
-
+    /**
+     * Main method used to ask for an input
+     * @param min minimum valid option
+     * @param max maximum valid option
+     * @param canGoBack if the menu has a back page
+     * @return the input (the option chosen)
+     */
     private int askForOptionInput(int min, int max, boolean canGoBack) {
         String input;
         while (true) {
@@ -459,6 +489,12 @@ public class TextualUI implements UI {
         }
     }
 
+    /**
+     * To ask for a coordinate when playing a card
+     * @param min minimum valid coordinate of the play area
+     * @param max maximum valid coordinate of the play area
+     * @return the coordinate
+     */
     private int askForCoordinate(int min, int max) {
         String input;
         while (true) {
@@ -474,6 +510,10 @@ public class TextualUI implements UI {
         }
     }
 
+    /**
+     * To ask for the chat message content
+     * @return the message content
+     */
     private String askForMessageContent() {
         while (true) {
             String input = scanner.nextLine();
@@ -734,6 +774,9 @@ public class TextualUI implements UI {
     }
 
 
+    /**
+     * Prints the center of the table cards and the initial card
+     */
     private void firstSetup() {
 
         printSpace();
@@ -745,6 +788,9 @@ public class TextualUI implements UI {
 
     }
 
+    /**
+     * Prints all the players setups, the center of table cards and your setup
+     */
     private void secondSetup() {
         printSpace();
         showOtherPlayers();
@@ -755,6 +801,9 @@ public class TextualUI implements UI {
     }
 
 
+    /**
+     * Prints the other players (play area, hand cards...)
+     */
     private void showOtherPlayers() {
         for (ImmOtherPlayer player : game.otherPlayers()) {
             Color color = player.color();
@@ -769,6 +818,9 @@ public class TextualUI implements UI {
         }
     }
 
+    /**
+     * Prints the chat with public and private messages
+     */
     private void showChat() {
         System.out.println("GAME CHAT");
         for (ImmMessage message : game.chat()) {
@@ -791,6 +843,9 @@ public class TextualUI implements UI {
         printSplitter();
     }
 
+    /**
+     * Prints the center of table cards: resource cards, gold cards and common objective cards
+     */
     private void showCommonCards() {
 
         List<ImmPlayableCard> resourceCards = new ArrayList<>();
@@ -820,6 +875,9 @@ public class TextualUI implements UI {
 
     }
 
+    /**
+     * Prints your hand, objective card and play area
+     */
     private void showYou(){
         printSplitter();
         Color color = game.player().color();
@@ -839,6 +897,11 @@ public class TextualUI implements UI {
     }
 
 
+    /**
+     * To print the playable cards all in a row
+     * @param hand cards to print
+     * @return card string to print
+     */
     private String listOfPlayableCardsToString(List<ImmPlayableCard> hand){
 
         List<List<String>> cardsAsStrings = new ArrayList<>(new ArrayList<>());
@@ -858,6 +921,11 @@ public class TextualUI implements UI {
 
     }
 
+    /**
+     * To print the common objective cards all in a row
+     * @param cards cards to print
+     * @return card string to print
+     */
     private String listOfObjectiveCardsToString(List<ImmObjectiveCard> cards){
 
         List<List<String>> cardsAsStrings = new ArrayList<>(new ArrayList<>());
@@ -877,10 +945,16 @@ public class TextualUI implements UI {
 
     }
 
+    /**
+     * Prints some space to distinguish the view components
+     */
     private void printSpace() {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
 
+    /**
+     * Prints a splitter row
+     */
     private void printSplitter() {
         System.out.println("////////////////////////////////////////////////////////////////////////");
     }

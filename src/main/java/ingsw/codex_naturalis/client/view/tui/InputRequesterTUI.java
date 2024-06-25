@@ -24,6 +24,9 @@ public class InputRequesterTUI {
 
     }
 
+    /**
+     * Prints the game access options
+     */
     public void gameAccessOption() {
 
         clearPreviousInputs();
@@ -42,6 +45,9 @@ public class InputRequesterTUI {
 
     }
 
+    /**
+     * Asks for the number of players in the new game
+     */
     public void newGameAccess() {
 
         clearPreviousInputs();
@@ -59,6 +65,9 @@ public class InputRequesterTUI {
 
     }
 
+    /**
+     * Asks for a nickname
+     */
     public void nickname() {
 
         clearPreviousInputs();
@@ -75,6 +84,11 @@ public class InputRequesterTUI {
 
     }
 
+    /**
+     * Asks which game to access
+     * @param gamesSpecs available games
+     * @throws NoExistingGamesAvailable no existing games available
+     */
     public void existingGameAccess(List<GameSpecs> gamesSpecs) throws NoExistingGamesAvailable {
 
         if (gamesSpecs.isEmpty())
@@ -98,6 +112,9 @@ public class InputRequesterTUI {
 
     }
 
+    /**
+     * Asks to play or flip the initial card
+     */
     public void initialCardOption() {
 
         clearPreviousInputs();
@@ -116,6 +133,9 @@ public class InputRequesterTUI {
 
     }
 
+    /**
+     * Asks to choose a color
+     */
     public void colorOption() {
 
         clearPreviousInputs();
@@ -136,6 +156,10 @@ public class InputRequesterTUI {
 
     }
 
+    /**
+     * Asks to choose a secret objective card
+     * @param objectiveCards secret objective cards from which you can choose
+     */
     public void objectiveCardOption(String objectiveCards) {
 
         clearPreviousInputs();
@@ -154,6 +178,9 @@ public class InputRequesterTUI {
 
     }
 
+    /**
+     * Asks the action to do while in gameplay phase
+     */
     public void playing() {
         System.out.println("""
                 
@@ -169,6 +196,10 @@ public class InputRequesterTUI {
                 """);
     }
 
+    /**
+     * Asks which card to flip
+     * @param hand hand cards
+     */
     public void flippingCardOption(List<ImmPlayableCard> hand) {
         clearPreviousInputs();
         System.out.println("""
@@ -182,6 +213,10 @@ public class InputRequesterTUI {
         System.out.println("-------------------------------");
     }
 
+    /**
+     * Asks which card to play
+     * @param hand hand cards
+     */
     public void playingCardOption(List<ImmPlayableCard> hand) {
         clearPreviousInputs();
         System.out.println("""
@@ -195,6 +230,10 @@ public class InputRequesterTUI {
         System.out.println("-------------------------------");
     }
 
+    /**
+     * Asks which coordinate to play in
+     * @param coordinate
+     */
     public void coordinate(String coordinate) {
         clearPreviousInputs();
         System.out.println("""
@@ -205,6 +244,9 @@ public class InputRequesterTUI {
         System.out.println("-----------------------------\n");
     }
 
+    /**
+     * Asks which card to draw
+     */
     public void drawingCardOption() {
         System.out.println("""
                 
@@ -222,6 +264,10 @@ public class InputRequesterTUI {
                 """);
     }
 
+    /**
+     * Asks which player/s to text
+     * @param playersToText possible players to text
+     */
     public void sendingMessage(List<String> playersToText) {
         clearPreviousInputs();
         System.out.println("""
@@ -239,6 +285,9 @@ public class InputRequesterTUI {
         System.out.println("-------------------------------------\n");
     }
 
+    /**
+     * Asks for the chat message content
+     */
     public void messageContent() {
         clearPreviousInputs();
         System.out.println("""
@@ -255,6 +304,9 @@ public class InputRequesterTUI {
     }
 
 
+    /**
+     * Asks confirmation before leaving the game
+     */
     public void leaveGame() {
         clearPreviousInputs();
         System.out.println("""

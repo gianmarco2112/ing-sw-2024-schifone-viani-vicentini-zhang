@@ -7,30 +7,6 @@ import ingsw.codex_naturalis.common.enumerations.Symbol;
  */
 public class DefaultValue {
     /**
-     * Max number of player in a game
-     */
-    public final static int maxNumOfPlayer = 4;
-    /**
-     * Min number of player in a game
-     */
-    public final static int minNumOfPlayer = 2;
-    /**
-     * Total number of Resource cards in the game
-     */
-    public final static int totNumOfResourceCards = 40;
-    /**
-     * Total number of Gold cards in the game
-     */
-    public final static int totNumOfGoldCards = 40;
-    /**
-     * Total number of Objective cards in the game
-     */
-    public final static int totNumOfObjectiveCards = 16;
-    /**
-     * Total number of Initial cards in the game
-     */
-    public final static int totNumOfInitialCards = 6;
-    /**
      * To reset the text's color to default
      */
     public static final String ANSI_RESET = "\u001B[0m";

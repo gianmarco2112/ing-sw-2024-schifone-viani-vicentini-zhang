@@ -1,5 +1,6 @@
 package ingsw.codex_naturalis.client.view.gui;
 
+import ingsw.codex_naturalis.client.ClientCreation;
 import ingsw.codex_naturalis.client.ClientImpl;
 import ingsw.codex_naturalis.client.ServerStub;
 import ingsw.codex_naturalis.client.view.UI;
@@ -349,14 +350,7 @@ public class GraphicalUI extends Application implements UI {
 
     public GraphicalUI() {
         try {
-            switch (networkProtocol) {
-                case "RMI" -> {
-                    createRMIClient();
-                }
-                case "socket" -> {
-                    createSocketClient();
-                }
-            }
+            this.client = ClientCreation.createClient(this, networkProtocol, ipAddress);
         } catch (RemoteException e) {
             throw new RuntimeException();
         }
@@ -374,38 +368,6 @@ public class GraphicalUI extends Application implements UI {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void createRMIClient() throws RemoteException {
-        Registry registry = LocateRegistry.getRegistry(ipAddress, 1235);
-        Server server;
-        try {
-            server = (Server) registry.lookup("Server");
-        } catch (NotBoundException e) {
-            throw new RemoteException();
-        }
-
-        this.client = new ClientImpl(server, NetworkProtocol.RMI, this);
-    }
-
-    private void createSocketClient() throws RemoteException {
-        ServerStub serverStub = new ServerStub(ipAddress, 1234);
-        this.client = new ClientImpl(serverStub, NetworkProtocol.SOCKET, this);
-        new Thread(() -> {
-            while (true) {
-                try {
-                    serverStub.receive();
-                } catch (IOException e) {
-                    System.err.println("Error: won't receive from server\n" + e.getMessage());
-                    try {
-                        serverStub.close();
-                    } catch (RemoteException ex) {
-                        System.err.println("Error while closing connection with server");
-                    }
-                    System.exit(1);
-                }
-            }
-        }).start();
     }
 
     @Override

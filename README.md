@@ -34,11 +34,11 @@ Almost all `model` and `controller` classes have a class and method coverage of 
 
 **Coverage**: code lines covered.
 
-| Package   | Class              | Coverage       |
-|-----------|--------------------|----------------|
-| Model     | Entire Package     | ---% (---/---) |
-| Controller | ServerImpl         | ---% (---/---) |
-| Controller | GameControllerImpl | ---% (---/---) | 
+| Package   | Class              | Coverage        |
+|-----------|--------------------|-----------------|
+| Model     | Entire Package     | 96% (1092/1132) |
+| Controller | ServerImpl         | 86% (155/180)   |
+| Controller | GameControllerImpl | 89% (235/263)   | 
 
 ---
 

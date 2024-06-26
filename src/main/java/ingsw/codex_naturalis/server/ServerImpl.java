@@ -151,7 +151,7 @@ public class ServerImpl implements Server {
                     client.setNickname(nickname);
                     client.updateGamesSpecs(objectMapper.writeValueAsString(getGamesSpecs()));
                 } catch (RemoteException | JsonProcessingException e) {
-                    System.err.println("Error while updating client");
+                    System.err.println("Error while updating client\n"+e.getMessage());
                 }
             });
         } catch (InterruptedException e) {

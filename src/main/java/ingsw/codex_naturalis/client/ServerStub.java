@@ -72,7 +72,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -84,7 +84,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -96,7 +96,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -109,7 +109,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
         return this;
     }
@@ -122,7 +122,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -134,7 +134,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -147,7 +147,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -159,7 +159,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -171,7 +171,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -183,7 +183,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -196,7 +196,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -208,7 +208,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -220,7 +220,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -232,7 +232,7 @@ public class ServerStub implements Server, GameController {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -245,7 +245,7 @@ public class ServerStub implements Server, GameController {
         try {
             jsonMessage = reader.readLine();
         } catch (IOException e) {
-            throw new RemoteException("Error while reading from the buffered reader");
+            throw new RemoteException("Error while reading from the buffered reader\n"+e.getMessage());
         }
         MessageToClient message = objectMapper.readValue(jsonMessage, MessageToClient.class);
         message.run(this);

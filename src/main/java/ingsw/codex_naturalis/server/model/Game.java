@@ -435,10 +435,10 @@ public class Game extends GameObservable implements PlayerObserver {
      * the current player becomes the next one in the player's list)
      */
     public boolean nextPlayer() {
-        Player nextPlayer;
+        Player nextPlayer = currentPlayer;
         boolean newRound;
         do {
-            int index = getPlayerOrder().indexOf(getCurrentPlayer());
+            int index = getPlayerOrder().indexOf(nextPlayer);
             if (index < getPlayerOrder().size() - 1) {
                 nextPlayer = getPlayerOrder().get(index + 1);
                 newRound = false;

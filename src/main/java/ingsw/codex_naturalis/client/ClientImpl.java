@@ -99,7 +99,7 @@ public class ClientImpl implements Client {
             });
             view.updateGamesSpecs(gamesSpecs);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json value");
+            System.err.println("Error while processing json value\n"+e.getMessage());
         }
     }
 
@@ -146,7 +146,7 @@ public class ClientImpl implements Client {
             GameEvent gameEvent = objectMapper.readValue(jsonGameEvent, GameEvent.class);
             view.updateSetup(immGame, gameEvent);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
 
     }
@@ -163,7 +163,7 @@ public class ClientImpl implements Client {
             InitialCardEvent initialCardEvent = objectMapper.readValue(jsonInitialCardEvent, InitialCardEvent.class);
             view.updateInitialCard(game, initialCardEvent);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -177,7 +177,7 @@ public class ClientImpl implements Client {
             Color color = objectMapper.readValue(jsonColor, Color.class);
             view.updateColor(color);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -191,7 +191,7 @@ public class ClientImpl implements Client {
             ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
             view.updateObjectiveCardChoice(immGame);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -205,7 +205,7 @@ public class ClientImpl implements Client {
             ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
             view.endSetup(immGame);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -219,7 +219,7 @@ public class ClientImpl implements Client {
             ImmGame immGame = objectMapper.readValue(jsonGame, ImmGame.class);
             view.cardFlipped(immGame);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -234,7 +234,7 @@ public class ClientImpl implements Client {
             ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
             view.cardPlayed(immGame, playerNicknameWhoUpdated);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -249,7 +249,7 @@ public class ClientImpl implements Client {
             ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
             view.cardDrawn(immGame, playerNicknameWhoUpdated);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -272,7 +272,7 @@ public class ClientImpl implements Client {
             ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
             view.messageSent(immGame);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -286,7 +286,7 @@ public class ClientImpl implements Client {
             ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
             view.twentyPointsReached(immGame);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -300,7 +300,7 @@ public class ClientImpl implements Client {
             ImmGame immGame = objectMapper.readValue(jsonImmGame, ImmGame.class);
             view.decksEmpty(immGame);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -316,7 +316,7 @@ public class ClientImpl implements Client {
             view.gameEnded(players);
             gameController = null;
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -370,7 +370,7 @@ public class ClientImpl implements Client {
             boolean hasDisconnected = objectMapper.readValue(jsonHasDisconnected, Boolean.class);
             view.updatePlayerInGameStatus(immGame, playerNickname, inGame, hasDisconnected);
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -404,7 +404,7 @@ public class ClientImpl implements Client {
         try {
             server.chooseNickname(this, nickname);
         } catch (RemoteException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -416,7 +416,7 @@ public class ClientImpl implements Client {
         try {
             server.accessExistingGame(this, gameID);
         } catch (RemoteException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -428,7 +428,7 @@ public class ClientImpl implements Client {
         try {
             server.accessNewGame(this, numOfPlayers);
         } catch (RemoteException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -441,7 +441,7 @@ public class ClientImpl implements Client {
             gameController = server.getGameController(this);
             gameController.readyToPlay(nickname);
         } catch (RemoteException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -453,7 +453,7 @@ public class ClientImpl implements Client {
         try {
             gameController.updateInitialCard(nickname, objectMapper.writeValueAsString(initialCardEvent));
         } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -465,7 +465,7 @@ public class ClientImpl implements Client {
         try {
             gameController.chooseColor(nickname, objectMapper.writeValueAsString(color));
         } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -477,7 +477,7 @@ public class ClientImpl implements Client {
         try {
             gameController.chooseSecretObjectiveCard(nickname, index);
         } catch (RemoteException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -490,7 +490,7 @@ public class ClientImpl implements Client {
         try {
             gameController.flipCard(nickname, index);
         } catch (RemoteException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -504,7 +504,7 @@ public class ClientImpl implements Client {
         try {
             gameController.playCard(nickname, index, x, y);
         } catch (RemoteException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -516,7 +516,7 @@ public class ClientImpl implements Client {
         try {
             gameController.drawCard(nickname, objectMapper.writeValueAsString(drawCardEvent));
         } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -529,7 +529,7 @@ public class ClientImpl implements Client {
         try {
             gameController.sendMessage(nickname, receiver, content);
         } catch (RemoteException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -540,7 +540,7 @@ public class ClientImpl implements Client {
         try {
             server.leaveGame(this);
         } catch (RemoteException e) {
-            System.err.println("Error while updating the server");
+            System.err.println("Error while updating the server\n"+e.getMessage());
         }
     }
 
@@ -554,10 +554,5 @@ public class ClientImpl implements Client {
             System.err.println("Error while getting game controller\n"+e.getMessage());
         }
     }
-
- /*   public void setViewTest(){
-        UIObservableItem uiObservableItem = new UIObservableItem();
-        view = new TextualUI(uiObservableItem);
-    }*/
 
 }

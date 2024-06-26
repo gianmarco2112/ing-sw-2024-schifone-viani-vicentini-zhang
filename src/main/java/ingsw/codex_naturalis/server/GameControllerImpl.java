@@ -146,7 +146,7 @@ public class GameControllerImpl implements GameController {
                         case PLAY -> player.playInitialCard();
                     }
                 } catch (JsonProcessingException e) {
-                    System.err.println("Error while processing json");
+                    System.err.println("Error while processing json\n"+e.getMessage());
                 }
             });
         } catch (InterruptedException e) {

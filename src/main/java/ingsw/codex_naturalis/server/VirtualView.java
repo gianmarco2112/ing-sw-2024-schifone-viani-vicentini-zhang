@@ -90,7 +90,7 @@ public class VirtualView implements GameObserver {
                 try {
                     client.setupUpdated(objectMapper.writeValueAsString(getImmGame(game)), objectMapper.writeValueAsString(gameEvent));
                 } catch (RemoteException | JsonProcessingException e) {
-                    System.err.println("Error while updating client");
+                    System.err.println("Error while updating client\n"+e.getMessage());
                 }
             }
             case GAME_STATUS_CHANGED -> gameStatusChanged(game);
@@ -131,7 +131,7 @@ public class VirtualView implements GameObserver {
             try {
                 client.reportException(error);
             } catch (RemoteException e) {
-                System.err.println("Error while updating client");
+                System.err.println("Error while updating client\n"+e.getMessage());
             }
         }
     }
@@ -145,7 +145,7 @@ public class VirtualView implements GameObserver {
         try {
             client.turnChanged(playerNickname);
         } catch (RemoteException e) {
-            System.err.println("Error while updating client");
+            System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
 
@@ -239,7 +239,7 @@ public class VirtualView implements GameObserver {
                 client.initialCardUpdated(objectMapper.writeValueAsString(immGame), objectMapper.writeValueAsString(initialCardEvent));
             }
         } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating client");
+            System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
 
@@ -248,7 +248,7 @@ public class VirtualView implements GameObserver {
             if (nickname.equals(playerNicknameWhoUpdated))
                 client.colorUpdated(objectMapper.writeValueAsString(playerWhoUpdated.getColor()));
         } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating client");
+            System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
 
@@ -259,7 +259,7 @@ public class VirtualView implements GameObserver {
                 client.objectiveCardChosen(objectMapper.writeValueAsString(immGame));
             }
         } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating client");
+            System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
 
@@ -271,7 +271,7 @@ public class VirtualView implements GameObserver {
                     ImmGame immGame = getImmGame(game);
                     client.setupEnded(objectMapper.writeValueAsString(immGame));
                 } catch (RemoteException | JsonProcessingException e) {
-                    System.err.println("Error while updating client");
+                    System.err.println("Error while updating client\n"+e.getMessage());
                 }
             }
             case SECOND_TO_LAST_ROUND_20_POINTS -> {
@@ -279,7 +279,7 @@ public class VirtualView implements GameObserver {
                     ImmGame immGame = getImmGame(game);
                     client.twentyPointsReached(objectMapper.writeValueAsString(immGame));
                 } catch (RemoteException | JsonProcessingException e) {
-                    System.err.println("Error while updating client");
+                    System.err.println("Error while updating client\n"+e.getMessage());
                 }
             }
             case SECOND_TO_LAST_ROUND_DECKS_EMPTY -> {
@@ -287,7 +287,7 @@ public class VirtualView implements GameObserver {
                     ImmGame immGame = getImmGame(game);
                     client.decksEmpty(objectMapper.writeValueAsString(immGame));
                 } catch (RemoteException | JsonProcessingException e) {
-                    System.err.println("Error while updating client");
+                    System.err.println("Error while updating client\n"+e.getMessage());
                 }
             }
             case ENDGAME -> {
@@ -306,7 +306,7 @@ public class VirtualView implements GameObserver {
         try {
             client.gameEnded(objectMapper.writeValueAsString(immPlayers));
         } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating client");
+            System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
 
@@ -323,7 +323,7 @@ public class VirtualView implements GameObserver {
                 client.cardFlipped(objectMapper.writeValueAsString(immGame));
             }
         } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating client");
+            System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
 
@@ -332,7 +332,7 @@ public class VirtualView implements GameObserver {
             ImmGame immGame = getImmGame(game);
             client.cardPlayed(objectMapper.writeValueAsString(immGame), playerNicknameWhoUpdated);
         } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating client");
+            System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
 
@@ -341,7 +341,7 @@ public class VirtualView implements GameObserver {
             ImmGame immGame = getImmGame(game);
             client.cardDrawn(objectMapper.writeValueAsString(immGame), playerNicknameWhoUpdated);
         } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating client");
+            System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
 
@@ -362,7 +362,7 @@ public class VirtualView implements GameObserver {
                 client.messageSent(objectMapper.writeValueAsString(immGame));
             }
         } catch (RemoteException | JsonProcessingException e) {
-            System.err.println("Error while updating client");
+            System.err.println("Error while updating client\n"+e.getMessage());
         }
 
     }

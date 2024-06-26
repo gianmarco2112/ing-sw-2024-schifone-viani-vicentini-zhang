@@ -54,7 +54,7 @@ public class ClientSkeleton implements Client {
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             this.reader = new BufferedReader(inputStreamReader);
         } catch (IOException e) {
-            throw new RemoteException("Error while creating the client skeleton");
+            throw new RemoteException("Error while creating the client skeleton\n"+e.getMessage());
         }
 
     }
@@ -74,7 +74,7 @@ public class ClientSkeleton implements Client {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -100,7 +100,7 @@ public class ClientSkeleton implements Client {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -112,7 +112,7 @@ public class ClientSkeleton implements Client {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -125,7 +125,7 @@ public class ClientSkeleton implements Client {
             writer.println(jsonMessage);
             writer.flush();
         } catch (JsonProcessingException e) {
-            System.err.println("Error while processing json");
+            System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
 
@@ -392,7 +392,7 @@ public class ClientSkeleton implements Client {
         try {
             jsonMessage = reader.readLine();
         } catch (IOException e) {
-            throw new RemoteException("Error while reading from the buffered reader");
+            throw new RemoteException("Error while reading from the buffered reader\n"+e.getMessage());
         }
 
         MessageToServer message = objectMapper.readValue(jsonMessage, MessageToServer.class);

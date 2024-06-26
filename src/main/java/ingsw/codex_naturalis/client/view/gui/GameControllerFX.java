@@ -1668,6 +1668,9 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * Method called when the game is canceled
+     */
     public void gameCanceled() {
         Platform.runLater(()->{
             leaveButton.setVisible(false);
@@ -1676,6 +1679,12 @@ public class GameControllerFX {
         });
     }
 
+    /**
+     * Shows on the text box a message about the player state in the game.
+     * @param message message to be shown
+     * @param immGame Immutable Model of the Game
+     * @param playerNickname Nickname of the player
+     */
     public void updatePlayerInGameStatus(String message, ImmGame immGame, String playerNickname) {
         Platform.runLater(()->{
             setUpdateText(List.of(playerNickname + " " + message));
@@ -1683,12 +1692,18 @@ public class GameControllerFX {
         });
     }
 
+    /**
+     * Shows on the text box a message when only one player is connected
+     */
     public void gamePaused() {
         Platform.runLater(()->{
             setUpdateText(List.of("Currently, you're the only player connected.\nPlease wait for another player to rejoin within 10 seconds."));
         });
     }
 
+    /**
+     * Shows on the text box a message when the game resume
+     */
     public void gameResumed() {
         Platform.runLater(()->{
             setUpdateText(List.of("Game resumed!"));
@@ -1700,6 +1715,10 @@ public class GameControllerFX {
     private ComboBox<String> comboBoxMessage;
     @FXML
     private ListView<String> chatList;
+    /**
+     * Method called when a player send a message
+     * @param game Immutable Model of the Game
+     */
     @FXML
     void actionSendMessage(MouseEvent event) {
         if (!messageText.getText().isEmpty()) {
@@ -1722,6 +1741,10 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * Method called when a player has sent a message
+     * @param game Immutable Model of the Game
+     */
     public void messageSent(ImmGame immGame) {
         Platform.runLater(()->{
             chatList.getItems().clear();
@@ -1737,6 +1760,10 @@ public class GameControllerFX {
         });
     }
 
+    /**
+     * Method called when a player rejoins
+     * @param game Immutable Model of the Game
+     */
     public void rejoined(ImmGame game) {
         this.game = game;
         nickname = game.player().nickname();
@@ -2103,6 +2130,12 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * Method to stream an hand card when a player rejoins
+     * @param id card id
+     * @param toPlace Image view for the hand card
+     * @param showingFront true if the card is showing front
+     */
     private void streamCardRejoin(String id, ImageView toPlace, boolean showingFront) {
         if(showingFront){
             String path = "/CardsImages/HandCards/front/" + id + ".png";
@@ -2123,6 +2156,12 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * Streams Other Player Area when a player rejoins
+     * @param userPlayerArea Player area of the player
+     * @param game Immutable Model of the Game
+     * @param index order of the player
+     */
     private void streamOtherPlayerarea(AnchorPane userPlayerArea, ImmGame game, int index) {
         Map.Entry<List<Integer>, ImmPlayableCard> placed;
         for (Map.Entry<List<Integer>, ImmPlayableCard> cardAndCoordinates : game.otherPlayers().get(index).playerArea().area().entrySet()) {
@@ -2162,6 +2201,12 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * Method to stream the initial card
+     * @param id card id
+     * @param toPlace Image view for initial card
+     * @param showingFront true if the card is showing front
+     */
     private void streamInitialCardRejoin(String id, ImageView toPlace, boolean showingFront) {
         if(showingFront){
             String path = "/CardsImages/Initial/fronts/" + id + ".png";
@@ -2186,6 +2231,12 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * Method to stream hand cards
+     * @param id card id
+     * @param handCard hand card image view
+     * @param showingFront true if the card is showing front
+     */
     private void streamMyHandcard(String id, ImageView handCard, Boolean showingFront) {
         if(showingFront){
             String path = "/CardsImages/HandCards/front/" + id + ".png";
@@ -2206,16 +2257,27 @@ public class GameControllerFX {
         }
     }
 
+
+    /**
+     * Used to leve the Game
+     */
     @FXML
     void leaveButton(ActionEvent event) {
         viewGUI.leaveGame();
     }
 
+    /**
+     * Used to return to the Lobby Page
+     */
     @FXML
     void lobbyButton(ActionEvent event) {
         viewGUI.returnToLobby();
     }
 
+    /**
+     * Updates the Game update box
+     * @param updatesText text for the update to be shown
+     */
     public void setUpdateText (List<String> updatesText) {
         importantEventsList.getItems().clear();
         for (String s : updatesText) {

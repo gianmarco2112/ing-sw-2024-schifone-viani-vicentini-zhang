@@ -22,6 +22,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+/**
+ * Controller for the GameFXML scene.
+ * This class is responsible for handling all the events that happen in the game, updating
+ * the GUI accordingly to the events received by the server, and collecting the events from the player
+ * and notify the to update the Server calling viewGUI's method.
+ */
 public class GameControllerFX {
 
     @FXML
@@ -159,6 +165,9 @@ public class GameControllerFX {
     private Color myColor;
     private ImmGame game;
 
+    /**
+     * initialize board position
+     */
     private void initializeBoard(){
         boardPointsPosition.put(0, List.of(32,312));
         boardPointsPosition.put(1, List.of(75,312));
@@ -197,6 +206,10 @@ public class GameControllerFX {
         this.viewGUI = viewGUI;
     }
 
+    /**
+     * method called by viewGUI when the setupPhase has ended
+     * @param game immutable game
+     */
     public void endSetup(ImmGame game) {
 
         leaveButton.setVisible(true);
@@ -391,6 +404,11 @@ public class GameControllerFX {
 
     }
 
+    /**
+     * method called to stream Objective card image
+     * @param cardId card id
+     * @param objectiveCardView objectiveCard imageview
+     */
     private void streamObjectiveCard(String cardId, ImageView objectiveCardView) {
         String path = "/CardsImages/Objective/" + cardId + ".png";
 
@@ -401,6 +419,11 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * method called to set player's area size
+     * @param userPlayerArea anchor pane
+     * @param playerArea scroll pane
+     */
     private void setAreaSize(AnchorPane userPlayerArea, ScrollPane playerArea) {
         userPlayerArea.setPrefWidth(Region.USE_COMPUTED_SIZE);
         userPlayerArea.setPrefHeight(Region.USE_COMPUTED_SIZE);
@@ -408,6 +431,13 @@ public class GameControllerFX {
         playerArea.setVvalue(1.0);
     }
 
+    /**
+     * method called to stream pawn color
+     * @param color color to stream
+     * @param uPedina pawn image view
+     * @param id id to set for image view
+     * @param userPlayerArea player area anchor pane
+     */
     private void streamUPedina(Color color, ImageView uPedina, String id, AnchorPane userPlayerArea) {
         streamColor(color,uPedina);
         uPedina.setFitHeight(33);
@@ -418,6 +448,12 @@ public class GameControllerFX {
         userPlayerArea.getChildren().add(uPedina);
     }
 
+    /**
+     * method called to place a pawn on board according to the points reached
+     * @param colors list of color to place
+     * @param points points
+     * @param anchorPane anchor pane on board
+     */
     private void posizionaPedine(List<Color> colors, int points, AnchorPane anchorPane) {
         ImageView view;
 
@@ -447,6 +483,11 @@ public class GameControllerFX {
     }
 
     // Moves the pawn to the specified cell
+    /**
+     * method called to move the pawn
+     * @param cell cell on which place the pawn
+     * @param colors list of colors to move
+     */
     private void movePawn(int cell, List<Color> colors){
         if(removeFromBoard(colors.getFirst(), cell)) {
             ImageView firstAvailable = computeFirstAvailablePosition(cell,colors.getFirst());
@@ -454,6 +495,12 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * method called to remove pawn from board
+     * @param color color to remove from board
+     * @param points points
+     * @return true if on points there is not the color, false id there is already
+     */
     private Boolean removeFromBoard(Color color, int points) {
         //se in quella posizione c'è già color, allora non aggiorno
         ImageView p1 = (ImageView) anchorPanesOnBoard.get(points).lookup("#" + color + "pawn1");
@@ -496,6 +543,12 @@ public class GameControllerFX {
         return false;
     }
 
+    /**
+     * method called to create an anchor pane on board in order to put the image view of the pawn
+     * @param x layout x of the anchorPane in which put pawn view
+     * @param y layout y of the anchorPane in which put pawn view
+     * @return anchor pane
+     */
     private AnchorPane createAnchorPaneOnBoard(int x, int y) {
         int width = 33;
         int height = 44;
@@ -542,6 +595,12 @@ public class GameControllerFX {
         return anchorPane;
     }
 
+    /**
+     * on the board the pawn are in the stack, this method computes the first available position of the stack
+     * @param point point of the board on which put the pawn
+     * @param color color
+     * @return image view of the position
+     */
     private ImageView computeFirstAvailablePosition(int point,Color color){
         ImageView pawn1 = (ImageView) anchorPanesOnBoard.get(point).lookup("#pawn1");
         ImageView pawn2 = (ImageView) anchorPanesOnBoard.get(point).lookup("#pawn2");
@@ -567,6 +626,11 @@ public class GameControllerFX {
         return null;
     }
 
+    /**
+     * method called to stream other players' handCard
+     * @param id card id
+     * @param userHandCard user hand card image view
+     */
     private void streamOtherPlayerCard(String id, ImageView userHandCard) {
         String path = "/CardsImages/HandCards/back/" + id + ".png";
 
@@ -577,6 +641,12 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * method called to stream initialCard image
+     * @param initialCardId initialcard id
+     * @param userInitialcardView initialcard image view
+     * @param showingFront indicates if it's showing front
+     */
     private void streamInitialCard(String initialCardId, ImageView userInitialcardView, boolean showingFront) {
         if(showingFront){
             String path = "/CardsImages/Initial/fronts/" + initialCardId + ".png";
@@ -598,6 +668,9 @@ public class GameControllerFX {
     }
 
 
+    /**
+     * method called when a player click flip button under hancard 1
+     */
     @FXML
     void flipHandCard1(ActionEvent event) {
         handCard1.getStyleClass().remove("selected");
@@ -607,6 +680,9 @@ public class GameControllerFX {
         viewGUI.flippingCard(0);
     }
 
+    /**
+     * method called when a player click flip button under hancard 2
+     */
     @FXML
     void flipHandCard2(ActionEvent event) {
         handCard1.getStyleClass().remove("selected");
@@ -616,6 +692,9 @@ public class GameControllerFX {
         viewGUI.flippingCard(1);
     }
 
+    /**
+     * method called when a player click flip button under hancard 3
+     */
     @FXML
     void flipHandCard3(ActionEvent event) {
         handCard1.getStyleClass().remove("selected");
@@ -625,6 +704,14 @@ public class GameControllerFX {
         viewGUI.flippingCard(2);
     }
 
+    /**
+     * method called when the card is flipped
+     * @param cardId flipped card id
+     * @param showingFront indicates if is showing front
+     * @param kingdom kingdom of the card flipped
+     * @param playableCardType flipped card's type
+     * @param indexOfFlippedCard index of the card flipped
+     */
     public void cardFlipped(String cardId, boolean showingFront, Symbol kingdom, PlayableCardType playableCardType, int indexOfFlippedCard) {
         Platform.runLater(()->{
             selectedCard = null;
@@ -667,6 +754,12 @@ public class GameControllerFX {
         });
     }
 
+    /**
+     * method called to create a Pane that represents the card placed
+     * @param x coordinate x
+     * @param y coordinate y
+     * @return a Pane on coordinate (x,y)
+     */
     private Pane createPaneCard(int x, int y) {
         int width = 133;
         int height = 93;
@@ -682,6 +775,10 @@ public class GameControllerFX {
 
         return pane;
     }
+    /**
+     * this method creates clickable corners
+     * @param card a Pane (card) created by createPaneCard {@link #createPaneCard}
+     */
     private void createClickableCorners(Pane card) {
         int width = 29;
         int height = 35;
@@ -710,6 +807,12 @@ public class GameControllerFX {
         card.getChildren().addAll(topRight,topLeft,bottomRight,bottomLeft);
     }
 
+    /**
+     * method called by {@link #createClickableCorners} to create a corner
+     * @param width width of the corner
+     * @param height height of the corner
+     * @return a corner
+     */
     private Rectangle createCorner(int width, int height) {
         Rectangle corner = new Rectangle(width,height);
         //corner.setFill(javafx.scene.paint.Color.RED);
@@ -718,6 +821,9 @@ public class GameControllerFX {
         return corner;
     }
 
+    /**
+     * method called when player clicked on a corner of the card to play a card on that corner
+     */
     public void handlerCornerClick(MouseEvent event, String corner, double layoutX, double layoutY, boolean ok, int points, Color myColor) {
         //evento play card da notificare
         System.out.println(corner + "Clicked!!");
@@ -751,6 +857,9 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * method called to copy the image in the imageView. This is used to slide the cards from left to right
+     */
     private static ImageView copyImageView(ImageView imageToCopie) {
         ImageView copy = new ImageView(imageToCopie.getImage());
         copy.setFitWidth(imageToCopie.getFitWidth());
@@ -758,6 +867,9 @@ public class GameControllerFX {
         return copy;
     }
 
+    /**
+     * method called when player clicked hand card 1
+     */
     @FXML
     void playHandCard1(MouseEvent event) {
         System.out.println("Voglio giocare la prima carta!");
@@ -770,6 +882,9 @@ public class GameControllerFX {
         selectedCardIndex = 0;
     }
 
+    /**
+     * method called when player clicked hand card 2
+     */
     @FXML
     void playHandCard2(MouseEvent event) {
         System.out.println("Voglio giocare la seconda carta!");
@@ -782,6 +897,9 @@ public class GameControllerFX {
         selectedCardIndex = 1;
     }
 
+    /**
+     * method called when player clicked hand card 3
+     */
     @FXML
     void playHandCard3(MouseEvent event) {
         System.out.println("Voglio giocare la terza carta!");
@@ -794,6 +912,9 @@ public class GameControllerFX {
         selectedCardIndex = 2;
     }
 
+    /**
+     * method called when player clicked on gaol cards deck
+     */
     @FXML
     void drawFromGoldDeck(MouseEvent event) {
         System.out.println("voglio pescare dal deck di oro");
@@ -806,6 +927,9 @@ public class GameControllerFX {
         viewGUI.drawingCard(DrawCardEvent.DRAW_FROM_GOLD_CARDS_DECK);
     }
 
+    /**
+     * method called when player clicked on resource cards deck
+     */
     @FXML
     void drawFromResourceDeck(MouseEvent event) {
         System.out.println("voglio pescare dal deck di risorse");
@@ -817,6 +941,9 @@ public class GameControllerFX {
         viewGUI.drawingCard(DrawCardEvent.DRAW_FROM_RESOURCE_CARDS_DECK);
     }
 
+    /**
+     * method called when player clicked on revealed gold card 1
+     */
     @FXML
     void drawFromRevealedGold1(MouseEvent event) {
         System.out.println("voglio pescare la prima carta oro rivelata");
@@ -828,6 +955,9 @@ public class GameControllerFX {
         viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1);
     }
 
+    /**
+     * method called when player clicked on revealed gold card 2
+     */
     @FXML
     void drawFromRevealedGold2(MouseEvent event) {
         System.out.println("voglio pescare la seconda carta oro rivelata");
@@ -839,6 +969,9 @@ public class GameControllerFX {
         viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_2);
     }
 
+    /**
+     * method called when player clicked on revealed resource card 1
+     */
     @FXML
     void drawFromRevealedResource1(MouseEvent event) {
         System.out.println("voglio pescare la prima carta risorsa rivelata");
@@ -850,6 +983,9 @@ public class GameControllerFX {
         viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1);
     }
 
+    /**
+     * method called when player clicked on revealed resource card 1
+     */
     @FXML
     void drawFromRevealedResource2(MouseEvent event) {
         System.out.println("voglio pescare la prima carta risorsa rivelata");
@@ -861,6 +997,17 @@ public class GameControllerFX {
         viewGUI.drawingCard(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_2);
     }
 
+    /**
+     * method called when a card is drawn, the card drawn has to be replaced by another card
+     * @param drawCardEvent draw card event
+     * @param topResourceCardId top resource card id
+     * @param topGoldCardId top gold card id
+     * @param drawnCardId drawn card id
+     * @param revR1 revealed resource card 1 id
+     * @param revR2 revealed resource card 2 id
+     * @param revG1 revealed gold card 1 id
+     * @param revG2 revealed gold card 2 id
+     */
     public void cardDrawn(DrawCardEvent drawCardEvent, String topResourceCardId, String topGoldCardId, String drawnCardId, String revR1, String revR2, String revG1, String revG2) {
         Platform.runLater(()->{
             switch (drawCardEvent) {
@@ -956,6 +1103,9 @@ public class GameControllerFX {
 
     }
 
+    /**
+     * method called to stream top reaource or gold card images
+     */
     private void streamTopRGImage(String topResourceCardId, String topGoldCardId, boolean isGold) {
         String kingdomTopG;
         String kingdomTopR;
@@ -985,6 +1135,9 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * method called when a card is played
+     */
     public void cardPlayed(String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked, int points) {
         Platform.runLater(()->{
             if(selectedCard != null) {
@@ -1091,6 +1244,9 @@ public class GameControllerFX {
         });
     }
 
+    /**
+     * method called to update others players' view of the deck
+     */
     public void updateOtherAfterCardDrawn(String topGCardId, String topRCardId,
                                           String revealedR1Id, String revealedR2Id,
                                           String revealedG1Id, String revealedG2Id,
@@ -1119,6 +1275,9 @@ public class GameControllerFX {
 
     }
 
+    /**
+     * method called to update others players' hand cards
+     */
     private void updateOtherUserHandCard(ImmGame immGame, String playerNicknameWhoUpdated, ImageView userHandCard1, ImageView userHandCard2, ImageView userHandCard3) {
         if(!userHandCard1.isVisible()){
             streamOtherPlayerCard(immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).hand().getLast().cardID(),userHandCard1);
@@ -1134,6 +1293,9 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * method used to stream revealed cards
+     */
     private void streamRevealedId(String revealedG1Id, String revealedG2Id, String revealedR1Id, String revealedR2Id) {
         if(revealedG1Id.equals("empty")){
             this.revealedGold1.setVisible(false);
@@ -1180,6 +1342,9 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * method used to stream color
+     */
     private void streamColor(Color color,ImageView imageview){
         String path = "/pedine/" + color + ".png";
 
@@ -1191,6 +1356,9 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * method used to update other players' player area
+     */
     public void updateUardPlayedForOthers(String playerNicknameWhoUpdated, ImmGame immGame, String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked) {
         Platform.runLater(()->{
             List<String> nicknames = immGame.playerOrderNicknames();
@@ -1212,6 +1380,10 @@ public class GameControllerFX {
                     anchorPanesOnBoard.get(immGame.otherPlayers().get(indexOfplayerWhoupdated).playerArea().points()));
         });
     }
+
+    /**
+     * method used to update player 1 player area
+     */
     private void updateForPlayer1(String playerNicknameWhoUpdated, ImmGame immGame, String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked){
         //devo ottenere che carta è stata giocata dal giocatore sulla base delle coordinate normalizzate con le layout
         //LinkedHashMap<List<Integer>, ImmPlayableCard> cartePosizionateInOrdine = new LinkedHashMap<>();
@@ -1239,6 +1411,9 @@ public class GameControllerFX {
         user1HandCard3.setVisible(false);
     }
 
+    /**
+     * method used to update player 2 player area
+     */
     private void updateForPlayer2(String playerNicknameWhoUpdated, ImmGame immGame, String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked){
         Map.Entry<List<Integer>, ImmPlayableCard> lastPlaced = null;
         for (Map.Entry<List<Integer>, ImmPlayableCard> cardAndCoordinates : immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).playerArea().area().entrySet()) {
@@ -1264,6 +1439,9 @@ public class GameControllerFX {
         user2HandCard3.setVisible(false);
     }
 
+    /**
+     * method used to update player 3 player area
+     */
     private void updateForPlayer3(String playerNicknameWhoUpdated, ImmGame immGame, String cornerClicked, int layoutXOfCardClicked, int layoutYOfCardClicked){
         Map.Entry<List<Integer>, ImmPlayableCard> lastPlaced = null;
         for (Map.Entry<List<Integer>, ImmPlayableCard> cardAndCoordinates : immGame.otherPlayers().get(immGame.playerOrderNicknames().indexOf(playerNicknameWhoUpdated)).playerArea().area().entrySet()) {
@@ -1289,6 +1467,9 @@ public class GameControllerFX {
         user3HandCard3.setVisible(false);
     }
 
+    /**
+     * method called to stream a card
+     */
     private void streamCard(String id, ImageView toPlace, boolean showingFront) {
         if(showingFront){
             String path = "/CardsImages/HandCards/front/" + id + ".png";
@@ -1315,6 +1496,10 @@ public class GameControllerFX {
 
     }
 
+    /**
+     * method called to change turn
+     * @param currentPlayer current player
+     */
     public void turnChanged(String currentPlayer) {
         Platform.runLater(()->{
             if(currentPlayer.equals(nickname)){
@@ -1326,12 +1511,18 @@ public class GameControllerFX {
 
     }
 
+    /**
+     * method called when 20 points is reached
+     */
     public void twentyPointsReached(ImmGame immGame) {
         Platform.runLater(()->{
             setUpdateText(List.of("20 Points reached!"));
         });
     }
 
+    /**
+     * method called when decks are empty
+     */
     public void deckesEmpty(ImmGame immGame) {
         Platform.runLater(()->{
             setUpdateText(List.of("All decks are empty!"));
@@ -1342,6 +1533,11 @@ public class GameControllerFX {
     private Button leaveButton;
     @FXML
     private Button lobbyButton;
+
+    /**
+     * method called when game ends
+     * @param players player order list
+     */
     public void gameEnded(List<ImmPlayer> players) {
         Platform.runLater(()->{
             leaveButton.setVisible(false);
@@ -1422,6 +1618,11 @@ public class GameControllerFX {
         });
     }
 
+    /**
+     * method called to compute the winner
+     * @param pointsMap hash map of players' nickname and List od points and extra points
+     * @return winner
+     */
     private String computeWinner(HashMap<String, List<Integer>> pointsMap) {
         String winner = "";
         int maxPoints = Integer.MIN_VALUE;
@@ -1452,6 +1653,9 @@ public class GameControllerFX {
         }
     }
 
+    /**
+     * method called to stream objetive cards
+     */
     private void streamObjectiveEndGame(String id, ImageView userHandCard1) {
         String path = "/CardsImages/Objective/" + id + ".png";
 

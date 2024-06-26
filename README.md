@@ -132,35 +132,54 @@ To play in a LAN environment, follow these steps:
 
 Ensure all PCs are connected to the same local area network (LAN).
 
-#### Step 2: Start the Server
 
-On one PC, start the server using the following command:
-
-```sh
-java -jar server.jar
-```
-
-#### Step 3: Find the Server's IP Address
+#### Step 2: Setup the Server Environment
 
 You will need the server's IP address. Use the appropriate command for your operating system:
 
-- **Windows:**
+#### **Windows:**
+
+Find the Server's IP Address
 
   ```sh
   ipconfig
   ```
 
-- **Linux:**
+##### **Linux:**
+
+1. Find the Server's IP Address
+
+    ```sh
+    ifconfig
+    ```
+
+If your clients are using RMI follow these additional steps:
+
+  2. open /etc/hosts.allow and at the endo of the file add:
+
+      ```sh
+      ALL
+      ```
+	
+  3. open /etc/hosts and modify all 127.0.1.1 to 127.0.0.1
+
+#### **macOS:**
+
+Find the Server's IP Address
 
   ```sh
   ifconfig
   ```
 
-- **macOS:**
+#### Step 3: Start the Server
 
-  ```sh
-  ifconfig
-  ```
+```sh
+java -jar server.jar -Djava.rmi.server.hostname=<server-ip-address>
+```
+
+Even if you start a client on the same computer of the server do not use 'localhost' as ip.
+Use the server ip on the lan instead
+
 
 #### Step 4: Start the Clients
 

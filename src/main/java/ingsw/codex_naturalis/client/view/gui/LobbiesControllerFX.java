@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controller responsible for the Lobbies screen (here players can create game and see the list of available games)
+ */
 public class LobbiesControllerFX implements Initializable {
     private GraphicalUI viewGUI;
     private HashMap<Integer,LobbyControllerFX> lobbiesFX;
@@ -31,6 +34,10 @@ public class LobbiesControllerFX implements Initializable {
     @FXML
     private ChoiceBox<Integer> Players_CB;
 
+    /**
+     * This method is called whenever the user clicks on the "Create Game" button.
+     * It validates the parameters inserted by the user and, if they are correct, call viewGUI
+     */
     @FXML
     void createGame(ActionEvent event) {
         if(Players_CB.getValue() == null) {
@@ -48,6 +55,9 @@ public class LobbiesControllerFX implements Initializable {
         this.viewGUI = viewGUI;
     }
 
+    /**
+     * Initialization method called by JavaFX
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lobbiesFX = new HashMap<>();
@@ -55,11 +65,21 @@ public class LobbiesControllerFX implements Initializable {
         Players_CB.setItems(playerOptions);
     }
 
+    /**
+     * This method is called to update the view showing the available games.
+     * @param gamesSpecs the available games
+     */
     public void updateLobbies(List<GameSpecs> gamesSpecs) {
         LobbyContainer.getChildren().clear();
         createLobbies(gamesSpecs);
     }
 
+    /**
+     * This method is responsible for the creation of the Lobby screen. In particular,
+     * it instantiates different LobbyControllerFX objects, one for each lobby (game), which will handle
+     * separately the display of the information of each lobby.
+     * @param lobbies list of game available
+     */
     public void createLobbies(List<GameSpecs> lobbies) {
         for(GameSpecs lobby : lobbies) {
             if (lobby.currentNumOfPlayers()<=lobby.maxNumOfPlayers()) {

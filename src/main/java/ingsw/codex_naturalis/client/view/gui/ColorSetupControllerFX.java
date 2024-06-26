@@ -14,6 +14,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class is the controller for the view of setup phase
+ */
 public class ColorSetupControllerFX implements Initializable {
     private GraphicalUI viewGUI;
     @FXML
@@ -31,21 +34,33 @@ public class ColorSetupControllerFX implements Initializable {
     @FXML
     private ImageView yellowPawn;
 
+    /**
+     * method called if user clicked on blue pawn image
+     */
     @FXML
     void blueSelected(MouseEvent event) {
         viewGUI.colorChosen(Color.BLUE);
     }
 
+    /**
+     * method called if user clicked on green pawn image
+     */
     @FXML
     void greenSelected(MouseEvent event) {
         viewGUI.colorChosen(Color.GREEN);
     }
 
+    /**
+     * method called if user clicked on red pawn image
+     */
     @FXML
     void redSelected(MouseEvent event) {
         viewGUI.colorChosen(Color.RED);
     }
 
+    /**
+     * method called if user clicked on yellow pawn image
+     */
     @FXML
     void yellowSelected(MouseEvent event) {
         viewGUI.colorChosen(Color.YELLOW);
@@ -55,6 +70,9 @@ public class ColorSetupControllerFX implements Initializable {
         this.viewGUI = viewGUI;
     }
 
+    /**
+     * Initialization method called by JavaFX, it streams the pawn images
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         String rossa = "/pedine/pedina_rossa.png";
@@ -76,6 +94,10 @@ public class ColorSetupControllerFX implements Initializable {
         }
     }
 
+    /**
+     * method called when player chose the color and set the color invisible and made other pawn unable to click
+     * @param color color chosen
+     */
     public void selectedColor(Color color) {
         Platform.runLater(()->{
             switch (color){

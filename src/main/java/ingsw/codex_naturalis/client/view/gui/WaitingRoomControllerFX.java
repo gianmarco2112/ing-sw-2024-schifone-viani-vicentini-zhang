@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * This class is the controller for the view of waitingRoom screen.
+ */
 public class WaitingRoomControllerFX implements Initializable {
     private GraphicalUI viewGUI;
 
@@ -73,11 +76,17 @@ public class WaitingRoomControllerFX implements Initializable {
     private Text waitingForPlayers;
     private String nickname;
 
+    /**
+     * method called when a player click leave button while is waiting
+     */
     @FXML
     void actionIamLeave(ActionEvent event) {
         viewGUI.leaveGame();
     }
 
+    /**
+     * method called when a player click ready button
+     */
     @FXML
     void actionIamReady(ActionEvent event) {
         btnReady.setVisible(false);
@@ -89,6 +98,9 @@ public class WaitingRoomControllerFX implements Initializable {
         this.viewGUI = viewGUI;
     }
 
+    /**
+     * when the game reached number of player
+     */
     public void setConfirmView() {
         Platform.runLater(()->{
             btnReady.setVisible(true);
@@ -99,6 +111,9 @@ public class WaitingRoomControllerFX implements Initializable {
         });
     }
 
+    /**
+     * Initialization method called by JavaFX
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btnReady.setVisible(false);
@@ -107,14 +122,25 @@ public class WaitingRoomControllerFX implements Initializable {
         btnLeave.setVisible(true);
     }
 
+    /**
+     * it sets the nickname od the player
+     * @param nickname nickname of the player
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * after player clicked on ready make that button invisible
+     */
     public void setConfirmedView() {
         btnReady.setVisible(false);
     }
 
+    /**
+     * it shows player lobby card
+     * @param playerNickname player nickname who clicked ready button
+     */
     public void showAvatar(String playerNickname) {
         Platform.runLater(()->{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXML/PlayerLobbyCard1.fxml"));
@@ -139,11 +165,20 @@ public class WaitingRoomControllerFX implements Initializable {
         });
     }
 
+    /**
+     * it shows player nickname and game id of the game joined
+     * @param nickname nickname
+     * @param gameID gameId
+     */
     public void showNicknameAndGameid(String nickname, int gameID){
         nicknameLable.setText(nickname);
         gameidLabel.setText("Game ID: " + gameID);
     }
 
+    /**
+     * if shows number of players van (in which there will be a player card) equal to number of players
+     * @param numOfPlayers number of players
+     */
     public void showPlayerVan(int numOfPlayers) {
         List<Pane> panes = Arrays.asList(pane0, pane1, pane2, pane3);
         List<Pane> ready = Arrays.asList(ready0, ready1, ready2, ready3);
@@ -156,6 +191,9 @@ public class WaitingRoomControllerFX implements Initializable {
         }
     }
 
+    /**
+     * when a player clicked ready button is not allowed to leave anymore
+     */
     public void setLeaveNotAllowed() {
         Platform.runLater(()->{
             btnLeave.setVisible(false);

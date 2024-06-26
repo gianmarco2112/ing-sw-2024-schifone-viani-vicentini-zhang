@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * This class is the controller for the view of setup phase
+ */
 public class CardsSetupControllerFX {
     private GraphicalUI viewGUI;
     @FXML
@@ -31,18 +34,27 @@ public class CardsSetupControllerFX {
     @FXML
     private ImageView objectiveCard2;
 
+    /**
+     * when a player has chose to play initialCard on its back
+     */
     @FXML
     void backInitialSelected(MouseEvent event) {
         backInitial.setVisible(false);
         viewGUI.playingInitialCard(false);
     }
 
+    /**
+     * when a player has chose to play initialCard on its front
+     */
     @FXML
     void frontInitialSelected(MouseEvent event) {
         frontInitial.setVisible(false);
         viewGUI.playingInitialCard(true);
     }
 
+    /**
+     * when a player has chose the first objectiveCard
+     */
     @FXML
     void objectiveCard1Selected(MouseEvent event) {
         objectiveCard1.setVisible(false);
@@ -52,6 +64,9 @@ public class CardsSetupControllerFX {
         objectiveCard1.setDisable(true);
     }
 
+    /**
+     * when a player has chose the second objectiveCard
+     */
     @FXML
     void objectiveCard2Selected(MouseEvent event) {
         objectiveCard2.setVisible(false);
@@ -70,6 +85,10 @@ public class CardsSetupControllerFX {
         this.viewGUI = viewGUI;
     }
 
+    /**
+     * method called to stream card images
+     * @param s InitialCard id
+     */
     public void showInitialCard(String s) {
         objectiveCardLBL.setVisible(false);
 
@@ -97,6 +116,10 @@ public class CardsSetupControllerFX {
         }
     }
 
+    /**
+     * method called to stream objective cards
+     * @param immObjectiveCards objectiveCards
+     */
     public void chooseObjective(List<ImmObjectiveCard> immObjectiveCards) {
         initialCardLBL.setVisible(false);
 

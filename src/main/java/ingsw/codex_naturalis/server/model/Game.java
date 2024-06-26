@@ -436,12 +436,11 @@ public class Game extends GameObservable implements PlayerObserver {
      */
     public boolean nextPlayer() {
         Player nextPlayer = currentPlayer;
-        boolean newRound;
+        boolean newRound = false;
         do {
             int index = getPlayerOrder().indexOf(nextPlayer);
             if (index < getPlayerOrder().size() - 1) {
                 nextPlayer = getPlayerOrder().get(index + 1);
-                newRound = false;
             } else {
                 nextPlayer = getPlayerOrder().getFirst();
                 newRound = true;

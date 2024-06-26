@@ -215,7 +215,7 @@ public class ServerImpl implements Server {
                     try {
                         client.reportException(e.getMessage());
                     } catch (RemoteException ex) {
-                        System.err.println("Error while updating client\n" + e.getMessage());
+                        System.err.println("Error while updating client\n" + ex.getMessage());
                     }
                 }
             });

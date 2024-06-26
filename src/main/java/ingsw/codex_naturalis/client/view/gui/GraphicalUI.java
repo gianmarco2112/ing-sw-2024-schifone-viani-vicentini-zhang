@@ -2,10 +2,7 @@ package ingsw.codex_naturalis.client.view.gui;
 
 import ingsw.codex_naturalis.client.ClientCreation;
 import ingsw.codex_naturalis.client.ClientImpl;
-import ingsw.codex_naturalis.client.ServerStub;
 import ingsw.codex_naturalis.client.view.UI;
-import ingsw.codex_naturalis.common.NetworkProtocol;
-import ingsw.codex_naturalis.common.Server;
 import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.events.DrawCardEvent;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
@@ -21,48 +18,31 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
+/**
+ * This class is the graphical interface of the client.
+ */
 public class GraphicalUI extends Application implements UI {
 
-    private ClientImpl client;
+    private final ClientImpl client;
     private final HashMap<String, String> scenes;
     private FXMLLoader fxmlLoader;
     private Stage stage;
-    private Scene scene;
+    private final Scene scene;
     private int gameID;
     private int numOfPlayers;
     private ImmGame game;
-    private String initialCardID;
-    private Boolean initialCardPlayedFront;
-    private ImmObjectiveCard myObjectiveCard;
-    private List<ImmPlayableCard> hand;
-    private List<ImmObjectiveCard> commonObjectiveCard;
-    private List<String> readyPlayersList = new ArrayList<>();
     private List<GameSpecs> gamesSpecs;
-    private ImmPlayableCard topResourceCard;
-    private ImmPlayableCard topGoldCard;
-    private List<ImmPlayableCard> revealedResourceCards;
-    private List<ImmPlayableCard> revealedGoldCards;
-    private Color myColor;
     private int indexOfFlippedHandCard;
-    private String firstPlayer;
     private String cornerClicked;
     private int layoutXOfCardClicked;
     private int layoutYOfCardClicked;
     private DrawCardEvent drawCardEvent;
-    private List<String> playerOrder;
     private String nickname;
-    private List<ImmPlayableCard> initialCards = new ArrayList<>();
-    private int maxNumOfPlayers;
-    private List<Color> colors = new ArrayList<>();
     private Boolean rejoined = false;
     private GameControllerFX gameControllerFX;
     private LobbiesControllerFX lobbiesControllerFX;
@@ -83,6 +63,9 @@ public class GraphicalUI extends Application implements UI {
         launch();
     }
 
+    /**
+     * @param error error message to show on alert window
+     */
     @Override
     public void reportError(String error) {
         System.out.println(error);
@@ -94,12 +77,21 @@ public class GraphicalUI extends Application implements UI {
         });
     }
 
+    /**
+     * it sets the nickname chosen by the player and change the scene from Login to Lobbies (that contains Lobby
+     * a single game match)
+     * @param nickname nickname chosen by the player
+     */
     @Override
     public void setNickname(String nickname) {
         this.nickname = nickname;
         setScene("Lobbies");
     }
 
+    /**
+     * it update in Lobbies the game available
+     * @param gamesSpecs List of game available to join
+     */
     @Override
     public void updateGamesSpecs(List<GameSpecs> gamesSpecs) {
         this.gamesSpecs = gamesSpecs;
@@ -110,18 +102,30 @@ public class GraphicalUI extends Application implements UI {
         });
     }
 
+    /**
+     *  method called when a player create a new game and set the scene from Lobbies to WaitingRoom
+     *  @param gameID id of the new game created
+     */
     @Override
     public void updateGameID(int gameID) {
         this.gameID = gameID;
         setScene("WaitingRoom");
     }
 
+    /**
+     * method called when a game reached the number of players established
+     */
     @Override
     public void allPlayersJoined() {
         allPlayersJoined = true;
         setScene("WaitingRoom");
     }
 
+    /**
+     * method called initially for setup phase before starting game
+     * @param game immutable game with the updates
+     * @param gameEvent setup 1 or setup 2
+     */
     @Override
     public void updateSetup(ImmGame game, GameEvent gameEvent) {
         this.game = game;
@@ -131,16 +135,27 @@ public class GraphicalUI extends Application implements UI {
         }
     }
 
+    /**
+     * method called for first setup
+     */
     private void firstSetup() {
         setScene("CardsSetup");
         startFirstSetup = true;
     }
 
+    /**
+     * method called for second setup
+     */
     private void secondSetup() {
         setScene("CardsSetup");
         startSecondSetup = true;
     }
 
+    /**
+     * method called when a player chose on which side to play the initial card
+     * @param game immutable game with updates
+     * @param initialCardEvent initialCard event
+     */
     @Override
     public void updateInitialCard(ImmGame game, InitialCardEvent initialCardEvent) {
         this.game = game;
@@ -149,45 +164,41 @@ public class GraphicalUI extends Application implements UI {
         }
     }
 
+    /**
+     * method called when a player has chosen his color
+     * @param color color chosen by player
+     */
     @Override
     public void updateColor(Color color) {
         colorSetupControllerFX.selectedColor(color);
     }
 
+    /**
+     * method called when a player has chosen his secret objective, it ends setup phase
+     * @param immGame immutable game
+     */
     @Override
     public void updateObjectiveCardChoice(ImmGame immGame) {
         this.game = immGame;
 
     }
 
+    /**
+     * method called when setup phase has ended
+     * @param game immutable game
+     */
     @Override
     public void endSetup(ImmGame game) {
         this.game = game;
-        myObjectiveCard = game.player().playerArea().objectiveCard();
-        hand = game.player().hand();
-        commonObjectiveCard = game.commonObjectiveCards();
-        topResourceCard = game.topResourceCard();
-        topGoldCard = game.topGoldCard();
-        revealedResourceCards = game.revealedResourceCards();
-        revealedGoldCards = game.revealedGoldCards();
-        myColor = game.player().color();
-        firstPlayer = game.playerOrderNicknames().getFirst();
-        playerOrder = new ArrayList<>(game.playerOrderNicknames());
-        maxNumOfPlayers = playerOrder.size();
-        playerOrder.remove(nickname);
-        //when exit and join another game
-        initialCards.clear();
-        colors.clear();
-        /////////////////////////////////////
-        for(int i = 0; i<playerOrder.size(); i++){
-            initialCards.add(game.otherPlayers().get(i).playerArea().area().get(List.of(0,0)));
-            colors.add(game.otherPlayers().get(i).color());
-        }
 
         setScene("Game");
 
     }
 
+    /**
+     * method called when a player flip a card on his hand
+     * @param game immutable game
+     */
     @Override
     public void cardFlipped(ImmGame game) {
         this.game = game;
@@ -198,6 +209,11 @@ public class GraphicalUI extends Application implements UI {
                 indexOfFlippedHandCard);
     }
 
+    /**
+     * method called when a player played a card
+     * @param immGame immutable game
+     * @param playerNicknameWhoUpdated nickname of the player who has played a card
+     */
     @Override
     public void cardPlayed(ImmGame immGame, String playerNicknameWhoUpdated) {
         System.out.println(playerNicknameWhoUpdated + "ha giocato una carta");
@@ -216,6 +232,11 @@ public class GraphicalUI extends Application implements UI {
 
     }
 
+    /**
+     * method called when a player draw a card
+     * @param immGame immutable game
+     * @param playerNicknameWhoUpdated player who has drawn a card
+     */
     @Override
     public void cardDrawn(ImmGame immGame, String playerNicknameWhoUpdated) {
         System.out.println(playerNicknameWhoUpdated + "ha pescato una carta");
@@ -265,11 +286,19 @@ public class GraphicalUI extends Application implements UI {
 
     }
 
+    /**
+     * method called when the turn changed
+     * @param currentPlayer current player
+     */
     @Override
     public void turnChanged(String currentPlayer) {
         gameControllerFX.turnChanged(currentPlayer);
     }
 
+    /**
+     * method called when a message has sent
+     * @param immGame immutable game
+     */
     @Override
     public void messageSent(ImmGame immGame) {
         this.game = immGame;
@@ -277,34 +306,56 @@ public class GraphicalUI extends Application implements UI {
         gameControllerFX.messageSent(immGame);
     }
 
+    /**
+     * method called when reached 20 points
+     * @param immGame immutable game
+     */
     @Override
     public void twentyPointsReached(ImmGame immGame) {
         this.game = immGame;
         gameControllerFX.twentyPointsReached(immGame);
     }
 
+    /**
+     * method called when all decks are empty
+     * @param immGame immutable game
+     */
     @Override
     public void decksEmpty(ImmGame immGame) {
         this.game = immGame;
         gameControllerFX.deckesEmpty(immGame);
     }
 
+    /**
+     * method called when the game ended
+     * @param players list of immutable players
+     */
     @Override
     public void gameEnded(List<ImmPlayer> players) {
         gameControllerFX.gameEnded(players);
     }
 
+    /**
+     * method called when game is cancelled
+     */
     @Override
     public void gameCanceled() {
         gameControllerFX.gameCanceled();
     }
 
+    /**
+     * method called when a player left the game
+     */
     @Override
     public void gameLeft() {
         setScene("Lobbies");
         allPlayersJoined = false;
     }
 
+    /**
+     * method called when a player rejoin the game
+     * @param game immutable game
+     */
     @Override
     public void gameRejoined(ImmGame game) {
         this.game = game;
@@ -313,6 +364,13 @@ public class GraphicalUI extends Application implements UI {
         setScene("Game");
     }
 
+    /**
+     * method called to update player in game status
+     * @param immGame immutable game
+     * @param playerNickname player who has rejoined, disconnected or left the game
+     * @param inGame indicates if the players is still in game
+     * @param hasDisconnected indicated if the player has disconnected
+     */
     @Override
     public void updatePlayerInGameStatus(ImmGame immGame, String playerNickname, boolean inGame, boolean hasDisconnected) {
         this.game = immGame;
@@ -328,17 +386,27 @@ public class GraphicalUI extends Application implements UI {
         }
     }
 
+    /**
+     * method called when game is paused
+     */
     @Override
     public void gamePaused() {
         gameControllerFX.gamePaused();
     }
 
+    /**
+     * method called when game resumed
+     */
     @Override
     public void gameResumed() {
         gameControllerFX.gameResumed();
         turnChanged(game.currentPlayerNickname());
     }
 
+    /**
+     * method called when a player is ready to play
+     * @param playerNickname nickname of the player who is ready to play
+     */
     @Override
     public void playerIsReady(String playerNickname) {
         System.out.println(playerNickname + " è pronto!");
@@ -348,6 +416,12 @@ public class GraphicalUI extends Application implements UI {
         waitingRoomControllerFX.showAvatar(playerNickname);
     }
 
+
+    /**
+     * Constructor for the ViewGUI class. It creates a new Client object and connects to the server.
+     * Then it initializes a map containing the names of the scenes and their paths. This will be used
+     * to set the scene of the stage
+     */
     public GraphicalUI() {
         try {
             this.client = ClientCreation.createClient(this, networkProtocol, ipAddress);
@@ -370,6 +444,10 @@ public class GraphicalUI extends Application implements UI {
         }
     }
 
+    /**
+     * Start the JavaFX application.
+     * @param stage The primary stage
+     */
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
@@ -384,6 +462,10 @@ public class GraphicalUI extends Application implements UI {
     }
 
 
+    /**
+     * Set the scene of the stage to the one specified by the sceneName parameter.
+     * @param sceneName The name of the scene to set
+     */
     private void setScene(String sceneName) {
         Platform.runLater(() -> {
             fxmlLoader = new FXMLLoader();
@@ -446,7 +528,6 @@ public class GraphicalUI extends Application implements UI {
                     cardsSetupControllerFX.setViewGUI(this);
                     if(startFirstSetup) {
                         cardsSetupControllerFX.showInitialCard(game.player().initialCard().cardID());
-                        initialCardID = game.player().initialCard().cardID();
                         startFirstSetup = false;
                     }
                     if(startSecondSetup) {
@@ -460,60 +541,86 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * Util method to wait for the JavaFX thread to execute a Runnable.
-     * Call this method after executing a command that is queued in the JavaFX thread with
-     * a {@code Platform.runLater} call.
+     * method called by LoginControllerFX when a player click the button to confirm his nickname
+     * @param nickname nickname
      */
-    protected static void waitForRunLater() throws InterruptedException {
-        Semaphore semaphore = new Semaphore(0);
-        Platform.runLater(semaphore::release);
-        semaphore.acquire();
-    }
-
     public void endLoginPhase(String nickname) {
         client.ctsUpdateNickname(nickname);
     }
 
+    /**
+     * method called by LobbiesControllerFX when a player creates a new game
+     * @param numOfPlayers num of player of a game
+     */
     public void endLobbiesPhase(int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
         client.ctsUpdateNewGame(numOfPlayers);
         setScene("WaitingRoom");
     }
 
+    /**
+     * method called by LobbyController when a player has joined a game
+     * @param gameID id of the game the player joined
+     * @param numOfPlayers num of the player of the game
+     */
     public void joinGame(int gameID, int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
         client.ctsUpdateGameToAccess(gameID);
         setScene("WaitingRoom");
     }
 
+    /**
+     * method called by WaitingRoomControllerFX when a player press ready button
+     */
     public void playerPressEnter(){
         client.ctsUpdateReady();
     }
 
+    /**
+     * method called by CardsSetupControllerFX when a player has chosen which side of initialCard to play
+     * @param front indicates is player play the initialCard on its front
+     */
     public void playingInitialCard(boolean front) {
         if(front) {
-            initialCardPlayedFront = true;
             client.ctsUpdateInitialCard(InitialCardEvent.FLIP);
             client.ctsUpdateInitialCard(InitialCardEvent.PLAY);
         }else {
-            initialCardPlayedFront = false;
             client.ctsUpdateInitialCard(InitialCardEvent.PLAY);
         }
     }
 
+    /**
+     * method called by ColorSetupControllerFX when a player has chosen the color
+     * @param color color chosen
+     */
     public void colorChosen(Color color) {
         client.ctsUpdateColor(color);
     }
 
+    /**
+     * method called by CardsSetupControllerFX when a player has chosen the secretObjectiveCard
+     * @param i index of the secretObjecriveCard (0 or 1)
+     */
     public void objectiveChosen(int i) {
         client.ctsUpdateObjectiveCardChoice(i);
     }
 
+    /**
+     * method called by GameControllerFX when a player is trying to flip a card
+     * @param index index of hand card to flip
+     */
     public void flippingCard(int index) {
         indexOfFlippedHandCard = index;
         client.ctsUpdateFlipCard(index);
     }
 
+    /**
+     * method called by GameControllerFX when a player is trying to play a card
+     * @param selectedCardIndex selected handCard index
+     * @param x coordinate x
+     * @param y coordinate y
+     * @param corner corner on which the player wants to place the card
+     */
     public void playingCard(int selectedCardIndex, int x, int y, String corner, int layoutX, int layoutY) {
         cornerClicked = corner;
         layoutXOfCardClicked = layoutX;
@@ -522,6 +629,10 @@ public class GraphicalUI extends Application implements UI {
         client.ctsUpdatePlayCard(selectedCardIndex, x, y);
     }
 
+    /**
+     * method called by GameControllerFX when a player is trying to draw a card
+     * @param drawCardEvent drawCardEvent
+     */
     public void drawingCard(DrawCardEvent drawCardEvent) {
         Platform.runLater(()->{
             this.drawCardEvent = drawCardEvent;
@@ -530,14 +641,25 @@ public class GraphicalUI extends Application implements UI {
         client.ctsUpdateDrawCard(drawCardEvent);
     }
 
+    /**
+     * method called by GameControllerFX when a player wants to send a message
+     * @param receiver receiver
+     * @param text message content
+     */
     public void sendMessage(String receiver, String text) {
         client.ctsUpdateSendMessage(receiver,text);
     }
 
+    /**
+     * method called by GameControllerFX when a player click the button to leave the game
+     */
     public void leaveGame() {
         client.updateLeaveGame();
     }
 
+    /**
+     * method called by GameControllerFX when the game ended and is used to return back to Lobbies
+     */
     public void returnToLobby() {
         setScene("Lobbies");
         allPlayersJoined = false;

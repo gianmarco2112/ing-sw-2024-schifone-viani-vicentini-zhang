@@ -173,17 +173,12 @@ Find the Server's IP Address
 
 #### Step 3: Start the Server
 
-##### On Linux using RMI
-
 ```sh
 java -jar server.jar -Djava.rmi.server.hostname=<server-ip-address>
 ```
 
-##### On one PC, start the server using the following command:
-
-```sh
-java -jar server.jar
-```
+Even if you start a client on the same computer of the server do not use 'localhost' as ip.
+Use the server ip on the lan instead
 
 
 #### Step 4: Start the Clients

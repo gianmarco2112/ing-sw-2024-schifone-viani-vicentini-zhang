@@ -378,7 +378,7 @@ public class ClientImpl implements Client {
     }
 
     /**
-     * Update from server: game will be canceled if nobody joins within 10 seconds.
+     * Update from server: game will be cancelled if nobody joins within 10 seconds.
      */
     @Override
     public void gameToCancelLater()  {

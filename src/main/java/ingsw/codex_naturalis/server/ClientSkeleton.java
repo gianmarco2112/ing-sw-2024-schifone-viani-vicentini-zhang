@@ -40,7 +40,9 @@ public class ClientSkeleton implements Client {
      */
     private final PrintWriter writer;
 
-
+    /**
+     * ClientSkeleton's constructor
+     */
 
     public ClientSkeleton(Socket socket, ServerImpl serverImpl) throws RemoteException{
 
@@ -59,12 +61,18 @@ public class ClientSkeleton implements Client {
 
     }
 
-
+    /**
+     * Nickname's getter
+     * @return nickname
+     */
     @Override
     public String getNickname(){
         return nickname;
     }
-
+    /**
+     * Nickname's setter
+     * @param nickname to set
+     */
     @Override
     public void setNickname(String nickname) throws RemoteException {
         this.nickname = nickname;
@@ -77,21 +85,32 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
-
+    /**
+     * GameServerImpl's getter
+     * @return gameServerImpl
+     */
     public ServerImpl getServerImpl(){
         return serverImpl;
     }
-
+    /**
+     * GameControllerImpl's getter
+     * @return gameControllerImpl
+     */
     public GameControllerImpl getGameControllerImpl() {
         return gameControllerImpl;
     }
 
+    /**
+     * GameController's setter
+     * @param gameControllerImpl to set
+     */
     public void setGameController(GameControllerImpl gameControllerImpl) {
         this.gameControllerImpl = gameControllerImpl;
     }
-
-
-
+    /**
+     * Update from server: Games specs updated
+     * @param jsonGamesSpecs games specks
+     */
     @Override
     public void updateGamesSpecs(String jsonGamesSpecs) throws RemoteException {
         try {
@@ -103,7 +122,10 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
-
+    /**
+     * Exception received
+     * @param error error
+     */
     @Override
     public void reportException(String error) throws RemoteException {
         try {
@@ -116,7 +138,9 @@ public class ClientSkeleton implements Client {
         }
     }
 
-
+    /**
+     * Update from server: game joined
+     */
     @Override
     public void gameJoined(int gameID) throws RemoteException {
         try {
@@ -128,8 +152,9 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json\n"+e.getMessage());
         }
     }
-
-
+    /**
+     * Update from server: all players joined the game
+     */
     @Override
     public void allPlayersJoined() throws RemoteException {
         try {
@@ -142,7 +167,11 @@ public class ClientSkeleton implements Client {
         }
     }
 
-
+    /**
+     * Update from server: setup update
+     * @param jsonImmGame immutable game
+     * @param jsonGameEvent game event (setup event)
+     */
     @Override
     public void setupUpdated(String jsonImmGame, String jsonGameEvent) {
         try {
@@ -154,7 +183,11 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: initial card played or flipped
+     * @param jsonImmGame immutable game
+     * @param jsonInitialCardEvent flipped or played
+     */
     @Override
     public void initialCardUpdated(String jsonImmGame, String jsonInitialCardEvent) {
         try {
@@ -166,7 +199,10 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: color updated
+     * @param jsonColor color
+     */
     @Override
     public void colorUpdated(String jsonColor) throws RemoteException {
         try {
@@ -178,7 +214,10 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: objective card chosen
+     * @param jsonImmGame immutable game
+     */
     @Override
     public void objectiveCardChosen(String jsonImmGame) throws RemoteException {
         try {
@@ -191,7 +230,10 @@ public class ClientSkeleton implements Client {
         }
     }
 
-
+    /**
+     * Update from server: setup ended
+     * @param jsonImmGame immutable game
+     */
     @Override
     public void setupEnded(String jsonImmGame) throws RemoteException {
         try {
@@ -204,7 +246,10 @@ public class ClientSkeleton implements Client {
         }
     }
 
-
+    /**
+     * Update from server: hand card flipped
+     * @param jsonImmGame immutable game
+     */
     @Override
     public void cardFlipped(String jsonImmGame) throws RemoteException {
         try {
@@ -216,7 +261,11 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: hand card played
+     * @param jsonImmGame immutable game
+     * @param playerNicknameWhoUpdated player's nickname who has played the card
+     */
     @Override
     public void cardPlayed(String jsonImmGame, String playerNicknameWhoUpdated) throws RemoteException {
         try {
@@ -228,7 +277,11 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: card drawn
+     * @param jsonImmGame immutable game
+     * @param playerNicknameWhoUpdated player's nickname who has draw a card
+     */
     @Override
     public void cardDrawn(String jsonImmGame, String playerNicknameWhoUpdated) throws RemoteException {
         try {
@@ -240,7 +293,10 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: turn changed
+     * @param currentPlayer current player
+     */
     @Override
     public void turnChanged(String currentPlayer) throws RemoteException {
         try {
@@ -252,7 +308,10 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: chat updated
+     * @param jsonImmGame immutable game
+     */
     @Override
     public void messageSent(String jsonImmGame) {
         try {
@@ -264,7 +323,10 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: twenty points reached
+     * @param jsonImmGame immutable game
+     */
     @Override
     public void twentyPointsReached(String jsonImmGame) throws RemoteException {
         try {
@@ -276,7 +338,10 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: decks are empty
+     * @param jsonImmGame immutable game
+     */
     @Override
     public void decksEmpty(String jsonImmGame) throws RemoteException {
         try {
@@ -288,7 +353,10 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: game ended
+     * @param jsonPlayers players with points and secret obj cards
+     */
     @Override
     public void gameEnded(String jsonPlayers) throws RemoteException {
         try {
@@ -300,7 +368,9 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: game has been canceled
+     */
     @Override
     public void gameCanceled() throws RemoteException {
         try {
@@ -312,7 +382,9 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: game left
+     */
     @Override
     public void gameLeft() throws RemoteException {
         try {
@@ -324,7 +396,11 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: game rejoined
+     * @param jsonImmGame immutable game
+     * @param nickname nickname to set again
+     */
     @Override
     public void gameRejoined(String jsonImmGame, String nickname) throws RemoteException {
         try {
@@ -336,7 +412,13 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: a player in game status changed (disconnected, reconnected, or left the game)
+     * @param jsonImmGame immutable game
+     * @param playerNickname player
+     * @param jsonInGame boolean in game
+     * @param jsonHasDisconnected boolean disconnected
+     */
     @Override
     public void updatePlayerInGameStatus(String jsonImmGame, String playerNickname, String jsonInGame, String jsonHasDisconnected) throws RemoteException {
         try {
@@ -348,7 +430,9 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: game will be cancelled if nobody joins within 10 seconds.
+     */
     @Override
     public void gameToCancelLater() throws RemoteException {
         try {
@@ -360,7 +444,9 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: game resumed
+     */
     @Override
     public void gameResumed() throws RemoteException {
         try {
@@ -372,7 +458,9 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * Update from server: player is ready
+     */
     @Override
     public void playerIsReady(String playerNickname) throws RemoteException {
         try {
@@ -384,7 +472,9 @@ public class ClientSkeleton implements Client {
             System.err.println("Error while processing json");
         }
     }
-
+    /**
+     * To receive messages from the server
+     */
 
     public void receive() throws IOException {
 

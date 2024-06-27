@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.KeyDeserializer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is used by Jackson to deserialize the keys of the player area HashMap
+ */
+
 public class ListKeyDeserializer extends KeyDeserializer {
     @Override
     public List<Integer> deserializeKey(String key, DeserializationContext ctxt) {

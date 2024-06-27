@@ -23,7 +23,7 @@ public interface GameObserver {
      */
     void update(Game game, GameEvent gameEvent);
     /**
-     * To send the update that a playerEvent has occurred to a game
+     * To send the update that a playerEvent has occurred to a player
      * @param game : the game where the playerEvent happened
      * @param playerEvent: the playerEvent that occurred
      * @param playerNicknameWhoUpdated : the nickname of the player who has thrown the playerEvent

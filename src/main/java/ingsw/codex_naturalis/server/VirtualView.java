@@ -45,21 +45,28 @@ public class VirtualView implements GameObserver {
      */
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-
+    /**
+     * VirtualView's constructor
+     */
     public VirtualView(Client client, String nickname) {
         this.client = client;
         this.nickname = nickname;
     }
 
-
+    /**
+     * Client's getter
+     * @return client
+     */
     public Client getClient() {
         return client;
     }
-
+    /**
+     * Nickname's getter
+     * @return nickname
+     */
     public String getNickname() {
         return nickname;
     }
-
 
     /**
      * A player has joined the game.
@@ -100,7 +107,7 @@ public class VirtualView implements GameObserver {
 
     /**
      * Generic update from a player (part of the model), it includes all the main actions performed
-     * by a player
+     * by the player
      * @param game model
      * @param playerEvent player event
      * @param playerWhoUpdated player who updated
@@ -202,8 +209,8 @@ public class VirtualView implements GameObserver {
     }
 
     /**
-     * The game running status changed, it means: the game has to be canceled, the game will
-     * be canceled, the game is not paused anymore.
+     * The game running status changed, it means: the game has to be cancelled, the game will
+     * be cancelled, the game is not paused anymore.
      * @param game model
      * @param gameRunningStatus game running status
      */
@@ -221,7 +228,10 @@ public class VirtualView implements GameObserver {
             }
         }
     }
-
+    /**
+     * To send the update that a player is ready
+     * @param playerNickname : the nickname of the player who is ready
+     */
     @Override
     public void updatePlayerReady(String playerNickname) {
         try {
@@ -231,7 +241,12 @@ public class VirtualView implements GameObserver {
         }
     }
 
-
+    /**
+     * To send the update of the initial card
+     * @param game model
+     * @param playerNicknameWhoUpdated : nickname of the player who updated
+     * @param initialCardEvent : initial card event
+     */
     private void initialCardUpdated(Game game, String playerNicknameWhoUpdated, InitialCardEvent initialCardEvent) {
         try {
             if (nickname.equals(playerNicknameWhoUpdated)) {
@@ -242,7 +257,11 @@ public class VirtualView implements GameObserver {
             System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
-
+    /**
+     * To send the update that a color has been chosen
+     * @param playerWhoUpdated the player who updated
+     * @param playerNicknameWhoUpdated : nickname of the player who updated
+     */
     private void colorChosen(Player playerWhoUpdated, String playerNicknameWhoUpdated) {
         try {
             if (nickname.equals(playerNicknameWhoUpdated))
@@ -251,7 +270,11 @@ public class VirtualView implements GameObserver {
             System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
-
+    /**
+     * To send the update that an objective card has been chosen by a player
+     * @param game model
+     * @param playerNicknameWhoUpdated : nickname of the player who updated
+     */
     private void objectiveCardChosen(Game game, String playerNicknameWhoUpdated) {
         try {
             if (nickname.equals(playerNicknameWhoUpdated)) {
@@ -262,7 +285,10 @@ public class VirtualView implements GameObserver {
             System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
-
+    /**
+     * To send the update that the game status has changed
+     * @param game model
+     */
 
     private void gameStatusChanged(Game game) {
         switch (game.getGameStatus()) {
@@ -295,7 +321,10 @@ public class VirtualView implements GameObserver {
             }
         }
     }
-
+    /**
+     * To send the update that the game has ended
+     * @param game model
+     */
     private void gameEnded(Game game) {
         List<Player> players = game.getPlayerOrder();
         players.sort(Comparator.comparingInt(o -> o.getPlayerArea().getPoints() + o.getPlayerArea().getExtraPoints()));
@@ -326,7 +355,11 @@ public class VirtualView implements GameObserver {
             System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
-
+    /**
+     * To send the update that a card has been played
+     * @param game model
+     * @param playerNicknameWhoUpdated : nickname of the player who updated
+     */
     private void cardPlayed(Game game, String playerNicknameWhoUpdated) {
         try {
             ImmGame immGame = getImmGame(game);
@@ -335,7 +368,11 @@ public class VirtualView implements GameObserver {
             System.err.println("Error while updating client\n"+e.getMessage());
         }
     }
-
+    /**
+     * To send the update that a card has been drawn
+     * @param game model
+     * @param playerNicknameWhoUpdated : nickname of the player who updated
+     */
     private void cardDrawn(Game game, String playerNicknameWhoUpdated) {
         try {
             ImmGame immGame = getImmGame(game);
@@ -346,8 +383,8 @@ public class VirtualView implements GameObserver {
     }
 
     /**
-     * It makes sure the client is interested in the update (he is only if
-     * he is a sender or one of the receivers).
+     * It makes sure the client is interested in the update (he is interessend only if
+     * he is the sender or one of the receivers).
      * @param game model
      */
     private void messageCase(Game game) {
@@ -367,7 +404,11 @@ public class VirtualView implements GameObserver {
 
     }
 
-
+    /**
+     * ImmGame's getter
+     * @param model of the game of which I want the immutable version
+     * @return immGame : the immutable version of the specified game
+     */
     private ImmGame getImmGame(Game model) {
 
         int gameID = model.getGameID();
@@ -434,7 +475,11 @@ public class VirtualView implements GameObserver {
                 topGoldCard, immRevealedGoldCards, immCommonObjectiveCards, playerReceiverChat);
 
     }
-
+    /**
+     * ImmPlayer's getter
+     * @param player the player of which I want the immutable version
+     * @return immPlayer : the immutable version of the specified player
+     */
     private ImmPlayer getImmPlayer(Player player) {
 
         ImmPlayableCard immInitialCard = null;
@@ -460,7 +505,11 @@ public class VirtualView implements GameObserver {
                 getImmPlayerArea(player.getPlayerArea()));
 
     }
-
+    /**
+     * ImmPlayerArea's getter
+     * @param playerArea : the playerArea of which I want the immutable version
+     * @return immPlayerArea : the immutable version of the specified player Area
+     */
     private ImmPlayerArea getImmPlayerArea(PlayerArea playerArea) {
 
         ImmObjectiveCard immObjectiveCard = null;
@@ -488,7 +537,11 @@ public class VirtualView implements GameObserver {
                 playerArea.getExtraPoints());
 
     }
-
+    /**
+     * ImmOtherPlayerArea's getter
+     * @param playerArea : the playerArea of which I want the immutable version
+     * @return immOtherPlayerArea : the immutable version of the specified playerArea
+     */
     private ImmOtherPlayerArea getImmOtherPlayerArea(PlayerArea playerArea) {
 
         Map<List<Integer>, ImmPlayableCard> immutableArea = new LinkedHashMap<>();
@@ -510,7 +563,9 @@ public class VirtualView implements GameObserver {
                 playerArea.getPoints());
 
     }
-
+    /**
+     * To transform the player area to a string (used to print the visual representation of the player area in the TUI)
+     */
     private String playerAreaToString(PlayerArea playerArea, Map<List<Integer>, ImmPlayableCard> area, Map<ExtremeCoordinate, Integer> extremeCoordinates) {
 
         LinkedHashMap<List<Integer>, List<String>> cardsAsListOfStrings = new LinkedHashMap<>();
@@ -698,7 +753,9 @@ public class VirtualView implements GameObserver {
                 NumIn3Char(extremeCoordinates.get(ExtremeCoordinate.MAX_X) + 1, true) + "\n");
         return outString.toString();
     }
-
+    /**
+     * This method is used in the TUI representation of the cards
+     */
     private String NumIn3Char(Integer i, boolean x_coordinate) {
         String outString = "";
         if (i > -99 && i < 99) {
@@ -722,7 +779,11 @@ public class VirtualView implements GameObserver {
         }
         return outString;
     }
-
+    /**
+     * ImmOtherPlayer's getter
+     * @param player : the player of which I want the immutable version
+     * @return immOtherPlayer : the immutable version of the specified player
+     */
     private ImmOtherPlayer getImmOtherPlayer(Player player) {
 
         List<ImmPlayableCard> immHand = new ArrayList<>();
@@ -737,7 +798,13 @@ public class VirtualView implements GameObserver {
                 getImmOtherPlayerArea(player.getPlayerArea()));
 
     }
-
+    /**
+     * ImmPlayableCard's getter
+     * @param card : the card of which I want the immutable version
+     * @param canShowFront: true if is possible to see the front of the specified card,
+     *                    false otherwise (for example, I can't see the front side of the cards in the decks)
+     * @return immPlayableCard : the immutable version of the specified card
+     */
     private ImmPlayableCard getImmPlayableCard(PlayableCard card, boolean canShowFront) {
         boolean showingFront;
         PlayableSide playableSide;
@@ -755,13 +822,21 @@ public class VirtualView implements GameObserver {
                 card.getKingdom(),
                 card.getPlayableCardType());
     }
-
+    /**
+     * ImmObjectiveCard's getter
+     * @param card : the objective card of which I want the immutable version
+     * @return immObjectiveCard : the immutable version of the specified objective card
+     */
     private ImmObjectiveCard getImmObjectiveCard(ObjectiveCard card) {
         return new ImmObjectiveCard(card.getCardID(),
                 card.isShowingFront(),
                 card.cardToString());
     }
-
+    /**
+     * ImmMessage's getter
+     * @param message : the message of which I want the immutable version
+     * @return immMessage : the immutable version of the specified message
+     */
     private ImmMessage getImmMessage(Message message) {
         return new ImmMessage(message.getContent(),
                 message.getSentTime(),

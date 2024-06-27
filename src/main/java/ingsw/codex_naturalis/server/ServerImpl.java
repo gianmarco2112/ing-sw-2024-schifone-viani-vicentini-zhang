@@ -91,7 +91,9 @@ public class ServerImpl implements Server {
      */
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(10);
 
-
+    /**
+     * ServerImpl's constructor
+     */
     public ServerImpl() {
         new Thread(() -> {
             while (true) {
@@ -104,7 +106,6 @@ public class ServerImpl implements Server {
         }).start();
     }
 
-
     /**
      * First method called by a client connected to the server, it adds the client to the loggedOutClients list
      * @param client client that has connected
@@ -115,7 +116,6 @@ public class ServerImpl implements Server {
             loggedOutClients.add(client);
         }
     }
-
 
     /**
      * Called by a client to set his nickname, it checks that the name is unique. It also checks
@@ -197,7 +197,7 @@ public class ServerImpl implements Server {
     /**
      * Method called by a client when he wants to create a new game
      * @param client client caller
-     * @param numOfPlayers number of players set for the game
+     * @param numOfPlayers number of players to set for the game
      */
     @Override
     public synchronized void accessNewGame(Client client, int numOfPlayers) {

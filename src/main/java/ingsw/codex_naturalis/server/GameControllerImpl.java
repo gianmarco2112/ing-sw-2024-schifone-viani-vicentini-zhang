@@ -50,17 +50,24 @@ public class GameControllerImpl implements GameController {
     private final ServerImpl server;
 
     /**
-     * Ready players count, used for some setup aspects of the game to make sure all players
+     * Ready players' count, used for some setup aspects of the game to make sure that all players
      * are going together.
      */
     private int readyPlayers = 0;
 
     /**
-     * Jackson object mapper.
+     * Jackson object mapper
      */
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-
+    /**
+     * GameControllerImpl's constructor
+     * @param gameID of the game
+     * @param nickname of the player
+     * @param client who is connected to the server
+     * @param numOfPlayers of the game
+     * @param server to which the client is connected
+     */
 
     public GameControllerImpl(ServerImpl server, int gameID, int numOfPlayers, Client client, String nickname) {
         this.server = server;
@@ -77,13 +84,17 @@ public class GameControllerImpl implements GameController {
         addPlayer(client, nickname);
     }
 
-
-
-
+    /**
+     * Model's getter
+     * @return  model
+     */
     public Game getModel() {
         return model;
     }
-
+    /**
+     * VirtualView's getter
+     * @return a list of all the virtual views
+     */
     public List<VirtualView> getVirtualViews() {
         return virtualViews;
     }
@@ -107,7 +118,6 @@ public class GameControllerImpl implements GameController {
             throw e;
         }
     }
-
 
     /**
      * Method called by a client to notify he is ready to play.
@@ -211,7 +221,6 @@ public class GameControllerImpl implements GameController {
         }
     }
 
-
     /**
      * Method called by a client to flip his hand card.
      * @param nickname client's nickname
@@ -236,11 +245,11 @@ public class GameControllerImpl implements GameController {
     }
 
     /**
-     * Method called by a client to play his hand card.
+     * Method called by a client to play his hand cards.
      * @param nickname client's nickname
      * @param index index of the hand card
-     * @param x coordinate x of his play area
-     * @param y coordinate y of his play area
+     * @param x coordinate x of his player area
+     * @param y coordinate y of his player area
      */
     @Override
     public synchronized void playCard(String nickname, int index, int x, int y) {
@@ -290,7 +299,9 @@ public class GameControllerImpl implements GameController {
             }
         }
     }
-
+    /**
+     * Method called to prepare the end of the game
+     */
     private void prepareEndGame() {
         //secret obj cards
         for (Player p : model.getPlayerOrder())
@@ -434,10 +445,10 @@ public class GameControllerImpl implements GameController {
     }
 
     /**
-     * Method called by a client to send a chat message
+     * Method called by a client to send a message in the game's chat
      * @param nickname client's nickname sender
      * @param receiver receiver (null if it's a global message)
-     * @param content message content
+     * @param content message's content
      */
     @Override
     public synchronized void sendMessage(String nickname, String receiver, String content) {
@@ -545,7 +556,7 @@ public class GameControllerImpl implements GameController {
     /**
      * Method called to get the game running status based on the players who left
      * and have disconnected.
-     * @return the
+     * @return the game's runningStatus
      */
     public GameRunningStatus getPlayersConnectionStatus() {
         if (model.getNumOfPlayers() == 1)

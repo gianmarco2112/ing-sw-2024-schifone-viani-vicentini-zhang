@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.common.middleware.MessageToServer;
 
 import ingsw.codex_naturalis.server.ClientSkeleton;
-
+/**
+ * Message from client to server: a player wants to draw a card
+ */
 public class CTSDrawCard implements MessageToServer {
 
     private String jsonDrawCardUpdate;
@@ -17,9 +19,7 @@ public class CTSDrawCard implements MessageToServer {
     public CTSDrawCard(String jsonDrawCardUpdate) {
         this.jsonDrawCardUpdate = jsonDrawCardUpdate;
     }
-    /**
-     * To run the clientSkeleton and send the message to the server that a player wants to draw a card
-     */
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
         clientSkeleton.getGameControllerImpl().drawCard(clientSkeleton.getNickname(), jsonDrawCardUpdate);

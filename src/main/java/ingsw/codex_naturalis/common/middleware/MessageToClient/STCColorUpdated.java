@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
-
+/**
+ * Message from server to client: the color has been updated
+ */
 public class STCColorUpdated implements MessageToClient {
 
     private String jsonColor;
@@ -17,9 +19,7 @@ public class STCColorUpdated implements MessageToClient {
     public STCColorUpdated(String jsonColor) {
         this.jsonColor = jsonColor;
     }
-    /**
-     * To run the serverStub and send the message to the client that the color has been updated
-     */
+
     @Override
     public void run(ServerStub serverStub) {
         serverStub.getClient().colorUpdated(jsonColor);

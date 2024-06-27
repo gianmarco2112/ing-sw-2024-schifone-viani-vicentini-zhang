@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
-
+/**
+ * Message from server to client: an exception has occurred
+ */
 public class STCReportException implements MessageToClient {
 
     private String error;
@@ -17,9 +19,7 @@ public class STCReportException implements MessageToClient {
     public STCReportException(String error) {
         this.error = error;
     }
-    /**
-     * To run the serverStub and report to the client of an exception
-     */
+
     @Override
     public void run(ServerStub serverStub) {
         serverStub.getClient().reportException(error);

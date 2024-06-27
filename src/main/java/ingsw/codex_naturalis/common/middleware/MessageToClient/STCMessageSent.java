@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
-
+/**
+ * Message from server to client: a message has been sent in the game's chat
+ */
 public class STCMessageSent implements MessageToClient {
 
     private String jsonImmGame;
@@ -17,9 +19,7 @@ public class STCMessageSent implements MessageToClient {
     public STCMessageSent(String jsonImmGame) {
         this.jsonImmGame = jsonImmGame;
     }
-    /**
-     * To run the serverStub and send the message to the client that a message has been sent
-     */
+
     @Override
     public void run(ServerStub serverStub) {
         serverStub.getClient().messageSent(jsonImmGame);

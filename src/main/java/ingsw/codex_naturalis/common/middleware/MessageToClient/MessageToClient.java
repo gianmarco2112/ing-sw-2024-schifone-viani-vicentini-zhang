@@ -45,9 +45,6 @@ import ingsw.codex_naturalis.client.ServerStub;
         @JsonSubTypes.Type(value = STCPlayerIsReady.class, name = "STCPlayerIsReady"),
 })
 public interface MessageToClient {
-    /**
-     * To run the serverStub
-     */
     void run(ServerStub serverStub);
 
 }

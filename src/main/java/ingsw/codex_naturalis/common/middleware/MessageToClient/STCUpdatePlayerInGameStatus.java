@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
-
+/**
+ * Message from server to client: a player has changed his inGame status
+ */
 public class STCUpdatePlayerInGameStatus implements MessageToClient {
 
     private String jsonImmGame;
@@ -24,9 +26,7 @@ public class STCUpdatePlayerInGameStatus implements MessageToClient {
         this.jsonInGame = jsonInGame;
         this.jsonHasDisconnected = jsonHasDisconnected;
     }
-    /**
-     * To run the serverStub and send the message to the client that a player has changed his inGame status
-     */
+
     @Override
     public void run(ServerStub serverStub) {
         serverStub.getClient().updatePlayerInGameStatus(jsonImmGame, playerNickname, jsonInGame, jsonHasDisconnected);

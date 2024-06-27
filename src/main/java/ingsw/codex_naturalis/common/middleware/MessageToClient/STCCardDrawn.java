@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
-
+/**
+ * Message from server to client: a card has been drawn
+ */
 public class STCCardDrawn implements MessageToClient {
 
     private String jsonImmGame;
@@ -20,9 +22,7 @@ public class STCCardDrawn implements MessageToClient {
         this.jsonImmGame = jsonImmGame;
         this.playerNicknameWhoUpdated = playerNicknameWhoUpdated;
     }
-    /**
-     * To run the serverStub and send the message to the client that a card has been drawn
-     */
+
     @Override
     public void run(ServerStub serverStub) {
         serverStub.getClient().cardDrawn(jsonImmGame, playerNicknameWhoUpdated);

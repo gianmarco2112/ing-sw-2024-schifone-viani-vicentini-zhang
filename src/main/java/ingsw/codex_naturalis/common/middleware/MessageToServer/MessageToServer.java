@@ -27,9 +27,7 @@ import ingsw.codex_naturalis.server.ClientSkeleton;
         @JsonSubTypes.Type(value = CTSImAlive.class, name = "CTSImAlive"),
 })
 public interface MessageToServer {
-    /**
-     * To run the clientSkeleton and send a message to the server
-     */
+
     void run(ClientSkeleton clientSkeleton);
 
 }

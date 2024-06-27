@@ -6,7 +6,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import static java.lang.Integer.parseInt;
-
+/**
+ * Message from server to client: a nickname has been chosen
+ */
 public class STCNicknameChosen implements MessageToClient {
 
     private String nickname;
@@ -22,9 +24,7 @@ public class STCNicknameChosen implements MessageToClient {
     public STCNicknameChosen(String nickname) {
         this.nickname = nickname;
     }
-    /**
-     * To run the serverStub and send the message to the client that a nickname has been chosen
-     */
+
     @Override
     public void run(ServerStub serverStub) {
         serverStub.getClient().setNickname(nickname);

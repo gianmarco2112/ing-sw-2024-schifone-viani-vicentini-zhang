@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
-
+/**
+ * Message from server to client: an objective card has been chosen
+ */
 public class STCObjectiveCardChosen implements MessageToClient {
 
     private String jsonImmGame;
@@ -17,9 +19,7 @@ public class STCObjectiveCardChosen implements MessageToClient {
     public STCObjectiveCardChosen(String jsonImmGame) {
         this.jsonImmGame = jsonImmGame;
     }
-    /**
-     * To run the serverStub and send the message to the client that an objective card has been chosen
-     */
+
     @Override
     public void run(ServerStub serverStub) {
         serverStub.getClient().objectiveCardChosen(jsonImmGame);

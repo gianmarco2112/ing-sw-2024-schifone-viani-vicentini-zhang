@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.common.middleware.MessageToServer;
 
 import ingsw.codex_naturalis.server.ClientSkeleton;
-
+/**
+ * Message from client to server: a player wants to send a message
+ */
 
 public class CTSSendMessage implements MessageToServer {
 
@@ -21,9 +23,7 @@ public class CTSSendMessage implements MessageToServer {
         this.receiver = receiver;
         this.content = content;
     }
-    /**
-     * To run the clientSkeleton and send the message to the server that a player wants to send a message
-     */
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
         clientSkeleton.getGameControllerImpl().sendMessage(clientSkeleton.getNickname(), receiver, content);

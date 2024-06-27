@@ -4,7 +4,9 @@ import ingsw.codex_naturalis.server.ClientSkeleton;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-
+/**
+ * Message from client to server: a client wants to update the initial card
+ */
 public class CTSUpdateInitialCard implements MessageToServer {
 
     private String jsonInitialCardEvent;
@@ -19,9 +21,7 @@ public class CTSUpdateInitialCard implements MessageToServer {
     public CTSUpdateInitialCard(String jsonInitialCardEvent) {
         this.jsonInitialCardEvent = jsonInitialCardEvent;
     }
-    /**
-     * To run the clientSkeleton and send the message to the server that a client wants to update the initial card
-     */
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
         clientSkeleton.getGameControllerImpl().updateInitialCard(clientSkeleton.getNickname(), jsonInitialCardEvent);;

@@ -7,7 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import static java.lang.Integer.parseInt;
-
+/**
+ * Message from client to server: a player wants to choose an objective card
+ */
 public class CTSObjectiveCardChoiceUpdate implements MessageToServer {
 
     private int index;
@@ -23,9 +25,7 @@ public class CTSObjectiveCardChoiceUpdate implements MessageToServer {
     public CTSObjectiveCardChoiceUpdate(int index) {
         this.index = index;
     }
-    /**
-     * To run the clientSkeleton and send the message to the server that a player wants to choose an objective card
-     */
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
         clientSkeleton.getGameControllerImpl().chooseSecretObjectiveCard(clientSkeleton.getNickname(), index);

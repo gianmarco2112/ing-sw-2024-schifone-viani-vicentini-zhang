@@ -7,7 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import static java.lang.Integer.parseInt;
-
+/**
+ *  Message from client to server: a player wants to choose a nickname
+ */
 public class CTSChooseNickname implements MessageToServer{
 
     private String nickname;
@@ -22,9 +24,7 @@ public class CTSChooseNickname implements MessageToServer{
     public CTSChooseNickname(String nickname) {
         this.nickname = nickname;
     }
-    /**
-     * To run the clientSkeleton and send the message to the server that a player wants to choose a nickname
-     */
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
         ServerImpl server = clientSkeleton.getServerImpl();

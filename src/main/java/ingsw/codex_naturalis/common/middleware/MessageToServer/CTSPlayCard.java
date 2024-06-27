@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.common.middleware.MessageToServer;
 
 import ingsw.codex_naturalis.server.ClientSkeleton;
-
+/**
+ * Message from client to server: a player wants to play a card on the specified coordinates
+ */
 public class CTSPlayCard implements MessageToServer {
 
     private int index;
@@ -23,9 +25,7 @@ public class CTSPlayCard implements MessageToServer {
         this.x = x;
         this.y = y;
     }
-    /**
-     * To run the clientSkeleton and send the message to the server that a player wants to play a card on the specified coordinates
-     */
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
         clientSkeleton.getGameControllerImpl().playCard(clientSkeleton.getNickname(), index, x, y);

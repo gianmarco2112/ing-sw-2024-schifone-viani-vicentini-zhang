@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
-
+/**
+ * Message from server to client: the game has been rejoined by a player
+ */
 public class STCGameRejoined implements MessageToClient {
 
     private String jsonImmGame;

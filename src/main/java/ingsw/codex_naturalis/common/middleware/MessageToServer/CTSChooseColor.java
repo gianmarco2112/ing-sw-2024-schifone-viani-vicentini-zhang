@@ -4,7 +4,9 @@ import ingsw.codex_naturalis.server.ClientSkeleton;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-
+/**
+ * Message from client to server: a player wants to choose a color
+ */
 public class CTSChooseColor implements MessageToServer {
 
     private String jsonColor;
@@ -20,9 +22,7 @@ public class CTSChooseColor implements MessageToServer {
     public CTSChooseColor(String jsonColor) {
         this.jsonColor = jsonColor;
     }
-    /**
-     * To run the clientSkeleton and send the message to the server that a player wants to choose a color
-     */
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
         clientSkeleton.getGameControllerImpl().chooseColor(clientSkeleton.getNickname(), jsonColor);

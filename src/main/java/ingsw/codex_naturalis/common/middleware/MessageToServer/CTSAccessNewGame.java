@@ -7,7 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import static java.lang.Integer.parseInt;
-
+/**
+ * Message from client to server: a player wants to access to a new game
+ */
 public class CTSAccessNewGame implements MessageToServer {
 
     private int numOfPlayers;
@@ -23,9 +25,7 @@ public class CTSAccessNewGame implements MessageToServer {
     public CTSAccessNewGame(int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
     }
-    /**
-     * To run the clientSkeleton and send the message to the server that a player wants to access to a new game
-     */
+
     @Override
     public void run(ClientSkeleton clientSkeleton) {
         ServerImpl server = clientSkeleton.getServerImpl();

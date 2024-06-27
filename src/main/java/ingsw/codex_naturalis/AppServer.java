@@ -25,7 +25,9 @@ public class AppServer {
         new Thread( () -> startSocketsProtocol(server)).start();
 
     }
-
+    /**
+     * To start the socket protocol
+     */
     private static void startSocketsProtocol(ServerImpl server) {
 
         ExecutorService executorService = Executors.newCachedThreadPool();
@@ -61,7 +63,9 @@ public class AppServer {
         }
 
     }
-
+    /**
+     * To start the RMI protocol
+     */
     private static void startRMIProtocol(Server server) {
 
         Server stub = null;

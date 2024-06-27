@@ -1,7 +1,9 @@
 package ingsw.codex_naturalis.common.middleware.MessageToClient;
 
 import ingsw.codex_naturalis.client.ServerStub;
-
+/**
+ *  Message from server to client: the game's setup has ended
+ */
 public class STCSetupEnded implements MessageToClient {
 
     private String jsonImmGame;
@@ -17,9 +19,7 @@ public class STCSetupEnded implements MessageToClient {
     public STCSetupEnded(String jsonImmGame) {
         this.jsonImmGame = jsonImmGame;
     }
-    /**
-     * To run the serverStub and send the message to the client that the setup has ended
-     */
+
     @Override
     public void run(ServerStub serverStub) {
         serverStub.getClient().setupEnded(jsonImmGame);

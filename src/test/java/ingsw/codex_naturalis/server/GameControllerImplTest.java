@@ -232,7 +232,7 @@ class GameControllerImplTest {
         }
         PlayableCard p2 = model.removeRevealedResourceCard(0);
 
-        //lascio un'ultima carta da pescare per fare scatenare fine dei mazzi
+        // I leave one last card to be drawn to unleash the end of the decks
         gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, 1, 1);
         TimeUnit.MILLISECONDS.sleep(200);
         gameplayController.drawCard(model.getPlayerOrder().getFirst().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_RESOURCE_CARD_1));
@@ -285,7 +285,7 @@ class GameControllerImplTest {
         TimeUnit.MILLISECONDS.sleep(200);
 
         gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, 1, 1);
-        //gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 0, 1, 1);
+
         TimeUnit.MILLISECONDS.sleep(200);
 
         gameplayController.drawCard(model.getPlayerOrder().getFirst().getNickname(), objectMapper.writeValueAsString(DrawCardEvent.DRAW_REVEALED_GOLD_CARD_1));
@@ -293,7 +293,6 @@ class GameControllerImplTest {
 
         assertEquals(PlayableCardType.GOLD, model.getPlayerOrder().getFirst().getHand().getLast().getPlayableCardType());
 
-        //gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, 1, 1);
         gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 0, 1, 1);
         TimeUnit.MILLISECONDS.sleep(200);
 
@@ -302,7 +301,6 @@ class GameControllerImplTest {
 
         assertEquals(PlayableCardType.GOLD, model.getPlayerOrder().getLast().getHand().getLast().getPlayableCardType());
 
-        //gameplayController.playCard(model.getPlayerOrder().getFirst().getNickname(), 0, -1, -1);
         gameplayController.playCard(model.getPlayerOrder().getLast().getNickname(), 0, -1, -1);
         TimeUnit.MILLISECONDS.sleep(200);
     }
@@ -336,7 +334,7 @@ class GameControllerImplTest {
 
     @Test
     void drawCardRandomTest() throws JsonProcessingException, InterruptedException {
-        //ho bisogno di 3 giocatori almeno
+        // I need at least 3 players
         setupForThreePlayers();
 
         model.setCurrentPlayer(model.getPlayerByNickname("Test"));

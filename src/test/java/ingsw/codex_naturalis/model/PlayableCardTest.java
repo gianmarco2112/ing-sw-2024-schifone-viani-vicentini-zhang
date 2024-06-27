@@ -72,26 +72,6 @@ public class PlayableCardTest {
         return(resourceCard);
     }
 
-    private PlayableCard plantResourceCard(){
-        PlayableCard resourceCard;
-        resourceCard = new PlayableCard(
-                "RTest",
-                PlayableCardType.RESOURCE,
-                Symbol.PLANT,
-                new PlayableSide(
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false)),
-                new Back(
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        List.of(Symbol.PLANT))
-        );
-        return(resourceCard);
-    }
     private PlayableCard animalResourceCard(){
         PlayableCard resourceCard;
         resourceCard= new PlayableCard(

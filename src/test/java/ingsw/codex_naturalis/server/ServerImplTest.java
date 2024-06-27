@@ -8,14 +8,11 @@ import ingsw.codex_naturalis.common.NetworkProtocol;
 import ingsw.codex_naturalis.common.enumerations.Color;
 import ingsw.codex_naturalis.common.enumerations.GameRunningStatus;
 import ingsw.codex_naturalis.common.events.InitialCardEvent;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.concurrent.TimeUnit;
-
 import java.rmi.RemoteException;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class ServerImplTest {
 
@@ -63,19 +60,13 @@ class ServerImplTest {
         server.chooseNickname(new ClientImpl(server, NetworkProtocol.RMI, new TextualUI()), "Test");
         TimeUnit.MILLISECONDS.sleep(200);
 
-        //invalid num of plauers
+        //invalid num of players
         server.accessNewGame(client1, 5);
         TimeUnit.MILLISECONDS.sleep(200);
 
         server.accessNewGame(client1, 2);
         TimeUnit.MILLISECONDS.sleep(200);
 
-//        //GameRunningStatus.TO_CANCEL_NOW
-//        server.leaveGame(client1);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.accessNewGame(client1, 2);
-//        TimeUnit.MILLISECONDS.sleep(200);
     }
 
     @Test
@@ -99,12 +90,6 @@ class ServerImplTest {
         TimeUnit.MILLISECONDS.sleep(200);
     }
 
-//    @Test
-//    void leaveGame() throws InterruptedException {
-//        server.leaveGame(client1);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//    }
-
     @Test
     void checkGameRunningStatus() throws InterruptedException {//line 266
         server.accessNewGame(client3, 3);
@@ -121,123 +106,6 @@ class ServerImplTest {
         server.leaveGame(client4);
         TimeUnit.MILLISECONDS.sleep(200);
     }
-
-//    @Test
-//    void disconnection() throws InterruptedException, JsonProcessingException {
-//        server.accessNewGame(client3, 4);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.accessExistingGame(client4, server.getGameControllerImpl(client3).getModel().getGameID());
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.accessExistingGame(client5, server.getGameControllerImpl(client3).getModel().getGameID());
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.accessExistingGame(client6, server.getGameControllerImpl(client3).getModel().getGameID());
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.getGameControllerImpl(client3).readyToPlay("Test3");
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).readyToPlay("Test4");
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).readyToPlay("Test5");
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).readyToPlay("Test6");
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.getGameControllerImpl(client3).updateInitialCard("Test3", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).updateInitialCard("Test4", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).updateInitialCard("Test5", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).updateInitialCard("Test6", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.getGameControllerImpl(client3).chooseColor("Test3", objectMapper.writeValueAsString(Color.RED));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).chooseColor("Test4", objectMapper.writeValueAsString(Color.BLUE));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).chooseColor("Test5", objectMapper.writeValueAsString(Color.YELLOW));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).chooseColor("Test6", objectMapper.writeValueAsString(Color.GREEN));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.getGameControllerImpl(client3).chooseSecretObjectiveCard("Test3", 1);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).chooseSecretObjectiveCard("Test4", 1);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).chooseSecretObjectiveCard("Test5", 1);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).chooseSecretObjectiveCard("Test6", 1);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.getGameControllerImpl(client3).disconnectPlayer("Test3");
-//
-//        server.leaveGame(client4);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//    }
-
-//    @Test
-//    void reconnect() throws InterruptedException, JsonProcessingException {
-//
-//        server.accessNewGame(client3, 3);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.accessExistingGame(client4, server.getGameControllerImpl(client3).getModel().getGameID());
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.accessExistingGame(client5, server.getGameControllerImpl(client3).getModel().getGameID());
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.getGameControllerImpl(client3).readyToPlay("Test3");
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).readyToPlay("Test4");
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).readyToPlay("Test5");
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.getGameControllerImpl(client3).updateInitialCard("Test3", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).updateInitialCard("Test4", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).updateInitialCard("Test5", objectMapper.writeValueAsString(InitialCardEvent.PLAY));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.getGameControllerImpl(client3).chooseColor("Test3", objectMapper.writeValueAsString(Color.RED));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).chooseColor("Test4", objectMapper.writeValueAsString(Color.BLUE));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).chooseColor("Test5", objectMapper.writeValueAsString(Color.YELLOW));
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.getGameControllerImpl(client3).chooseSecretObjectiveCard("Test3", 1);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).chooseSecretObjectiveCard("Test4", 1);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//        server.getGameControllerImpl(client3).chooseSecretObjectiveCard("Test5", 1);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        /*for(int i = 0; i <3; i++) {
-//            if(server.getGameControllerImpl(client3).getModel().getPlayerOrder().get(i).getNickname().equals("Test3")){
-//                server.getGameControllerImpl(client3).getModel().getPlayerOrder().get(i).setInGame(false);
-//                TimeUnit.MILLISECONDS.sleep(200);
-//            }
-//            if(server.getGameControllerImpl(client3).getModel().getPlayerOrder().get(i).getNickname().equals("Test5")){
-//                server.getGameControllerImpl(client3).getModel().getPlayerOrder().get(i).setInGame(false);
-//                TimeUnit.MILLISECONDS.sleep(200);
-//            }
-//
-//        }*/
-//        server.getGameControllerImpl(client3).disconnectPlayer("Test3");
-//        //server.getGameControllerImpl(client3).disconnectPlayer("Test5");
-//
-//        server.leaveGame(client4);
-//        TimeUnit.MILLISECONDS.sleep(200);
-//
-//        server.chooseNickname(client3, "Test3");
-//
-//        //TimeUnit.SECONDS.sleep(10);
-//
-//    }
 
     @Test
     void iamAlive() throws InterruptedException, JsonProcessingException {
@@ -304,13 +172,8 @@ class ServerImplTest {
         server.disconnect(client3);
         TimeUnit.MILLISECONDS.sleep(200);
 
-        //server.leaveGame(client4);
-        //TimeUnit.MILLISECONDS.sleep(400);
-
         server.chooseNickname(client3, "Test3");
         TimeUnit.MILLISECONDS.sleep(500);
-
-        //TimeUnit.SECONDS.sleep(10);
 
     }
 

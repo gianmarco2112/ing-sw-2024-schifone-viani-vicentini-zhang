@@ -11,12 +11,8 @@ import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
 import ingsw.codex_naturalis.common.enumerations.TurnStatus;
 import ingsw.codex_naturalis.server.model.player.Player;
-import ingsw.codex_naturalis.server.model.cards.objective.ObjectiveCard;
-import ingsw.codex_naturalis.server.model.cards.objective.SymbolsObjectiveCard;
 import org.junit.jupiter.api.Test;
-import ingsw.codex_naturalis.server.model.Deck;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

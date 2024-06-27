@@ -1,16 +1,13 @@
 package ingsw.codex_naturalis.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import ingsw.codex_naturalis.server.model.DefaultValue;
 import ingsw.codex_naturalis.server.model.cards.Corner;
 import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableCard;
 import ingsw.codex_naturalis.server.model.cards.initialResourceGold.PlayableSide;
 import ingsw.codex_naturalis.server.model.cards.initialResourceGold.back.Back;
 import ingsw.codex_naturalis.common.enumerations.PlayableCardType;
 import ingsw.codex_naturalis.common.enumerations.Symbol;
-import ingsw.codex_naturalis.server.model.cards.initialResourceGold.front.Needy;
-import ingsw.codex_naturalis.server.model.cards.initialResourceGold.front.PointsGiver;
 import ingsw.codex_naturalis.server.model.cards.initialResourceGold.front.PointsGiverAndPointsGiverForCorner;
+import ingsw.codex_naturalis.server.model.cards.initialResourceGold.front.strategies.StandardStrategy;
 import ingsw.codex_naturalis.server.model.cards.objective.ObjectiveCard;
 import ingsw.codex_naturalis.server.model.cards.objective.PatternObjectiveCard;
 import ingsw.codex_naturalis.server.model.player.PlayerArea;
@@ -44,147 +41,138 @@ class PlayerAreaTest {
         );
         return(resourceCard);
     }
+    private PlayableCard fungiGoldCardBottomRightCornerCovered(){
+        PlayableCard goldCard;
+        HashMap<Symbol, Integer> requirements = new HashMap<>();
+        requirements.put(Symbol.FUNGI, 2);
+        goldCard= new PlayableCard(
+                "RTest",
+                PlayableCardType.GOLD,
+                Symbol.FUNGI,
+                new PointsGiverAndPointsGiverForCorner(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,true),
+                        2,
+                        requirements,
+                        new StandardStrategy()
+                ),
+                new Back(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        List.of(Symbol.FUNGI))
+        );
+        return(goldCard);
+    }
+    private PlayableCard fungiGoldCardBottomLeftCornerCovered(){
+        PlayableCard goldCard;
+        HashMap<Symbol, Integer> requirements = new HashMap<>();
+        requirements.put(Symbol.FUNGI, 2);
+        goldCard= new PlayableCard(
+                "RTest",
+                PlayableCardType.GOLD,
+                Symbol.FUNGI,
+                new PointsGiverAndPointsGiverForCorner(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,false),
+                        2,
+                        requirements,
+                        new StandardStrategy()
+                        ),
+                new Back(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        List.of(Symbol.FUNGI))
+        );
+        return(goldCard);
+    }
+    private PlayableCard fungiGoldCardTopRightCornerCovered(){
+        PlayableCard goldCard;
+        HashMap<Symbol, Integer> requirements = new HashMap<>();
+        requirements.put(Symbol.FUNGI, 2);
+        goldCard= new PlayableCard(
+                "RTest",
+                PlayableCardType.GOLD,
+                Symbol.FUNGI,
+                new PointsGiverAndPointsGiverForCorner(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        2,
+                        requirements,
+                        new StandardStrategy()
+                        ),
+                new Back(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        List.of(Symbol.FUNGI))
+        );
+        return(goldCard);
+    }
+    private PlayableCard fungiGoldCardTopLeftCornerCovered(){
+        PlayableCard goldCard;
+        HashMap<Symbol, Integer> requirements = new HashMap<>();
+        requirements.put(Symbol.FUNGI, 2);
+        goldCard= new PlayableCard(
+                "RTest",
+                PlayableCardType.GOLD,
+                Symbol.FUNGI,
+                new PointsGiverAndPointsGiverForCorner(
+                        new Corner(Symbol.EMPTY,true),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        2,
+                        requirements,
+                        new StandardStrategy()
+                        ),
+                new Back(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        List.of(Symbol.FUNGI))
+        );
+        return(goldCard);
+    }
+    private PlayableCard fungiGoldCardInsectRequirements(){
+        PlayableCard goldCard;
+        HashMap<Symbol, Integer> requirements = new HashMap<>();
+        requirements.put(Symbol.INSECT, 2);
+        goldCard= new PlayableCard(
+                "RTest",
+                PlayableCardType.GOLD,
+                Symbol.FUNGI,
+                new PointsGiverAndPointsGiverForCorner(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,true),
+                        2,
+                        requirements,
+                        new StandardStrategy()
+                        ),
+                new Back(
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        new Corner(Symbol.EMPTY,false),
+                        List.of(Symbol.FUNGI))
+        );
+        return(goldCard);
+    }
 
-    private PlayableCard fungiTopRightNotCoveredResourceCard(){
-        PlayableCard resourceCard;
-        resourceCard= new PlayableCard(
-                "RTest",
-                PlayableCardType.RESOURCE,
-                Symbol.FUNGI,
-                new PlayableSide(
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true)),
-                new Back(
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        List.of(Symbol.FUNGI))
-        );
-        return(resourceCard);
-    }
-    private PlayableCard fungiFullyCoveredResourceCard(){
-        PlayableCard resourceCard;
-        resourceCard= new PlayableCard(
-                "RTest",
-                PlayableCardType.RESOURCE,
-                Symbol.FUNGI,
-                new PlayableSide(
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true)),
-                new Back(
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        List.of(Symbol.FUNGI))
-        );
-        return(resourceCard);
-    }
-    private PlayableCard fungiBottomRightNotCoveredResourceCard(){
-        PlayableCard resourceCard;
-        resourceCard= new PlayableCard(
-                "RTest",
-                PlayableCardType.RESOURCE,
-                Symbol.FUNGI,
-                new PlayableSide(
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,false)),
-                new Back(
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,true),
-                        List.of(Symbol.FUNGI))
-        );
-        return(resourceCard);
-    }
-    private PlayableCard fungiBottomLeftCoveredResourceCard(){
-        PlayableCard resourceCard;
-        resourceCard= new PlayableCard(
-                "RTest",
-                PlayableCardType.RESOURCE,
-                Symbol.FUNGI,
-                new PlayableSide(
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,false)),
-                new Back(
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        List.of(Symbol.FUNGI))
-        );
-        return(resourceCard);
-    }
-    private PlayableCard fungiBottomRightCoveredResourceCard(){
-        PlayableCard resourceCard;
-        resourceCard= new PlayableCard(
-                "RTest",
-                PlayableCardType.RESOURCE,
-                Symbol.FUNGI,
-                new PlayableSide(
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,true)),
-                new Back(
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        List.of(Symbol.FUNGI))
-        );
-        return(resourceCard);
-    }
-    private PlayableCard fungiTopLeftCoveredResourceCard(){
-        PlayableCard resourceCard;
-        resourceCard= new PlayableCard(
-                "RTest",
-                PlayableCardType.RESOURCE,
-                Symbol.FUNGI,
-                new PlayableSide(
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false)),
-                new Back(
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        List.of(Symbol.FUNGI))
-        );
-        return(resourceCard);
-    }
-    private PlayableCard fungiTopRightCoveredResourceCard(){
-        PlayableCard resourceCard;
-        resourceCard= new PlayableCard(
-                "RTest",
-                PlayableCardType.RESOURCE,
-                Symbol.FUNGI,
-                new PlayableSide(
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,true),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false)),
-                new Back(
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        new Corner(Symbol.EMPTY,false),
-                        List.of(Symbol.FUNGI))
-        );
-        return(resourceCard);
-    }
+
     private PlayableCard initialCard() {
         PlayableCard initialCard;
         initialCard = new PlayableCard(
@@ -244,14 +232,6 @@ class PlayerAreaTest {
         playerArea1.setCardOnCoordinates(card5, 4,4);
         return (playerArea1);
     }
-    private PlayerArea emptyPlayerArea() {
-        PlayerArea playerArea1 = new PlayerArea();
-        ObjectiveCard objectiveCard = patternObjectiveCard();
-        playerArea1.setObjectiveCard(objectiveCard);
-        PlayableCard initialCard = initialCard();
-        playerArea1.setCardOnCoordinates(initialCard, 0,0);
-        return (playerArea1);
-    }
 
 //    @Test
 //    void getImmutablePlayerArea() {
@@ -290,54 +270,33 @@ class PlayerAreaTest {
 //        assertFalse (card1.isPlayable(playerArea1, -2,1));
 //
 //    }
-    private Corner coveredCorner () {
-        Corner corner = new Corner(Symbol.EMPTY, true);
-        return (corner);
-    }
-    private Corner notCoveredCorner () {
-        Corner corner = new Corner(Symbol.EMPTY, false);
-        return (corner);
-    }
-    private static class NeedyImpl extends Needy {
-        public NeedyImpl(Corner topLeftCorner, Corner topRightCorner, Corner bottomLeftCorner, Corner bottomRightCorner, int points, HashMap<Symbol, Integer> requirements) {
-            super(topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, points, requirements);
-        }
-    }
+
     @Test
     void NeedyTest () {
         PlayerArea playerArea = playerArea ();
-        Corner covered = coveredCorner();
-        Corner notCovered = notCoveredCorner();
-        HashMap<Symbol, Integer> requirements = new HashMap<>();
-        requirements.put(Symbol.FUNGI, 2);
-        HashMap<Symbol, Integer> requirements1 = new HashMap<>();
-        requirements1.put(Symbol.INSECT, 2);
-        NeedyImpl needy = new NeedyImpl
-                (notCovered, notCovered, notCovered, covered, 2, requirements);
-        NeedyImpl needy1 = new NeedyImpl
-                (notCovered, notCovered, notCovered, covered, 2, requirements1);
-        assertFalse(needy1.isPlayable(playerArea, -2,-2));
-        assertFalse(needy.isPlayable(playerArea, -2,-1));
-        NeedyImpl needy2 = new NeedyImpl
-                (notCovered, notCovered, notCovered, notCovered, 2, requirements);
-        PlayerArea playerArea1 = emptyPlayerArea();
-        PlayableCard card = fungiResourceCard();
-        PlayableCard cardBottomRight = fungiBottomRightCoveredResourceCard();
-        PlayableCard cardTopRight = fungiTopRightCoveredResourceCard();
-        PlayableCard cardTopLeft = fungiTopLeftCoveredResourceCard();
-        PlayableCard cardBottomLeft = fungiBottomLeftCoveredResourceCard();
-        playerArea1.setCardOnCoordinates(card,1,1);
-        playerArea1.setCardOnCoordinates(card,2,1);
-        playerArea1.setCardOnCoordinates(cardBottomRight,2,2);
-        assertFalse (needy2.isPlayable(playerArea1, 3,2));
-        playerArea1.setCardOnCoordinates(cardTopRight, 3, -1);
-        assertFalse (needy2.isPlayable(playerArea1, 4,-1));
-        playerArea1.setCardOnCoordinates(cardTopLeft, 3, 3);
-        assertFalse (needy2.isPlayable(playerArea1, 3,4));
-        playerArea1.setCardOnCoordinates(cardBottomLeft, 1, -1);
-        assertFalse (needy2.isPlayable(playerArea1, 1,-2));
-        /* non so perchè questo non dovrebbe funzionare
-        playerArea1.setCardOnCoordinates(cardBottomLeft, -1, -1);
-        assertFalse (needy2.isPlayable(playerArea1, -2,-2)); */
+        PlayableCard card1 = fungiGoldCardBottomRightCornerCovered();
+        PlayableCard card2 = fungiGoldCardInsectRequirements();
+        card1.flip();
+        card2.flip();
+        assertTrue(card1.isShowingFront());
+        assertTrue(card2.isShowingFront());
+        assertFalse(card2.isPlayable(playerArea, -2,-2)); //missing requirements
+        playerArea.setCardOnCoordinates(card1, -1, -2);
+        assertFalse (card1.isPlayable(playerArea,1,-3)); //card1 has the bottomRightCorner covered
+        PlayableCard card3 = fungiGoldCardBottomLeftCornerCovered();
+        PlayableCard card4 = fungiGoldCardTopLeftCornerCovered();
+        PlayableCard card5 = fungiGoldCardTopRightCornerCovered();
+        card3.flip();
+        card4.flip();
+        card5.flip();
+        assertTrue(card3.isShowingFront());
+        assertTrue(card4.isShowingFront());
+        assertTrue(card5.isShowingFront());
+        playerArea.setCardOnCoordinates(card4, 4,5);
+        assertFalse(card5.isPlayable(playerArea, 2,6));
+        playerArea.setCardOnCoordinates(card5, 4,6);
+        assertFalse(card4.isPlayable(playerArea,5,7));
+        playerArea.setCardOnCoordinates(card3,-2,-2);
+        assertFalse(card4.isPlayable(playerArea, -3,-3));
     }
 }

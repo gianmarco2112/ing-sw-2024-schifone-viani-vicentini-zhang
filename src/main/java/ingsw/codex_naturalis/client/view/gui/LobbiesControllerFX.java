@@ -50,7 +50,10 @@ public class LobbiesControllerFX implements Initializable {
         }
         CreateGame_BTN.setOnMouseClicked(actionEvent -> viewGUI.endLobbiesPhase(Players_CB.getValue()));
     }
-
+    /**
+     * ViewGUI's setter
+     * @param viewGUI : the view to set
+     */
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
     }
@@ -66,7 +69,7 @@ public class LobbiesControllerFX implements Initializable {
     }
 
     /**
-     * This method is called to update the view showing the available games.
+     * This method is called to update the view by showing the available games.
      * @param gamesSpecs the available games
      */
     public void updateLobbies(List<GameSpecs> gamesSpecs) {

@@ -35,7 +35,8 @@ public class ColorSetupControllerFX implements Initializable {
     private ImageView yellowPawn;
 
     /**
-     * method called if user clicked on blue pawn image
+     * Method called if the user clicks on blue pawn image
+     * @param event : the click of the mouse
      */
     @FXML
     void blueSelected(MouseEvent event) {
@@ -43,7 +44,8 @@ public class ColorSetupControllerFX implements Initializable {
     }
 
     /**
-     * method called if user clicked on green pawn image
+     * Method called if the user clicks on green pawn image
+     * @param event : the click of the mouse
      */
     @FXML
     void greenSelected(MouseEvent event) {
@@ -51,7 +53,8 @@ public class ColorSetupControllerFX implements Initializable {
     }
 
     /**
-     * method called if user clicked on red pawn image
+     * Method called if the user clicks on red pawn image
+     * @param event : the click of the mouse
      */
     @FXML
     void redSelected(MouseEvent event) {
@@ -59,19 +62,25 @@ public class ColorSetupControllerFX implements Initializable {
     }
 
     /**
-     * method called if user clicked on yellow pawn image
+     * Method called if the user clicks on yellow pawn image
+     * @param event : the click of the mouse
      */
     @FXML
     void yellowSelected(MouseEvent event) {
         viewGUI.colorChosen(Color.YELLOW);
     }
-
+    /**
+     * ViewGUI's setter
+     * @param viewGUI : the view to set
+     */
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
     }
 
     /**
      * Initialization method called by JavaFX, it streams the pawn images
+     * @param url : of the image to stream
+     * @param resourceBundle : resource bundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -95,7 +104,7 @@ public class ColorSetupControllerFX implements Initializable {
     }
 
     /**
-     * method called when player chose the color and set the color invisible and made other pawn unable to click
+     * Method called when player chooses the color and sets the color invisible and makes other pawn unable to click
      * @param color color chosen
      */
     public void selectedColor(Color color) {

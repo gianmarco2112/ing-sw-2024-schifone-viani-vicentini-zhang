@@ -28,7 +28,10 @@ public class LobbyControllerFX {
 
     @FXML
     private ImageView bulletPointTile;
-
+    /**
+     * ViewGUI's setter
+     * @param viewGUI : the view to set
+     */
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
     }

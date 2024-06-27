@@ -48,7 +48,10 @@ public class LoginControllerFX implements Initializable {
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
     }
-
+    /**
+     * ViewGUI's setter
+     * @param viewGUI : the view to set
+     */
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
     }

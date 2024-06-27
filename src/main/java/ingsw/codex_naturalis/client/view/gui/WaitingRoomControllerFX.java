@@ -77,7 +77,7 @@ public class WaitingRoomControllerFX implements Initializable {
     private String nickname;
 
     /**
-     * method called when a player click leave button while is waiting
+     * Method called when a player clicks the leave button while he is waiting
      */
     @FXML
     void actionIamLeave(ActionEvent event) {
@@ -85,7 +85,7 @@ public class WaitingRoomControllerFX implements Initializable {
     }
 
     /**
-     * method called when a player click ready button
+     * Method called when a player clicks the ready button
      */
     @FXML
     void actionIamReady(ActionEvent event) {
@@ -93,13 +93,16 @@ public class WaitingRoomControllerFX implements Initializable {
         pressEnter.setText("You are ready to play. Please wait for the other players to be ready");
         viewGUI.playerPressEnter();
     }
-
+    /**
+     * ViewGUI's setter
+     * @param viewGUI : the view to set
+     */
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
     }
 
     /**
-     * when the game reached number of player
+     * When the game reaches the declared number of player
      */
     public void setConfirmView() {
         Platform.runLater(()->{
@@ -123,7 +126,7 @@ public class WaitingRoomControllerFX implements Initializable {
     }
 
     /**
-     * it sets the nickname od the player
+     * It sets the nickname of the player
      * @param nickname nickname of the player
      */
     public void setNickname(String nickname) {
@@ -131,14 +134,14 @@ public class WaitingRoomControllerFX implements Initializable {
     }
 
     /**
-     * after player clicked on ready make that button invisible
+     * After the player clicks on ready button, this method makes that button invisible
      */
     public void setConfirmedView() {
         btnReady.setVisible(false);
     }
 
     /**
-     * it shows player lobby card
+     * It shows player lobby card
      * @param playerNickname player nickname who clicked ready button
      */
     public void showAvatar(String playerNickname) {
@@ -166,7 +169,7 @@ public class WaitingRoomControllerFX implements Initializable {
     }
 
     /**
-     * it shows player nickname and game id of the game joined
+     * It shows player's nickname and game id of the joined game
      * @param nickname nickname
      * @param gameID gameId
      */
@@ -176,7 +179,7 @@ public class WaitingRoomControllerFX implements Initializable {
     }
 
     /**
-     * if shows number of players van (in which there will be a player card) equal to number of players
+     * If shows number of players van (in which there will be a player card) equal to the number of players
      * @param numOfPlayers number of players
      */
     public void showPlayerVan(int numOfPlayers) {
@@ -192,7 +195,7 @@ public class WaitingRoomControllerFX implements Initializable {
     }
 
     /**
-     * when a player clicked ready button is not allowed to leave anymore
+     * When a player clicks the ready button is not allowed to leave anymore
      */
     public void setLeaveNotAllowed() {
         Platform.runLater(()->{

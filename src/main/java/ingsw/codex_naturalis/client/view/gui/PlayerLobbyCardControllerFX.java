@@ -16,7 +16,7 @@ public class PlayerLobbyCardControllerFX {
     private AnchorPane playerLobbyCard;
 
     /**
-     * method called when a player is ready
+     * Method called when a player is ready
      * @param nicknameLable nickname of the player who is ready
      */
     public void setNicknameLable(String nicknameLable){

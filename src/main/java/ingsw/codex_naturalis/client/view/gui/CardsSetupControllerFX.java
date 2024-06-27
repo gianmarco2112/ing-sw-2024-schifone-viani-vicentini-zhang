@@ -35,7 +35,8 @@ public class CardsSetupControllerFX {
     private ImageView objectiveCard2;
 
     /**
-     * when a player has chose to play initialCard on its back
+     * When a player chooses to play initialCard on its back
+     * @param event: the click of the mouse
      */
     @FXML
     void backInitialSelected(MouseEvent event) {
@@ -44,7 +45,8 @@ public class CardsSetupControllerFX {
     }
 
     /**
-     * when a player has chose to play initialCard on its front
+     * When a player chooses to play initialCard on its front
+     * @param event: the click of the mouse
      */
     @FXML
     void frontInitialSelected(MouseEvent event) {
@@ -53,7 +55,8 @@ public class CardsSetupControllerFX {
     }
 
     /**
-     * when a player has chose the first objectiveCard
+     * When a player chooses the first objectiveCard
+     * @param event : the click of the mouse
      */
     @FXML
     void objectiveCard1Selected(MouseEvent event) {
@@ -65,7 +68,8 @@ public class CardsSetupControllerFX {
     }
 
     /**
-     * when a player has chose the second objectiveCard
+     * When a player chooses the second objectiveCard
+     * @param event : the click of the mouse
      */
     @FXML
     void objectiveCard2Selected(MouseEvent event) {
@@ -75,19 +79,25 @@ public class CardsSetupControllerFX {
         objectiveCard2.setDisable(true);
         objectiveCard1.setDisable(true);
     }
-
+    /**
+     * When a player confirm the choice of the card that has made
+     * @param event : the click of the mouse
+     */
     @FXML
     void cardChoiceConfirmed(MouseEvent event) {
 
     }
-
+    /**
+     * View GUI's setter
+     * @param viewGUI : the view to set
+     */
     public void setViewGUI(GraphicalUI viewGUI) {
         this.viewGUI = viewGUI;
     }
 
     /**
-     * method called to stream card images
-     * @param s InitialCard id
+     * Method called to stream card images
+     * @param s : InitialCard id
      */
     public void showInitialCard(String s) {
         objectiveCardLBL.setVisible(false);
@@ -117,8 +127,8 @@ public class CardsSetupControllerFX {
     }
 
     /**
-     * method called to stream objective cards
-     * @param immObjectiveCards objectiveCards
+     * Method called to stream objective cards
+     * @param immObjectiveCards : objectiveCards
      */
     public void chooseObjective(List<ImmObjectiveCard> immObjectiveCards) {
         initialCardLBL.setVisible(false);

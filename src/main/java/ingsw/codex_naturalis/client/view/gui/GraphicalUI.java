@@ -64,6 +64,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
+     * To report an error
      * @param error error message to show on alert window
      */
     @Override
@@ -78,7 +79,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * it sets the nickname chosen by the player and change the scene from Login to Lobbies (that contains Lobby
+     * It sets the nickname chosen by the player and changes the scene from Login to Lobbies (that contains Lobby
      * a single game match)
      * @param nickname nickname chosen by the player
      */
@@ -89,7 +90,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * it update in Lobbies the game available
+     * It updates the Lobbies than a game is available
      * @param gamesSpecs List of game available to join
      */
     @Override
@@ -103,7 +104,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     *  method called when a player create a new game and set the scene from Lobbies to WaitingRoom
+     *  Method called when a player creates a new game and sets the scene from Lobbies to WaitingRoom
      *  @param gameID id of the new game created
      */
     @Override
@@ -113,7 +114,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when a game reached the number of players established
+     * Method called when a game reaches the number of players established
      */
     @Override
     public void allPlayersJoined() {
@@ -122,7 +123,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called initially for setup phase before starting game
+     * Method called initially for setup phase before starting game
      * @param game immutable game with the updates
      * @param gameEvent setup 1 or setup 2
      */
@@ -136,7 +137,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called for first setup
+     * Method called for first setup
      */
     private void firstSetup() {
         setScene("CardsSetup");
@@ -144,7 +145,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called for second setup
+     * Method called for second setup
      */
     private void secondSetup() {
         setScene("CardsSetup");
@@ -152,7 +153,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when a player chose on which side to play the initial card
+     * Method called when a player chooses on which side to play the initial card
      * @param game immutable game with updates
      * @param initialCardEvent initialCard event
      */
@@ -165,7 +166,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when a player has chosen his color
+     * Method called when a player has chosen his color
      * @param color color chosen by player
      */
     @Override
@@ -174,7 +175,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when a player has chosen his secret objective, it ends setup phase
+     * Method called when a player has chosen his secret objective, it ends setup phase
      * @param immGame immutable game
      */
     @Override
@@ -184,7 +185,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when setup phase has ended
+     * Method called when setup phase has ended
      * @param game immutable game
      */
     @Override
@@ -196,7 +197,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when a player flip a card on his hand
+     * Method called when a player flips a card on his hand
      * @param game immutable game
      */
     @Override
@@ -210,7 +211,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when a player played a card
+     * Method called when a player plays a card
      * @param immGame immutable game
      * @param playerNicknameWhoUpdated nickname of the player who has played a card
      */
@@ -218,22 +219,22 @@ public class GraphicalUI extends Application implements UI {
     public void cardPlayed(ImmGame immGame, String playerNicknameWhoUpdated) {
         System.out.println(playerNicknameWhoUpdated + "ha giocato una carta");
         this.game = immGame;
-        //devo aggiornare punteggi
+        //I need to upload scores
         //gameControllerFX.handlerCornerClick(null,cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,
-        //true,game.player().playerArea().points(),myColor); //TODO NO myColor, ma è il colore del giocatore che ha giocato la carta, la pedina si deve aggiornare per tutti
+        //true,game.player().playerArea().points(),myColor);
 
         if(playerNicknameWhoUpdated.equals(this.game.player().nickname())){
             gameControllerFX.cardPlayed(cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked,
                     game.player().playerArea().points());
         }else{
-            //TODO aggiornare i campi degli altri
+
             gameControllerFX.updateUardPlayedForOthers(playerNicknameWhoUpdated,immGame, cornerClicked,layoutXOfCardClicked,layoutYOfCardClicked);
         }
 
     }
 
     /**
-     * method called when a player draw a card
+     * Method called when a player draws a card
      * @param immGame immutable game
      * @param playerNicknameWhoUpdated player who has drawn a card
      */
@@ -266,7 +267,7 @@ public class GraphicalUI extends Application implements UI {
         while(goldCards.size()!=3){
             goldCards.add("empty");
         }
-        //nel metodo che chiamo successivamente devo usare Platform.runlater!!
+        //In the method invoked after I need to use Platform.runlater!!
         if(playerNicknameWhoUpdated.equals(this.game.player().nickname())){
             gameControllerFX.cardDrawn(drawCardEvent,
                     resourceCards.getFirst(),goldCards.getFirst(),
@@ -274,7 +275,7 @@ public class GraphicalUI extends Application implements UI {
                     resourceCards.get(1),resourceCards.getLast(),
                     goldCards.get(1),goldCards.getLast());
         }else{
-            //aggiorno per tutti
+            //I update for everybody
             gameControllerFX.updateOtherAfterCardDrawn(
                     goldCards.getFirst(),
                     resourceCards.getFirst(),
@@ -287,7 +288,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when the turn changed
+     * Method called when the turn changes
      * @param currentPlayer current player
      */
     @Override
@@ -296,7 +297,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when a message has sent
+     * Method called when a message has been sent
      * @param immGame immutable game
      */
     @Override
@@ -307,7 +308,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when reached 20 points
+     * Method called when 20 points has been reached
      * @param immGame immutable game
      */
     @Override
@@ -317,7 +318,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when all decks are empty
+     * Method called when all the decks are empty
      * @param immGame immutable game
      */
     @Override
@@ -327,7 +328,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when the game ended
+     * Method called when the game ends
      * @param players list of immutable players
      */
     @Override
@@ -336,7 +337,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when game is cancelled
+     * Method called when game is cancelled
      */
     @Override
     public void gameCanceled() {
@@ -344,7 +345,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when a player left the game
+     * Method called when a player leaves the game
      */
     @Override
     public void gameLeft() {
@@ -353,7 +354,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when a player rejoin the game
+     * Method called when a player rejoins the game
      * @param game immutable game
      */
     @Override
@@ -365,7 +366,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called to update player in game status
+     * Method called to update player's inGame status
      * @param immGame immutable game
      * @param playerNickname player who has rejoined, disconnected or left the game
      * @param inGame indicates if the players is still in game
@@ -387,7 +388,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when game is paused
+     * Method called when the game is paused
      */
     @Override
     public void gamePaused() {
@@ -395,7 +396,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when game resumed
+     * Method called when the game resumes
      */
     @Override
     public void gameResumed() {
@@ -404,7 +405,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called when a player is ready to play
+     * Method called when a player is ready to play
      * @param playerNickname nickname of the player who is ready to play
      */
     @Override
@@ -541,7 +542,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called by LoginControllerFX when a player click the button to confirm his nickname
+     * Method called by LoginControllerFX when a player clicks the button to confirm his nickname
      * @param nickname nickname
      */
     public void endLoginPhase(String nickname) {
@@ -549,7 +550,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called by LobbiesControllerFX when a player creates a new game
+     * Method called by LobbiesControllerFX when a player creates a new game
      * @param numOfPlayers num of player of a game
      */
     public void endLobbiesPhase(int numOfPlayers) {
@@ -559,7 +560,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called by LobbyController when a player has joined a game
+     * Method called by LobbyController when a player joins a game
      * @param gameID id of the game the player joined
      * @param numOfPlayers num of the player of the game
      */
@@ -570,14 +571,14 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called by WaitingRoomControllerFX when a player press ready button
+     * Method called by WaitingRoomControllerFX when a player presses ready button
      */
     public void playerPressEnter(){
         client.ctsUpdateReady();
     }
 
     /**
-     * method called by CardsSetupControllerFX when a player has chosen which side of initialCard to play
+     * Method called by CardsSetupControllerFX when a player chooses which side of the initialCard to play
      * @param front indicates is player play the initialCard on its front
      */
     public void playingInitialCard(boolean front) {
@@ -590,7 +591,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called by ColorSetupControllerFX when a player has chosen the color
+     * Method called by ColorSetupControllerFX when a player chooses the color
      * @param color color chosen
      */
     public void colorChosen(Color color) {
@@ -598,7 +599,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called by CardsSetupControllerFX when a player has chosen the secretObjectiveCard
+     * Method called by CardsSetupControllerFX when a player chooses the secretObjectiveCard
      * @param i index of the secretObjecriveCard (0 or 1)
      */
     public void objectiveChosen(int i) {
@@ -606,7 +607,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called by GameControllerFX when a player is trying to flip a card
+     * Method called by GameControllerFX when a player is trying to flip a card
      * @param index index of hand card to flip
      */
     public void flippingCard(int index) {
@@ -615,7 +616,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called by GameControllerFX when a player is trying to play a card
+     * Method called by GameControllerFX when a player is trying to play a card
      * @param selectedCardIndex selected handCard index
      * @param x coordinate x
      * @param y coordinate y
@@ -630,7 +631,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called by GameControllerFX when a player is trying to draw a card
+     * Method called by GameControllerFX when a player is trying to draw a card
      * @param drawCardEvent drawCardEvent
      */
     public void drawingCard(DrawCardEvent drawCardEvent) {
@@ -642,7 +643,7 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called by GameControllerFX when a player wants to send a message
+     * Method called by GameControllerFX when a player wants to send a message
      * @param receiver receiver
      * @param text message content
      */
@@ -651,14 +652,14 @@ public class GraphicalUI extends Application implements UI {
     }
 
     /**
-     * method called by GameControllerFX when a player click the button to leave the game
+     * Method called by GameControllerFX when a player clicks the button to leave the game
      */
     public void leaveGame() {
         client.updateLeaveGame();
     }
 
     /**
-     * method called by GameControllerFX when the game ended and is used to return back to Lobbies
+     * Method called by GameControllerFX when the game ended: it is used to return back to Lobbies
      */
     public void returnToLobby() {
         setScene("Lobbies");

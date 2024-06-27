@@ -6,7 +6,7 @@ Progetto Ingegneria del Software 2024
 Codex Naturalis is the final test of **"Software Engineering"**, course of **"Computer Science Engineering"**
 held at Politecnico di Milano (2023/2024). <br />
 
-**Professor**: [Gianpaolo Cugola](https://cugola.faculty.polimi.it/images/paolino.jpg)
+**Professor**: [Gianpaolo Cugola](https://cugola.faculty.polimi.it/)
 
 **Group**: GC-29
 
@@ -73,7 +73,7 @@ Follow these instructions to install and run the project.
 
 ### Installation
 
-1. **Download the folder containing the JAR files.**
+1. **Download the [JAR files](https://github.com/leonardovicentini/ing-sw-2024-schifone-viani-vicentini-zhang/tree/master/deliverables/Jar%20files).**
 
 
 
@@ -153,15 +153,15 @@ Find the Server's IP Address
     ifconfig
     ```
 
-If your clients are using RMI follow these additional steps:
+If your clients are using RMI, follow these additional steps:
 
-  2. open /etc/hosts.allow and at the endo of the file add:
+  2. Open /etc/hosts.allow and at the end of the file add:
 
       ```sh
       ALL
       ```
 	
-  3. open /etc/hosts and modify all 127.0.1.1 to 127.0.0.1
+  3. Open /etc/hosts and modify all `127.0.1.1` to `127.0.0.1`
 
 #### **macOS:**
 
@@ -177,8 +177,9 @@ Find the Server's IP Address
 java -jar server.jar -Djava.rmi.server.hostname=<server-ip-address>
 ```
 
-Even if you start a client on the same computer of the server do not use 'localhost' as ip.
-Use the server ip on the lan instead
+Replace `<server-ip-address>` with the IP address obtained in Step 2.  
+> **Do not** use `localhost` instead of `<server-ip-address>`
+
 
 
 #### Step 4: Start the Clients
@@ -202,7 +203,7 @@ Use the server ip on the lan instead
      java -jar client.jar socket <server-ip-address>
      ```
 
-    Replace `<server-ip-address>` with the IP address obtained in Step 3.
+    Replace `<server-ip-address>` with the IP address obtained in Step 2.
 
 ##### On Other Operating Systems
 
@@ -218,4 +219,4 @@ Use the server ip on the lan instead
   java -jar client.jar socket <server-ip-address>
   ```
 
-Replace `<server-ip-address>` with the IP address obtained in Step 3.
+Replace `<server-ip-address>` with the IP address obtained in Step 2.

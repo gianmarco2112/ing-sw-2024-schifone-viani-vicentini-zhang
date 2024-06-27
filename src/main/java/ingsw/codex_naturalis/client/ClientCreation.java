@@ -11,7 +11,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class ClientCreation {
-
+    /**
+     *To create a new client
+     */
     public static ClientImpl createClient(UI ui, String networkProtocol, String ipAddress) throws RemoteException {
         switch (networkProtocol) {
             case "RMI" -> {
@@ -23,7 +25,9 @@ public class ClientCreation {
         }
         return null;
     }
-
+    /**
+     *To create a new RMI client
+     */
     private static ClientImpl createRMIClient(UI ui, String ipAddress) throws RemoteException {
         Registry registry = LocateRegistry.getRegistry(ipAddress, 1235);
         Server server;
@@ -35,7 +39,9 @@ public class ClientCreation {
 
         return new ClientImpl(server, NetworkProtocol.RMI, ui);
     }
-
+    /**
+     *To create a new socket client
+     */
     private static ClientImpl createSocketClient(UI ui, String ipAddress) throws RemoteException {
         ServerStub serverStub = new ServerStub(ipAddress, 1234);
         ClientImpl client = new ClientImpl(serverStub, NetworkProtocol.SOCKET, ui);

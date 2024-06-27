@@ -8,10 +8,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Class used by the TUI to ask for players inputs.
+ * Class used by the TUI to ask for players' inputs.
  */
 public class InputRequesterTUI {
-
+    /**
+     * To clear all previous inputs
+     */
     private void clearPreviousInputs() {
 
         try {
@@ -25,7 +27,7 @@ public class InputRequesterTUI {
     }
 
     /**
-     * Prints the game access options
+     * Prints the game's access options
      */
     public void gameAccessOption() {
 
@@ -232,7 +234,7 @@ public class InputRequesterTUI {
 
     /**
      * Asks which coordinate to play in
-     * @param coordinate
+     * @param coordinate where to play the card
      */
     public void coordinate(String coordinate) {
         clearPreviousInputs();

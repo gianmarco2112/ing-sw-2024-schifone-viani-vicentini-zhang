@@ -73,48 +73,78 @@ public class TextualUI implements UI {
     private GameState gameState = null;
 
     private final Object lock = new Object();
-
+    /**
+     * State's getter
+     * @return state
+     */
     private State getState() {
         synchronized (lock) {
             return state;
         }
     }
+    /**
+     * State's setter
+     * @param state : the state to set
+     */
     private void setState(State state) {
         synchronized (lock) {
             this.state = state;
             lock.notifyAll();
         }
     }
-
+    /**
+     * GameState's getter
+     * @return gameState
+     */
     private GameState getGameState() {
         synchronized (lock) {
             return gameState;
         }
     }
+    /**
+     * GameState's setter
+     * @param gameState : the gameState to set
+     */
     private void setGameState(GameState gameState) {
         synchronized (lock) {
             this.gameState = gameState;
             lock.notifyAll();
         }
     }
-
+    /**
+     * RunningState's getter
+     * @return runningState
+     */
     private RunningState getRunningState() {
         synchronized (lock) {
             return runningState;
         }
     }
+    /**
+     * RunningState's setter
+     * @param runningState : the runningState to set
+     */
     private void setRunningState(RunningState runningState) {
         synchronized (lock) {
             this.runningState = runningState;
             lock.notifyAll();
         }
     }
-
+    /**
+     * AskingWhichGameToAccess's getter
+     * (boolean to know if the client is asking the user which game he wants to access)
+     * @return true if the client is asking that to the user, false otherwise
+     */
     private boolean isAskingWhichGameToAccess() {
         synchronized (lock) {
             return askingWhichGameToAccess;
         }
     }
+    /**
+     * AskingWhichGameToAccess's setter
+     * (boolean to know if the client is asking the user which game he wants to access)
+     * @param askingWhichGameToAccess : true if the client is asking that to the user, false otherwise
+     */
     private void setAskingWhichGameToAccess(boolean askingWhichGameToAccess) {
         synchronized (lock) {
             this.askingWhichGameToAccess = askingWhichGameToAccess;
@@ -430,7 +460,7 @@ public class TextualUI implements UI {
     }
 
     /**
-     * To send a chat message
+     * To send a message in the chat
      */
     private void sendingMessage() {
         List<String> playersToText = new ArrayList<>(game.playerOrderNicknames());
@@ -511,7 +541,7 @@ public class TextualUI implements UI {
     }
 
     /**
-     * To ask for the chat message content
+     * To ask for the chat message's content
      * @return the message content
      */
     private String askForMessageContent() {
@@ -524,27 +554,37 @@ public class TextualUI implements UI {
         }
     }
 
-
+    /**
+     * To report an error
+     * @param error : the error to report
+     */
     @Override
     public void reportError(String error) {
         System.out.println("\u001B[31m" + error + "\u001B[0m");
         setRunningState(RunningState.RUNNING);
     }
-
+    /**
+     * Nickname's setter
+     * @param nickname: the nickname to set
+     */
     @Override
     public void setNickname(String nickname) {
         System.out.println("Welcome "+ nickname + "!");
         setState(State.LOBBY);
         setRunningState(RunningState.RUNNING);
     }
-
+    /**
+     * To update game specs
+     */
     @Override
     public void updateGamesSpecs(List<GameSpecs> gamesSpecs) {
         this.gamesSpecs = gamesSpecs;
         if (isAskingWhichGameToAccess())
             inputRequesterTUI.existingGameAccess(this.gamesSpecs);
     }
-
+    /**
+     * To update game's ID
+     */
 
     @Override
     public void updateGameID(int gameID) {
@@ -555,14 +595,18 @@ public class TextualUI implements UI {
         setRunningState(RunningState.RUNNING);
 
     }
-
+    /**
+     * To set the GameState to "ready" when all the players have joined
+     */
     @Override
     public void allPlayersJoined() {
         System.out.println("\nPress any key and enter if you're ready to play");
         setGameState(GameState.READY);
         //setRunningState(RunningState.RUNNING);
     }
-
+    /**
+     * To update game's vsetup
+     */
     @Override
     public void updateSetup(ImmGame game, GameEvent gameEvent) {
         this.game = game;
@@ -571,7 +615,9 @@ public class TextualUI implements UI {
             case SETUP_2 -> secondSetup();
         }
     }
-
+    /**
+     * To update the initial card
+     */
     @Override
     public void updateInitialCard(ImmGame game, InitialCardEvent initialCardEvent) {
         this.game = game;
@@ -589,13 +635,17 @@ public class TextualUI implements UI {
             }
         }
     }
-
+    /**
+     * To update color
+     */
     @Override
     public void updateColor(Color color) {
         System.out.println(color.getColorCode() + "You chose " + color.getDescription() + "!" + "\u001B[0m");
         System.out.println("Please wait for the other players to make their choices.\n");
     }
-
+    /**
+     * To update objective card choice
+     */
     @Override
     public void updateObjectiveCardChoice(ImmGame immGame) {
         this.game = immGame;
@@ -605,7 +655,9 @@ public class TextualUI implements UI {
         showYou();
         System.out.println("Please wait for the other players to make their choice");
     }
-
+    /**
+     * To end game's setup
+     */
     @Override
     public void endSetup(ImmGame game) {
         this.game = game;
@@ -624,7 +676,9 @@ public class TextualUI implements UI {
         setGameState(GameState.PLAYING);
         setRunningState(RunningState.RUNNING);
     }
-
+    /**
+     * To update that a card has been flipped
+     */
     @Override
     public void cardFlipped(ImmGame game) {
         this.game = game;
@@ -635,7 +689,9 @@ public class TextualUI implements UI {
         showYou();
         inputRequesterTUI.playing();
     }
-
+    /**
+     * To update that a card has been played
+     */
     @Override
     public void cardPlayed(ImmGame game, String playerNicknameWhoUpdated) {
         this.game  = game;
@@ -650,7 +706,9 @@ public class TextualUI implements UI {
             System.out.println(playerNicknameWhoUpdated + " has played a card!");
         inputRequesterTUI.playing();
     }
-
+    /**
+     * To update that a card has been drawn
+     */
     @Override
     public void cardDrawn(ImmGame game, String playerNicknameWhoUpdated) {
         this.game  = game;
@@ -665,7 +723,9 @@ public class TextualUI implements UI {
             System.out.println(playerNicknameWhoUpdated + " has drawn a card!");
         inputRequesterTUI.playing();
     }
-
+    /**
+     * To update that the turn has changed
+     */
     @Override
     public void turnChanged(String currentPlayer) {
         if (currentPlayer.equals(game.player().nickname()))
@@ -673,7 +733,9 @@ public class TextualUI implements UI {
         else
             System.out.println("\nIt's " + currentPlayer + "'s turn!");
     }
-
+    /**
+     * To update that a message has been sent
+     */
     @Override
     public void messageSent(ImmGame game) {
         this.game = game;
@@ -685,19 +747,25 @@ public class TextualUI implements UI {
         System.out.println("==== Chat update! ====");
         inputRequesterTUI.playing();
     }
-
+    /**
+     * To update that 20 points has been reached
+     */
     @Override
     public void twentyPointsReached(ImmGame game) {
         this.game = game;
         System.out.println("======== 20 Points reached! ========");
     }
-
+    /**
+     * To update that all the decks are empty
+     */
     @Override
     public void decksEmpty(ImmGame game) {
         this.game = game;
         System.out.println("======== All decks are empty! ========");
     }
-
+    /**
+     * To update that the game has ended
+     */
     @Override
     public void gameEnded(List<ImmPlayer> players) {
         System.out.println("\n\n| Game ended!. |\n");
@@ -713,7 +781,9 @@ public class TextualUI implements UI {
         setGameState(null);
         setRunningState(RunningState.STOP);
     }
-
+    /**
+     * To update that the game has been cancelled
+     */
     @Override
     public void gameCanceled() {
         System.err.println("\n| You won! |\n\nPress any key and enter to go back to lobby...");
@@ -721,7 +791,9 @@ public class TextualUI implements UI {
         setGameState(null);
         setRunningState(RunningState.STOP);
     }
-
+    /**
+     * To update when a player leaves the game
+     */
     @Override
     public void gameLeft() {
         System.err.println("\n| You left the game. |\n\nPress any key and enter to go back to lobby...");
@@ -729,7 +801,9 @@ public class TextualUI implements UI {
         setGameState(null);
         setRunningState(RunningState.STOP);
     }
-
+    /**
+     * To update that a player has rejoined the game
+     */
     @Override
     public void gameRejoined(ImmGame game) {
         this.game = game;
@@ -742,7 +816,9 @@ public class TextualUI implements UI {
         setState(State.REJOINED);
         setRunningState(RunningState.RUNNING);
     }
-
+    /**
+     * To update player's inGame status
+     */
     @Override
     public void updatePlayerInGameStatus(ImmGame immGame, String playerNickname, boolean inGame, boolean hasDisconnected) {
         this.game = immGame;
@@ -755,19 +831,25 @@ public class TextualUI implements UI {
                 System.err.println(playerNickname + " has left the game!");
         }
     }
-
+    /**
+     * To update that the game has been paused
+     */
     @Override
     public void gamePaused() {
         System.err.println("\n| Currently, you're the only player connected. Please wait for another player to rejoin within 10 seconds.  |");
         setRunningState(RunningState.STOP);
     }
-
+    /**
+     * To update that the game has been resumed
+     */
     @Override
     public void gameResumed() {
         System.err.println("\n| Game resumed!  |");
         setRunningState(RunningState.RUNNING);
     }
-
+    /**
+     * To update that a player is ready
+     */
     @Override
     public void playerIsReady(String playerNickname) {
         System.out.println(playerNickname+" is ready!");

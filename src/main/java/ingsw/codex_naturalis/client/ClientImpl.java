@@ -56,7 +56,9 @@ public class ClientImpl implements Client {
      */
     private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
-
+    /**
+     * Client's creator
+     */
     public ClientImpl(Server server, NetworkProtocol networkProtocol, UI view) throws RemoteException {
         this.view = view;
         this.server = server;
@@ -74,19 +76,23 @@ public class ClientImpl implements Client {
         }, 0, 5, TimeUnit.SECONDS);
     }
 
-
-
+    /**
+     * Nickname's getter
+     */
     @Override
     public String getNickname() {
         return nickname;
     }
+
+    /**
+     * Nickname's setter
+     */
 
     @Override
     public void setNickname(String nickname) {
         this.nickname = nickname;
         view.setNickname(nickname);
     }
-
 
     /**
      * Update from server: Games specs updated
@@ -113,7 +119,6 @@ public class ClientImpl implements Client {
         view.reportError(error);
     }
 
-
     /**
      * Update from server: game joined
      * @param gameID game id
@@ -123,7 +128,6 @@ public class ClientImpl implements Client {
         view.updateGameID(gameID);
     }
 
-
     /**
      * Update from server: all players joined the game
      */
@@ -131,7 +135,6 @@ public class ClientImpl implements Client {
     public void allPlayersJoined() {
         view.allPlayersJoined();
     }
-
 
     /**
      * Update from server: setup update
@@ -389,6 +392,10 @@ public class ClientImpl implements Client {
     public void gameResumed()  {
         view.gameResumed();
     }
+
+    /**
+     * Update from server: player is ready
+     */
 
     @Override
     public void playerIsReady(String playerNickname) {

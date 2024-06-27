@@ -233,44 +233,6 @@ class PlayerAreaTest {
         return (playerArea1);
     }
 
-//    @Test
-//    void getImmutablePlayerArea() {
-//        PlayerArea playerArea = playerArea();
-//        PlayerArea.Immutable immutablePlayerArea = playerArea.getImmutablePlayerArea();
-//        assertNotNull(immutablePlayerArea);
-//    }
-//
-//    @Test
-//    void getImmutableHiddenPlayerArea() {
-//        PlayerArea playerArea = playerArea();
-//        PlayerArea.ImmutableHidden immutableHidden = playerArea.getImmutableHiddenPlayerArea();
-//        assertNotNull(immutableHidden);
-//    }
-//
-//    @Test
-//    void isPlayableTest () {
-//        PlayerArea playerArea = playerArea ();
-//        ObjectiveCard.Immutable immutableHiddenObjectiveCard = playerArea.getObjectiveCard().getImmutableHiddenPlayableCard();
-//        assertNotNull(immutableHiddenObjectiveCard);
-//        PlayableCard card1 = fungiResourceCard();
-//        assertTrue (card1.isPlayable(playerArea, 5,5));
-///*      PlayableCard coveredCard = fungiFullyCoveredResourceCard();
-//        assertFalse (coveredCard.isPlayable(playerArea, -2,-2));
-//        coveredCard.play(playerArea, -2,-2);
-//        assertEquals (coveredCard, playerArea.getCardOnCoordinates(-2,-2)); */
-//        PlayableCard topRightNotCovered = fungiTopRightNotCoveredResourceCard();
-//        topRightNotCovered.play(playerArea, -2,-2);
-//        assertFalse (card1.isPlayable(playerArea, -3,-3));
-//        assertFalse (card1.isPlayable(playerArea, -2,-3));
-//        assertFalse (card1.isPlayable(playerArea, -3,-2));
-//        assertFalse (card1.isPlayable(playerArea, -1,-1));
-//        PlayerArea playerArea1 = playerArea();
-//        PlayableCard bottomRightNotCovered = fungiBottomRightNotCoveredResourceCard();
-//        bottomRightNotCovered.play(playerArea1, -2,-1);
-//        assertFalse (card1.isPlayable(playerArea1, -2,1));
-//
-//    }
-
     @Test
     void NeedyTest () {
         PlayerArea playerArea = playerArea ();

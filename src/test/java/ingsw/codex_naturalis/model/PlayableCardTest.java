@@ -26,15 +26,12 @@ public class PlayableCardTest {
     Player player;
     Game game;
     PlayableCard initialCard;
-    //GameplayController controller;
-    //GameplayUI view;
 
     @BeforeEach
     void setup(){
         player = new Player("P1");
         game = new Game(0,4);
         game.addPlayer(player);
-        //controller = new GameplayController(game,view);
         initialCard = new PlayableCard(
                 "ITest",
                 PlayableCardType.INITIAL,

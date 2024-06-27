@@ -20,9 +20,9 @@ held at Politecnico di Milano (2023/2024). <br />
 The project consists of a Java version of the board game *Codex Naturalis*.
 
 The project includes:
-- High level uml diagram;
-- Complete uml diagram;
-- uml documentation of the comunication protocol between client and server
+- High level UML Class Diagram;
+- Complete UML Class Diagram;
+- UML documentation of the communication protocol between client and server;
 - Peer Reviews of model and network of group GC-39;
 - Source code of the game implementation;
 - Source code of junit tests;

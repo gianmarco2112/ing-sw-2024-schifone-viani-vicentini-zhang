@@ -11,23 +11,36 @@ import static java.lang.Integer.parseInt;
 public class CTSObjectiveCardChoiceUpdate implements MessageToServer {
 
     private int index;
-
+    /**
+     * CTSObjectiveCardChoiceUpdate's constructor
+     */
     public CTSObjectiveCardChoiceUpdate() {
     }
-
+    /**
+     * CTSObjectiveCardChoiceUpdate's constructor
+     * @param index : index of the objective card that the player wants to choose
+     */
     public CTSObjectiveCardChoiceUpdate(int index) {
         this.index = index;
     }
-
+    /**
+     * To run the clientSkeleton and send the message to the server that a player wants to choose an objective card
+     */
     @Override
     public void run(ClientSkeleton clientSkeleton) {
         clientSkeleton.getGameControllerImpl().chooseSecretObjectiveCard(clientSkeleton.getNickname(), index);
     }
-
+    /**
+     * Index's getter
+     * @return index of the card
+     */
     public int getIndex() {
         return index;
     }
-
+    /**
+     * Index's setter
+     * @param index to set
+     */
     public void setIndex(int index) {
         this.index = index;
     }

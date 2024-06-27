@@ -67,6 +67,12 @@ class ServerImplTest {
         server.accessNewGame(client1, 2);
         TimeUnit.MILLISECONDS.sleep(200);
 
+        //GameRunningStatus.TO_CANCEL_NOW
+        server.leaveGame(client1);
+        TimeUnit.MILLISECONDS.sleep(200);
+
+        server.accessNewGame(client1, 2);
+        TimeUnit.MILLISECONDS.sleep(200);
     }
 
     @Test

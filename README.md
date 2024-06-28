@@ -89,6 +89,8 @@ Start the server on your PC using the following command:
 java -jar server.jar
 ```
 
+> In case of `Error: Invalid or corrupt jarfile server.jar` we suggest to clone the repository instead of downloading the .zip file.
+
 #### Step 2: Start the Clients
 
 ##### On Windows

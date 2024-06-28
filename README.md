@@ -180,6 +180,7 @@ java -jar server.jar -Djava.rmi.server.hostname=<server-ip-address>
 Replace `<server-ip-address>` with the IP address obtained in Step 2.  
 > **Do not** use `localhost` instead of `<server-ip-address>`
 
+> In case of `Error: Invalid or corrupt jarfile server.jar` we suggest to clone the repository instead of downloading the .zip file.
 
 
 #### Step 4: Start the Clients

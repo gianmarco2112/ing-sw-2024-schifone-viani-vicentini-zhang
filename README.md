@@ -139,7 +139,7 @@ Ensure all PCs are connected to the same local area network (LAN).
 
 You will need the server's IP address. Use the appropriate command for your operating system:
 
-#### **Windows:**
+##### **Windows:**
 
 Find the Server's IP Address
 
@@ -165,7 +165,7 @@ If your clients are using RMI, follow these additional steps:
 	
   3. Open /etc/hosts and modify all `127.0.1.1` to `127.0.0.1`
 
-#### **macOS:**
+##### **macOS:**
 
 Find the Server's IP Address
 
@@ -223,3 +223,6 @@ Replace `<server-ip-address>` with the IP address obtained in Step 2.
   ```
 
 Replace `<server-ip-address>` with the IP address obtained in Step 2.
+
+## Disclaimer
+> NOTA: Codex Naturalis è un gioco da tavolo sviluppato ed edito da Cranio Creations Srl. I contenuti grafici di questo progetto riconducibili al prodotto editoriale da tavolo sono utilizzati previa approvazione di Cranio Creations Srl a solo scopo didattico. È vietata la distribuzione, la copia o la riproduzione dei contenuti e immagini in qualsiasi forma al di fuori del progetto, così come la redistribuzione e la pubblicazione dei contenuti e immagini a fini diversi da quello sopracitato. È inoltre vietato l'utilizzo commerciale di suddetti contenuti.
